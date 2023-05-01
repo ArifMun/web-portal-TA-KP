@@ -10,13 +10,13 @@ use Illuminate\Support\Facades\Validator;
 
 class FormAksesController extends Controller
 {
-    public function update(Request $request, $id)
+
+    public function store(Request $request)
     {
         $validation = Validator::make(
             $request->all(),
             [
-                'akses'  => 'required',
-
+                'akses' => 'required|unique:form_akses',
             ]
         );
 
@@ -24,11 +24,19 @@ class FormAksesController extends Controller
             return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan !');
         } else {
 
-            $formakses = FormAkses::findOrFail($id);
-            $formakses->akses = $request->akses;
-            $formakses->update();
+            $formakses = FormAkses::create([
+                'akses' => $request->akses
+            ]);
 
             return \redirect('manajemen-form')->with('success', 'Akses Form KP Telah Disimpan !');
         }
+    }
+
+    public function destroy(FormAkses $formakses, $id)
+    {
+
+        $formakses = FormAkses::find($id);
+        $formakses->delete();
+        return \redirect('manajemen-form')->with('success', 'Akses Berhasil Dihapus!');
     }
 }

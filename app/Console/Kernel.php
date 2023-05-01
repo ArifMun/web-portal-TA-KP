@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -15,7 +16,15 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $updateData = function () {
+            // Perform the update operation here
+            // For example, you can use the Eloquent ORM to update a model:
+            \App\Models\SeminarKP::where('jam_seminar', '>', now())
+                ->update(['stts_seminar' => 'selesai']);
+        };
+
+        // Schedule the closure to run every hour
+        $schedule->call($updateData)->everyMinute();
     }
 
     /**
@@ -25,7 +34,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands()
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }

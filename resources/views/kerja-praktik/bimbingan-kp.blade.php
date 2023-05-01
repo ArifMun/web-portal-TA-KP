@@ -29,7 +29,7 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Seminar Kerja Praktik</h4>
+                <h4 class="page-title">Bimbingan Kerja Praktik</h4>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -37,43 +37,15 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
-                                <a href="/seminar-kp/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarSeminar">
+                                <a href="/bimbingan-kp/tambah" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalTambahBimbingan">
                                     <i class="fa fa-plus"></i>
-                                    Daftar
+                                    Tambah
                                 </a>
                             </div>
                         </div>
 
                         <div class="card-body">
-                            {{-- <div class="row">
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kategori</label>
-                                    <select data-column="1" class="form-control col-sm-12" id="filter-kategori">
-                                        <option value="">-- Pilih Kategori --</option>
-                                        @foreach ($kategori as $k)
-                                        <option value=" {{ $k->kode_kategori }}">{{ $k->nama_kategori }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kondisi</label>
-                                    <select data-column="8" class="form-control col-sm-12" id="filter-kondisi">
-                                        <option value="">-- Pilih Kondisi --</option>
-                                        <option value="BAIK">BAIK</option>
-                                        <option value="RUSAK">RUSAK</option>
-                                    </select>
-                                </div>
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Tahun</label>
-                                    <select data-column="7" class="form-control col-sm-12" id="filter-tahun">
-                                        <option value="">-- Pilih Tahun --</option>
-                                        @for ($i = date('Y'); $i >= date('Y')-5; $i-=1)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                            </div> --}}
                             <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="add-row" class="display table table-striped table-hover">
@@ -82,81 +54,34 @@
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
-                                            <th>Dosen Pembimbing</th>
-                                            <th>Status Seminar</th>
-                                            <th>Semester</th>
-                                            <th>Form Bimbingan</th>
-                                            <th>Slip Pembayaran</th>
-                                            <th>Tahun</th>
-                                            <th>Judul</th>
-                                            <th>Tanggal Seminar</th>
-                                            <th>Jam Seminar</th>
+                                            <th>Judul Bimbingan</th>
+                                            <th>Laporan KP</th>
+                                            <th>Status</th>
+                                            <th>Catatan</th>
+                                            <th>Author</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
 
                                     @if (Auth::user()->level==0)
                                     <tbody>
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->seminarkp))
-                                        @foreach ($seminarmhs as $item)
+                                        @if (!empty(Auth::user()->biodata->mahasiswa->bimbingankp))
+                                        @foreach ($bimbingMhs as $item)
                                         {{-- {{ $item }} --}}
                                         <tr>@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td>
-                                                @foreach ($dosen as $k)
-                                                {{ $k->id == $item->daftarkp->d_pembimbing_1 ?
-                                                $k->biodata->nama :''
-                                                }}
-                                                @endforeach
-                                            </td>
+                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            <td>{{ $item->laporan_kp }}</td>
+                                            <td>{{ $item->status }}</td>
+                                            <td>{{ $item->catatan }}</td>
+                                            <td>{{ $item->author }}</td>
 
-                                            @if ($item->daftarkp->seminarkp->stts_seminar=='proses')
                                             <td>
-                                                <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
-                                                    {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
-                                            </td>
-                                            @elseif($item->daftarkp->seminarkp->stts_seminar=='selesai')
-                                            <td>
-                                                <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
-                                                    {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
-                                            </td>
-                                            @else
-                                            <td>
-                                                <a
-                                                    class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
-                                                    {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
-                                            </td>
-                                            @endif
-
-                                            <td>{{ $item->daftarkp->semester }}</td>
-
-                                            <td><a href="seminar-kp/view-form/{{ $item->daftarkp->seminarkp->id }}"
+                                                <a href="bimbingan-kp/edit/{{ $item->daftarkp->seminarkp->id }}"
                                                     data-toggle="modal"
-                                                    data-target="#viewForm{{ $item->daftarkp->seminarkp->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
-                                            </td>
-
-                                            <td><a href="seminar-kp/view-slip/{{ $item->daftarkp->id}}"
-                                                    data-toggle="modal" data-target="#viewSlip{{ $item->daftarkp->id}}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
-                                            </td>
-
-                                            <td>{{ $item->daftarkp->tahunakademik->tahun }} </td>
-                                            <td>{{ $item->daftarkp->seminarkp->judul }}</td>
-                                            <td>{{ $item->daftarkp->seminarkp->tgl_seminar }}</td>
-                                            <td>{{ $item->daftarkp->seminarkp->jam_seminar }}</td>
-                                            <td>
-                                                <a href="seminar-kp/edit/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#modalEditSeminar{{ $item->id }}"
+                                                    data-target="#modalEditSeminar{{ $item->daftarkp->seminarkp->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
                                             </td>
@@ -175,59 +100,16 @@
                                     {{-- All- --}}
                                     @elseif(Auth::user()->level == 1)
                                     <tbody> @php $no=1; @endphp
-                                        @foreach ($seminarkp as $row)
+                                        @foreach ($bimbingDosen as $row)
                                         <tr>
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td>
-                                                @foreach ($dosen as $k)
-                                                {{ $k->id == $row->daftarkp->d_pembimbing_1 ?
-                                                $k->biodata->nama :''
-                                                }}
-                                                @endforeach
-                                            </td>
-                                            @if ($row->stts_seminar=='proses')
-                                            <td>
-                                                <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
-                                                    {{
-                                                    $row->stts_seminar }}</a>
-                                            </td>
-                                            @elseif($row->stts_seminar=='selesai')
-                                            <td>
-                                                <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
-                                                    {{
-                                                    $row->stts_seminar }}</a>
-                                            </td>
-                                            @else
-                                            <td>
-                                                <a
-                                                    class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
-                                                    {{
-                                                    $row->stts_seminar }}</a>
-                                            </td>
-                                            @endif
-
-                                            <td>{{ $row->daftarkp->semester }}</td>
-
-                                            <td><a href="seminar-kp/view-form/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewForm{{ $row->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
-                                            </td>
-
-                                            <td><a href="seminar-kp/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $row->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
-                                            </td>
-
-                                            <td>{{ $row->daftarkp->tahunakademik->tahun }}</td>
-                                            <td>{{ $row->judul }}</td>
-                                            <td>{{ $row->tgl_seminar }}</td>
-                                            <td>{{ $row->jam_seminar }}</td>
+                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            <td>{{ $item->laporan_kp }}</td>
+                                            <td>{{ $item->status }}</td>
+                                            <td>{{ $item->catatan }}</td>
+                                            <td>{{ $item->author }}</td>
                                             <td>
                                                 <a href="seminar-kp/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditSeminar{{ $row->id }}"
@@ -255,7 +137,7 @@
 </div>
 
 {{-- Tambah --}}
-<div class="modal fade" id="modalDaftarSeminar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+{{-- <div class="modal fade" id="modalDaftarSeminar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -270,10 +152,6 @@
                 @csrf
                 <div class="modal-body">
 
-
-                    {{-- <select name="stts_pengajuan" id="" hidden>
-                        <option value="tertunda" selected>tertunda</option>
-                    </select> --}}
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
@@ -288,11 +166,6 @@
                                         $item->mahasiswa->biodata->no_induk
                                         }} - {{ $item->mahasiswa->biodata->nama
                                         }} - {{ $item->tahunakademik->tahun }}
-                                        {{-- {{
-                                        $item->daftarkp->mahasiswa->biodata->nama
-                                        }} - {{
-                                        $item->daftarkp->tahunakademik->tahun
-                                        }} --}}
                                     </option>
                                     @endforeach
                                     <input type="hidden" value="{{ Auth::user()->biodata->mahasiswa->id }}"
@@ -376,10 +249,10 @@
             </form>
         </div>
     </div>
-</div>
+</div> --}}
 
 {{-- Edit --}}
-@foreach ($seminarkp as $item)
+{{-- @foreach ($seminarkp as $item)
 <div class="modal fade" id="modalEditSeminar{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -484,10 +357,10 @@
         </div>
     </div>
 </div>
-@endforeach
+@endforeach --}}
 
 {{-- view Form Bimbingan --}}
-@foreach ($seminarkp as $item)
+{{-- @foreach ($seminarkp as $item)
 <div class="modal fade" id="viewForm{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -518,108 +391,10 @@
         </div>
     </div>
 </div>
-@endforeach
-
-{{-- Slip Pembayaran --}}
-@foreach ($seminarkp as $item)
-<div class="modal fade" id="viewSlip{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        @if ($item->daftarkp->slip_pembayaran)
-                        <div class="col">
-                            <img src="{{ asset('storage/' . $item->daftarkp->slip_pembayaran) }}" alt=""
-                                class="rounded mx-auto d-block" style="width: 30%">
-                        </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach
-
-{{-- View --}}
-{{-- @foreach ($barang as $d)
-<div class="modal fade" id="viewDataBarang{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Detail Barang</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        @if ($d->image)
-                        <div class="col">
-                            <img src="{{ asset('storage/' . $d->image) }}" alt="" class="rounded mx-auto d-block"
-                                style="width: 18%">
-                        </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">Nama Barang</li>
-                                <li class="list-group-item">Kategori</li>
-                                <li class="list-group-item">No Barang</li>
-                                <li class="list-group-item">Penulis</li>
-                                <li class="list-group-item">Jumlah</li>
-                                <li class="list-group-item">Unit</li>
-                                <li class="list-group-item">Tahun</li>
-                                <li class="list-group-item">Kondisi</li>
-                                <li class="list-group-item">Keterangan</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">{{ $d->nama_barang }}</li>
-                                <li class="list-group-item">{{ $d->nama_kategori }}</li>
-                                <li class="list-group-item">{{ $d->no_barang }}</li>
-                                <li class="list-group-item">{{ Auth::user()->level }}</li>
-                                <li class="list-group-item">{{ $d->jumlah }}</li>
-                                <li class="list-group-item">{{ $d->unit }}</li>
-                                <li class="list-group-item">{{ $d->tahun }}</li>
-                                <li class="list-group-item">{{ $d->kondisi }}</li>
-                                <li class="list-group-item">{{ $d->keterangan }}.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
 @endforeach --}}
 
 {{-- Hapus --}}
-@foreach ($seminarkp as $kp)
+{{-- @foreach ($seminarkp as $kp)
 <div class="modal fade" id="modalHapusSeminar{{ $kp->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-open">
@@ -657,7 +432,8 @@
         </div>
     </div>
 </div>
-@endforeach
+@endforeach --}}
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 
 <script>

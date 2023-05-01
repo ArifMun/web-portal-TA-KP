@@ -16,7 +16,7 @@
                 <li
                     class="nav-item {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*')? 'active' : '' }}">
                     <a data-toggle="collapse" href="#base">
-                        <i class="fas fa-pen-square"></i>
+                        <i class="fas fa-user"></i>
                         <p>Kerja Praktik</p>
                         <span class="caret"></span>
                     </a>
@@ -32,13 +32,18 @@
                                     <span class="sub-item">Daftar Seminar KP</span>
                                 </a>
                             </li>
+                            <li class="nav-item {{ Request()->is('bimbingan-kp')? 'active' : '' }}">
+                                <a href="bimbingan-kp">
+                                    <span class="sub-item">Bimbingan KP</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>
 
                 <li class="nav-item">
                     <a data-toggle="collapse" href="#forms">
-                        <i class="fas fa-pen-square"></i>
+                        <i class="fas fa-user-graduate"></i>
                         <p>Tugas Akhir</p>
                         <span class="caret"></span>
                     </a>
@@ -55,9 +60,15 @@
                 </li>
                 @if(Auth::user()->level==1)
 
+                <li class="nav-section">
+                    <span class="sidebar-mini-icon">
+                        <i class="fa fa-ellipsis-h"></i>
+                    </span>
+                    <h4 class="text-section">Administrator</h4>
+                </li>
                 <li class="nav-item {{ Request()->is('registrasi')? 'active' : '' }}">
                     <a href="registrasi">
-                        <i class="fas fa-pen-square"></i>
+                        <i class="fas fa-users"></i>
                         <p>Daftar Akun</p>
                     </a>
                 </li>

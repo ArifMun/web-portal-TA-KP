@@ -18,11 +18,6 @@
         padding: 3px 3px 3px 3px;
         background-color: red:
     }
-
-    .form-group.required .control-label:after {
-        content: "*";
-        color: red;
-    }
 </style>
 
 <div class="main-panel">
@@ -34,7 +29,7 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        @if (Auth::user()->level == 0 && $formakses->akses == 'buka' || Auth::user()->level==1)
+                        @if (empty($formakses->akses))
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
@@ -45,7 +40,19 @@
                                 </a>
                             </div>
                         </div>
-                        @elseif(Auth::user()->level == 0 && $formakses->akses == 'tutup')
+                        @elseif(Auth::user()->level == 0 && $formakses->akses == 1 ||
+                        Auth::user()->level==1 )
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title"></h4>
+                                <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalDaftarKP">
+                                    <i class="fa fa-plus"></i>
+                                    Daftar
+                                </a>
+                            </div>
+                        </div>
+                        @elseif(Auth::user()->level == 0 && $formakses->akses == 0)
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <a href="#" class="btn btn-danger">
@@ -195,7 +202,7 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level==1)
+                                    @elseif(Auth::user()->level!=0)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($daftarkp as $row)
                                         {{-- {{ $row->mahasiswa->biodata->no_induk }} --}}
@@ -311,7 +318,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">NIM </label>
+                                <label class="control-label">NIM - Nama </label>
                                 <select class="form-control" name="mahasiswa_id" onchange="no_biodata()" id="biodata"
                                     required>
                                     <option value="" hidden="">-- Pilih NIM --</option>
@@ -321,20 +328,29 @@
                                     </option>
 
                                     @else
-
-                                    {{-- PERMASALAHAN solved--}}
                                     @foreach ($mahasiswa as $k)
-                                    <option value="{{ $k->id }}">{{ $k->biodata->no_induk
+                                    <option value="{{ $k->id}}">{{ $k->biodata->no_induk
+                                        }} - {{ $k->biodata->nama
                                         }}</option>
+
                                     @endforeach
 
                                     @endif
                                 </select>
+
                             </div>
                             <div class="col">
+                                <label class="control-label">Status Kerja Praktik </label>
+                                <select class="form-control" name="stts_kp" required>
+                                    <option value="" hidden="">-- Status KP --</option>
+                                    <option value="baru">Baru</option>
+                                    <option value="melanjutkan">Melanjutkan</option>
+                                </select>
+                            </div>
+                            {{-- <div class="col">
                                 <label>Nama</label>
                                 <input type="text" class="form-control" name="nama" id="nama" readonly>
-                            </div>
+                            </div> --}}
                         </div>
                     </div>
 
@@ -425,27 +441,21 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
-                                <label class="control-label">Status Kerja Praktik </label>
-                                <select class="form-control" name="stts_kp" required>
-                                    <option value="" hidden="">-- Status KP --</option>
-                                    <option value="baru">Baru</option>
-                                    <option value="melanjutkan">Melanjutkan</option>
-                                </select>
-                            </div>
-                            <div class="col">
+                            <div class="col-6">
                                 <label for="image" class="form-label control-label">Slip pembayaran </label>
-                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
                                 <input type="file" class="form-control picture" id="slip_pembayaran"
                                     name="slip_pembayaran" onchange="previewImage()">
+                                <img class="img-preview img-fluid mb-3 col-sm-4 mt-2">
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal-footer">
-                        {{-- <div class="form-group required">
-                            <label class="control-label">Wajib Diisi</label>
-                        </div> --}}
+                    <div class=" modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i>
@@ -474,29 +484,33 @@
                 @method('put')
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>NIM</label>
-                                <select class="form-control" name="mahasiswa_id" onchange="no_biodata()"
-                                    id="mahasiswa_id" required>
+                                <label class="control-label">NIM </label>
+                                <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" required>
                                     <option value="{{ $item->mahasiswa_id }}">{{
-                                        $item->mahasiswa->biodata->no_induk }}
+                                        $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}
                                     </option>
                                 </select>
                             </div>
                             <div class="col">
-                                <label>Nama</label>
-                                <input type="text" class="form-control" name="nama" id="nama"
-                                    value="{{ $item->mahasiswa->biodata->nama }}" readonly>
+                                <label class="control-label">Status Kerja Praktik </label>
+                                <select class="form-control" name="stts_kp" required>
+                                    <option value="" hidden="">-- Status KP --</option>
+                                    <option @php if($item->stts_kp == 'baru') echo 'selected';
+                                        @endphp value="baru">Baru</option>
+                                    <option @php if($item->stts_kp == 'melanjutkan') echo 'selected';
+                                        @endphp value="melanjutkan">Melanjutkan</option>
+                                </select>
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Pilih Dosen Pembimbing 2</label>
+                                <label class="control-label">Pilih Dosen Pembimbing </label>
                                 <select class="form-control" name="d_pembimbing_1" required>
                                     <option value="" hidden="">-- Pilihan Ke-1 --</option>
                                     @foreach ($dosen as $k)
@@ -508,7 +522,7 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label>Pilihan ke2</label>
+                                <label class="control-label">Pilihan ke-2 </label>
                                 <select class="form-control" name="d_pembimbing_2" required>
                                     <option value="" hidden="">-- Pilihan Ke-2 --</option>
                                     @foreach ($dosen as $k)
@@ -522,16 +536,16 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Semester</label>
+                                <label class="control-label">Semester </label>
                                 <input type="number" class="form-control" name="semester" value="{{ $item->semester }}"
                                     placeholder="Semester .." required>
                             </div>
 
                             <div class="col">
-                                <label>Tahun Akademik</label>
+                                <label class="control-label">Tahun Akademik </label>
                                 {{-- <select class="form-control" name="thn_akademik_id" required>
                                     <option value="" hidden="">-- Tahun Akademik --</option>
                                     @foreach ($thnakademik as $k)
@@ -549,10 +563,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required ">
                         <div class="row">
                             <div class="col">
-                                <label>Ganti Dosen Pembimbing</label>
+                                <label class="control-label">Ganti Dosen Pembimbing </label>
                                 <select class="form-control" name="ganti_pembimbing" required>
                                     <option value="" hidden="">-- Ganti --</option>
                                     <option @php if($item->ganti_pembimbing == 'iya') echo 'selected';
@@ -575,21 +589,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Status Kerja Praktik</label>
-                                <select class="form-control" name="stts_kp" required>
-                                    <option value="" hidden="">-- Status KP --</option>
-                                    <option @php if($item->stts_kp == 'baru') echo 'selected';
-                                        @endphp value="baru">Baru</option>
-                                    <option @php if($item->stts_kp == 'melanjutkan') echo 'selected';
-                                        @endphp value="melanjutkan">Melanjutkan</option>
-                                </select>
+                                <label>Judul</label>
+                                <input type="text" id="judul" class="form-control" name="judul" placeholder="Judul ..">
+                                <trix-editor input="judul"></trix-editor>
                             </div>
-
                             <div class="col">
-                                <label>Status Pengajuan</label>
+                                <label class="control-label">Status Pengajuan </label>
                                 @if (Auth::user()->level==0)
                                 <select class="form-control" disabled>
                                     <option value="" hidden="">-- Status Pengajuan --</option>
@@ -612,20 +620,14 @@
                                         @endphp value="ditolak">Ditolak</option>
                                 </select>
                                 @endif
-
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Judul</label>
-                                <input type="text" id="judul" class="form-control" name="judul" placeholder="Judul ..">
-                                <trix-editor input="judul"></trix-editor>
-                            </div>
-                            <div class="col">
-                                <label>Konsentrasi</label>
+                                <label class="control-label">Konsentrasi </label>
                                 <select class="form-control" name="konsentrasi_id" required>
                                     <option value="" hidden="">-- Konsentrasi --</option>
                                     @foreach ($konsentrasi as $k)
@@ -635,29 +637,29 @@
                                     @endforeach
                                 </select>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="image" class="form-label">Slip pembayaran</label>
+                            <div class="col">
+                                <label for="image" class="form-label control-label">Slip pembayaran </label>
                                 <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
 
+                                <input type="file" class="form-control picture" id="slip_pembayaran"
+                                    name="slip_pembayaran" onchange="previewImage()">
 
                                 @if ($item->slip_pembayaran)
                                 <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
-                                    class="img-preview img-fluid mb-2 col-sm-2 d-block">
-                                @endif
-
+                                    class="img-preview img-fluid mb-3 col-sm-4 mt-2">
+                                @else
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="slip_pembayaran"
-                                    name="slip_pembayaran" onchange="previewImage()">
+                                @endif
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i>
@@ -677,7 +679,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran - {{ $item->mahasiswa->biodata->nama
+                    }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -789,9 +792,11 @@
                     <input type="hidden" value="{{ $kp->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data ini ?</h>
-                            <p class="text-danger">Dengan Nama {{ $kp->nama }} dan No Induk {{ $kp->no_induk
-                                }}</p>
+                        <h3>Apakah anda ingin menghapus data </h>
+                            dengan Nama <span class="text-danger">{{ $kp->mahasiswa->biodata->nama }}</span> dengan No
+                            Induk <span class="text-danger">{{
+                                $kp->mahasiswa->biodata->no_induk
+                                }} </span> ?
                     </div>
 
                 </div>
@@ -821,5 +826,32 @@
             });
         }
     }
+</script>
+
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+</script>
+<script>
+    function previewImage() {
+        const image = document.querySelector('#slip_pembayaran');
+        const imgPriview = document.querySelector('.img-preview');
+
+        imgPriview.style.display = 'block';
+
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(image.files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            imgPriview.src = oFREvent.target.result;
+        }
+        // const blob = URL.createObjectURL(image.files[0]);
+        // imgPreview.src = blob;
+    }
+
 </script>
 @endsection

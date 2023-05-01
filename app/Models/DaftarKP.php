@@ -51,7 +51,7 @@ class DaftarKP extends Model
 
     // public function dosen()
     // {
-    //     return $this->belongsTo(Dosen::class, 'd_pembimbing_1', 'd_pembimbing_2');
+    //     return $this->belongsTo(Dosen::class, 'd_pembimbing_1');
     // }
 
     public function seminarkp()

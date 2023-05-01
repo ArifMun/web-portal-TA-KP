@@ -1,0 +1,9 @@
+.form-group.required .control-label:after {
+    content: "*";
+    color: red;
+}
+
+.modal-footer.required .control-label:before {
+    content: "*";
+    color: red;
+}

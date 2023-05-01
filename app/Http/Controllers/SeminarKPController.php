@@ -10,6 +10,7 @@ use App\Models\SeminarKP;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
+use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -24,12 +25,7 @@ class SeminarKPController extends Controller
     public function index()
     {
         $seminarkp  = SeminarKP::all();
-        // \dd($seminarkp);
-        // $seminar_mhs = SeminarKP::where('');
-
-
-        // \dd($seminarmhs);
-        $daftarkp   = DaftarKP::all();
+        $daftarkp   = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get();
         $dosen      = Dosen::all();
         $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {

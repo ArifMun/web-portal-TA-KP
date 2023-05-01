@@ -14,7 +14,7 @@ class CreateMahasiswaTable extends Migration
     public function up()
     {
         Schema::create('mahasiswa', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
             $table->integer('biodata_id');
             // $table->string('nama');
         });

@@ -27,7 +27,7 @@ class KerjaPraktikController extends Controller
     public function index()
     {
 
-        $daftarkp = DaftarKP::all();
+        $daftarkp = DaftarKP::all()->sortByDesc("id");
         $dosen = Dosen::all();
         $thnakademik = TahunAkademik::all();
         $konsentrasi = Konsentrasi::all();
@@ -50,7 +50,7 @@ class KerjaPraktikController extends Controller
 
     public function autofill($id)
     {
-        $data = Biodata::find($id);
+        $data = Mahasiswa::with('biodata')->where('id', $id)->first();
         return \response()->json($data);
     }
 

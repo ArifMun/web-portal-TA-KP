@@ -8,6 +8,7 @@
     <link rel="icon" href="/assets/img/psti.png" type="image/x-icon" />
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/azzara.min.css">
+    <link rel="stylesheet" href="/assets/css/mandatory.css">
     <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
         WebFont.load({
@@ -85,14 +86,55 @@
     <script src="/assets/js/ready.min.js"></script>
     <!-- Azzara DEMO methods, don't include it in your project! -->
     <script src="/assets/js/setting-demo.js"></script>
+
+    <script src="/assets/js/plugin/chart.js/chart.min.js"></script>
     <script>
         $(document).ready(function () {
                 $('#add-row').DataTable({
     
                 });
             });
-    
+    var myPieChart = new Chart(pieChart, {
+        type: 'pie',
+        data: {
+            datasets: [{
+                data: [50, 35, 15],
+                backgroundColor :["#1d7af3","#f3545d","#fdaf4b"],
+                borderWidth: 0
+                }],
+                labels: ['New Visitors', 'Subscribers', 'Active Users']
+                },
+                options : {
+                responsive: true,
+                maintainAspectRatio: false,
+                legend: {
+                position : 'bottom',
+                labels : {
+                fontColor: 'rgb(154, 154, 154)',
+                fontSize: 11,
+                usePointStyle : true,
+                padding: 20
+                }
+                },
+                pieceLabel: {
+                render: 'percentage',
+                fontColor: 'white',
+                fontSize: 14,
+                },
+                tooltips: false,
+                layout: {
+                padding: {
+                left: 20,
+                right: 20,
+                top: 20,
+                bottom: 20
+                }
+            }
+        }
+    })
     </script>
+
+
 </body>
 
 </html>

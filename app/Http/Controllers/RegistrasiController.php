@@ -46,13 +46,10 @@ class RegistrasiController extends Controller
                 'nama'          => 'required',
                 'no_induk'      => 'required|unique:biodata|numeric',
                 'jabatan'       => 'required',
-                'tempat_lahir'  => 'required',
-                'tgl_lahir'     => 'required',
+                // 'tempat_lahir'  => 'required',
+                // 'tgl_lahir'     => 'required',
                 'no_telp'       => 'required',
-                // 'alamat'        => 'required',
                 'password'      => 'required|min:5|max:255',
-                // 'level'         => 'required',
-                // 'id_biodata'    => 'required',
             ]
         );
 
@@ -121,11 +118,10 @@ class RegistrasiController extends Controller
             [
                 'nama'          => 'required',
                 'no_induk'      => 'required|numeric',
-                'jabatan'       => 'required',
-                'tempat_lahir'  => 'required',
+                // 'jabatan'       => 'required',
+                // 'tempat_lahir'  => 'required',
                 'tgl_lahir'     => 'required',
                 'no_telp'       => 'required',
-                'alamat'        => 'required',
                 'password'      => 'required|min:5|max:255',
             ]
         );
@@ -138,11 +134,11 @@ class RegistrasiController extends Controller
             $users = User::findOrFail($registrasi->id);
             $biodata->nama = $request->nama;
             $biodata->no_induk = $request->no_induk;
-            $biodata->jabatan = $request->jabatan;
             $biodata->tempat_lahir = $request->tempat_lahir;
             $biodata->tgl_lahir = $request->tgl_lahir;
             $biodata->no_telp = $request->no_telp;
             $biodata->alamat = $request->alamat;
+            // $biodata->jabatan = $request->jabatan;
             $biodata->save();
 
             $users->password =

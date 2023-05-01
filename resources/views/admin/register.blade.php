@@ -139,14 +139,14 @@
                 @csrf
                 <div class="modal-body">
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Nama</label>
+                                <label class="control-label">Nama </label>
                                 <input type="text" class="form-control" name="nama" id="nama" required>
                             </div>
                             <div class="col">
-                                <label>No Induk</label>
+                                <label class="control-label">No Induk </label>
                                 <input type="number" class="form-control" name="no_induk" placeholder="No Induk .."
                                     required>
                             </div>
@@ -158,7 +158,7 @@
                             <div class="col">
                                 <label>Tempat Lahir</label>
                                 <input type="text" class="form-control" name="tempat_lahir"
-                                    placeholder="Tempat Lahir . ." required>
+                                    placeholder="Tempat Lahir . .">
                             </div>
                             <div class="col">
                                 <label>Tanggal Lahir</label>
@@ -167,27 +167,27 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>No WA</label>
+                                <label class="control-label">No WA </label>
                                 <input type="text" class="form-control" name="no_telp" placeholder="No WA .." required>
                             </div>
                             <div class="col">
-                                <label>Password</label>
+                                <label class="control-label">Password </label>
                                 <input type="password" class="form-control" name="password" placeholder="Password .."
                                     required>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
                                 <label>Keahlian</label>
                                 <input type="text" class="form-control" name="keahlian" placeholder="Keahlian ..">
                             </div>
                             <div class="col">
-                                <label>Jabatan</label>
+                                <label class="control-label">Jabatan </label>
                                 <select class="form-control" name="jabatan" required>
                                     <option value="" hidden="">-- Pilih Jabatan --</option>
                                     @php
@@ -201,10 +201,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Level</label>
+                                <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
                                     <option value="" hidden="">-- Pilih Level --</option>
                                     @php
@@ -222,7 +222,12 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
@@ -250,15 +255,15 @@
                 @method('put')
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Nama</label>
+                                <label class="control-label">Nama </label>
                                 <input type="text" class="form-control" name="nama" id="nama" value="{{ $d->nama }}"
                                     required>
                             </div>
                             <div class="col">
-                                <label>No Induk</label>
+                                <label class="control-label">No Induk </label>
                                 <input type="number" class="form-control" name="no_induk" id="no_induk"
                                     placeholder="No Induk .." value="{{ $d->no_induk }}" required>
                             </div>
@@ -280,21 +285,21 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>No WA</label>
+                                <label class="control-label">No WA </label>
                                 <input type="text" class="form-control" name="no_telp" placeholder="No WA .."
                                     value="{{ $d->no_telp }}" required>
                             </div>
                             <div class="col">
-                                <label>Password</label>
+                                <label class="control-label">Password </label>
                                 <input type="password" class="form-control" name="password" placeholder="Password .."
                                     required>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
                                 <label>Keahlian</label>
@@ -302,8 +307,9 @@
                                     value="{{ $d->keahlian }}">
                             </div>
                             <div class="col">
-                                <label>Jabatan</label>
-                                <select class="form-control" name="jabatan" required>
+                                <label class="control-label">Jabatan </label>
+                                <input type="text" class="form-control" value="{{ $d->jabatan }}" readonly>
+                                {{-- <select class="form-control" name="jabatan" required>
                                     <option value="" hidden="">-- Pilih Jabatan --</option>
                                     <option <?php if($d->jabatan == 'dosen') echo "selected"; ?> value="dosen">Dosen
                                     </option>
@@ -311,22 +317,22 @@
                                         value="mahasiswa">Mahasiswa</option>
                                     <option <?php if($d->jabatan == 'TU') echo "selected"; ?>
                                         value="TU">TU</option>
-                                </select>
+                                </select> --}}
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Level</label>
+                                <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
                                     {{-- <option value="">-- Pilih Level --</option> --}}
-                                    <option <?php if($d->level == 0) echo "selected"; ?> value="0">0
+                                    <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
                                     </option>
-                                    <option <?php if($d->level == 1) echo "selected"; ?>
+                                    <option <?php if($d->users->level == 1) echo "selected"; ?>
                                         value="1">1</option>
-                                    <option <?php if($d->level == 2) echo "selected"; ?>
+                                    <option <?php if($d->users->level == 2) echo "selected"; ?>
                                         value="2">2</option>
 
                                 </select>
@@ -338,7 +344,12 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
@@ -435,8 +446,9 @@
                     <input type="hidden" value="{{ $d->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data ini ?</h>
-                            <p class="text-danger">Dengan Nama {{ $d->nama }} dan No Induk {{ $d->no_induk }}</p>
+                        <h3>Apakah anda yakin menghapus akun <span class="text-danger">{{ $d->nama }}
+                            </span> dengan No Induk <span class="text-danger">{{ $d->no_induk }}</span> ?</h3>
+                        <b><span class="text-danger"> Data terkait akun tersebut akan ikut terhapus !</span></b>
                     </div>
 
                 </div>
@@ -452,11 +464,4 @@
 </div>
 @endforeach
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
-{{-- <script>
-    $(document).on('click', '.delete', function() {
-    let id = $(this).attr('data-id');
-    $('#id-destroy').val(id);
-    });
-</script> --}}
-{{-- @include('sweetalert::alert') --}}
 @endsection

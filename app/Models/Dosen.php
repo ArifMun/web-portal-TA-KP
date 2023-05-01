@@ -22,8 +22,13 @@ class Dosen extends Model
         return $this->belongsTo(Biodata::class);
     }
 
-    public function daftarKP()
+    public function daftarkp()
     {
-        return $this->hasMany(DaftarKP::class, 'd_pembimbing_1', 'd_pembimbing_2');
+        return $this->hasMany(DaftarKP::class, 'd_pembimbing_1');
+    }
+
+    public function bimbingankp()
+    {
+        return $this->hasMany(BimbinganKP::class, 'dosen_id');
     }
 }

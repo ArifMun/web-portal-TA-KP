@@ -1,16 +1,19 @@
 <?php
 
-use App\Models\SeminarKP;
+use App\Models\FormAkses;
 // use App\Models\RegistrasiController;
+use App\Models\SeminarKP;
 use GuzzleHttp\Middleware;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MhsKPController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormAksesController;
 use App\Http\Controllers\SeminarKPController;
 use App\Http\Controllers\RegistrasiController;
+use App\Http\Controllers\BimbinganKPController;
 use App\Http\Controllers\KonsentrasiController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\KerjaPraktikController;
@@ -52,7 +55,9 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2']], function () {
     Route::get('kerja-praktik/biodata/{id}', [KerjaPraktikController::class, 'autofill']);
 
     Route::resource('/seminar-kp', SeminarKPController::class);
-    Route::get('seminar-kp/biodata/{id}', [SeminarKPController::class, 'autofill']);
+    Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
+
+    Route::resource('/bimbingan-kp', BimbinganKPController::class);
 
     // Route::resource('/mhs-kp', MhsKPController::class);
     // Route::get('mhs-kp/biodata/{id}', [MhsKPController::class, 'autofill']);
@@ -64,5 +69,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2']], function () {
     Route::post('konsentrasi/tambah', [KonsentrasiController::class, 'store']);
     Route::post('konsentrasi/{id}/destroy', [KonsentrasiController::class, 'destroy']);
 
-    Route::post('akses/{id}/update', [FormAksesController::class, 'update']);
+    Route::get('akses/update', [FormAksesController::class, 'update']);
+    Route::post('akses/tambah', [FormAksesController::class, 'store']);
+    Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
 });

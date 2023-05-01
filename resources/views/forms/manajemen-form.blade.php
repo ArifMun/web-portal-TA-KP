@@ -22,7 +22,7 @@
                 <h4 class="page-title">Manajemen Form</h4>
             </div>
             <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
@@ -41,6 +41,7 @@
                                         <tr>
                                             <th>No</th>
                                             <th>Tahun</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
 
@@ -55,9 +56,6 @@
                                             <td>{{ $row->tahun}}</td>
 
                                             <td>
-                                                <a href="#editDataTahun{{ $row->id }}" data-toggle="modal"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
                                                 <a href="#hapusDataTahun{{ $row->id }}" data-toggle="modal"
                                                     data-target="" class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
@@ -120,23 +118,25 @@
                     </div>
                 </div>
                 {{-- Akses Form --}}
-                <div class="col-md-3">
+                <div class="col-md-4">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Akses Form KP</h4>
-                                <a href="/akses/edit" class="btn btn-primary btn-round ml-auto" data-toggle="modal"
-                                    data-target="#editJadwal">
-                                    Pilih Akses
+                                <h4 class="card-title">Tambah Akses Form KP</h4>
+                                <a href="/akses/tambah" class="btn btn-primary btn-round ml-auto" data-toggle="modal"
+                                    data-target="#tambahAkses">
+                                    Tambah Akses
                                 </a>
                             </div>
                         </div>
+
                         <div class="card-body">
                             <div class="table-responsive">
                                 <table id="tabel-akun" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
                                             <th>Akses Form KP Sekarang</th>
+                                            <th>Status</th>
                                         </tr>
                                     </thead>
 
@@ -148,6 +148,16 @@
 
                                         <tr>
                                             <td class="text-uppercase">{{ $row->akses }}</td>
+                                            <td>
+                                                <input data-id="{{ $row->id }}" class="toggle-class" type="checkbox"
+                                                    data-onstyle="success" data-offstyle="danger" data-toggle="toggle"
+                                                    data-on="Buka" data-off="Tutup" {{ $row->akses ? 'checked' :'' }}>
+                                            </td>
+                                            <td>
+                                                <a href="#hapusAkses{{ $row->id }}" data-toggle="modal" data-target=""
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                    </i> </a>
+                                            </td>
                                         </tr>
                                         @endforeach
                                     </tbody>
@@ -199,6 +209,45 @@
     </div>
 </div>
 
+{{-- akses tambah --}}
+<div class="modal fade" id="tambahAkses" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-open">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Tambah Akses</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="akses/tambah">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <h3><b>FORM KERJA PRAKTIK AKAN MEMILIKI AKSES BUKA DAN TUTUP</b></h3>
+                                <input type="hidden" class="form-control" name="akses" id="akses" value="1" required
+                                    readonly>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                            </i> Kembali</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Lanjut</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
 {{-- akses form --}}
 @foreach ($formAkses as $item)
 <div class="modal fade" id="editJadwal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -211,9 +260,9 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <form method="POST" enctype="multipart/form-data" action="akses/{{ $item->id }}/update">
+            <form method="POST" enctype="multipart/form-data" action="form-akses/{{ $item->id }}/update">
                 @csrf
-                <div class="modal-body">
+                {{-- <div class="modal-body">
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
@@ -232,7 +281,8 @@
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
                     </div>
-                </div>
+                </div> --}}
+
             </form>
         </div>
     </div>
@@ -367,7 +417,43 @@
                     <input type="hidden" value="{{ $d->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data ini {{ $d->tahun }} ?</h>
+                        <h3>Apakah anda yakin menghapus data <span class="text-danger"> {{ $d->tahun }}</span> ? </h3>
+                        <b><span class="text-danger"> Data terkait tahun tersebut akan ikut terhapus !</span></b>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- Hapus Akses--}}
+@foreach ($formAkses as $d)
+<div class="modal fade" id="hapusAkses{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-open">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Akses</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/akses/{{ $d->id }}/destroy">
+                @csrf
+                <div class="modal-body">
+
+                    <input type="hidden" value="{{ $d->id }}" name="id" required>
+                    <div class=" form-group">
+                        <h3>Apakah anda ingin menghapus akses untuk form Kerja Praktik ? </h>
                     </div>
 
                 </div>
@@ -404,7 +490,9 @@
                     <input type="hidden" value="{{ $d->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data ini {{ $d->nama_konsentrasi }} ?</h>
+                        <h3>Apakah anda yakin menghapus data <span class="text-danger"> {{ $d->nama_konsentrasi }}
+                            </span>?</h3>
+                        <b><span class="text-danger"> Data terkait konsentrasi tersebut akan ikut terhapus !</span></b>
                     </div>
 
                 </div>
@@ -420,5 +508,10 @@
 </div>
 @endforeach
 
-
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+{{--
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" />
+--}}
+<link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
+<script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
 @endsection

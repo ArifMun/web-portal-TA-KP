@@ -5,6 +5,7 @@ namespace App\Providers;
 use Carbon\Carbon;
 use App\Models\DaftarKP;
 use App\Models\FormAkses;
+use App\Models\YourModel;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -32,14 +33,8 @@ class AppServiceProvider extends ServiceProvider
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
 
-        $formakses = FormAkses::orderBy('id', 'desc')->first();
-        $user      = Auth::user();
-        // $akses = ($formakses->tgl_tutup >= now()
-        //     && $formakses->tgl_buka <= now());
-        // $formakses = FormAkses::orderBy('id', 'desc')->first();
-        $daftarkp  = DaftarKP::where('stts_pengajuan', '=', 'tertunda')->get();
-        View::share('formakses', $formakses);
-        //     View::share('daftarkp', $daftarkp);
-        //     View::share('user', $user);
+        // $formakses = FormAkses::all();
+        // $user      = Auth::user();
+        // View::share('formakses', $formakses);
     }
 }

@@ -13,4 +13,9 @@ class FormAkses extends Model
     protected $fillable = [
         'akses'
     ];
+
+    // public function setStatusAttribute($value)
+    // {
+    //     $this->attributes['toggle_state'] = $value ? true : false;
+    // }
 }

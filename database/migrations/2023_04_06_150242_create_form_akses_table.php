@@ -15,7 +15,7 @@ class CreateFormAksesTable extends Migration
     {
         Schema::create('form_akses', function (Blueprint $table) {
             $table->id();
-            $table->enum('akses', ['buka', 'tutup']);
+            $table->boolean('akses')->default(false);
         });
     }
 
