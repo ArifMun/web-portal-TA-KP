@@ -11,7 +11,6 @@ use App\Models\Konsentrasi;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
 use Illuminate\Validation\Rule;
-use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Support\Facades\Storage;
@@ -27,12 +26,13 @@ class KerjaPraktikController extends Controller
     public function index()
     {
 
-        $daftarkp = DaftarKP::all()->sortByDesc("id");
-        $dosen = Dosen::all();
+        $daftarkp    = DaftarKP::all()->sortByDesc("id");
+        $filterStts  = DaftarKP::distinct()->select('stts_pengajuan')->get();
+        $dosen       = Dosen::all();
         $thnakademik = TahunAkademik::all();
         $konsentrasi = Konsentrasi::all();
-        $mahasiswa = Mahasiswa::all();
-        $mhskp = Auth::user()->biodata->mahasiswa;
+        $mahasiswa   = Mahasiswa::all();
+        $mhskp       = Auth::user()->biodata->mahasiswa;
 
         $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
@@ -45,7 +45,7 @@ class KerjaPraktikController extends Controller
         $formakses = FormAkses::first();
         // \dd($mhskps);
 
-        return \view('kerja-praktik.daftar-kp', \compact('daftarkp', 'mahasiswa', 'dosen', 'thnakademik', 'konsentrasi', 'mhskp', 'mhskps', 'formakses'));
+        return \view('kerja-praktik.daftar-kp', \compact('daftarkp', 'mahasiswa', 'dosen', 'thnakademik', 'konsentrasi', 'mhskp', 'mhskps', 'formakses', 'filterStts'));
     }
 
     public function autofill($id)
@@ -96,7 +96,7 @@ class KerjaPraktikController extends Controller
                 ->withErrors($validation);
         } else {
             $daftarkp = DaftarKP::create([
-                'mahasiswa_id'       => $request->mahasiswa_id,
+                'mahasiswa_id'      => $request->mahasiswa_id,
                 'd_pembimbing_1'    => $request->d_pembimbing_1,
                 'd_pembimbing_2'    => $request->d_pembimbing_2,
                 'pembimbing_lama'   => $request->pembimbing_lama,
@@ -162,7 +162,7 @@ class KerjaPraktikController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('kerja-praktik')->with('warning', 'Data Gagal Di Edit!');
+            return \redirect('kerja-praktik')->with('warning', 'Data Gagal Diperbarui');
         } else {
 
             $daftarkp = DaftarKP::findOrFail($id);
@@ -180,12 +180,13 @@ class KerjaPraktikController extends Controller
             $daftarkp->stts_pengajuan   = $request->stts_pengajuan;
             $daftarkp->stts_kp          = $request->stts_kp;
             $daftarkp->ganti_pembimbing = $request->ganti_pembimbing;
+            $daftarkp->judul            = $request->judul;
             $daftarkp->semester         = $request->semester;
             $daftarkp->thn_akademik_id  = $request->thn_akademik_id;
             $daftarkp->konsentrasi_id   = $request->konsentrasi_id;
             $daftarkp->update();
 
-            return \redirect('kerja-praktik')->with('success', 'Data Berhasil Di Ubah!');
+            return \redirect('kerja-praktik')->with('success', 'Data Berhasil Diperbarui!');
         }
     }
 

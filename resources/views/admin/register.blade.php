@@ -67,7 +67,7 @@
                             <div class="table-responsive">
                                 <table id="add-row" class="display table table-striped table-hover">
                                     <thead>
-                                        <tr>
+                                        <tr align="center">
                                             <th>No</th>
                                             <th>Nama</th>
                                             <th>No Induk</th>
@@ -88,7 +88,7 @@
                                         @endphp
                                         @foreach ($users as $row)
 
-                                        <tr>
+                                        <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->nama }}</td>
                                             <td>{{ $row->no_induk }}</td>

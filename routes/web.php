@@ -19,6 +19,7 @@ use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\KerjaPraktikController;
 use App\Http\Controllers\ManajemenFormController;
 use App\Http\Controllers\UserRegistrasiController;
+use App\Models\BimbinganKP;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,9 +32,6 @@ use App\Http\Controllers\UserRegistrasiController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('forms.login');
-// });
 Route::get('login-page', [AuthController::class, 'index'])->name('login-page');
 Route::post('login-process', [AuthController::class, 'login_process']);
 Route::get('logout', [AuthController::class, 'logout']);
@@ -58,9 +56,8 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2']], function () {
     Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
 
     Route::resource('/bimbingan-kp', BimbinganKPController::class);
-
-    // Route::resource('/mhs-kp', MhsKPController::class);
-    // Route::get('mhs-kp/biodata/{id}', [MhsKPController::class, 'autofill']);
+    Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);
+    // Route::get('bimbing-kp/list/{id}/', [BimbinganKPController::class, 'list_index']);
 
     Route::get('manajemen-form', [ManajemenFormController::class, 'index']);
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);

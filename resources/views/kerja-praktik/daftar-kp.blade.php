@@ -64,25 +64,27 @@
                         @endif
 
                         <div class="card-body">
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kategori</label>
-                                    <select data-column="1" class="form-control col-sm-12" id="filter-kategori">
-                                        <option value="">-- Pilih Kategori --</option>
-                                        @foreach ($kategori as $k)
-                                        <option value=" {{ $k->kode_kategori }}">{{ $k->nama_kategori }}</option>
+                                    <label class="font-weight-bold h6">Filter Tahun</label>
+                                    <select data-column="11" class="form-control col-sm-6" id="filter-tahun">
+                                        <option value="">-- Pilih Tahun --</option>
+                                        @foreach ($thnakademik as $k)
+                                        <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kondisi</label>
-                                    <select data-column="8" class="form-control col-sm-12" id="filter-kondisi">
-                                        <option value="">-- Pilih Kondisi --</option>
-                                        <option value="BAIK">BAIK</option>
-                                        <option value="RUSAK">RUSAK</option>
+                                    <label class="font-weight-bold h6">Filter Status</label>
+                                    <select data-column="7" class="form-control col-sm-6" id="filter-stts">
+                                        <option value="">-- Pilih Status --</option>
+                                        @foreach ($filterStts as $item)
+                                        <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">{{
+                                            $item->stts_pengajuan }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                <div class="body-panel col-4">
+                                {{-- <div class="body-panel col-4">
                                     <label class="font-weight-bold h6">Filter Tahun</label>
                                     <select data-column="7" class="form-control col-sm-12" id="filter-tahun">
                                         <option value="">-- Pilih Tahun --</option>
@@ -90,13 +92,13 @@
                                         <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
-                                </div>
-                            </div> --}}
+                                </div> --}}
+                            </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
-                                <table id="add-row" class="display table table-striped table-hover">
+                                <table id="kerja-praktik" class="display table table-striped table-hover">
                                     <thead>
-                                        <tr>
+                                        <tr align="center">
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
@@ -116,10 +118,11 @@
 
                                     @if (Auth::user()->level==0)
                                     <tbody>
+                                        @php $no=1; @endphp
                                         @if (!empty(Auth::user()->biodata->mahasiswa->daftarkp))
                                         @foreach ($mhskps as $item)
                                         {{-- {{ $item }} --}}
-                                        <tr>@php $no=1; @endphp
+                                        <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td>
@@ -175,7 +178,7 @@
                                             <td>{{ $item->semester }}</td>
                                             <td><a href="kerja-praktik/view-slip/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $item->id }}"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
+                                                    class="btn btn-primary btn-xs"><i class="fa fa-file-image">
                                                     </i> </a>
 
                                             <td>{{ $item->tahunakademik->tahun }} </td>
@@ -206,7 +209,7 @@
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($daftarkp as $row)
                                         {{-- {{ $row->mahasiswa->biodata->no_induk }} --}}
-                                        <tr>
+                                        <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $row->mahasiswa->biodata->nama }}</td>
@@ -225,7 +228,7 @@
                                                 @endforeach
                                             </td>
                                             <td class="text-capitalize">
-                                                {{ $k->ganti_pembimbing }}
+                                                {{ $row->ganti_pembimbing }}
                                             </td>
                                             <td>
                                                 @foreach ($dosen as $kp)
@@ -260,7 +263,7 @@
                                             <td>{{ $row->semester }}</td>
                                             <td><a href="kerja-praktik/view-slip/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $row->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    class="btn btn-success btn-xs"><i class="fa fa-file-image">
                                                     </i> </a>
 
 
@@ -324,7 +327,8 @@
                                     <option value="" hidden="">-- Pilih NIM --</option>
 
                                     @if (Auth::user()->level==0)
-                                    <option value="{{ $mhskp->id }}">{{ $mhskp->biodata->no_induk }}
+                                    <option value="{{ $mhskp->id }}">{{ $mhskp->biodata->no_induk }} - {{
+                                        $mhskp->biodata->nama }}
                                     </option>
 
                                     @else
@@ -347,10 +351,6 @@
                                     <option value="melanjutkan">Melanjutkan</option>
                                 </select>
                             </div>
-                            {{-- <div class="col">
-                                <label>Nama</label>
-                                <input type="text" class="form-control" name="nama" id="nama" readonly>
-                            </div> --}}
                         </div>
                     </div>
 
@@ -593,8 +593,8 @@
                         <div class="row">
                             <div class="col">
                                 <label>Judul</label>
-                                <input type="text" id="judul" class="form-control" name="judul" placeholder="Judul ..">
-                                <trix-editor input="judul"></trix-editor>
+                                <input type="text" id="judul" class="form-control" name="judul" placeholder="Judul .."
+                                    value="{{ $item->judul }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status Pengajuan </label>
@@ -640,15 +640,15 @@
                             <div class="col">
                                 <label for="image" class="form-label control-label">Slip pembayaran </label>
                                 <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
-
-                                <input type="file" class="form-control picture" id="slip_pembayaran"
-                                    name="slip_pembayaran" onchange="previewImage()">
-
+                                <input type="file" class="form-control picture" id="slip_pembayarans"
+                                    name="slip_pembayaran" onchange="Previews()">
+                                <p class="mt-1">biarkan kosong
+                                    jika tidak diganti</p>
                                 @if ($item->slip_pembayaran)
                                 <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
-                                    class="img-preview img-fluid mb-3 col-sm-4 mt-2">
+                                    class="img-previews img-fluid mb-3 col-sm-4 mt-1" id="img-p">
                                 @else
-                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
+                                <img class="img-previews img-fluid mb-3 col-sm-5" alt="" id="img-p">
                                 @endif
                             </div>
                         </div>
@@ -848,6 +848,38 @@
 
         oFReader.onload = function (oFREvent) {
             imgPriview.src = oFREvent.target.result;
+        }
+        // const blob = URL.createObjectURL(image.files[0]);
+        // imgPreview.src = blob;
+    }
+
+    $(document).ready(function () {
+    var table = $("#kerja-praktik").DataTable({});
+        $("#filter-tahun").change(function () {
+        table.column($(this).data("column")).search($(this).val()).draw();
+    });
+        $("#filter-stts").change(function () {
+        table.column($(this).data("column")).search($(this).val()).draw();
+    });
+    // $("#filter-tahun").change(function () {
+    //     table.column($(this).data("column")).search($(this).val()).draw();
+    //     });
+    });
+
+</script>
+
+<script>
+    function Previews() {
+        const slip = document.querySelector('#slip_pembayarans');
+        const slipimgPriview = document.querySelector('.img-previews');
+
+        slipimgPriview.style.display = 'block';
+
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(slip.files[0]);
+
+        oFReader.onload = function (oFREvent) {
+            slipimgPriview.src = oFREvent.target.result;
         }
         // const blob = URL.createObjectURL(image.files[0]);
         // imgPreview.src = blob;

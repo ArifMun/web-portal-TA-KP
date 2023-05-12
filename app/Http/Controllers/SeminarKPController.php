@@ -11,9 +11,12 @@ use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
 use App\Models\Mahasiswa;
+use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+
+use function GuzzleHttp\Promise\all;
 
 class SeminarKPController extends Controller
 {
@@ -24,16 +27,19 @@ class SeminarKPController extends Controller
      */
     public function index()
     {
-        $seminarkp  = SeminarKP::all();
-        $daftarkp   = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get();
-        $dosen      = Dosen::all();
-        $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        $seminarkp   = SeminarKP::all();
+        $thnakademik = TahunAkademik::all();
+        $filterStts  = SeminarKP::distinct()->select('stts_seminar')->get();
+        $daftarkp    = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get();
+        $dosen       = Dosen::all();
+        $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
             } else {
                 $q->where('id', '=', Auth::user());
             }
-        })->get();
+        })->where('stts_pengajuan', '=', 'diterima')->get();
+
         $seminarmhs = SeminarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
@@ -41,7 +47,7 @@ class SeminarKPController extends Controller
                 $q->where('id', '=', Auth::user());
             }
         })->get();
-        return \view('kerja-praktik.seminar-kp', \compact('seminarkp', 'seminarmhs', 'dosen', 'daftarkp', 'mhskps'));
+        return \view('kerja-praktik.seminar-kp', \compact('seminarkp', 'seminarmhs', 'dosen', 'daftarkp', 'mhskps', 'thnakademik', 'filterStts'));
     }
 
     public function autofill($id)
@@ -141,7 +147,7 @@ class SeminarKPController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('seminar-kp')->with('warning', 'Data Tidak Tersimpan!');
+            return \redirect('seminar-kp')->with('warning', 'Data Gagal Diperbarui!');
         } else {
 
             $seminarkp = SeminarKP::findOrFail($id);
@@ -161,7 +167,7 @@ class SeminarKPController extends Controller
             $seminarkp->catatan         = $request->catatan;
             $seminarkp->update();
 
-            return \redirect('seminar-kp')->with('success', 'Data Berhasil Disimpan!');
+            return \redirect('seminar-kp')->with('success', 'Data Berhasil Diperbarui!');
         }
     }
 

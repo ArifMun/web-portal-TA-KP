@@ -25,6 +25,7 @@ class DaftarKP extends Model
         'slip_pembayaran',
         'thn_akademik_id',
         'konsentrasi_id',
+        'judul'
 
     ];
 
@@ -49,14 +50,19 @@ class DaftarKP extends Model
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
 
-    // public function dosen()
-    // {
-    //     return $this->belongsTo(Dosen::class, 'd_pembimbing_1');
-    // }
+    public function dosen()
+    {
+        return $this->belongsTo(Dosen::class, 'd_pembimbing_1');
+    }
 
     public function seminarkp()
     {
         return $this->hasOne(SeminarKP::class, 'daftarkp_id');
+    }
+
+    public function bimbingankp()
+    {
+        return $this->hasMany(BimbinganKP::class);
     }
     // public function konsentrasi()
     // {

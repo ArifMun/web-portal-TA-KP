@@ -10,11 +10,14 @@ class BimbinganKP extends Model
     use HasFactory;
     protected $table = 'bimbingan_kp';
     protected $fillable = [
+        'daftarkp_id',
         'dosen_id',
         'mahasiswa_id',
         'judul_bimbingan',
         'laporan_kp',
         'catatan',
+        'stts',
+        'author'
     ];
 
     public function mahasiswa()
@@ -25,5 +28,10 @@ class BimbinganKP extends Model
     public function dosen()
     {
         return $this->belongsTo(Dosen::class, 'dosen_id');
+    }
+
+    public function daftarkp()
+    {
+        return $this->belongsTo(DaftarKP::class, 'daftarkp_id');
     }
 }

@@ -34,6 +34,6 @@ class Mahasiswa extends Model
 
     public function bimbingankp()
     {
-        return $this->hasMany(BimbinganKP::class);
+        return $this->hasMany(BimbinganKP::class, 'mahasiswa_id');
     }
 }

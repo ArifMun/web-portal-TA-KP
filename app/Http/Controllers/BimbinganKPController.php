@@ -3,10 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\DaftarKP;
+use App\Models\SeminarKP;
 use App\Models\BimbinganKP;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 
 class BimbinganKPController extends Controller
 {
@@ -19,28 +22,74 @@ class BimbinganKPController extends Controller
     {
 
         $daftarkp = DaftarKP::all();
+        // $mhskp = Auth::user()->biodata->mahasiswa;
+        $bimbingkp = BimbinganKP::all();
+
+        $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            } else {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->sortByDesc('id');
 
         $bimbingMhs   = BimbinganKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get();
+        })->get()->sortByDesc('id');
 
         $bimbingDosen   = BimbinganKP::with('dosen')->whereHas('dosen', function ($q) {
             if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
-            } else {
-                $q->where('id', '=', Auth::user());
             }
-        })->get();
-        return \view('kerja-praktik.bimbingan-kp', \compact('daftarkp', 'bimbingMhs', 'bimbingDosen'));
+        })->get()->sortByDesc('id');
+
+        $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
+
+        return \view('kerja-praktik.bimbingan-kp', \compact('daftarkp', 'bimbingMhs', 'bimbingDosen', 'mhskps', 'bimbingkp', 'list'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    // public function list_index()
+    // {
+
+    //     $daftarkp = DaftarKP::all();
+    //     // $mhskp = Auth::user()->biodata->mahasiswa;
+    //     $bimbingkp = BimbinganKP::all();
+
+    //     $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+    //         if (Auth::user()->level == 0) {
+    //             $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+    //         } else {
+    //             $q->where('id', '=', Auth::user());
+    //         }
+    //     })->get()->sortByDesc('id');
+
+    //     $bimbingMhs   = BimbinganKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+    //         if (Auth::user()->level == 0) {
+    //             $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+    //         }
+    //     })->get()->sortByDesc('id');
+
+    //     $bimbingDosen   = BimbinganKP::with('dosen')->whereHas('dosen', function ($q) {
+    //         if (Auth::user()->level == 1) {
+    //             $q->where('id', '=', Auth::user()->biodata->dosen->id);
+    //         }
+    //     })->get()->sortByDesc('id');
+
+    //     $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
+
+    //     return \view('kerja-praktik.bimbingan-kp', \compact('daftarkp', 'bimbingMhs', 'bimbingDosen', 'mhskps', 'bimbingkp', 'list'));
+    // }
+
+
+
+    public function autofill($id)
+    {
+        $data = DaftarKP::find($id);
+        return \response()->json($data);
+    }
+
     public function create()
     {
         //
@@ -54,7 +103,35 @@ class BimbinganKPController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'judul_bimbingan'   => 'required',
+                'author'            => 'required',
+                'stts'              => 'required',
+                'laporan_kp'        => 'required',
+                // 'catatan'           => 'required',
+            ]
+        );
+
+        if ($validation->fails()) {
+            return \redirect('bimbingan-kp')->with('warning', 'Data Tidak Tersimpan!')
+                ->withErrors($validation);
+        } else {
+
+            BimbinganKP::create([
+                'daftarkp_id'       => $request->daftarkp_id,
+                'dosen_id'          => $request->dosen_id,
+                'mahasiswa_id'      => $request->mahasiswa_id,
+                'judul_bimbingan'   => $request->judul_bimbingan,
+                'catatan'           => $request->catatan,
+                'stts'              => $request->stts,
+                'author'            => $request->author,
+                'laporan_kp'        => $request->file('laporan_kp')->store('dokumen-kp')
+            ]);
+
+            return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Disimpan!');
+        }
     }
 
     /**
@@ -88,7 +165,41 @@ class BimbinganKPController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'judul_bimbingan'   => 'required',
+                'author'            => 'required',
+                'stts'              => 'required',
+                // 'laporan_kp'        => 'required',
+                // 'catatan'           => 'required',
+            ]
+        );
+
+        // \dd($validation);
+        if ($validation->fails()) {
+            return \redirect('bimbingan-kp')->with('warning', 'Data Gagal Diperbarui');
+        } else {
+            $bimbingankp = BimbinganKP::findOrFail($id);
+            if ($request->file('laporan_kp')) {
+                if ($request->oldFile) {
+                    Storage::delete($request->oldFile);
+                }
+                $bimbingankp->laporan_kp = $request->file('laporan_kp')->store('dokumen-kp');
+            }
+
+            $bimbingankp->daftarkp_id     = $request->daftarkp_id;
+            $bimbingankp->mahasiswa_id    = $request->mahasiswa_id;
+            $bimbingankp->dosen_id        = $request->dosen_id;
+            $bimbingankp->judul_bimbingan = $request->judul_bimbingan;
+            $bimbingankp->author          = $request->author;
+            $bimbingankp->stts            = $request->stts;
+            $bimbingankp->catatan            = $request->catatan;
+            // $bimbingankp->laporan_kp      = $request->laporan_kp;
+            $bimbingankp->update();
+
+            return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Diperbarui!');
+        }
     }
 
     /**
@@ -99,6 +210,12 @@ class BimbinganKPController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $bimbingankp = BimbinganKP::find($id);
+        if ($bimbingankp->laporan_kp) {
+            Storage::delete($bimbingankp->laporan_kp);
+        }
+        $bimbingankp->delete();
+
+        return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Dihapus!');
     }
 }

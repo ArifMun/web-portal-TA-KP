@@ -46,25 +46,27 @@
                         </div>
 
                         <div class="card-body">
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kategori</label>
-                                    <select data-column="1" class="form-control col-sm-12" id="filter-kategori">
-                                        <option value="">-- Pilih Kategori --</option>
-                                        @foreach ($kategori as $k)
-                                        <option value=" {{ $k->kode_kategori }}">{{ $k->nama_kategori }}</option>
+                                    <label class="font-weight-bold h6">Filter Tahun</label>
+                                    <select data-column="8" class="form-control col-sm-6" id="filter-tahun">
+                                        <option value="">-- Pilih Tahun --</option>
+                                        @foreach ($thnakademik as $k)
+                                        <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
                                         @endforeach
                                     </select>
                                 </div>
                                 <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kondisi</label>
-                                    <select data-column="8" class="form-control col-sm-12" id="filter-kondisi">
-                                        <option value="">-- Pilih Kondisi --</option>
-                                        <option value="BAIK">BAIK</option>
-                                        <option value="RUSAK">RUSAK</option>
+                                    <label class="font-weight-bold h6">Filter Status</label>
+                                    <select data-column="4" class="form-control col-sm-6" id="filter-stts">
+                                        <option value="">-- Pilih Status --</option>
+                                        @foreach ($filterStts as $item)
+                                        <option value="{{ $item->stts_seminar }}" class="text-capitalize">{{
+                                            $item->stts_seminar }}</option>
+                                        @endforeach
                                     </select>
                                 </div>
-                                <div class="body-panel col-4">
+                                {{-- <div class="body-panel col-4">
                                     <label class="font-weight-bold h6">Filter Tahun</label>
                                     <select data-column="7" class="form-control col-sm-12" id="filter-tahun">
                                         <option value="">-- Pilih Tahun --</option>
@@ -72,13 +74,13 @@
                                         <option value="{{ $i }}">{{ $i }}</option>
                                         @endfor
                                     </select>
-                                </div>
-                            </div> --}}
+                                </div> --}}
+                            </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
-                                <table id="add-row" class="display table table-striped table-hover">
+                                <table id="seminar-kp" class="display table table-striped table-hover">
                                     <thead>
-                                        <tr>
+                                        <tr align="center">
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
@@ -100,7 +102,7 @@
                                         @if (!empty(Auth::user()->biodata->mahasiswa->seminarkp))
                                         @foreach ($seminarmhs as $item)
                                         {{-- {{ $item }} --}}
-                                        <tr>@php $no=1; @endphp
+                                        <tr align="center">@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
@@ -176,7 +178,7 @@
                                     @elseif(Auth::user()->level == 1)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($seminarkp as $row)
-                                        <tr>
+                                        <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>
@@ -356,7 +358,7 @@
                         <div class="row">
                             <div class="col">
                                 <label>Catatan</label>
-                                <input type="text" class="form-control">
+                                <input type="text" class="form-control" name="catatan">
                             </div>
                             <div class="col">
                                 <label for="image" class="form-label control-label">Form Bimbingan</label>
@@ -461,7 +463,7 @@
                             <div class="col">
                                 <label for="image" class="form-label">Form Bimbingan</label>
                                 <input type="hidden" name="oldImage" value="{{ $item->form_bimbingan }}">
-
+                                <input type="text" value="{{ $item->form_bimbingan }}">
                                 @if ($item->form_bimbingan)
                                 <img src="{{ asset('storage/' . $item->form_bimbingan) }}"
                                     class="img-preview img-fluid mb-2 col-sm-2 d-block">
@@ -674,6 +676,19 @@
             });
         }
     }
+
+    $(document).ready(function () {
+        var table = $("#seminar-kp").DataTable({});
+        $("#filter-tahun").change(function () {
+            table.column($(this).data("column")).search($(this).val()).draw();
+        });
+        $("#filter-stts").change(function () {
+            table.column($(this).data("column")).search($(this).val()).draw();
+        });
+    // $("#filter-tahun").change(function () {
+    // table.column($(this).data("column")).search($(this).val()).draw();
+    // });
+    });
 </script>
 <script type="text/javascript">
     $.ajaxSetup({
