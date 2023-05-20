@@ -125,6 +125,7 @@
                                 <h4 class="card-title">Tambah Akses Form KP</h4>
                                 <a href="/akses/tambah" class="btn btn-primary btn-round ml-auto" data-toggle="modal"
                                     data-target="#tambahAkses">
+                                    <i class="fa fa-plus"></i>
                                     Tambah Akses
                                 </a>
                             </div>

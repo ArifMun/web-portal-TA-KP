@@ -27,6 +27,11 @@ class Dosen extends Model
         return $this->hasMany(DaftarKP::class, 'd_pembimbing_1');
     }
 
+    public function daftarta()
+    {
+        return $this->hasMany(DaftarTA::class, 'd_pembimbing_1', 'd_pembimbing_2');
+    }
+
     public function bimbingankp()
     {
         return $this->hasMany(BimbinganKP::class, 'dosen_id');

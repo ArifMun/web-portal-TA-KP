@@ -24,7 +24,8 @@ class RegistrasiController extends Controller
         $biodata = Biodata::all();
         $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
             ->select('users.*', 'biodata.id', 'biodata.*')
-            ->get();
+            ->get()
+            ->sortByDesc('id');
         $user = User::select('level')
             ->distinct()
             ->get();
@@ -35,7 +36,12 @@ class RegistrasiController extends Controller
             ->get();
 
 
-        return \view('admin.register', \compact('biodata', 'user', 'users', 'dosen'));
+        return \view('admin.register', \compact(
+            'biodata',
+            'user',
+            'users',
+            'dosen'
+        ));
     }
 
     public function store(Request $request, Biodata $biodata)
@@ -44,6 +50,7 @@ class RegistrasiController extends Controller
             $request->all(),
             [
                 'nama'          => 'required',
+                'email'         => 'required',
                 'no_induk'      => 'required|unique:biodata|numeric',
                 'jabatan'       => 'required',
                 // 'tempat_lahir'  => 'required',
@@ -61,6 +68,7 @@ class RegistrasiController extends Controller
             // if (Auth::user()->level == 1 | 2) {
             $biodata = Biodata::create([
                 'nama'          => $request->nama,
+                'email'         => $request->email,
                 'no_induk'      => $request->no_induk,
                 'jabatan'       => $request->jabatan,
                 'tempat_lahir'  => $request->tempat_lahir,
@@ -92,7 +100,7 @@ class RegistrasiController extends Controller
         }
     }
 
-    public function edit(Registrasi $registrasi)
+    public function edit(Biodata $registrasi)
     {
         $biodata = Biodata::findOrFail($registrasi->id);
         $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
@@ -111,12 +119,13 @@ class RegistrasiController extends Controller
      * @param  \App\Models\Registrasi  $registrasi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Registrasi $registrasi)
+    public function update(Request $request, Biodata $registrasi)
     {
         $validation = Validator::make(
             $request->all(),
             [
                 'nama'          => 'required',
+                'email'          => 'required|email',
                 'no_induk'      => 'required|numeric',
                 // 'jabatan'       => 'required',
                 // 'tempat_lahir'  => 'required',
@@ -133,6 +142,7 @@ class RegistrasiController extends Controller
             $biodata = Biodata::findOrFail($registrasi->id);
             $users = User::findOrFail($registrasi->id);
             $biodata->nama = $request->nama;
+            $biodata->email = $request->email;
             $biodata->no_induk = $request->no_induk;
             $biodata->tempat_lahir = $request->tempat_lahir;
             $biodata->tgl_lahir = $request->tgl_lahir;

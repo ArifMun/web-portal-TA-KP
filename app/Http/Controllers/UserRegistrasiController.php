@@ -82,6 +82,7 @@ class UserRegistrasiController extends Controller
                 'tempat_lahir' => $request->tempat_lahir,
                 'tgl_lahir' => $request->tgl_lahir,
                 'no_telp' => $request->no_telp,
+                'email' => $request->email,
                 'alamat' => $request->alamat,
             ]);
 
@@ -109,10 +110,7 @@ class UserRegistrasiController extends Controller
      * @param  \App\Models\Registrasi  $registrasi
      * @return \Illuminate\Http\Response
      */
-    public function show(Registrasi $registrasi)
-    {
-        //
-    }
+
 
     /**
      * Show the form for editing the specified resource.
@@ -120,7 +118,7 @@ class UserRegistrasiController extends Controller
      * @param  \App\Models\Registrasi  $registrasi
      * @return \Illuminate\Http\Response
      */
-    public function edit(Registrasi $registrasi)
+    public function edit(Biodata $registrasi)
     {
         $biodata = Biodata::findOrFail($registrasi->id);
         $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
@@ -139,7 +137,7 @@ class UserRegistrasiController extends Controller
      * @param  \App\Models\Registrasi  $registrasi
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Registrasi $registrasi)
+    public function update(Request $request, Biodata $registrasi)
     {
         $validation = Validator::make(
             $request->except(['_method', '_token']),
@@ -185,7 +183,7 @@ class UserRegistrasiController extends Controller
      * @param  \App\Models\Registrasi  $registrasi
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Registrasi $registrasi, $id)
+    public function destroy($id)
     {
         $biodata = Biodata::find($id);
         $biodata->delete();

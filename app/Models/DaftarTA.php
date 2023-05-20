@@ -5,28 +5,22 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class DaftarKP extends Model
+class DaftarTA extends Model
 {
     use HasFactory;
-    // public $timestamps = false;
-    protected $table = 'daftar_kp';
-
+    protected $table = 'daftar_ta';
     protected $fillable = [
-        // 'nama',
-        // 'nim',
         'mahasiswa_id',
         'd_pembimbing_1',
         'd_pembimbing_2',
-        'pembimbing_lama',
+        'judul',
+        'pembimbing_lama_1',
+        'pembimbing_lama_2',
         'stts_pengajuan',
-        'stts_kp',
-        'ganti_pembimbing',
-        'semester',
-        'slip_pembayaran',
+        'stts_ta',
+        'krs',
         'thn_akademik_id',
-        'konsentrasi',
-        'judul'
-
+        'konsentrasi'
     ];
 
     public function tahunakademik()
@@ -41,16 +35,6 @@ class DaftarKP extends Model
 
     public function dosen()
     {
-        return $this->belongsTo(Dosen::class, 'd_pembimbing_1');
-    }
-
-    public function seminarkp()
-    {
-        return $this->hasOne(SeminarKP::class, 'daftarkp_id');
-    }
-
-    public function bimbingankp()
-    {
-        return $this->hasMany(BimbinganKP::class);
+        return $this->belongsTo(Dosen::class, 'd_pembimbing_1', 'd_pembimbing_2');
     }
 }

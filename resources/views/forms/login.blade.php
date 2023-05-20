@@ -21,7 +21,7 @@
                 urls: ['/assets/css/fonts.css']
             },
             active: function () {
-                sessionStorage.fonts = true;
+                sessionStorage.fonts = true; 
             }
         });
 

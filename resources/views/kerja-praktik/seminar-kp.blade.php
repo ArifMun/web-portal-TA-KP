@@ -47,34 +47,49 @@
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Tahun</label>
-                                    <select data-column="8" class="form-control col-sm-6" id="filter-tahun">
-                                        <option value="">-- Pilih Tahun --</option>
-                                        @foreach ($thnakademik as $k)
-                                        <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-2">
+                                    <div class="body-panel">
+                                        <label class="font-weight-bold h6">Filter Tahun</label>
+                                        <select data-column="8" class="form-control" id="filter-tahun">
+                                            <option value="">-- Pilih Tahun --</option>
+                                            @foreach ($thnakademik as $k)
+                                            <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="body-panel">
+                                        <label class="font-weight-bold h6">Filter Status</label>
+                                        <select data-column="4" class="form-control" id="filter-stts">
+                                            <option value="">-- Pilih Status --</option>
+                                            @foreach ($filterStts as $item)
+                                            <option value="{{ $item->stts_seminar }}" class="text-capitalize">{{
+                                                $item->stts_seminar }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Status</label>
-                                    <select data-column="4" class="form-control col-sm-6" id="filter-stts">
-                                        <option value="">-- Pilih Status --</option>
-                                        @foreach ($filterStts as $item)
-                                        <option value="{{ $item->stts_seminar }}" class="text-capitalize">{{
-                                            $item->stts_seminar }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-2">
+                                    <div class="body-panel">
+                                        <label class="font-weight-bold p-1 mb-1">Status
+                                            Seminar KP </label>
+                                    </div>
+                                    <div class="body-panel col-6 btn-success mb-2">
+                                        <label class="font-weight-bold text-light p-1">Selesai &emsp;&ensp;: {{
+                                            $sSelesai}}
+                                        </label>
+                                    </div>
+                                    <div class="body-panel col-6 btn-primary mb-2">
+                                        <label class="font-weight-bold text-light p-1">Terjadwal : {{ $sTerjadwal }}
+                                        </label>
+                                    </div>
+                                    <div class="body-panel col-6 btn-warning mb-2">
+                                        <label class="font-weight-bold text-light p-1">Proses
+                                            &emsp;&ensp;&nbsp;:
+                                            {{
+                                            $sProses
+                                            }}</label>
+                                    </div>
                                 </div>
-                                {{-- <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Tahun</label>
-                                    <select data-column="7" class="form-control col-sm-12" id="filter-tahun">
-                                        <option value="">-- Pilih Tahun --</option>
-                                        @for ($i = date('Y'); $i >= date('Y')-5; $i-=1)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div> --}}
                             </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
@@ -271,8 +286,6 @@
             <form method="POST" enctype="multipart/form-data" action="seminar-kp">
                 @csrf
                 <div class="modal-body">
-
-
                     {{-- <select name="stts_pengajuan" id="" hidden>
                         <option value="tertunda" selected>tertunda</option>
                     </select> --}}
@@ -369,7 +382,12 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
@@ -397,10 +415,10 @@
                 @method('put')
                 @csrf
                 <div class="modal-body">
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>NIM</label>
+                                <label class="control-label"> NIM</label>
                                 <select class="form-control" name="daftarkp_id" id="daftarkp_id">
                                     <option value="{{ $item->daftarkp_id }}">{{
                                         $item->daftarkp->mahasiswa->biodata->no_induk }} - {{
@@ -412,15 +430,15 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Tanggal Seminar</label>
+                                <label class="control-label">&nbsp;Tanggal Seminar</label>
                                 <input type="date" class="form-control" name="tgl_seminar"
                                     value="{{ $item->tgl_seminar }}">
                             </div>
                             <div class="col">
-                                <label>
+                                <label class="control-label">
                                     Jam Seminar
                                 </label>
                                 <input type="time" class="form-control" name="jam_seminar"
@@ -429,14 +447,14 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label &#42;>Judul KP </label>
+                                <label class="control-label"> Judul Kerja Praktik </label>
                                 <input type="text" class="form-control" name="judul" value="{{ $item->judul }}">
                             </div>
                             <div class="col">
-                                <label>Status Seminar</label>
+                                <label class="control-label"> Status Seminar</label>
                                 <select class="form-control" name="stts_seminar" required>
                                     @if (Auth::user()->level==0)
                                     <option value="proses">Proses</option>
@@ -463,20 +481,27 @@
                             <div class="col">
                                 <label for="image" class="form-label">Form Bimbingan</label>
                                 <input type="hidden" name="oldImage" value="{{ $item->form_bimbingan }}">
-                                <input type="text" value="{{ $item->form_bimbingan }}">
-                                @if ($item->form_bimbingan)
-                                <img src="{{ asset('storage/' . $item->form_bimbingan) }}"
-                                    class="img-preview img-fluid mb-2 col-sm-2 d-block">
-                                @endif
-
-                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
                                 <input type="file" class="form-control picture" id="form_bimbingan"
                                     name="form_bimbingan" onchange="previewImage()">
+
+                                @if ($item->form_bimbingan)
+                                <img src="{{ asset('storage/' . $item->form_bimbingan) }}"
+                                    class="img-preview img-fluid mb-3 col-sm-4 mt-1">
+                                @else
+                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
+                                @endif
+                                <p class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</p>
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>

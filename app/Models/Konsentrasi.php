@@ -15,8 +15,8 @@ class Konsentrasi extends Model
         'nama_konsentrasi',
     ];
 
-    public function daftarkp()
-    {
-        return $this->hasMany(DaftarKP::class);
-    }
+    // public function daftarkp()
+    // {
+    //     return $this->hasMany(DaftarKP::class);
+    // }
 }

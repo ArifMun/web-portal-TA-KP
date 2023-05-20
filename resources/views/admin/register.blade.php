@@ -69,8 +69,9 @@
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
-                                            <th>Nama</th>
                                             <th>No Induk</th>
+                                            <th>Nama</th>
+                                            <th>Email</th>
                                             <th>Keahlian</th>
                                             <th>Jabatan</th>
                                             <th>Tempat Lahir</th>
@@ -90,8 +91,9 @@
 
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $row->nama }}</td>
                                             <td>{{ $row->no_induk }}</td>
+                                            <td>{{ $row->nama }}</td>
+                                            <td>{{ $row->email }}</td>
                                             <td>{{ $row->keahlian }}</td>
                                             <td>{{ $row->jabatan }}</td>
                                             <td>{{ $row->tempat_lahir }}</td>
@@ -104,7 +106,7 @@
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                                 <a href="#editDataAkun{{ $row->id }}" data-toggle="modal"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-edit">
+                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
                                                 <a href="#modalHapusBarang{{ $row->id }}" data-toggle="modal"
                                                     data-target="" class="btn btn-danger btn-xs"><i class="fa fa-trash">
@@ -156,6 +158,19 @@
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
+                                <label>Email</label>
+                                <input type="text" class="form-control" name="email" placeholder="Email ..">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">No WA </label>
+                                <input type="text" class="form-control" name="no_telp" placeholder="No WA .." required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
                                 <label>Tempat Lahir</label>
                                 <input type="text" class="form-control" name="tempat_lahir"
                                     placeholder="Tempat Lahir . .">
@@ -164,45 +179,6 @@
                                 <label>Tanggal Lahir</label>
                                 <input type="date" class="form-control" name="tgl_lahir" placeholder="Tanggal Lahir ..">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label class="control-label">No WA </label>
-                                <input type="text" class="form-control" name="no_telp" placeholder="No WA .." required>
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Password </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password .."
-                                    required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label>Keahlian</label>
-                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian ..">
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Jabatan </label>
-                                <select class="form-control" name="jabatan" required>
-                                    <option value="" hidden="">-- Pilih Jabatan --</option>
-                                    @php
-                                    $position = array('dosen'=>'Dosen','mahasiswa'=>'Mahasiswa','TU'=>'Tata Usaha');
-                                    @endphp
-                                    @foreach ($position as $k=>$jabatan)
-                                    <option value="{{ $k }}">{{ $jabatan }}</option>
-                                    @endforeach
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
                             <div class="col">
                                 <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
@@ -215,9 +191,40 @@
                                     @endforeach
                                 </select>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
                             <div class="col">
                                 <label>Alamat</label>
                                 <input type="text" class="form-control" name="alamat" placeholder="Alamat ..">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Jabatan </label>
+                                <select class="form-control" name="jabatan" required>
+                                    <option value="" hidden="">-- Pilih Jabatan --</option>
+                                    @php
+                                    $position = array('dosen'=>'Dosen','TU'=>'Tata Usaha','mahasiswa'=>'Mahasiswa');
+                                    @endphp
+                                    @foreach ($position as $k=>$jabatan)
+                                    <option value="{{ $k }}">{{ $jabatan }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label>Keahlian</label>
+                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian ..">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Password </label>
+                                <input type="password" class="form-control" name="password" placeholder="Password .."
+                                    required>
                             </div>
                         </div>
                     </div>
@@ -270,6 +277,22 @@
                         </div>
                     </div>
 
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Email </label>
+                                <input type="text" class="form-control" name="email" placeholder="No WA .."
+                                    value="{{ $d->email }}" required>
+                            </div>
+                            <div class="col">
+                                <label class="control-label">No WA </label>
+                                <input type="text" class="form-control" name="no_telp" placeholder="No WA .."
+                                    value="{{ $d->no_telp }}" required>
+                            </div>
+
+                        </div>
+                    </div>
+
                     <div class="form-group">
                         <div class="row">
                             <div class="col">
@@ -282,29 +305,27 @@
                                 <input type="date" class="form-control" name="tgl_lahir" placeholder="Tanggal Lahir .."
                                     value="{{ $d->tgl_lahir }}">
                             </div>
+                            <div class="col">
+                                <label class="control-label">Level </label>
+                                <select class="form-control" name="level" required>
+                                    {{-- <option value="">-- Pilih Level --</option> --}}
+                                    <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
+                                    </option>
+                                    <option <?php if($d->users->level == 1) echo "selected"; ?>
+                                        value="1">1</option>
+                                    <option <?php if($d->users->level == 2) echo "selected"; ?>
+                                        value="2">2</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
+
 
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">No WA </label>
-                                <input type="text" class="form-control" name="no_telp" placeholder="No WA .."
-                                    value="{{ $d->no_telp }}" required>
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Password </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password .."
-                                    required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label>Keahlian</label>
-                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian .."
-                                    value="{{ $d->keahlian }}">
+                                <label>Alamat</label>
+                                <input type="text" class="form-control" name="alamat" placeholder="Alamat ..">
                             </div>
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
@@ -325,21 +346,14 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Level </label>
-                                <select class="form-control" name="level" required>
-                                    {{-- <option value="">-- Pilih Level --</option> --}}
-                                    <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
-                                    </option>
-                                    <option <?php if($d->users->level == 1) echo "selected"; ?>
-                                        value="1">1</option>
-                                    <option <?php if($d->users->level == 2) echo "selected"; ?>
-                                        value="2">2</option>
-
-                                </select>
+                                <label>Keahlian</label>
+                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian .."
+                                    value="{{ $d->keahlian }}">
                             </div>
                             <div class="col">
-                                <label>Alamat</label>
-                                <input type="text" class="form-control" name="alamat" placeholder="Alamat ..">
+                                <label class="control-label">Password </label>
+                                <input type="password" class="form-control" name="password" placeholder="Password .."
+                                    required>
                             </div>
                         </div>
                     </div>

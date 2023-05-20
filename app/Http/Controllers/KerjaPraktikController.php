@@ -33,7 +33,9 @@ class KerjaPraktikController extends Controller
         $konsentrasi = Konsentrasi::all();
         $mahasiswa   = Mahasiswa::all();
         $mhskp       = Auth::user()->biodata->mahasiswa;
-
+        $kpDiterima  = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get()->count();
+        $kpTertunda  = DaftarKP::where('stts_pengajuan', '=', 'tertunda')->get()->count();
+        $kpDitolak  = DaftarKP::where('stts_pengajuan', '=', 'ditolak')->get()->count();
         $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
@@ -42,10 +44,23 @@ class KerjaPraktikController extends Controller
             }
         })->get();
 
-        $formakses = FormAkses::first();
+        $formakses = FormAkses::all();
         // \dd($mhskps);
 
-        return \view('kerja-praktik.daftar-kp', \compact('daftarkp', 'mahasiswa', 'dosen', 'thnakademik', 'konsentrasi', 'mhskp', 'mhskps', 'formakses', 'filterStts'));
+        return \view('kerja-praktik.daftar-kp', \compact(
+            'daftarkp',
+            'mahasiswa',
+            'dosen',
+            'thnakademik',
+            'konsentrasi',
+            'mhskp',
+            'mhskps',
+            'formakses',
+            'filterStts',
+            'kpDiterima',
+            'kpTertunda',
+            'kpDitolak'
+        ));
     }
 
     public function autofill($id)
@@ -86,7 +101,7 @@ class KerjaPraktikController extends Controller
                 'semester'          => 'required',
                 'slip_pembayaran'   => 'required|image|file',
                 'thn_akademik_id'   => 'required',
-                'konsentrasi_id'    => 'required',
+                'konsentrasi'       => 'required',
             ]
         );
 
@@ -95,7 +110,11 @@ class KerjaPraktikController extends Controller
             return \redirect('kerja-praktik')->with('warning', 'Data Tidak Tersimpan!')
                 ->withErrors($validation);
         } else {
-            $daftarkp = DaftarKP::create([
+
+            $input = $request->input('konsentrasi');
+            $string = \implode(',', $input);
+            // DaftarKP::create($string);
+            DaftarKP::create([
                 'mahasiswa_id'      => $request->mahasiswa_id,
                 'd_pembimbing_1'    => $request->d_pembimbing_1,
                 'd_pembimbing_2'    => $request->d_pembimbing_2,
@@ -107,7 +126,7 @@ class KerjaPraktikController extends Controller
                 'semester'          => $request->semester,
                 'slip_pembayaran'   => $request->file('slip_pembayaran')->store('post-images'),
                 'thn_akademik_id'   => $request->thn_akademik_id,
-                'konsentrasi_id'    => $request->konsentrasi_id,
+                'konsentrasi'       => $string,
             ]);
             return \redirect('kerja-praktik')->with('success', 'Data Berhasil Disimpan!');
         }
@@ -156,7 +175,7 @@ class KerjaPraktikController extends Controller
                 'semester'          => 'required',
                 'slip_pembayaran'   => 'image|file',
                 'thn_akademik_id'   => 'required',
-                'konsentrasi_id'    => 'required',
+                'konsentrasi'       => 'required',
             ]
         );
 
@@ -183,7 +202,7 @@ class KerjaPraktikController extends Controller
             $daftarkp->judul            = $request->judul;
             $daftarkp->semester         = $request->semester;
             $daftarkp->thn_akademik_id  = $request->thn_akademik_id;
-            $daftarkp->konsentrasi_id   = $request->konsentrasi_id;
+            $daftarkp->konsentrasi      = $request->konsentrasi;
             $daftarkp->update();
 
             return \redirect('kerja-praktik')->with('success', 'Data Berhasil Diperbarui!');

@@ -58,6 +58,28 @@
                         </ul>
                     </div>
                 </li>
+                {{--
+                <li class="nav-item">
+                    <a data-toggle="collapse" href="#forms">
+                        <i class="fas fa-user-graduate"></i>
+                        <p>Data</p>
+                        <span class="caret"></span>
+                    </a>
+                    <div class="collapse" id="forms">
+                        <ul class="nav nav-collapse">
+                            <li>
+                                <a href="forms/forms.html">
+                                    <span class="sub-item">Data Dosen</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="forms/forms.html">
+                                    <span class="sub-item">Data Mahasiswa</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li> --}}
                 @if(Auth::user()->level==1)
 
                 <li class="nav-section">

@@ -20,12 +20,12 @@ class KonsentrasiController extends Controller
         );
 
         if ($validation->fails()) {
-            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan !');
+            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan!');
         } else {
             $thnAkademik = Konsentrasi::create([
                 'nama_konsentrasi' => $request->nama_konsentrasi
             ]);
-            return \redirect('manajemen-form')->with('success', 'Konsentrasi Berhasil Dibuat !');
+            return \redirect('manajemen-form')->with('success', 'Konsentrasi Berhasil Dibuat!');
         }
     }
 

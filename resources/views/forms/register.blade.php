@@ -63,6 +63,10 @@
                         <label for="no_telp" class="placeholder">No WA</label>
                     </div>
                     <div class="form-group form-floating-label">
+                        <input id="email" name="email" type="text" class="form-control input-border-bottom" required>
+                        <label for="email" class="placeholder">Email</label>
+                    </div>
+                    <div class="form-group form-floating-label">
                         <input id="alamat" name="alamat" type="text" class="form-control input-border-bottom" required>
                         <label for="alamat" class="placeholder">Alamat</label>
                     </div>

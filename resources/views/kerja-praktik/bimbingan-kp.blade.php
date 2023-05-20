@@ -53,9 +53,42 @@
                         </div>
 
                         <div class="card-body">
+                            <div class="row">
+                                <div class="body-panel col-2">
+                                    <label class="font-weight-bold">Filter Status</label>
+                                    <select data-column="5" class="form-control" id="filter-stts">
+                                        <option value="">-- Pilih Status --</option>
+                                        @foreach ($filterStts as $item)
+                                        <option value="{{ $item->stts }}" class="text-uppercase">{{
+                                            $item->stts }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="body-panel col-2">
+                                    <label class="font-weight-bold">Filter Tahun</label>
+                                    <select data-column="7" class="form-control" id="filter-tahun">
+                                        <option value="">-- Pilih Tahun --</option>
+                                        @foreach ($thnakademik as $k)
+                                        <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div class="body-panel ml-2">
+                                    <label class="font-weight-bold">Status Bimbingan</label>
+                                    @if (Auth::user()->level == 1)
+                                    <div class="btn-warning p-1 pl-3 btn-round block">
+                                        <b>PROSES : {{ $sttsDosen }}</b>
+                                    </div>
+                                    @elseif(Auth::user()->level == 0)
+                                    <div class="btn-warning p-1 pl-3 btn-round block">
+                                        <b>PROSES : {{ $sttsMhs }}</b>
+                                    </div>
+                                    @endif
+                                </div>
+                            </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
-                                <table id="add-row" class="display table table-striped table-hover">
+                                <table id="bimbingan-kp" class="display table table-striped table-hover">
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
@@ -65,7 +98,10 @@
                                             <th>Laporan KP</th>
                                             <th>Status</th>
                                             <th>Catatan</th>
+                                            <th>Tahun</th>
                                             <th>Author</th>
+                                            <th>Dibuat</th>
+                                            <th>Diubah</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -88,14 +124,38 @@
                                                     </i>
                                                 </a>
                                             </td>
-                                            <td>{{ $item->stts }}</td>
-                                            <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
+                                            @if ($item->stts == 'proses')
+                                            <td>
+                                                <a
+                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    {{
+                                                    $item->stts }}</a>
+                                            </td>
+                                            @elseif($item->stts == 'acc')
+                                            <td>
+                                                <a
+                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    {{
+                                                    $item->stts}}</a>
+                                            </td>
+                                            @else
+                                            <td>
+                                                <a
+                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    {{
+                                                    $item->stts}}</a>
+                                            </td>
+                                            @endif
+                                            {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewCatatan{{ $item->id }}"
                                                     class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
-                                            </td>
+                                            </td> --}}
+                                            <td>{{ $item->catatan }}</td>
+                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
-
+                                            <td>{{ $item->created_at }}</td>
+                                            <td>{{ $item->updated_at }}</td>
                                             <td>
                                                 <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
@@ -133,13 +193,38 @@
                                                     </i>
                                                 </a>
                                             </td>
-                                            <td>{{ $item->stts }}</td>
-                                            <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
+                                            @if ($item->stts == 'proses')
+                                            <td>
+                                                <a
+                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    {{
+                                                    $item->stts }}</a>
+                                            </td>
+                                            @elseif($item->stts == 'acc')
+                                            <td>
+                                                <a
+                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    {{
+                                                    $item->stts}}</a>
+                                            </td>
+                                            @else
+                                            <td>
+                                                <a
+                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    {{
+                                                    $item->stts}}</a>
+                                            </td>
+                                            @endif
+                                            {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewCatatan{{ $item->id }}"
                                                     class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
-                                            </td>
+                                            </td> --}}
+                                            <td>{{ $item->catatan }}</td>
+                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
+                                            <td>{{ $item->created_at }}</td>
+                                            <td>{{ $item->updated_at }}</td>
                                             <td>
                                                 <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
@@ -199,13 +284,13 @@
                                     @endforeach
                                     @else
 
-                                    {{-- @foreach ($daftarkp as $k)
-                                    <option value="{{ $k->id }}">{{
-                                        $k->mahasiswa->biodata->no_induk
-                                        }} - {{ $k->mahasiswa->biodata->nama
-                                        }} - {{ $k->tahunakademik->tahun
+                                    @foreach ($mhskpd as $item)
+                                    <option value="{{ $item->id }}">{{
+                                        $item->mahasiswa->biodata->no_induk
+                                        }} - {{ $item->mahasiswa->biodata->nama
+                                        }} - {{ $item->tahunakademik->tahun
                                         }}</option>
-                                    @endforeach --}}
+                                    @endforeach
 
                                     @endif
                                 </select>
@@ -257,7 +342,12 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
@@ -292,13 +382,11 @@
                                 <label class="control-label">NIM - Nama - Tahun </label>
                                 <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
                                     id="daftarkp_id" required>
-                                    @if (Auth::user()->level==0 )
                                     <option value="{{ $item->daftarkp_id }}">{{ $item->mahasiswa->biodata->no_induk }} -
                                         {{
                                         $item->mahasiswa->biodata->nama }} - {{
                                         $item->daftarkp->tahunakademik->tahun }}
                                     </option>
-                                    @else
 
                                     {{-- @foreach ($daftarkp as $k)
                                     <option value="{{ $k->id }}">{{
@@ -308,7 +396,6 @@
                                         }}</option>
                                     @endforeach --}}
 
-                                    @endif
                                 </select>
                             </div>
                             <div class="col">
@@ -328,21 +415,11 @@
                             <div class="col">
                                 <label for="file" class="form-label control-label">Laporan KP </label>
                                 <input type="hidden" name="oldFile" value="{{ $item->laporan_kp }}">
-                                <input type="file" class="form-control " id="laporan_kp" name="laporan_kp"
+                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
                                     value="{{ $item->laporan_kp }}">
-
+                                <span class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</span>
                             </div>
-                            {{-- <div class="col">
-                                <input type="text" class="form-control">
-                                @if (!empty($item->laporan_kp))
-                                <a href="storage/{{ $item->laporan_kp }}" class="btn btn-primary btn-xs"><i
-                                        class="fas fa-download">
-                                    </i>
-                                </a>
-                                @else
-                                no data
-                                @endif
-                            </div> --}}
                             <div class="col">
                                 <label class="control-label">Status </label>
                                 <select class="form-control" name="stts" required>
@@ -371,7 +448,12 @@
                         </div>
                     </div>
 
-                    <div class="modal-footer">
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                             </i> Kembali</button>
                         <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
@@ -447,8 +529,15 @@
     </div>
 </div>
 @endforeach
+<script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-
+</script>
 
 <script>
     function no_mahasiswa() {
@@ -465,24 +554,16 @@
             });
         }
     }
-</script>
-<script src="{{asset('assets/ckeditor/ckeditor.js')}}"></script>
-<script src="{{asset('assets/ckeditor/adapters/jquery.js')}}"></script>
-<script>
-    var konten = document.getElementById("catatan");
-        CKEDITOR.replace(catatan,{
-        language:'en-gb'
+
+    $(document).ready(function () {
+    var table = $("#bimbingan-kp").DataTable({});
+        $("#filter-tahun").change(function () {
+        table.column($(this).data("column")).search($(this).val()).draw();
     });
-
-    CKEDITOR.config.allowedContent = true;
-</script>
-
-<script>
-    var content = document.getElementById("cttn");
-        CKEDITOR.replace(catatan,{
-        language:'en-gb'
+        $("#filter-stts").change(function () {
+        table.column($(this).data("column")).search($(this).val()).draw();
     });
-
-    CKEDITOR.config.allowedContent = true;
+    });
 </script>
+
 @endsection

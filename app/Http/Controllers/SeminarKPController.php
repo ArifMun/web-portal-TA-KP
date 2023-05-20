@@ -29,9 +29,12 @@ class SeminarKPController extends Controller
     {
         $seminarkp   = SeminarKP::all();
         $thnakademik = TahunAkademik::all();
+        $dosen       = Dosen::all();
+        $sSelesai   = SeminarKP::where('stts_seminar', '=', 'selesai')->get()->count();
+        $sTerjadwal   = SeminarKP::where('stts_seminar', '=', 'terjadwal')->get()->count();
+        $sProses   = SeminarKP::where('stts_seminar', '=', 'proses')->get()->count();
         $filterStts  = SeminarKP::distinct()->select('stts_seminar')->get();
         $daftarkp    = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get();
-        $dosen       = Dosen::all();
         $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
@@ -47,7 +50,18 @@ class SeminarKPController extends Controller
                 $q->where('id', '=', Auth::user());
             }
         })->get();
-        return \view('kerja-praktik.seminar-kp', \compact('seminarkp', 'seminarmhs', 'dosen', 'daftarkp', 'mhskps', 'thnakademik', 'filterStts'));
+        return \view('kerja-praktik.seminar-kp', \compact(
+            'seminarkp',
+            'seminarmhs',
+            'dosen',
+            'daftarkp',
+            'mhskps',
+            'thnakademik',
+            'filterStts',
+            'sSelesai',
+            'sTerjadwal',
+            'sProses'
+        ));
     }
 
     public function autofill($id)

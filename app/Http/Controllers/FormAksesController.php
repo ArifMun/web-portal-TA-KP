@@ -11,24 +11,46 @@ use Illuminate\Support\Facades\Validator;
 class FormAksesController extends Controller
 {
 
+    // public function store(Request $request)
+    // {
+    //     $validation = Validator::make(
+    //         $request->all(),
+    //         [
+    //             'akses' => 'required|unique:form_akses',
+    //         ]
+    //     );
+
+    //     if ($validation->fails()) {
+    //         return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan !');
+    //     } else {
+
+    //         $formakses = FormAkses::create([
+    //             'akses' => $request->akses
+    //         ]);
+
+    //         return \redirect('manajemen-form')->with('success', 'Akses Form KP Telah Disimpan !');
+    //     }
+    // }
+
     public function store(Request $request)
     {
         $validation = Validator::make(
             $request->all(),
             [
-                'akses' => 'required|unique:form_akses',
+                'tgl_buka' => 'required',
+                'tgl_tutup' => 'required',
             ]
         );
 
         if ($validation->fails()) {
-            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan !');
+            return \redirect('manajemen-form')->with('warning', 'Tanggal Tidak Tersimpan!');
         } else {
-
             $formakses = FormAkses::create([
-                'akses' => $request->akses
+                'tgl_buka' => $request->tgl_buka,
+                'tgl_tutup' => $request->tgl_tutup,
             ]);
 
-            return \redirect('manajemen-form')->with('success', 'Akses Form KP Telah Disimpan !');
+            return \redirect('manajemen-form')->with('success', 'Tanggal Pendaftaran Kerja Praktik Berhasil Dibuat!');
         }
     }
 

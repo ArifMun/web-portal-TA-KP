@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DaftarKP;
+use App\Models\SeminarKP;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -16,14 +17,13 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $notifAcc = DaftarKP::where('stts_pengajuan', '=', 'diterima')
-            ->count();
+        $notifAcc = DaftarKP::all()->count();
         $notifWait = DaftarKP::where('stts_pengajuan', '=', 'tertunda')
             ->count();
-
+        $seminar   = SeminarKP::all()->count();
         // $user = Auth::user();
 
-        return \view('dashboard.dashboard', \compact('notifAcc', 'notifWait'));
+        return \view('dashboard.dashboard', \compact('notifAcc', 'notifWait', 'seminar'));
         // return \view('layouts.layout');
     }
 

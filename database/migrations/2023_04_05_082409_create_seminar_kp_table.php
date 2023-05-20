@@ -14,7 +14,7 @@ class CreateSeminarKpTable extends Migration
     public function up()
     {
         Schema::create('seminar_kp', function (Blueprint $table) {
-            $table->id();
+            $table->integer('id')->autoIncrement();
             $table->integer('mahasiswa_id');
             $table->integer('daftarkp_id');
             $table->string('form_bimbingan');
@@ -22,7 +22,7 @@ class CreateSeminarKpTable extends Migration
             $table->time('jam_seminar')->nullable();
             $table->string('catatan')->nullable();
             $table->string('judul');
-            $table->enum('stts_seminar', ['proses', 'terjdawal', 'selesai']);
+            $table->enum('stts_seminar', ['proses', 'terjadwal', 'selesai']);
             $table->timestamps();
         });
     }

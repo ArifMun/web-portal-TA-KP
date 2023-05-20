@@ -64,35 +64,49 @@
                         @endif
 
                         <div class="card-body">
-                            <div class="row">
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Tahun</label>
-                                    <select data-column="11" class="form-control col-sm-6" id="filter-tahun">
-                                        <option value="">-- Pilih Tahun --</option>
-                                        @foreach ($thnakademik as $k)
-                                        <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
-                                        @endforeach
-                                    </select>
+                            <div class="row" style="">
+                                <div class="col-2">
+                                    <div class="body-panel mb-2">
+                                        <label class="font-weight-bold h6">Filter Tahun</label>
+                                        <select data-column="11" class="form-control" id="filter-tahun">
+                                            <option value="">-- Pilih Tahun --</option>
+                                            @foreach ($thnakademik as $k)
+                                            <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+
+                                    <div class="body-panel">
+                                        <label class="font-weight-bold h6">Filter Status</label>
+                                        <select data-column="7" class="form-control" id="filter-stts">
+                                            <option value="">-- Pilih Status --</option>
+                                            @foreach ($filterStts as $item)
+                                            <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">{{
+                                                $item->stts_pengajuan }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
                                 </div>
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Status</label>
-                                    <select data-column="7" class="form-control col-sm-6" id="filter-stts">
-                                        <option value="">-- Pilih Status --</option>
-                                        @foreach ($filterStts as $item)
-                                        <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">{{
-                                            $item->stts_pengajuan }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="col-2">
+                                    <div class="body-panel">
+                                        <label class="font-weight-bold p-1 mb-1">Status
+                                            Kerja Praktik </label>
+                                    </div>
+                                    <div class="body-panel col-6 btn-success mb-2">
+                                        <label class="font-weight-bold text-light p-1">Diterima : {{ $kpDiterima}}
+                                        </label>
+                                    </div>
+                                    <div class="body-panel col-6 btn-warning mb-2">
+                                        <label class="font-weight-bold text-light p-1">Tertunda : {{ $kpTertunda }}
+                                        </label>
+                                    </div>
+                                    <div class="body-panel col-6 btn-danger mb-2">
+                                        <label class="font-weight-bold text-light p-1">Ditolak &nbsp;&nbsp;&nbsp;&nbsp;:
+                                            {{
+                                            $kpDitolak
+                                            }}</label>
+                                    </div>
                                 </div>
-                                {{-- <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Tahun</label>
-                                    <select data-column="7" class="form-control col-sm-12" id="filter-tahun">
-                                        <option value="">-- Pilih Tahun --</option>
-                                        @for ($i = date('Y'); $i >= date('Y')-5; $i-=1)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div> --}}
                             </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
@@ -182,7 +196,7 @@
                                                     </i> </a>
 
                                             <td>{{ $item->tahunakademik->tahun }} </td>
-                                            <td>{{ $item->konsentrasi->nama_konsentrasi }}</td>
+                                            <td>{{ $item->konsentrasi }}</td>
                                             <td>
                                                 @if ($item->stts_pengajuan == 'diterima')
 
@@ -268,7 +282,7 @@
 
 
                                             <td>{{ $row->tahunakademik->tahun }}</td>
-                                            <td>{{ $row->konsentrasi->nama_konsentrasi }}</td>
+                                            <td>{{ $row->konsentrasi }}</td>
                                             <td>
                                                 <a href="kerja-praktik/view-slip/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewDataBarang{{ $row->id }}"
@@ -344,11 +358,12 @@
 
                             </div>
                             <div class="col">
-                                <label class="control-label">Status Kerja Praktik </label>
-                                <select class="form-control" name="stts_kp" required>
-                                    <option value="" hidden="">-- Status KP --</option>
-                                    <option value="baru">Baru</option>
-                                    <option value="melanjutkan">Melanjutkan</option>
+                                <label class="control-label">Tahun Akademik </label>
+                                <select class="form-control" name="thn_akademik_id" required>
+                                    <option value="" hidden="">-- Tahun Akademik --</option>
+                                    @foreach ($thnakademik as $k)
+                                    <option value="{{ $k->id }}">{{ $k->tahun }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
@@ -386,14 +401,20 @@
                                 <input type="number" class="form-control" name="semester" placeholder="Semester .."
                                     required>
                             </div>
-
                             <div class="col">
-                                <label class="control-label">Tahun Akademik </label>
-                                <select class="form-control" name="thn_akademik_id" required>
-                                    <option value="" hidden="">-- Tahun Akademik --</option>
-                                    @foreach ($thnakademik as $k)
-                                    <option value="{{ $k->id }}">{{ $k->tahun }}</option>
-                                    @endforeach
+                                <label class="control-label">Status Kerja Praktik </label>
+                                <select class="form-control" name="stts_kp" required>
+                                    <option value="" hidden="">-- Status KP --</option>
+                                    <option value="baru">Baru</option>
+                                    <option value="melanjutkan">Melanjutkan</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Ganti Dosen Pembimbing </label>
+                                <select class="form-control" name="ganti_pembimbing" required>
+                                    <option value="" hidden="">-- Ganti --</option>
+                                    <option value="iya">Iya</option>
+                                    <option value="tidak">Tidak</option>
                                 </select>
                             </div>
                         </div>
@@ -402,12 +423,8 @@
                     <div class="form-group required">
                         <div class=" row">
                             <div class="col">
-                                <label class="control-label">Ganti Dosen Pembimbing </label>
-                                <select class="form-control" name="ganti_pembimbing" required>
-                                    <option value="" hidden="">-- Ganti --</option>
-                                    <option value="iya">Iya</option>
-                                    <option value="tidak">Tidak</option>
-                                </select>
+                                <label>Judul</label>
+                                <input type="text" class="form-control" name="judul" placeholder="Judul ..">
                             </div>
                             <div class="col">
                                 <label>Dosen Pembimbing Lama</label>
@@ -424,15 +441,17 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Judul</label>
-                                <input type="text" class="form-control" name="judul" placeholder="Judul ..">
+                                <label for="image" class="form-label control-label">Slip pembayaran </label>
+                                <input type="file" class="form-control picture" id="slip_pembayaran"
+                                    name="slip_pembayaran" onchange="previewImage()">
+                                <img class="img-preview img-fluid mb-3 col-sm-4 mt-2">
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control" name="konsentrasi_id" required>
+                                <select class="form-control" name="konsentrasi[]" multiple id="konsentrasi" required>
                                     <option value="" hidden="">-- Konsentrasi --</option>
-                                    @foreach ($konsentrasi as $k)
-                                    <option value="{{ $k->id }}">{{ $k->nama_konsentrasi }}</option>
+                                    @foreach ($konsentrasi as $item)
+                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -441,16 +460,11 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col-6">
-                                <label for="image" class="form-label control-label">Slip pembayaran </label>
-                                <input type="file" class="form-control picture" id="slip_pembayaran"
-                                    name="slip_pembayaran" onchange="previewImage()">
-                                <img class="img-preview img-fluid mb-3 col-sm-4 mt-2">
-                            </div>
+
                         </div>
                     </div>
 
-                    <div class=" modal-footer required">
+                    <div class="modal-footer required">
                         <div class="col">
                             <label class="control-label font-italic">
                                 : Kolom Wajib Diisi
@@ -495,14 +509,11 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label class="control-label">Status Kerja Praktik </label>
-                                <select class="form-control" name="stts_kp" required>
-                                    <option value="" hidden="">-- Status KP --</option>
-                                    <option @php if($item->stts_kp == 'baru') echo 'selected';
-                                        @endphp value="baru">Baru</option>
-                                    <option @php if($item->stts_kp == 'melanjutkan') echo 'selected';
-                                        @endphp value="melanjutkan">Melanjutkan</option>
-                                </select>
+                                <label class="control-label">Tahun Akademik </label>
+                                <input type="text" value="{{ $item->tahunakademik->tahun }}" class="form-control"
+                                    readonly>
+                                <input type="hidden" value="{{ $item->tahunakademik->id }}" class="form-control"
+                                    name="thn_akademik_id">
                             </div>
                         </div>
                     </div>
@@ -543,23 +554,17 @@
                                 <input type="number" class="form-control" name="semester" value="{{ $item->semester }}"
                                     placeholder="Semester .." required>
                             </div>
-
                             <div class="col">
-                                <label class="control-label">Tahun Akademik </label>
-                                {{-- <select class="form-control" name="thn_akademik_id" required>
-                                    <option value="" hidden="">-- Tahun Akademik --</option>
-                                    @foreach ($thnakademik as $k)
-                                    <option value="{{ $k->id }}" {{ $k->id == $item->thn_akademik_id ?
-                                        'selected' :''
-                                        }}>{{ $k->tahun }}
-                                    </option>
-                                    @endforeach
-                                </select> --}}
-                                <input type="text" value="{{ $item->tahunakademik->tahun }}" class="form-control"
-                                    readonly>
-                                <input type="hidden" value="{{ $item->tahunakademik->id }}" class="form-control"
-                                    name="thn_akademik_id">
+                                <label class="control-label">Status Kerja Praktik </label>
+                                <select class="form-control" name="stts_kp" required>
+                                    <option value="" hidden="">-- Status KP --</option>
+                                    <option @php if($item->stts_kp == 'baru') echo 'selected';
+                                        @endphp value="baru">Baru</option>
+                                    <option @php if($item->stts_kp == 'melanjutkan') echo 'selected';
+                                        @endphp value="melanjutkan">Melanjutkan</option>
+                                </select>
                             </div>
+
                         </div>
                     </div>
 
@@ -628,28 +633,24 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control" name="konsentrasi_id" required>
-                                    <option value="" hidden="">-- Konsentrasi --</option>
-                                    @foreach ($konsentrasi as $k)
-                                    <option value="{{ $k->id }}" {{ $k->id == $item->konsentrasi_id ?
-                                        'selected' : ''
-                                        }}>{{ $k->nama_konsentrasi }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control" value="{{ $item->konsentrasi }}"
+                                    name="konsentrasi" readonly>
                             </div>
                             <div class="col">
                                 <label for="image" class="form-label control-label">Slip pembayaran </label>
                                 <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
                                 <input type="file" class="form-control picture" id="slip_pembayarans"
                                     name="slip_pembayaran" onchange="Previews()">
-                                <p class="mt-1">biarkan kosong
-                                    jika tidak diganti</p>
+
                                 @if ($item->slip_pembayaran)
                                 <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
-                                    class="img-previews img-fluid mb-3 col-sm-4 mt-1" id="img-p">
+                                    class="img-preview img-fluid mb-3 col-sm-4 mt-1" id="img-p">
                                 @else
-                                <img class="img-previews img-fluid mb-3 col-sm-5" alt="" id="img-p">
+                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="" id="img-p">
                                 @endif
+
+                                <p class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</p>
                             </div>
                         </div>
                     </div>
@@ -861,13 +862,23 @@
         $("#filter-stts").change(function () {
         table.column($(this).data("column")).search($(this).val()).draw();
     });
-    // $("#filter-tahun").change(function () {
-    //     table.column($(this).data("column")).search($(this).val()).draw();
-    //     });
     });
 
 </script>
+<script>
+    var selectElement = document.getElementById("konsentrasi");
 
+    selectElement.addEventListener("mousedown", function(e) {
+        e.preventDefault(); // Mencegah pemilihan default
+            var originalScrollTop = this.scrollTop;
+
+            e.target.selected = !e.target.selected;
+
+            setTimeout(() => {
+            this.scrollTop = originalScrollTop;
+        }, 0);
+    });
+</script>
 <script>
     function Previews() {
         const slip = document.querySelector('#slip_pembayarans');

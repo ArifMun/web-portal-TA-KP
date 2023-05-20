@@ -21,11 +21,10 @@
                 ],
                 urls: ['/assets/css/fonts.css']
             },
-            active: function () {
+            active: function() {
                 sessionStorage.fonts = true;
             }
         });
-
     </script>
     {{-- <title>{{ $title }}</title> --}}
 </head>
@@ -42,8 +41,7 @@
                 <a href="index.html" class="logo">
                     {{-- <img src="/assets/img/logoazzara.svg" alt="navbar brand" class="navbar-brand"> --}}
                 </a>
-                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
-                    data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse" data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon">
                         <i class="fa fa-bars"></i>
                     </span>
@@ -89,49 +87,49 @@
 
     <script src="/assets/js/plugin/chart.js/chart.min.js"></script>
     <script>
-        $(document).ready(function () {
-                $('#add-row').DataTable({
-    
-                });
+        $(document).ready(function() {
+            $('#add-row').DataTable({
+
             });
-    var myPieChart = new Chart(pieChart, {
-        type: 'pie',
-        data: {
-            datasets: [{
-                data: [50, 35, 15],
-                backgroundColor :["#1d7af3","#f3545d","#fdaf4b"],
-                borderWidth: 0
+        });
+        var myPieChart = new Chart(pieChart, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [50, 35, 15],
+                    backgroundColor: ["#1d7af3", "#f3545d", "#fdaf4b"],
+                    borderWidth: 0
                 }],
                 labels: ['New Visitors', 'Subscribers', 'Active Users']
-                },
-                options : {
+            },
+            options: {
                 responsive: true,
                 maintainAspectRatio: false,
                 legend: {
-                position : 'bottom',
-                labels : {
-                fontColor: 'rgb(154, 154, 154)',
-                fontSize: 11,
-                usePointStyle : true,
-                padding: 20
-                }
+                    position: 'bottom',
+                    labels: {
+                        fontColor: 'rgb(154, 154, 154)',
+                        fontSize: 11,
+                        usePointStyle: true,
+                        padding: 20
+                    }
                 },
                 pieceLabel: {
-                render: 'percentage',
-                fontColor: 'white',
-                fontSize: 14,
+                    render: 'percentage',
+                    fontColor: 'white',
+                    fontSize: 14,
                 },
                 tooltips: false,
                 layout: {
-                padding: {
-                left: 20,
-                right: 20,
-                top: 20,
-                bottom: 20
+                    padding: {
+                        left: 20,
+                        right: 20,
+                        top: 20,
+                        bottom: 20
+                    }
                 }
             }
-        }
-    })
+        })
     </script>
 
 

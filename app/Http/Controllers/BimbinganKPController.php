@@ -7,6 +7,7 @@ use App\Models\SeminarKP;
 use App\Models\BimbinganKP;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -21,13 +22,34 @@ class BimbinganKPController extends Controller
     public function index()
     {
 
-        $daftarkp = DaftarKP::all();
-        // $mhskp = Auth::user()->biodata->mahasiswa;
-        $bimbingkp = BimbinganKP::all();
+        $daftarkp    = DaftarKP::all();
+        $filterStts  = BimbinganKP::distinct()->select('stts')->get();
+        $thnakademik = TahunAkademik::all();
+        $bimbingkp   = BimbinganKP::all();
 
-        $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        $sttsDosen   = BimbinganKP::with('dosen')->whereHas('dosen', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('id', '=', Auth::user()->biodata->dosen->id)
+                    ->where('stts', '=', 'proses');
+            }
+        })->get()->count();
+        $sttsMhs   = BimbinganKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id)
+                    ->where('stts', '=', 'proses');
+            }
+        })->get()->count();
+
+        $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            } else {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->sortByDesc('id');
+        $mhskpd   = DaftarKP::with('dosen')->whereHas('dosen', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());
             }
@@ -47,7 +69,19 @@ class BimbinganKPController extends Controller
 
         $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
 
-        return \view('kerja-praktik.bimbingan-kp', \compact('daftarkp', 'bimbingMhs', 'bimbingDosen', 'mhskps', 'bimbingkp', 'list'));
+        return \view('kerja-praktik.bimbingan-kp', \compact(
+            'thnakademik',
+            'daftarkp',
+            'bimbingMhs',
+            'bimbingDosen',
+            'mhskps',
+            'bimbingkp',
+            'list',
+            'mhskpd',
+            'filterStts',
+            'sttsDosen',
+            'sttsMhs',
+        ));
     }
 
     // public function list_index()
