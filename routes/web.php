@@ -4,11 +4,13 @@ use App\Models\FormAkses;
 // use App\Models\RegistrasiController;
 use App\Models\SeminarKP;
 use GuzzleHttp\Middleware;
+use App\Models\BimbinganKP;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Request;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\MhsKPController;
+use App\Http\Controllers\DaftarTAController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormAksesController;
 use App\Http\Controllers\SeminarKPController;
@@ -19,7 +21,6 @@ use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\KerjaPraktikController;
 use App\Http\Controllers\ManajemenFormController;
 use App\Http\Controllers\UserRegistrasiController;
-use App\Models\BimbinganKP;
 
 /*
 |--------------------------------------------------------------------------
@@ -58,6 +59,8 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2']], function () {
     Route::resource('/bimbingan-kp', BimbinganKPController::class);
     Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);
     // Route::get('bimbing-kp/list/{id}/', [BimbinganKPController::class, 'list_index']);
+
+    Route::resource('/daftar-ta', DaftarTAController::class);
 
     Route::get('manajemen-form', [ManajemenFormController::class, 'index']);
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);

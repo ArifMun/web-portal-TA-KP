@@ -14,6 +14,7 @@ class DaftarTA extends Model
         'd_pembimbing_1',
         'd_pembimbing_2',
         'judul',
+        'ganti_pembimbing',
         'pembimbing_lama_1',
         'pembimbing_lama_2',
         'stts_pengajuan',

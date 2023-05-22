@@ -27,6 +27,11 @@ class Mahasiswa extends Model
         return $this->hasMany(DaftarKP::class);
     }
 
+    public function daftarta()
+    {
+        return $this->hasMany(DaftarTA::class);
+    }
+
     public function seminarkp()
     {
         return $this->hasMany(SeminarKP::class);

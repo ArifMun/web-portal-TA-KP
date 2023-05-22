@@ -49,8 +49,8 @@
                     </a>
                     <div class="collapse" id="forms">
                         <ul class="nav nav-collapse">
-                            <li>
-                                <a href="forms/forms.html">
+                            <li class="nav-item {{ Request()->is('daftar-ta')? 'active' : '' }}">
+                                <a href="daftar-ta">
                                     <span class="sub-item">Daftar TA</span>
                                 </a>
                             </li>

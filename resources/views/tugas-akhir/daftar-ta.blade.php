@@ -28,7 +28,7 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Kerja Praktik</h4>
+                <h4 class="page-title">Tugas Akhir</h4>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -37,8 +37,8 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
-                                <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarKP">
+                                <a href="/tugas-akhir/daftar" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalDaftarTA">
                                     <i class="fa fa-plus"></i>
                                     Daftar
                                 </a>
@@ -49,8 +49,8 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
-                                <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarKP">
+                                <a href="/tugas-akhir/daftar" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalDaftarTA">
                                     <i class="fa fa-plus"></i>
                                     Daftar
                                 </a>
@@ -68,7 +68,7 @@
                         @endif
 
                         <div class="card-body">
-                            <div class="row" style="">
+                            {{-- <div class="row" style="">
                                 <div class="col-2">
                                     <div class="body-panel mb-2">
                                         <label class="font-weight-bold h6">Filter Tahun</label>
@@ -111,7 +111,7 @@
                                             }}</label>
                                     </div>
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="kerja-praktik" class="display table table-striped table-hover">
@@ -123,11 +123,11 @@
                                             <th>Dosen Pilihan 1</th>
                                             <th>Dosen Pilihan 2</th>
                                             <th>Ganti Dosen Pembimbing</th>
-                                            <th>Dosen Pembimbing Lama</th>
+                                            <th>Dosen Pembimbing Lama 1</th>
+                                            <th>Dosen Pembimbing Lama 2</th>
                                             <th>Status Pengajuan</th>
-                                            <th>Status KP</th>
-                                            <th>Semester</th>
-                                            <th>Slip Pembayaran</th>
+                                            <th>Status TA</th>
+                                            <th>KRS</th>
                                             <th>Tahun</th>
                                             <th>Konsentrasi</th>
                                             <th>Action</th>
@@ -137,9 +137,8 @@
                                     @if (Auth::user()->level==0)
                                     <tbody>
                                         @php $no=1; @endphp
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->daftarkp))
-                                        @foreach ($mhskps as $item)
-                                        {{-- {{ $item }} --}}
+                                        @if (!empty(Auth::user()->biodata->mahasiswa->daftarta))
+                                        @foreach ($mhsta as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
@@ -162,9 +161,16 @@
                                                 {{ $item->ganti_pembimbing }}
                                             </td>
                                             <td>
-                                                @foreach ($dosen as $k)
-                                                {{ $k->id == $item->d_pembimbing_lama ?
-                                                $k->biodata->nama :''
+                                                @foreach ($dosen as $kp)
+                                                {{ $kp->id == $item->pembimbing_lama_1 ?
+                                                $kp->biodata->nama :''
+                                                }}
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach ($dosen as $kp)
+                                                {{ $kp->id == $item->pembimbing_lama_2 ?
+                                                $kp->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
@@ -192,10 +198,9 @@
                                             </td>
                                             @endif
 
-                                            <td class="text-capitalize">{{ $item->stts_kp }}</td>
-                                            <td>{{ $item->semester }}</td>
-                                            <td><a href="kerja-praktik/view-slip/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $item->id }}"
+                                            <td>{{ $item->stts_ta }}</td>
+                                            <td><a href="daftar-ta/view-krs/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewKRS{{ $item->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-file-image">
                                                     </i> </a>
 
@@ -205,8 +210,8 @@
                                                 @if ($item->stts_pengajuan == 'diterima')
 
                                                 @else
-                                                <a href="kerja-praktik/edit/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#modalEditKP{{ $item->id }}"
+                                                <a href="daftar-ta/edit/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalEditTA{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
                                                 @endif
@@ -225,12 +230,11 @@
 
                                     @elseif(Auth::user()->level!=0)
                                     <tbody> @php $no=1; @endphp
-                                        @foreach ($daftarkp as $row)
-                                        {{-- {{ $row->mahasiswa->biodata->no_induk }} --}}
+                                        @foreach ($daftarta as $row)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $row->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-capitalize">{{ $row->mahasiswa->biodata->nama }}</td>
                                             <td class="text-capitalize">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_1 ?
@@ -250,7 +254,14 @@
                                             </td>
                                             <td>
                                                 @foreach ($dosen as $kp)
-                                                {{ $kp->id == $row->pembimbing_lama ?
+                                                {{ $kp->id == $row->pembimbing_lama_1 ?
+                                                $kp->biodata->nama :''
+                                                }}
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach ($dosen as $kp)
+                                                {{ $kp->id == $row->pembimbing_lama_2 ?
                                                 $kp->biodata->nama :''
                                                 }}
                                                 @endforeach
@@ -277,13 +288,12 @@
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @endif
-                                            <td class="text-capitalize">{{ $row->stts_kp }}</td>
-                                            <td>{{ $row->semester }}</td>
-                                            <td><a href="kerja-praktik/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $row->id }}"
+                                            <td class="text-capitalize">{{ $row->stts_ta }}</td>
+                                            {{-- <td>{{ $row->krs }}</td> --}}
+                                            <td><a href="daftar-ta/view-krs/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewKRS{{ $row->id }}"
                                                     class="btn btn-success btn-xs"><i class="fa fa-file-image">
                                                     </i> </a>
-
 
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
@@ -292,12 +302,12 @@
                                                     data-target="#viewDataBarang{{ $row->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
-                                                <a href="kerja-praktik/edit/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalEditKP{{ $row->id }}"
+                                                <a href="daftar-ta/edit/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalEditTA{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="kerja-praktik/hapus/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalHapusKP{{ $row->id }}"
+                                                <a href="daftar-ta/hapus/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusTA{{ $row->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
@@ -318,18 +328,18 @@
 </div>
 
 {{-- Tambah --}}
-<div class="modal fade" id="modalDaftarKP" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="modalDaftarTA" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Daftar Kerja Praktik</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Daftar Tugas Akhir</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="kerja-praktik" id="ganti">
+            <form method="POST" enctype="multipart/form-data" action="daftar-ta">
                 @csrf
                 <div class="modal-body">
 
@@ -340,16 +350,17 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama </label>
-                                <select class="form-control" name="mahasiswa_id" size="1" required>
+                                <select class="form-control" name="mahasiswa_id" onchange="no_biodata()" size="1"
+                                    required>
                                     <option value="" hidden="">-- Pilih NIM --</option>
 
                                     @if (Auth::user()->level==0)
-                                    <option value="{{ $mhskp->id }}">{{ $mhskp->biodata->no_induk }} - {{
-                                        $mhskp->biodata->nama }}
+                                    <option value="{{ $mhsDaftar->id }}">{{ $mhsDaftar->biodata->no_induk }} - {{
+                                        $mhsDaftar->biodata->nama }}
                                     </option>
 
                                     @else
-                                    @foreach ($mahasiswa as $k)
+                                    @foreach ($mhs as $k)
                                     <option value="{{ $k->id}}">{{ $k->biodata->no_induk
                                         }} - {{ $k->biodata->nama
                                         }}</option>
@@ -375,7 +386,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Pilih Dosen Pembimbing </label>
+                                <label class="control-label">Pilih Dosen Pembimbing 1</label>
                                 <select class="form-control" name="d_pembimbing_1" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-1 --</option>
                                     @foreach ($dosen as $k)
@@ -385,7 +396,7 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">
-                                    Pilihan Pembimbing Ke-2
+                                    Pilih Dosen Pembimbing 2
                                 </label>
                                 <select class="form-control" name="d_pembimbing_2" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-2 --</option>
@@ -400,24 +411,14 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Semester </label>
-                                <input type="number" class="form-control" name="semester" placeholder="Semester .."
-                                    size="1" required>
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Status Kerja Praktik </label>
-                                <select class="form-control" name="stts_kp" size="1" required>
-                                    <option value="" hidden="">-- Status KP --</option>
+                                <label class="control-label">Status Tugas Akhir </label>
+                                <select class="form-control" name="stts_ta" size="1" required>
+                                    <option value="" hidden="">-- Status Tugas Akhir --</option>
                                     <option value="baru">Baru</option>
                                     <option value="melanjutkan">Melanjutkan</option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col" id="ganti">
+                            <div class="col">
                                 <label class="control-label">Ganti Dosen Pembimbing </label>
                                 <select class="form-control" name="ganti_pembimbing" id="d_ganti" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
@@ -425,34 +426,66 @@
                                     <option value="tidak">Tidak</option>
                                 </select>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required" id="kolomBaru" style="display:none">
+                        <div class="row">
                             <div class="col">
-                                <label>Judul</label>
-                                <input type="text" class="form-control" name="judul" placeholder="Judul .." size="1">
+                                <label>Dosen Pembimbing Lama 1</label>
+                                <select class="form-control" name="pembimbing_lama_1" size="1">
+                                    <option value="" hidden="">-- Pembimbing Lama 1--</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label>Dosen Pembimbing Lama 2</label>
+                                <select class="form-control" name="pembimbing_lama_2" size="1">
+                                    <option value="" hidden="">-- Pembimbing Lama 2--</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                     </div>
 
+                    {{-- <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label>Judul</label>
+                                <input type="text" class="form-control" name="judul" placeholder="Judul ..">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Status Tugas Akhir </label>
+                                <select class="form-control" name="stts_ta" required>
+                                    <option value="" hidden="">-- Status Tugas Akhir --</option>
+                                    <option value="baru">Baru</option>
+                                    <option value="melanjutkan">Melanjutkan</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div> --}}
+
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <div class="mb-3 kolom-baru" id="kolomBaru" style="display:none">
-                                    <label>Dosen Pembimbing Lama</label>
-                                    <select class="form-control" name="pembimbing_lama" size="1">
-                                        <option value="" hidden="">-- Pembimbing Lama --</option>
-                                        @foreach ($dosen as $k)
-                                        <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
-                                        @endforeach
-                                    </select>
+                                <div class="mb-3">
+                                    <label>Judul</label>
+                                    <input type="text" class="form-control" name="judul" placeholder="Judul .."
+                                        size="1">
                                 </div>
-                                <label for="image" class="form-label control-label">Slip pembayaran </label>
-                                <input type="file" class="form-control picture" id="slip_pembayaran"
-                                    name="slip_pembayaran" onchange="previewImage()">
+                                <label for="image" class="form-label control-label">Kartu Rencan Studi (KRS) </label>
+                                <input type="file" class="form-control picture" id="krs" name="krs"
+                                    onchange="previewImage()">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2">
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control" name="konsentrasi[]" id="konsentrasi" size="5" multiple
-                                    required>
+                                <select class="form-control" name="konsentrasi[]" id="konsentrasi" size="5" required
+                                    multiple>
                                     <option value="" hidden="">-- Konsentrasi --</option>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
@@ -480,9 +513,9 @@
 </div>
 
 {{-- Edit --}}
-@foreach ($daftarkp as $item)
-<div class="modal fade modalEditKP" id="modalEditKP{{ $item->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+@foreach ($daftarta as $item)
+<div class="modal fade" id="modalEditTA{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -492,14 +525,14 @@
                 </button>
             </div>
 
-            <form id="ganti_1" method="POST" enctype="multipart/form-data" action="kerja-praktik/{{ $item->id }}">
+            <form method="POST" enctype="multipart/form-data" action="daftar-ta/{{ $item->id }}">
                 @method('put')
                 @csrf
                 <div class="modal-body">
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">NIM </label>
+                                <label class="control-label">NIM - Nama</label>
                                 <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" size="1" required>
                                     <option value="{{ $item->mahasiswa_id }}">{{
                                         $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}
@@ -519,7 +552,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Pilih Dosen Pembimbing </label>
+                                <label class="control-label">Pilih Dosen Pembimbing 1 </label>
                                 <select class="form-control" name="d_pembimbing_1" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-1 --</option>
                                     @foreach ($dosen as $k)
@@ -531,7 +564,7 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label class="control-label">Pilihan Pembimbing ke-2 </label>
+                                <label class="control-label">Pilihan ke-2 </label>
                                 <select class="form-control" name="d_pembimbing_2" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-2 --</option>
                                     @foreach ($dosen as $k)
@@ -548,20 +581,21 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Semester </label>
-                                <input type="number" class="form-control" name="semester" value="{{ $item->semester }}"
-                                    placeholder="Semester .." size="1" required>
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Status Kerja Praktik </label>
-                                <select class="form-control" name="stts_kp" size="1" required>
-                                    <option value="" hidden="">-- Status KP --</option>
-                                    <option @php if($item->stts_kp == 'baru') echo 'selected';
+                                <label class="control-label">Status Tugas Akhir </label>
+                                <select class="form-control" name="stts_ta" required>
+                                    <option value="" hidden="">-- Status TA --</option>
+                                    <option @php if($item->stts_ta == 'baru') echo 'selected';
                                         @endphp value="baru">Baru</option>
-                                    <option @php if($item->stts_kp == 'melanjutkan') echo 'selected';
+                                    <option @php if($item->stts_ta == 'melanjutkan') echo 'selected';
                                         @endphp value="melanjutkan">Melanjutkan</option>
                                 </select>
                             </div>
+                            <div class="col">
+                                <label class="control-label">Semester </label>
+                                <input type="number" class="form-control" name="semester" value="{{ $item->semester }}"
+                                    placeholder="Semester .." required>
+                            </div>
+
 
                         </div>
                     </div>
@@ -570,18 +604,59 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Ganti Dosen Pembimbing </label>
-                                <select class="form-control" name="ganti_pembimbing" id="d_ganti_1" size="1" required>
+                                <select class="form-control" name="ganti_pembimbing" required>
                                     <option value="" hidden="">-- Ganti --</option>
                                     <option @php if($item->ganti_pembimbing == 'iya') echo 'selected';
-                                        @endphp value="iya">Iya</option>
+                                        @endphp value="iya">IYA</option>
                                     <option @php if($item->ganti_pembimbing == 'tidak') echo 'selected';
-                                        @endphp value="tidak">Tidak</option>
+                                        @endphp value="tidak">TIDAK</option>
                                 </select>
                             </div>
                             <div class="col">
+                                <label>Dosen Pembimbing Lama</label>
+                                <select class="form-control" name="pembimbing_lama">
+                                    <option value="" hidden="">-- Pembimbing Lama --</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}" {{ $k->id == $item->pembimbing_lama }}>{{
+                                        $k->biodata->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
                                 <label>Judul</label>
-                                <input type="text" id="judul" class="form-control" name="judul" size="1"
-                                    placeholder="Judul .." value="{{ $item->judul }}">
+                                <input type="text" id="judul" class="form-control" name="judul" placeholder="Judul .."
+                                    value="{{ $item->judul }}">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Status Pengajuan </label>
+                                @if (Auth::user()->level==0)
+                                <select class="form-control" disabled>
+                                    <option value="" hidden="">-- Status Pengajuan --</option>
+                                    <option @php if($item->stts_pengajuan == 'tertunda') echo 'selected';
+                                        @endphp value="tertunda">Tertunda</option>
+                                    <option @php if($item->stts_pengajuan == 'diterima') echo 'selected';
+                                        @endphp value="diterima">Diterima</option>
+                                    <option @php if($item->stts_pengajuan == 'ditolak') echo 'selected';
+                                        @endphp value="ditolak">Ditolak</option>
+                                </select>
+                                <input type="hidden" name="stts_pengajuan" value="tertunda">
+                                @else
+                                <select class="form-control" name="stts_pengajuan" required>
+                                    <option value="" hidden="">-- Status Pengajuan --</option>
+                                    <option @php if($item->stts_pengajuan == 'tertunda') echo 'selected';
+                                        @endphp value="tertunda">Tertunda</option>
+                                    <option @php if($item->stts_pengajuan == 'diterima') echo 'selected';
+                                        @endphp value="diterima">Diterima</option>
+                                    <option @php if($item->stts_pengajuan == 'ditolak') echo 'selected';
+                                        @endphp value="ditolak">Ditolak</option>
+                                </select>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -589,82 +664,25 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                {{-- @if ($item->ganti_pembimbing=="iya") --}}
-                                <div class="mb-3" name="pembimbing_lama" style="display: none" id="kolomBaru_1">
-                                    <label>Dosen Pembimbing Lama</label>
-                                    {{-- <input class="form-control" type="text"
-                                        value="{{ $item->dosen->biodata->nama }}"> --}}
-                                    <select class="form-control" size="1">
-                                        <option value="" hidden="">-- Pembimbing Lama --</option>
-                                        @foreach ($dosen as $k)
-                                        <option value="{{ $k->id }}" {{ $k->id == $item->pembimbing_lama ? 'selected'
-                                            :'' }}>{{
-                                            $k->biodata->nama}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                {{-- @else
-                                .
-                                @endif --}}
-                                <div>
-                                    <label class="control-label">Konsentrasi </label>
-                                    <input type="text" class="form-control" value="{{ $item->konsentrasi }}"
-                                        name="konsentrasi" size="1" readonly>
-                                </div>
+                                <label class="control-label">Konsentrasi </label>
+                                <input type="text" class="form-control" value="{{ $item->konsentrasi }}"
+                                    name="konsentrasi" readonly>
                             </div>
                             <div class="col">
-                                <div class="mb-3">
-                                    <label class="control-label">Status Pengajuan </label>
-                                    @if (Auth::user()->level==0)
-                                    <select class="form-control" size="1" disabled>
-                                        <option value="" hidden="">-- Status Pengajuan --</option>
-                                        <option @php if($item->stts_pengajuan == 'tertunda') echo 'selected';
-                                            @endphp value="tertunda">Tertunda</option>
-                                        <option @php if($item->stts_pengajuan == 'diterima') echo 'selected';
-                                            @endphp value="diterima">Diterima</option>
-                                        <option @php if($item->stts_pengajuan == 'ditolak') echo 'selected';
-                                            @endphp value="ditolak">Ditolak</option>
-                                    </select>
-                                    <input type="hidden" name="stts_pengajuan" value="tertunda">
-                                    @else
-                                    <select class="form-control" name="stts_pengajuan" size="1" required>
-                                        <option value="" hidden="">-- Status Pengajuan --</option>
-                                        <option @php if($item->stts_pengajuan == 'tertunda') echo 'selected';
-                                            @endphp value="tertunda">Tertunda</option>
-                                        <option @php if($item->stts_pengajuan == 'diterima') echo 'selected';
-                                            @endphp value="diterima">Diterima</option>
-                                        <option @php if($item->stts_pengajuan == 'ditolak') echo 'selected';
-                                            @endphp value="ditolak">Ditolak</option>
-                                    </select>
-                                    @endif
-                                </div>
-                                <div>
-                                    <label for="image" class="form-label control-label">Slip pembayaran </label>
-                                    <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
-                                    <input type="file" class="form-control picture" id="slip_pembayarans"
-                                        name="slip_pembayaran" onchange="Previews()">
+                                <label for="image" class="form-label control-label">Slip pembayaran </label>
+                                <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
+                                <input type="file" class="form-control picture" id="slip_pembayarans"
+                                    name="slip_pembayaran" onchange="Previews()">
 
-                                    @if ($item->slip_pembayaran)
-                                    <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
-                                        class="img-preview img-fluid mb-3 col-sm-4 mt-1" id="img-p">
-                                    @else
-                                    <img class="img-preview img-fluid mb-3 col-sm-5" alt="" id="img-p">
-                                    @endif
+                                @if ($item->slip_pembayaran)
+                                <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
+                                    class="img-preview img-fluid mb-3 col-sm-4 mt-1" id="img-p">
+                                @else
+                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="" id="img-p">
+                                @endif
 
-                                    <p class="mt-1 font-italic">biarkan kolom kosong
-                                        jika tidak diganti</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-
-                            </div>
-                            <div class="col">
-
+                                <p class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</p>
                             </div>
                         </div>
                     </div>
@@ -688,14 +706,15 @@
 @endforeach
 
 {{-- view Slip Pembayaran --}}
-@foreach ($daftarkp as $item)
-<div class="modal fade" id="viewSlip{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+@foreach ($daftarta as $item)
+<div class="modal fade" id="viewKRS{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran - {{ $item->mahasiswa->biodata->nama
-                    }}</h5>
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Kartu Rencana Studi - {{
+                    $item->mahasiswa->biodata->nama
+                    }} | {{ $item->mahasiswa->biodata->no_induk }} </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -704,10 +723,10 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @if ($item->slip_pembayaran)
+                        @if ($item->krs)
                         <div class="col">
-                            <img src="{{ asset('storage/' . $item->slip_pembayaran) }}" alt=""
-                                class="rounded mx-auto d-block" style="width: 30%">
+                            <img src="{{ asset('storage/' . $item->krs) }}" alt="" class="rounded mx-auto d-block"
+                                style="width: 30%">
                         </div>
                         @else
                         <div class="col">
@@ -722,72 +741,8 @@
 </div>
 @endforeach
 
-{{-- View --}}
-{{-- @foreach ($barang as $d)
-<div class="modal fade" id="viewDataBarang{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Detail Barang</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        @if ($d->image)
-                        <div class="col">
-                            <img src="{{ asset('storage/' . $d->image) }}" alt="" class="rounded mx-auto d-block"
-                                style="width: 18%">
-                        </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">Nama Barang</li>
-                                <li class="list-group-item">Kategori</li>
-                                <li class="list-group-item">No Barang</li>
-                                <li class="list-group-item">Penulis</li>
-                                <li class="list-group-item">Jumlah</li>
-                                <li class="list-group-item">Unit</li>
-                                <li class="list-group-item">Tahun</li>
-                                <li class="list-group-item">Kondisi</li>
-                                <li class="list-group-item">Keterangan</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">{{ $d->nama_barang }}</li>
-                                <li class="list-group-item">{{ $d->nama_kategori }}</li>
-                                <li class="list-group-item">{{ $d->no_barang }}</li>
-                                <li class="list-group-item">{{ Auth::user()->level }}</li>
-                                <li class="list-group-item">{{ $d->jumlah }}</li>
-                                <li class="list-group-item">{{ $d->unit }}</li>
-                                <li class="list-group-item">{{ $d->tahun }}</li>
-                                <li class="list-group-item">{{ $d->kondisi }}</li>
-                                <li class="list-group-item">{{ $d->keterangan }}.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach --}}
-
 {{-- Hapus --}}
-@foreach ($daftarkp as $kp)
+{{-- @foreach ($daftarkp as $kp)
 <div class="modal fade" id="modalHapusKP{{ $kp->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-open">
@@ -807,11 +762,11 @@
                     <input type="hidden" value="{{ $kp->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data </h3>
-                        dengan Nama <span class="text-danger">{{ $kp->mahasiswa->biodata->nama }}</span> dengan No
-                        Induk <span class="text-danger">{{
-                            $kp->mahasiswa->biodata->no_induk
-                            }} </span> ?
+                        <h3>Apakah anda ingin menghapus data </h>
+                            dengan Nama <span class="text-danger">{{ $kp->mahasiswa->biodata->nama }}</span> dengan No
+                            Induk <span class="text-danger">{{
+                                $kp->mahasiswa->biodata->no_induk
+                                }} </span> ?
                     </div>
 
                 </div>
@@ -825,8 +780,24 @@
         </div>
     </div>
 </div>
-@endforeach
+@endforeach --}}
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script>
+    function no_biodata() {
+        let biodata = $("#biodata").val();
+        $("#nama").children().remove();
+        if (biodata != '' && biodata != null) {
+            $.ajax({
+
+                url: "{{ url('') }}/kerja-praktik/biodata/" + biodata,
+                success: function (res) {
+                    $("#nama").val(res.nama);
+                }
+            });
+        }
+    }
+</script>
 
 <script type="text/javascript">
     $.ajaxSetup({
@@ -838,7 +809,7 @@
 </script>
 <script>
     function previewImage() {
-        const image = document.querySelector('#slip_pembayaran');
+        const image = document.querySelector('#krs');
         const imgPriview = document.querySelector('.img-preview');
 
         imgPriview.style.display = 'block';
@@ -849,18 +820,16 @@
         oFReader.onload = function (oFREvent) {
             imgPriview.src = oFREvent.target.result;
         }
-        // const blob = URL.createObjectURL(image.files[0]);
-        // imgPreview.src = blob;
     }
 
     $(document).ready(function () {
     var table = $("#kerja-praktik").DataTable({});
         $("#filter-tahun").change(function () {
-            table.column($(this).data("column")).search($(this).val()).draw();
-        });
-            $("#filter-stts").change(function () {
-            table.column($(this).data("column")).search($(this).val()).draw();
-        });
+        table.column($(this).data("column")).search($(this).val()).draw();
+    });
+        $("#filter-stts").change(function () {
+        table.column($(this).data("column")).search($(this).val()).draw();
+    });
     });
 
 </script>
@@ -878,65 +847,6 @@
         }, 0);
     });
 </script>
-
-<script>
-    $(document).ready(function() {
-    // Tampilkan/menyembunyikan kolom baru saat halaman dimuat
-        toggleKolomBaru('#ganti');
-        // toggleKolomBaru_1('#ganti_1');
-    
-    // Tampilkan/menyembunyikan kolom baru saat kondisi terpilih berubah di form pertama
-    $('#d_ganti').on('change', function() {
-        toggleKolomBaru('#ganti');
-    });
-    
-    // Tampilkan/menyembunyikan kolom baru saat kondisi terpilih berubah di form kedua
-    // $('#d_ganti_1').on('change', function() {
-    //     toggleKolomBaru_1('#ganti_1');
-    // });
-    
-    // Fungsi untuk menampilkan/menyembunyikan kolom baru dalam form tertentu
-    function toggleKolomBaru(formId) {
-        if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
-            $(formId + ' #kolomBaru').show();
-        } else {
-            $(formId + ' #kolomBaru').hide();
-        }
-    }
-
-    // function toggleKolomBaru_1(formId) {
-    //     if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
-    //         $(formId + ' #kolomBaru_1').show();
-    //     } else {
-    //         $(formId + ' #kolomBaru_1').hide();
-    //     }
-    // }
-    
-    });
-
-</script>
-
-<script>
-    $(document).ready(function() {
-        $('.modalEditKP').on('show.bs.modal', function() {
-            var formId = '#' + $(this).attr('id');
-            toggleKolomBaru_1(formId);
-        
-        $(formId + ' #d_ganti_1').on('change', function() {
-            toggleKolomBaru_1(formId);
-        });
-        
-        function toggleKolomBaru_1(formId) {
-                if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
-                    $(formId + ' #kolomBaru_1').show();
-                } else {
-                    $(formId + ' #kolomBaru_1').hide();
-                }
-            }
-        });
-    });
-</script>
-
 <script>
     function Previews() {
         const slip = document.querySelector('#slip_pembayarans');
@@ -954,5 +864,16 @@
         // imgPreview.src = blob;
     }
 
+    const d_ganti = document.getElementById('d_ganti');
+
+    d_ganti.addEventListener('change',function(){
+        if(d_ganti.value === 'iya'){
+            document.getElementById('kolomBaru').style.display = 'block';
+        }else if(d_ganti.value === ''){
+            document.getElementById('kolomBaru').style.display = 'none';
+        }else{
+            document.getElementById('kolomBaru').style.display = 'none';
+        }
+    });
 </script>
 @endsection

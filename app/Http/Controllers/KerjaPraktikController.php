@@ -26,7 +26,7 @@ class KerjaPraktikController extends Controller
     public function index()
     {
 
-        $daftarkp    = DaftarKP::all()->sortByDesc("id");
+        $daftarkp    = DaftarKP::all();
         $filterStts  = DaftarKP::distinct()->select('stts_pengajuan')->get();
         $dosen       = Dosen::all();
         $thnakademik = TahunAkademik::all();
@@ -43,7 +43,6 @@ class KerjaPraktikController extends Controller
                 $q->where('id', '=', Auth::user());
             }
         })->get();
-
         $formakses = FormAkses::all();
         // \dd($mhskps);
 
@@ -63,11 +62,11 @@ class KerjaPraktikController extends Controller
         ));
     }
 
-    public function autofill($id)
-    {
-        $data = Mahasiswa::with('biodata')->where('id', $id)->first();
-        return \response()->json($data);
-    }
+    // public function autofill($id)
+    // {
+    //     $data = Mahasiswa::with('biodata')->where('id', $id)->first();
+    //     return \response()->json($data);
+    // }
 
     /**
      * Show the form for creating a new resource.
