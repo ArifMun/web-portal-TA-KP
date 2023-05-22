@@ -190,6 +190,8 @@ class KerjaPraktikController extends Controller
                 }
                 $daftarkp->slip_pembayaran  = $request->file('slip_pembayaran')->store('post-images');
             }
+            $input = $request->input('konsentrasi');
+            $string = \implode(',', $input);
 
             $daftarkp->mahasiswa_id     = $request->mahasiswa_id;
             $daftarkp->d_pembimbing_1   = $request->d_pembimbing_1;
@@ -201,7 +203,7 @@ class KerjaPraktikController extends Controller
             $daftarkp->judul            = $request->judul;
             $daftarkp->semester         = $request->semester;
             $daftarkp->thn_akademik_id  = $request->thn_akademik_id;
-            $daftarkp->konsentrasi      = $request->konsentrasi;
+            $daftarkp->konsentrasi      = $string;
             $daftarkp->update();
 
             return \redirect('kerja-praktik')->with('success', 'Data Berhasil Diperbarui!');

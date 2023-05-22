@@ -23,7 +23,9 @@
         display: none;
     }
 </style>
-
+<!-- Contoh menggunakan CDN -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
@@ -163,7 +165,7 @@
                                             </td>
                                             <td>
                                                 @foreach ($dosen as $k)
-                                                {{ $k->id == $item->d_pembimbing_lama ?
+                                                {{ $k->id == $item->pembimbing_lama ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
@@ -451,8 +453,8 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control" name="konsentrasi[]" id="konsentrasi" size="5" multiple
-                                    required>
+                                <select class="form-control konsentrasi" name="konsentrasi[]" id="konsentrasi" size="5"
+                                    multiple required>
                                     <option value="" hidden="">-- Konsentrasi --</option>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
@@ -589,13 +591,10 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                {{-- @if ($item->ganti_pembimbing=="iya") --}}
                                 <div class="mb-3" name="pembimbing_lama" style="display: none" id="kolomBaru_1">
                                     <label>Dosen Pembimbing Lama</label>
-                                    {{-- <input class="form-control" type="text"
-                                        value="{{ $item->dosen->biodata->nama }}"> --}}
-                                    <select class="form-control" size="1">
-                                        <option value="" hidden="">-- Pembimbing Lama --</option>
+                                    <select class="form-control" size="1" name="pembimbing_lama">
+                                        <option value="">-- Pembimbing Lama --</option>
                                         @foreach ($dosen as $k)
                                         <option value="{{ $k->id }}" {{ $k->id == $item->pembimbing_lama ? 'selected'
                                             :'' }}>{{
@@ -603,13 +602,27 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                {{-- @else
-                                .
-                                @endif --}}
+
                                 <div>
                                     <label class="control-label">Konsentrasi </label>
-                                    <input type="text" class="form-control" value="{{ $item->konsentrasi }}"
-                                        name="konsentrasi" size="1" readonly>
+                                    <select class="form-control konsentrasi-select" name="konsentrasi[]"
+                                        id="konsentrasi_{{ $item->id }}" size="5" multiple required>
+                                        <option value="" hidden="">-- Konsentrasi --</option>
+
+                                        @foreach($konsentrasi as $option)
+                                        <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
+                                            nama_konsentrasi,
+                                            explode(',',
+                                            $item->konsentrasi)) ? 'selected' : '' }}>
+                                            {{ $option->nama_konsentrasi }}
+                                        </option>
+                                        @endforeach
+
+                                    </select>
+                                    <p class="mt-3 font-italic"><small>Tekan dan tahan tombol Ctrl jika ingin memilih
+                                            lebih dari
+                                            1
+                                            konsentrasi</small></p>
                                 </div>
                             </div>
                             <div class="col">
@@ -654,17 +667,6 @@
                                     <p class="mt-1 font-italic">biarkan kolom kosong
                                         jika tidak diganti</p>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-
-                            </div>
-                            <div class="col">
-
                             </div>
                         </div>
                     </div>
@@ -849,8 +851,6 @@
         oFReader.onload = function (oFREvent) {
             imgPriview.src = oFREvent.target.result;
         }
-        // const blob = URL.createObjectURL(image.files[0]);
-        // imgPreview.src = blob;
     }
 
     $(document).ready(function () {
@@ -864,7 +864,7 @@
     });
 
 </script>
-<script>
+{{-- <script>
     var selectElement = document.getElementById("konsentrasi");
 
     selectElement.addEventListener("mousedown", function(e) {
@@ -877,25 +877,41 @@
             this.scrollTop = originalScrollTop;
         }, 0);
     });
-</script>
+</script> --}}
 
 <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var selectElements = document.getElementsByClassName("konsentrasi-select");
+
+        for (var i = 0; i < selectElements.length; i++) { 
+            var selectElement=selectElements[i];
+                    selectElement.addEventListener("mousedown", function(e) {
+                    e.preventDefault(); e.target.selected=!e.target.selected;
+                    this.focus(); 
+                }); 
+            } 
+        });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var selectElements = document.getElementsByClassName("konsentrasi");
+
+        for (var i = 0; i < selectElements.length; i++) { 
+            var selectElement=selectElements[i];
+                    selectElement.addEventListener("mousedown", function(e) {
+                    e.preventDefault(); e.target.selected=!e.target.selected;
+                    this.focus(); 
+                }); 
+            } 
+        });
+</script>
+
+{{-- tambah --}}
+<script>
     $(document).ready(function() {
-    // Tampilkan/menyembunyikan kolom baru saat halaman dimuat
         toggleKolomBaru('#ganti');
-        // toggleKolomBaru_1('#ganti_1');
-    
-    // Tampilkan/menyembunyikan kolom baru saat kondisi terpilih berubah di form pertama
     $('#d_ganti').on('change', function() {
         toggleKolomBaru('#ganti');
     });
-    
-    // Tampilkan/menyembunyikan kolom baru saat kondisi terpilih berubah di form kedua
-    // $('#d_ganti_1').on('change', function() {
-    //     toggleKolomBaru_1('#ganti_1');
-    // });
-    
-    // Fungsi untuk menampilkan/menyembunyikan kolom baru dalam form tertentu
     function toggleKolomBaru(formId) {
         if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
             $(formId + ' #kolomBaru').show();
@@ -904,18 +920,11 @@
         }
     }
 
-    // function toggleKolomBaru_1(formId) {
-    //     if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
-    //         $(formId + ' #kolomBaru_1').show();
-    //     } else {
-    //         $(formId + ' #kolomBaru_1').hide();
-    //     }
-    // }
-    
     });
 
 </script>
 
+{{-- edit --}}
 <script>
     $(document).ready(function() {
         $('.modalEditKP').on('show.bs.modal', function() {

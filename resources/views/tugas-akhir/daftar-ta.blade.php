@@ -339,7 +339,7 @@
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="daftar-ta">
+            <form method="POST" enctype="multipart/form-data" action="daftar-ta" id="ganti">
                 @csrf
                 <div class="modal-body">
 
@@ -420,7 +420,7 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Ganti Dosen Pembimbing </label>
-                                <select class="form-control" name="ganti_pembimbing" id="d_ganti" size="1" required>
+                                <select class="form-control" id="d_ganti" name="ganti_pembimbing" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
                                     <option value="iya">Iya</option>
                                     <option value="tidak">Tidak</option>
@@ -607,9 +607,9 @@
                                 <select class="form-control" name="ganti_pembimbing" required>
                                     <option value="" hidden="">-- Ganti --</option>
                                     <option @php if($item->ganti_pembimbing == 'iya') echo 'selected';
-                                        @endphp value="iya">IYA</option>
+                                        @endphp value="iya">Iya</option>
                                     <option @php if($item->ganti_pembimbing == 'tidak') echo 'selected';
-                                        @endphp value="tidak">TIDAK</option>
+                                        @endphp value="tidak">Tidak</option>
                                 </select>
                             </div>
                             <div class="col">
@@ -864,16 +864,36 @@
         // imgPreview.src = blob;
     }
 
-    const d_ganti = document.getElementById('d_ganti');
+    // const d_ganti = document.getElementById('d_ganti');
 
-    d_ganti.addEventListener('change',function(){
-        if(d_ganti.value === 'iya'){
-            document.getElementById('kolomBaru').style.display = 'block';
-        }else if(d_ganti.value === ''){
-            document.getElementById('kolomBaru').style.display = 'none';
-        }else{
-            document.getElementById('kolomBaru').style.display = 'none';
-        }
+    // d_ganti.addEventListener('change',function(){
+    //     if(d_ganti.value === 'iya'){
+    //         document.getElementById('kolomBaru').style.display = 'block';
+    //     }else if(d_ganti.value === ''){
+    //         document.getElementById('kolomBaru').style.display = 'none';
+    //     }else{
+    //         document.getElementById('kolomBaru').style.display = 'none';
+    //     }
+    // });
+    $(document).ready(function() {
+        toggleKolomBaru('#ganti');
+    $('#d_ganti').on('change', function() {
+    
+        toggleKolomBaru('#ganti');
     });
+    
+    function toggleKolomBaru(formId) {
+        if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
+            $(formId + ' #kolomBaru').show();
+        } else {
+            $(formId + ' #kolomBaru').hide();
+        }
+    }
+    });
+</script>
+
+<script>
+
+
 </script>
 @endsection
