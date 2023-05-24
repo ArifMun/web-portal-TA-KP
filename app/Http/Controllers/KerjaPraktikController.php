@@ -180,7 +180,7 @@ class KerjaPraktikController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('kerja-praktik')->with('warning', 'Data Gagal Diperbarui');
+            return \redirect('kerja-praktik')->with('warning', 'Data Gagal Diperbarui!');
         } else {
 
             $daftarkp = DaftarKP::findOrFail($id);
@@ -216,7 +216,7 @@ class KerjaPraktikController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(DaftarKP $daftarkp, $id)
+    public function destroy($id)
     {
 
         $daftarkp = DaftarKP::find($id);

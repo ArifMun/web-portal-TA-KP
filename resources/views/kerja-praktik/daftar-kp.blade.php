@@ -70,49 +70,67 @@
                         @endif
 
                         <div class="card-body">
-                            <div class="row" style="">
-                                <div class="col-2">
-                                    <div class="body-panel mb-2">
-                                        <label class="font-weight-bold h6">Filter Tahun</label>
-                                        <select data-column="11" class="form-control" id="filter-tahun">
-                                            <option value="">-- Pilih Tahun --</option>
-                                            @foreach ($thnakademik as $k)
-                                            <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
-                                            @endforeach
-                                        </select>
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <div class="filter tahun">
+                                                <label class="font-weight-bold h6">Filter Tahun</label>
+                                                <select data-column="11" class="form-control" id="filter-tahun">
+                                                    <option value="">-- Pilih Tahun --</option>
+                                                    @foreach ($thnakademik as $k)
+                                                    <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
+                                </div>
 
-                                    <div class="body-panel">
-                                        <label class="font-weight-bold h6">Filter Status</label>
-                                        <select data-column="7" class="form-control" id="filter-stts">
-                                            <option value="">-- Pilih Status --</option>
-                                            @foreach ($filterStts as $item)
-                                            <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">{{
-                                                $item->stts_pengajuan }}</option>
-                                            @endforeach
-                                        </select>
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <div class="filter tahun">
+                                                <label class="font-weight-bold h6">Filter Status Pengajuan</label>
+                                                <select data-column="7" class="form-control" id="filter-stts">
+                                                    <option value="">-- Pilih Status --</option>
+                                                    @foreach ($filterStts as $item)
+                                                    <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">
+                                                        {{
+                                                        $item->stts_pengajuan }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col-2">
-                                    <div class="body-panel">
-                                        <label class="font-weight-bold p-1 mb-1">Status
-                                            Kerja Praktik </label>
-                                    </div>
-                                    <div class="body-panel col-6 btn-success mb-2">
-                                        <label class="font-weight-bold text-light p-1">Diterima : {{ $kpDiterima}}
-                                        </label>
-                                    </div>
-                                    <div class="body-panel col-6 btn-warning mb-2">
-                                        <label class="font-weight-bold text-light p-1">Tertunda : {{ $kpTertunda }}
-                                        </label>
-                                    </div>
-                                    <div class="body-panel col-6 btn-danger mb-2">
-                                        <label class="font-weight-bold text-light p-1">Ditolak &nbsp;&nbsp;&nbsp;&nbsp;:
-                                            {{
-                                            $kpDitolak
-                                            }}</label>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <label class="font-weight-bold h6">Status Pengajuan</label>
+                                            <div class="row ml-1">
+                                                <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
+                                                    Diterima
+                                                    : {{
+                                                    $kpDiterima}}
+                                                </p>
+                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
+                                                    Tertunda :
+                                                    {{
+                                                    $kpTertunda }}
+                                                </p>
+                                                <p class="font-weight-bold text-light p-1 btn-danger btn-round mr-1">
+                                                    Ditolak
+                                                    :
+                                                    {{
+                                                    $kpDitolak
+                                                    }}</p>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
@@ -809,11 +827,14 @@
                     <input type="hidden" value="{{ $kp->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data </h3>
-                        dengan Nama <span class="text-danger">{{ $kp->mahasiswa->biodata->nama }}</span> dengan No
-                        Induk <span class="text-danger">{{
-                            $kp->mahasiswa->biodata->no_induk
-                            }} </span> ?
+                        <h3>Apakah anda yakin menghapus data
+                            <span class="text-danger text-capitalize">{{ $kp->mahasiswa->biodata->nama }}</span> dengan
+                            NIM
+                            <span class="text-danger">{{
+                                $kp->mahasiswa->biodata->no_induk
+                                }} </span> ?
+                        </h3>
+                        <h4 class="btn btn-warning text-uppercase ">Data Terkait NIM tersebut juga akan terhapus!</h4>
                     </div>
 
                 </div>
@@ -864,20 +885,6 @@
     });
 
 </script>
-{{-- <script>
-    var selectElement = document.getElementById("konsentrasi");
-
-    selectElement.addEventListener("mousedown", function(e) {
-        e.preventDefault(); // Mencegah pemilihan default
-            var originalScrollTop = this.scrollTop;
-
-            e.target.selected = !e.target.selected;
-
-            setTimeout(() => {
-            this.scrollTop = originalScrollTop;
-        }, 0);
-    });
-</script> --}}
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

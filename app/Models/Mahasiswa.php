@@ -29,7 +29,7 @@ class Mahasiswa extends Model
 
     public function daftarta()
     {
-        return $this->hasMany(DaftarTA::class);
+        return $this->hasMany(DaftarTA::class, 'mahasiswa_id');
     }
 
     public function seminarkp()

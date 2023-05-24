@@ -54,6 +54,60 @@
 
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <div class="filter tahun">
+                                                <label class="font-weight-bold h6">Filter Tahun</label>
+                                                <select data-column="7" class="form-control" id="filter-tahun">
+                                                    <option value="">-- Pilih Tahun --</option>
+                                                    @foreach ($thnakademik as $k)
+                                                    <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <div class="filter tahun">
+                                                <label class="font-weight-bold h6">Filter Status</label>
+                                                <select data-column="5" class="form-control" id="filter-stts">
+                                                    <option value="">-- Pilih Status --</option>
+                                                    @foreach ($filterStts as $item)
+                                                    <option value="{{ $item->stts }}" class="text-uppercase">{{
+                                                        $item->stts }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <label class="font-weight-bold h6">Status Bimbingan</label>
+                                            <div class="row ml-1">
+                                                @if (Auth::user()->level == 1)
+                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
+                                                    <b>PROSES : {{ $sttsDosen }}</b>
+                                                </p>
+                                                @elseif(Auth::user()->level == 0)
+                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
+                                                    <b>PROSES : {{ $sttsDosen }}</b>
+                                                </p>
+                                                @endif
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            {{-- <div class="row">
                                 <div class="body-panel col-2">
                                     <label class="font-weight-bold">Filter Status</label>
                                     <select data-column="5" class="form-control" id="filter-stts">
@@ -85,7 +139,7 @@
                                     </div>
                                     @endif
                                 </div>
-                            </div>
+                            </div> --}}
                             <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="bimbingan-kp" class="display table table-striped table-hover">

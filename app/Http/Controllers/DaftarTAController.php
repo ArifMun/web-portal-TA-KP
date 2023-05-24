@@ -6,9 +6,11 @@ use App\Models\DaftarTA;
 use App\Models\Dosen;
 use App\Models\Konsentrasi;
 use App\Models\Mahasiswa;
+use App\Models\SeminarKP;
 use App\Models\TahunAkademik;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rule;
 
@@ -22,12 +24,16 @@ class DaftarTAController extends Controller
     public function index()
     {
         $daftarta    = DaftarTA::all();
-        $mhs         = Mahasiswa::all();
         $dosen       = Dosen::all();
         $thnakademik = TahunAkademik::all();
         $konsentrasi = Konsentrasi::all();
-        $mhsDaftar   = Auth::user()->biodata->mahasiswa;
-        $mhsta       =  DaftarTA::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        $mhs_dDaftar = SeminarKP::where('stts_seminar', '=', 'selesai')->get();
+        $mhsDaftar   = SeminarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->where('stts_seminar', '=', 'selesai')->get();
+        $mhsta       = DaftarTA::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
             } else {
@@ -37,7 +43,7 @@ class DaftarTAController extends Controller
 
         return \view('tugas-akhir.daftar-ta', \compact(
             'daftarta',
-            'mhs',
+            'mhs_dDaftar',
             'dosen',
             'thnakademik',
             'konsentrasi',
@@ -138,7 +144,53 @@ class DaftarTAController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'mahasiswa_id'     => 'required',
+                'd_pembimbing_1'   => 'required',
+                'd_pembimbing_2'   => 'required',
+                'ganti_pembimbing' => 'required',
+                'stts_pengajuan'   => 'required',
+                'stts_ta'          => 'required',
+                'krs'              => 'file|image',
+                'thn_akademik_id'  => 'required',
+                'konsentrasi'      => 'required',
+            ]
+        );
+
+        // \dd($validation);
+        if ($validation->fails()) {
+            return \redirect('daftar-ta')->with('warning', 'Data Gagal Diperbarui!');
+        } else {
+
+            $daftarta = DaftarTA::findOrFail($id);
+            if ($request->file('krs')) {
+                if ($request->oldImage) {
+                    Storage::delete($request->oldImage);
+                }
+                $daftarta->krs = $request->file('krs')->store('file-krs');
+            }
+
+            $input  = $request->input('konsentrasi');
+            $string = \implode(',', $input);
+
+            $daftarta->mahasiswa_id        = $request->mahasiswa_id;
+            $daftarta->d_pembimbing_1      = $request->d_pembimbing_1;
+            $daftarta->d_pembimbing_2      = $request->d_pembimbing_2;
+            $daftarta->thn_akademik_id     = $request->thn_akademik_id;
+            $daftarta->judul               = $request->judul;
+            $daftarta->ganti_pembimbing    = $request->ganti_pembimbing;
+            $daftarta->pembimbing_lama_1   = $request->pembimbing_lama_1;
+            $daftarta->pembimbing_lama_2   = $request->pembimbing_lama_2;
+            $daftarta->stts_pengajuan      = $request->stts_pengajuan;
+            $daftarta->stts_ta             = $request->stts_ta;
+            // $daftarta->krs                 = $request->krs;
+            $daftarta->konsentrasi         = $string;
+            $daftarta->update();
+
+            return \redirect('daftar-ta')->with('success', 'Data Berhasil Diperbarui!');
+        }
     }
 
     /**
@@ -149,6 +201,12 @@ class DaftarTAController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $daftarta = DaftarTA::findOrFail($id);
+        if ($daftarta->krs) {
+            Storage::delete($daftarta->krs);
+        }
+
+        $daftarta->delete();
+        return \redirect('daftar-ta')->with('success', 'Data Berhasil Dihapus!');
     }
 }

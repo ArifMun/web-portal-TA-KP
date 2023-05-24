@@ -2,8 +2,14 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Dosen;
+use App\Models\Mahasiswa;
+use App\Models\SeminarKP;
+use App\Models\BimbinganKP;
+use App\Models\TahunAkademik;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DaftarKP extends Model
 {
@@ -52,5 +58,21 @@ class DaftarKP extends Model
     public function bimbingankp()
     {
         return $this->hasMany(BimbinganKP::class);
+    }
+
+    public function d_kp_diterima()
+    {
+        return self::where('stts_pengajuan', '=', 'diterima')->get();
+    }
+
+    public function m_kp_diterima()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            } else {
+                $q->where('id', '=', Auth::user());
+            }
+        })->where('stts_pengajuan', '=', 'diterima')->get();
     }
 }

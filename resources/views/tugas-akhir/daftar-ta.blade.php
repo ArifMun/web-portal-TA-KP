@@ -130,6 +130,7 @@
                                             <th>KRS</th>
                                             <th>Tahun</th>
                                             <th>Konsentrasi</th>
+                                            <th>Tanggal Daftar</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -205,6 +206,7 @@
                                                     </i> </a>
 
                                             <td>{{ $item->tahunakademik->tahun }} </td>
+                                            <td>{{ $item->create_at }}</td>
                                             <td>{{ $item->konsentrasi }}</td>
                                             <td>
                                                 @if ($item->stts_pengajuan == 'diterima')
@@ -297,11 +299,12 @@
 
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
+                                            <td>{{ $row->created_at }}</td>
                                             <td>
-                                                <a href="kerja-praktik/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewDataBarang{{ $row->id }}"
+                                                {{-- <a href="kerja-praktik/view-slip/{{ $row->id }}"
+                                                    data-toggle="modal" data-target="#viewDataBarang{{ $row->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
+                                                    </i> </a> --}}
                                                 <a href="daftar-ta/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditTA{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
@@ -339,7 +342,7 @@
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="daftar-ta" id="ganti">
+            <form method="POST" enctype="multipart/form-data" action="daftar-ta" id="tambah">
                 @csrf
                 <div class="modal-body">
 
@@ -354,17 +357,20 @@
                                     required>
                                     <option value="" hidden="">-- Pilih NIM --</option>
 
-                                    @if (Auth::user()->level==0)
-                                    <option value="{{ $mhsDaftar->id }}">{{ $mhsDaftar->biodata->no_induk }} - {{
-                                        $mhsDaftar->biodata->nama }}
+                                    @if (Auth::user()->level==0 )
+                                    @foreach ($mhsDaftar as $item)
+
+                                    <option value="{{ $item->mahasiswa_id }}">{{ $item->mahasiswa->biodata->no_induk }}
+                                        - {{
+                                        $item->mahasiswa->biodata->nama }}
                                     </option>
+                                    @endforeach
 
                                     @else
-                                    @foreach ($mhs as $k)
-                                    <option value="{{ $k->id}}">{{ $k->biodata->no_induk
-                                        }} - {{ $k->biodata->nama
-                                        }}</option>
-
+                                    @foreach ($mhs_dDaftar as $item)
+                                    <option value="{{ $item->mahasiswa_id}}">{{ $item->mahasiswa->biodata->no_induk
+                                        }} - {{ $item->mahasiswa->biodata->nama}}
+                                    </option>
                                     @endforeach
 
                                     @endif
@@ -452,23 +458,6 @@
                         </div>
                     </div>
 
-                    {{-- <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label>Judul</label>
-                                <input type="text" class="form-control" name="judul" placeholder="Judul ..">
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Status Tugas Akhir </label>
-                                <select class="form-control" name="stts_ta" required>
-                                    <option value="" hidden="">-- Status Tugas Akhir --</option>
-                                    <option value="baru">Baru</option>
-                                    <option value="melanjutkan">Melanjutkan</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div> --}}
-
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
@@ -484,8 +473,8 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control" name="konsentrasi[]" id="konsentrasi" size="5" required
-                                    multiple>
+                                <select class="form-control konsentrasi" name="konsentrasi[]" id="konsentrasi" size="5"
+                                    required multiple>
                                     <option value="" hidden="">-- Konsentrasi --</option>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
@@ -514,8 +503,8 @@
 
 {{-- Edit --}}
 @foreach ($daftarta as $item)
-<div class="modal fade" id="modalEditTA{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade modalEditTA" id="modalEditTA{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -525,7 +514,7 @@
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="daftar-ta/{{ $item->id }}">
+            <form method="POST" enctype="multipart/form-data" action="daftar-ta/{{ $item->id }}" id="edit">
                 @method('put')
                 @csrf
                 <div class="modal-body">
@@ -564,7 +553,7 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label class="control-label">Pilihan ke-2 </label>
+                                <label class="control-label">Pilihan Dosen Pembimbing 2 </label>
                                 <select class="form-control" name="d_pembimbing_2" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-2 --</option>
                                     @foreach ($dosen as $k)
@@ -591,20 +580,8 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label class="control-label">Semester </label>
-                                <input type="number" class="form-control" name="semester" value="{{ $item->semester }}"
-                                    placeholder="Semester .." required>
-                            </div>
-
-
-                        </div>
-                    </div>
-
-                    <div class="form-group required ">
-                        <div class="row">
-                            <div class="col">
                                 <label class="control-label">Ganti Dosen Pembimbing </label>
-                                <select class="form-control" name="ganti_pembimbing" required>
+                                <select class="form-control" name="ganti_pembimbing" id="d_ganti_1" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
                                     <option @php if($item->ganti_pembimbing == 'iya') echo 'selected';
                                         @endphp value="iya">Iya</option>
@@ -612,12 +589,29 @@
                                         @endphp value="tidak">Tidak</option>
                                 </select>
                             </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required" id="kolomBaru_1" style="display: none">
+                        <div class="row">
                             <div class="col">
-                                <label>Dosen Pembimbing Lama</label>
-                                <select class="form-control" name="pembimbing_lama">
+                                <label>Dosen Pembimbing Lama 1</label>
+                                <select class="form-control" name="pembimbing_lama_1">
                                     <option value="" hidden="">-- Pembimbing Lama --</option>
                                     @foreach ($dosen as $k)
-                                    <option value="{{ $k->id }}" {{ $k->id == $item->pembimbing_lama }}>{{
+                                    <option value="{{ $k->id }}" {{ $k->id == $item->pembimbing_lama_1 ?
+                                        'selected':''}}>{{
+                                        $k->biodata->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label>Dosen Pembimbing Lama 2</label>
+                                <select class="form-control" name="pembimbing_lama_2">
+                                    <option value="" hidden="">-- Pembimbing Lama --</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}" {{ $k->id == $item->pembimbing_lama_2 ? 'selected'
+                                        :''}}>{{
                                         $k->biodata->nama }}</option>
                                     @endforeach
                                 </select>
@@ -665,17 +659,29 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <input type="text" class="form-control" value="{{ $item->konsentrasi }}"
-                                    name="konsentrasi" readonly>
+                                <select class="form-control konsentrasi-select" name="konsentrasi[]"
+                                    id="konsentrasi_{{ $item->id }}" size="5" multiple required>
+                                    <option value="" hidden="">-- Konsentrasi --</option>
+
+                                    @foreach($konsentrasi as $option)
+                                    <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
+                                        nama_konsentrasi,
+                                        explode(',',
+                                        $item->konsentrasi)) ? 'selected' : '' }}>
+                                        {{ $option->nama_konsentrasi }}
+                                    </option>
+                                    @endforeach
+
+                                </select>
                             </div>
                             <div class="col">
-                                <label for="image" class="form-label control-label">Slip pembayaran </label>
-                                <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
-                                <input type="file" class="form-control picture" id="slip_pembayarans"
-                                    name="slip_pembayaran" onchange="Previews()">
+                                <label for="image" class="form-label ">Kartu Rencana Studi </label>
+                                <input type="hidden" name="oldImage" value="{{ $item->krs }}">
+                                <input type="file" class="form-control picture" id="krs" name="krs"
+                                    onchange="Previews()">
 
-                                @if ($item->slip_pembayaran)
-                                <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
+                                @if ($item->krs)
+                                <img src="{{ asset('storage/' . $item->krs) }}"
                                     class="img-preview img-fluid mb-3 col-sm-4 mt-1" id="img-p">
                                 @else
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="" id="img-p">
@@ -705,7 +711,7 @@
 </div>
 @endforeach
 
-{{-- view Slip Pembayaran --}}
+{{-- view KRS --}}
 @foreach ($daftarta as $item)
 <div class="modal fade" id="viewKRS{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
@@ -742,31 +748,35 @@
 @endforeach
 
 {{-- Hapus --}}
-{{-- @foreach ($daftarkp as $kp)
-<div class="modal fade" id="modalHapusKP{{ $kp->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+@foreach ($daftarta as $item)
+<div class="modal fade" id="modalHapusTA{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-open">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Data KP</h3>
+                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Data TA</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="/kerja-praktik/{{ $kp->id }}">
+            <form method="POST" enctype="multipart/form-data" action="/daftar-ta/{{ $item->id }}">
                 @method('delete')
                 @csrf
                 <div class="modal-body">
 
-                    <input type="hidden" value="{{ $kp->id }}" name="id" required>
+                    <input type="hidden" value="{{ $item->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data </h>
-                            dengan Nama <span class="text-danger">{{ $kp->mahasiswa->biodata->nama }}</span> dengan No
-                            Induk <span class="text-danger">{{
-                                $kp->mahasiswa->biodata->no_induk
+                        <h3>Apakah anda yakin menghapus data
+                            dari <span class="text-danger text-capitalize">{{ $item->mahasiswa->biodata->nama }}</span>
+                            dengan
+                            NIM
+                            <span class="text-danger">{{
+                                $item->mahasiswa->biodata->no_induk
                                 }} </span> ?
+                        </h3>
+                        <h4 class="btn btn-warning text-uppercase ">Data Terkait NIM tersebut juga akan terhapus!</h4>
                     </div>
 
                 </div>
@@ -780,7 +790,7 @@
         </div>
     </div>
 </div>
-@endforeach --}}
+@endforeach
 
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script>
@@ -834,18 +844,30 @@
 
 </script>
 <script>
-    var selectElement = document.getElementById("konsentrasi");
+    // Tambah
+    document.addEventListener('DOMContentLoaded', function() {
+    var selectElements = document.getElementsByClassName("konsentrasi");
+    
+    for (var i = 0; i < selectElements.length; i++) { var selectElement=selectElements[i];
+            selectElement.addEventListener("mousedown", function(e) { 
+                e.preventDefault(); e.target.selected=!e.target.selected;
+                this.focus(); 
+                }); 
+            } 
+        });
 
-    selectElement.addEventListener("mousedown", function(e) {
-        e.preventDefault(); // Mencegah pemilihan default
-            var originalScrollTop = this.scrollTop;
+    // Edit
+    document.addEventListener('DOMContentLoaded', function() {
+        var selectElements = document.getElementsByClassName("konsentrasi-select");
 
-            e.target.selected = !e.target.selected;
-
-            setTimeout(() => {
-            this.scrollTop = originalScrollTop;
-        }, 0);
-    });
+        for (var i = 0; i < selectElements.length; i++) { 
+            var selectElement=selectElements[i];
+                    selectElement.addEventListener("mousedown", function(e) {
+                    e.preventDefault(); e.target.selected=!e.target.selected;
+                    this.focus(); 
+                }); 
+            } 
+        });
 </script>
 <script>
     function Previews() {
@@ -864,36 +886,43 @@
         // imgPreview.src = blob;
     }
 
-    // const d_ganti = document.getElementById('d_ganti');
-
-    // d_ganti.addEventListener('change',function(){
-    //     if(d_ganti.value === 'iya'){
-    //         document.getElementById('kolomBaru').style.display = 'block';
-    //     }else if(d_ganti.value === ''){
-    //         document.getElementById('kolomBaru').style.display = 'none';
-    //     }else{
-    //         document.getElementById('kolomBaru').style.display = 'none';
-    //     }
-    // });
+    // Tambah
     $(document).ready(function() {
-        toggleKolomBaru('#ganti');
+        toggleKolomBaru('#tambah');
     $('#d_ganti').on('change', function() {
-    
-        toggleKolomBaru('#ganti');
+        toggleKolomBaru('#tambah');
     });
     
     function toggleKolomBaru(formId) {
-        if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
-            $(formId + ' #kolomBaru').show();
-        } else {
-            $(formId + ' #kolomBaru').hide();
+            if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
+                $(formId + ' #kolomBaru').show();
+            } else {
+                $(formId + ' #kolomBaru').hide();
+            }
         }
-    }
     });
+
 </script>
 
+{{-- Edit --}}
 <script>
-
-
+    $(document).ready(function() {
+        $('.modalEditTA').on('show.bs.modal', function() {
+            var formId = '#' + $(this).attr('id');
+            toggleKolomBaru_1(formId);
+        
+        $(formId + ' #d_ganti_1').on('change', function() {
+            toggleKolomBaru_1(formId);
+        });
+        
+        function toggleKolomBaru_1(formId) {
+                if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
+                    $(formId + ' #kolomBaru_1').show();
+                } else {
+                    $(formId + ' #kolomBaru_1').hide();
+                }
+            }
+        });
+    });
 </script>
 @endsection

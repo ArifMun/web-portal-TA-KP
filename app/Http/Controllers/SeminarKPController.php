@@ -27,29 +27,19 @@ class SeminarKPController extends Controller
      */
     public function index()
     {
+        $s_kp        = new SeminarKP();
+        $d_kp        = new DaftarKP();
         $seminarkp   = SeminarKP::all();
-        $thnakademik = TahunAkademik::all();
+        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
         $dosen       = Dosen::all();
-        $sSelesai   = SeminarKP::where('stts_seminar', '=', 'selesai')->get()->count();
-        $sTerjadwal   = SeminarKP::where('stts_seminar', '=', 'terjadwal')->get()->count();
-        $sProses   = SeminarKP::where('stts_seminar', '=', 'proses')->get()->count();
-        $filterStts  = SeminarKP::distinct()->select('stts_seminar')->get();
-        $daftarkp    = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get();
-        $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
-            }
-        })->where('stts_pengajuan', '=', 'diterima')->get();
+        $sSelesai    = $s_kp->s_Selesai();
+        $sTerjadwal  = $s_kp->s_Terjadwal();
+        $sProses     = $s_kp->s_Proses();
+        $filterStts  = $s_kp->filter();
+        $daftarkp    = $d_kp->d_kp_diterima();
+        $mhskps      = $d_kp->m_kp_diterima();
+        $seminarmhs = $s_kp->m_seminar();
 
-        $seminarmhs = SeminarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
-            }
-        })->get();
         return \view('kerja-praktik.seminar-kp', \compact(
             'seminarkp',
             'seminarmhs',
