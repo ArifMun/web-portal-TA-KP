@@ -14,7 +14,7 @@
                 </li>
 
                 <li
-                    class="nav-item {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*')? 'active' : '' }}">
+                    class="nav-item {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') || Request()->is('bimbingan-kp*') ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-user"></i>
                         <p>Kerja Praktik</p>
@@ -27,21 +27,22 @@
                                     <span class="sub-item">Daftar KP</span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
-                                <a href="seminar-kp">
-                                    <span class="sub-item">Daftar Seminar KP</span>
-                                </a>
-                            </li>
                             <li class="nav-item {{ Request()->is('bimbingan-kp')? 'active' : '' }}">
                                 <a href="bimbingan-kp">
                                     <span class="sub-item">Bimbingan KP</span>
                                 </a>
                             </li>
+                            <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
+                                <a href="seminar-kp">
+                                    <span class="sub-item">Daftar Seminar KP</span>
+                                </a>
+                            </li>
+
                         </ul>
                     </div>
                 </li>
 
-                <li class="nav-item">
+                <li class="nav-item {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*')? 'active' : '' }}">
                     <a data-toggle="collapse" href="#forms">
                         <i class="fas fa-user-graduate"></i>
                         <p>Tugas Akhir</p>
@@ -54,7 +55,11 @@
                                     <span class="sub-item">Daftar TA</span>
                                 </a>
                             </li>
-
+                            <li class="nav-item {{ Request()->is('sidang-ta')? 'active' : '' }}">
+                                <a href="sidang-ta">
+                                    <span class="sub-item">Daftar Sidang TA</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

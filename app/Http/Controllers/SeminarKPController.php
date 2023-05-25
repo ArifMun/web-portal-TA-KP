@@ -2,15 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use id;
 use App\Models\Dosen;
 use App\Models\Biodata;
 use App\Models\DaftarKP;
 use App\Models\SeminarKP;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use App\Http\Controllers\Controller;
-use App\Models\Mahasiswa;
 use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -27,18 +24,20 @@ class SeminarKPController extends Controller
      */
     public function index()
     {
-        $s_kp        = new SeminarKP();
-        $d_kp        = new DaftarKP();
         $seminarkp   = SeminarKP::all();
         $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
         $dosen       = Dosen::all();
+
+        $s_kp        = new SeminarKP();
         $sSelesai    = $s_kp->s_Selesai();
         $sTerjadwal  = $s_kp->s_Terjadwal();
         $sProses     = $s_kp->s_Proses();
         $filterStts  = $s_kp->filter();
+        $seminarmhs  = $s_kp->m_seminar();
+
+        $d_kp        = new DaftarKP();
         $daftarkp    = $d_kp->d_kp_diterima();
         $mhskps      = $d_kp->m_kp_diterima();
-        $seminarmhs = $s_kp->m_seminar();
 
         return \view('kerja-praktik.seminar-kp', \compact(
             'seminarkp',
@@ -78,7 +77,7 @@ class SeminarKPController extends Controller
             [
                 'mahasiswa_id'      => 'required',
                 'daftarkp_id'       => 'required|unique:seminar_kp',
-                'form_bimbingan'    => 'required|image|file',
+                'form_bimbingan'    => 'required|image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
                 // 'jam_seminar'    => 'required',
                 'stts_seminar'      => 'required',
@@ -141,7 +140,7 @@ class SeminarKPController extends Controller
             [
                 'mahasiswa_id'      => 'required',
                 'daftarkp_id'       => 'required',
-                'form_bimbingan'    => 'image|file',
+                'form_bimbingan'    => 'image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
                 // 'jam_seminar'    => 'required',
                 'stts_seminar'      => 'required',

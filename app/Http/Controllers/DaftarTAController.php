@@ -23,23 +23,21 @@ class DaftarTAController extends Controller
      */
     public function index()
     {
+        $s_kp        = new SeminarKP();
+        $mhs_dDaftar = $s_kp->daftar_ta();
+        $mhsDaftar   = $s_kp->m_daftar_ta();
+
+        $d_ta        = new DaftarTA();
+        $filterStts  = $d_ta->filter();
+        $d_diterima  = $d_ta->d_diterima();
+        $d_tertunda  = $d_ta->d_tertunda();
+        $d_ditolak   = $d_ta->d_ditolak();
+        $mhsta       = $d_ta->m_list_ta();
         $daftarta    = DaftarTA::all();
         $dosen       = Dosen::all();
-        $thnakademik = TahunAkademik::all();
+        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
-        $mhs_dDaftar = SeminarKP::where('stts_seminar', '=', 'selesai')->get();
-        $mhsDaftar   = SeminarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            }
-        })->where('stts_seminar', '=', 'selesai')->get();
-        $mhsta       = DaftarTA::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
-            }
-        })->get();
+
 
         return \view('tugas-akhir.daftar-ta', \compact(
             'daftarta',
@@ -48,7 +46,11 @@ class DaftarTAController extends Controller
             'thnakademik',
             'konsentrasi',
             'mhsta',
-            'mhsDaftar'
+            'mhsDaftar',
+            'filterStts',
+            'd_diterima',
+            'd_tertunda',
+            'd_ditolak'
         ));
     }
 

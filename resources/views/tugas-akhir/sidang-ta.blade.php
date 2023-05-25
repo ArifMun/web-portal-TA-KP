@@ -29,7 +29,7 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Seminar Kerja Praktik</h4>
+                <h4 class="page-title">Sidang Tugas Akhir</h4>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -37,8 +37,8 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
-                                <a href="/seminar-kp/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarSeminar">
+                                <a href="/sidang-ta/daftar" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalDaftarSidang">
                                     <i class="fa fa-plus"></i>
                                     Daftar
                                 </a>
@@ -46,7 +46,7 @@
                         </div>
 
                         <div class="card-body">
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
@@ -106,7 +106,7 @@
                                     </div>
                                 </div>
 
-                            </div>
+                            </div> --}}
                             <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="seminar-kp" class="display table table-striped table-hover">
@@ -115,84 +115,99 @@
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
-                                            <th>Dosen Pembimbing</th>
-                                            <th>Status Seminar</th>
-                                            <th>Semester</th>
-                                            <th>Form Bimbingan</th>
+                                            <th>Dosen Pembimbing 1</th>
+                                            <th>Dosen Pembimbing 2</th>
+                                            <th>Status Sidang</th>
+                                            <th>Form Bimbingan 1</th>
+                                            <th>Form Bimbingan 2</th>
                                             <th>Slip Pembayaran</th>
                                             <th>Tahun</th>
                                             <th>Judul</th>
                                             <th>Catatan</th>
-                                            <th>Tanggal Seminar</th>
-                                            <th>Jam Seminar</th>
+                                            <th>Tanggal Sidang</th>
+                                            <th>Jam Sidang</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
 
                                     @if (Auth::user()->level==0)
                                     <tbody>
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->seminarkp))
-                                        @foreach ($seminarmhs as $item)
-                                        {{-- {{ $item }} --}}
+                                        @if (!empty(Auth::user()->biodata->mahasiswa->sidangta))
+                                        @foreach ($m_list as $item)
                                         <tr align="center">@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+
                                             <td>
                                                 @foreach ($dosen as $k)
-                                                {{ $k->id == $item->daftarkp->d_pembimbing_1 ?
+                                                {{ $k->id == $item->daftarta->d_pembimbing_1 ?
+                                                $k->biodata->nama :''
+                                                }}
+                                                @endforeach
+                                            </td>
+                                            <td>
+                                                @foreach ($dosen as $k)
+                                                {{ $k->id == $item->daftarta->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
 
-                                            @if ($item->daftarkp->seminarkp->stts_seminar=='proses')
+                                            @if ($item->daftarta->seminarkp->stts_sidang=='proses')
                                             <td>
                                                 <a
                                                     class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
+                                                    $item->daftarta->seminarkp->stts_sidang }}</a>
                                             </td>
-                                            @elseif($item->daftarkp->seminarkp->stts_seminar=='selesai')
+                                            @elseif($item->daftarta->seminarkp->stts_sidang=='selesai')
                                             <td>
                                                 <a
                                                     class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
+                                                    $item->daftarta->seminarkp->stts_sidang }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
                                                     class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
+                                                    $item->daftarta->seminarkp->stts_sidang }}</a>
                                             </td>
                                             @endif
 
-                                            <td>{{ $item->daftarkp->semester }}</td>
-
-                                            <td><a href="seminar-kp/view-form/{{ $item->daftarkp->seminarkp->id }}"
-                                                    data-toggle="modal"
-                                                    data-target="#viewForm{{ $item->daftarkp->seminarkp->id }}"
+                                            <td><a href="sidang-ta/view-form_1/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewForm_1{{ $row->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="seminar-kp/view-slip/{{ $item->daftarkp->id}}"
-                                                    data-toggle="modal" data-target="#viewSlip{{ $item->daftarkp->id}}"
+                                            <td><a href="sidang-ta/view-form_2/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewForm_2{{ $row->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
-                                            <td>{{ $item->daftarkp->tahunakademik->tahun }} </td>
-                                            <td>{{ $item->daftarkp->seminarkp->judul }}</td>
-                                            <td>{{ $item->daftarkp->seminarkp->catatan }}</td>
-                                            <td>{{ $item->daftarkp->seminarkp->tgl_seminar }}</td>
-                                            <td>{{ $item->daftarkp->seminarkp->jam_seminar }}</td>
+                                            <td><a href="sidang-ta/view-slip/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewSlip{{ $row->id }}"
+                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i> </a>
+                                            </td>
+
+                                            <td>{{ $row->daftarta->tahunakademik->tahun }}</td>
+                                            <td>{{ $row->judul }}</td>
+                                            <td>{{ $row->catatan }}</td>
+                                            <td>{{ $row->tgl_sidang }}</td>
+                                            <td>{{ $row->jam_sidang }}</td>
                                             <td>
-                                                <a href="seminar-kp/edit/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#modalEditSeminar{{ $item->id }}"
+                                                <a href="sidang-ta/edit/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalEditSidang{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
+                                                    </i> </a>
+                                                <a href="sidang-ta/hapus/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusSidang{{ $row->id }}"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
                                         </tr>
@@ -208,69 +223,81 @@
                                     </tbody>
 
                                     {{-- All- --}}
-                                    @elseif(Auth::user()->level == 1)
+                                    @elseif(Auth::user()->level !=0)
                                     <tbody> @php $no=1; @endphp
-                                        @foreach ($seminarkp as $row)
+                                        @foreach ($s_list as $row)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $row->daftarkp->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>
+                                            <td>{{ $row->daftarta->mahasiswa->biodata->no_induk }}</td>
+                                            <td>{{ $row->daftarta->mahasiswa->biodata->nama }}</td>
                                             <td>
-                                                @foreach ($dosen as $k)
-                                                {{ $k->id == $row->daftarkp->d_pembimbing_1 ?
-                                                $k->biodata->nama :''
+                                                @foreach ($dosen as $d)
+                                                {{ $d->id == $row->daftarta->d_pembimbing_1 ?
+                                                $d->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            @if ($row->stts_seminar=='proses')
+
+                                            <td>
+                                                @foreach ($dosen as $d)
+                                                {{ $d->id == $row->daftarta->d_pembimbing_2 ?
+                                                $d->biodata->nama :''
+                                                }}
+                                                @endforeach
+                                            </td>
+                                            @if ($row->stts_sidang=='proses')
                                             <td>
                                                 <a
                                                     class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $row->stts_seminar }}</a>
+                                                    $row->stts_sidang }}</a>
                                             </td>
-                                            @elseif($row->stts_seminar=='selesai')
+                                            @elseif($row->stts_sidang=='selesai')
                                             <td>
                                                 <a
                                                     class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $row->stts_seminar }}</a>
+                                                    $row->stts_sidang }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
                                                     class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $row->stts_seminar }}</a>
+                                                    $row->stts_sidang }}</a>
                                             </td>
                                             @endif
 
-                                            <td>{{ $row->daftarkp->semester }}</td>
-
-                                            <td><a href="seminar-kp/view-form/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewForm{{ $row->id }}"
+                                            <td><a href="sidang-ta/view-form_1/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewForm_1{{ $row->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="seminar-kp/view-slip/{{ $row->id }}" data-toggle="modal"
+                                            <td><a href="sidang-ta/view-form_2/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewForm_2{{ $row->id }}"
+                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i> </a>
+                                            </td>
+
+                                            <td><a href="sidang-ta/view-slip/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $row->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
-                                            <td>{{ $row->daftarkp->tahunakademik->tahun }}</td>
+                                            <td>{{ $row->daftarta->tahunakademik->tahun }}</td>
                                             <td>{{ $row->judul }}</td>
                                             <td>{{ $row->catatan }}</td>
-                                            <td>{{ $row->tgl_seminar }}</td>
-                                            <td>{{ $row->jam_seminar }}</td>
+                                            <td>{{ $row->tgl_sidang }}</td>
+                                            <td>{{ $row->jam_sidang }}</td>
                                             <td>
-                                                <a href="seminar-kp/edit/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalEditSeminar{{ $row->id }}"
+                                                <a href="sidang-ta/edit/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalEditSidang{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="seminar-kp/hapus/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalHapusSeminar{{ $row->id }}"
+                                                <a href="sidang-ta/hapus/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusSidang{{ $row->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
@@ -291,49 +318,41 @@
 </div>
 
 {{-- Tambah --}}
-<div class="modal fade" id="modalDaftarSeminar" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="modalDaftarSidang" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Daftar Seminar Kerja Praktik</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Daftar Sidang Tugas Akhir</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="seminar-kp">
+            <form method="POST" enctype="multipart/form-data" action="sidang-ta">
                 @csrf
                 <div class="modal-body">
-                    {{-- <select name="stts_pengajuan" id="" hidden>
-                        <option value="tertunda" selected>tertunda</option>
-                    </select> --}}
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
-                                    id="daftarkp_id" required>
+                                <select class="form-control" name="daftar_ta_id" id="daftar_ta_id" size="1"
+                                    onchange="no_mahasiswa()" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
                                     @if (Auth::user()->level==0 )
-                                    @foreach ($mhskps as $item)
-                                    <option value="{{ $item->id}}">{{
+                                    @foreach ($d_mhs_ta as $item)
+                                    <option value=" {{ $item->id}}">{{
                                         $item->mahasiswa->biodata->no_induk
                                         }} - {{ $item->mahasiswa->biodata->nama
                                         }} - {{ $item->tahunakademik->tahun }}
-                                        {{-- {{
-                                        $item->daftarkp->mahasiswa->biodata->nama
-                                        }} - {{
-                                        $item->daftarkp->tahunakademik->tahun
-                                        }} --}}
                                     </option>
                                     @endforeach
                                     <input type="hidden" value="{{ Auth::user()->biodata->mahasiswa->id }}"
                                         name="mahasiswa_id">
                                     @else
 
-                                    @foreach ($daftarkp as $k)
+                                    @foreach ($daftarta as $k)
                                     <option value="{{ $k->id }}">{{
                                         $k->mahasiswa->biodata->no_induk
                                         }} - {{ $k->mahasiswa->biodata->nama
@@ -343,39 +362,15 @@
 
                                     @endif
                                 </select>
-                            </div>
-                            <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label class="control-label">Tanggal Seminar </label>
-                                <input type="date" class="form-control" name="tgl_seminar">
+                                <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
                             </div>
                             <div class="col">
-                                <label class="control-label">
-                                    Jam Seminar
-                                </label>
-                                <input type="time" class="form-control" name="jam_seminar">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label class="control-label">Judul Kerja Praktik </label>
-                                <input type="text" class="form-control" name="judul">
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Status Seminar </label>
-                                <select class="form-control" name="stts_seminar" required>
+                                <label class="control-label">Status Sidang </label>
+                                <select class="form-control" name="stts_sidang" size="1" required>
                                     @if (Auth::user()->level==0)
                                     <option value="proses" @readonly(true)>Proses</option>
                                     @else
-                                    <option value="" hidden="">-- Status KP --</option>
+                                    <option value="" hidden="">-- Status Sidang --</option>
                                     <option value="proses">Proses</option>
                                     <option value="terjadwal">Terjadwal</option>
                                     <option value="selesai">Selesai</option>
@@ -385,19 +380,64 @@
                         </div>
                     </div>
 
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Tanggal Sidang </label>
+                                <input type="date" class="form-control" name="tgl_sidang" size="1">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">
+                                    Jam Sidang
+                                </label>
+                                <input type="time" class="form-control" name="jam_sidang" size="1">
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Catatan</label>
-                                <input type="text" class="form-control" name="catatan">
+                                <label class="control-label">Judul Tugas Akhir </label>
+                                <input type="text" class="form-control" name="judul" size="1">
                             </div>
                             <div class="col">
-                                <label for="image" class="form-label control-label">Form Bimbingan</label>
-                                <input type="file" class="form-control picture" id="image1" name="form_bimbingan"
+                                <label>Catatan</label>
+                                <input type="text" class="form-control" name="catatan" size="1">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label for="image" class="form-label control-label">Form Bimbingan 1</label>
+                                <input type="file" class="form-control picture" id="image1" name="f_bimbingan_1"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
                             </div>
+                            <div class="col">
+                                <label for="image" class="form-label control-label">Form Bimbingan 2</label>
+                                <input type="file" class="form-control picture" id="image2" name="f_bimbingan_2"
+                                    onchange="previewImage(2)">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview2">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="image" class="form-label control-label">Slip Pembayaran</label>
+                                <input type="file" class="form-control picture" name="slip_pembayaran"
+                                    onchange="previewImage(3)" id="image3">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview3">
+                            </div>
+                            {{-- <div class="col">
+                                <label for="image" class="form-label control-label">Form Bimbingan 2</label>
+                                <img class="img-preview img-fluid mb-3 col-sm-5" id="preview1">
+                                <input type="file" class="form-control picture" id="f_bimbingan_2" name="f_bimbingan_2"
+                                    onchange="previewImage()">
+                            </div> --}}
                         </div>
                     </div>
 
@@ -418,72 +458,46 @@
 </div>
 
 {{-- Edit --}}
-@foreach ($seminarkp as $item)
-<div class="modal fade" id="modalEditSeminar{{ $item->id }}" tabindex="-1" role="dialog"
+@foreach ($s_list as $item)
+<div class="modal fade" id="modalEditSidang{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Data KP</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Data Sidang</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="seminar-kp/{{ $item->id }}">
+            <form method="POST" enctype="multipart/form-data" action="sidang-ta/{{ $item->id }}">
                 @method('put')
                 @csrf
                 <div class="modal-body">
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label"> NIM</label>
-                                <select class="form-control" name="daftarkp_id" id="daftarkp_id">
-                                    <option value="{{ $item->daftarkp_id }}">{{
-                                        $item->daftarkp->mahasiswa->biodata->no_induk }} - {{
-                                        $item->daftarkp->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarkp->tahunakademik->tahun }}</option>
+                                <label class="control-label">NIM</label>
+                                <select class="form-control" name="daftar_ta_id" id="daftar_ta_id">
+                                    <option value="{{ $item->daftar_ta_id }}">{{
+                                        $item->daftarta->mahasiswa->biodata->no_induk }} - {{
+                                        $item->daftarta->mahasiswa->biodata->nama }} - {{
+                                        $item->daftarta->tahunakademik->tahun }}</option>
                                 </select>
                                 <input type="hidden" value="{{ $item->mahasiswa_id }}" name="mahasiswa_id">
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
                             <div class="col">
-                                <label class="control-label">&nbsp;Tanggal Seminar</label>
-                                <input type="date" class="form-control" name="tgl_seminar"
-                                    value="{{ $item->tgl_seminar }}">
-                            </div>
-                            <div class="col">
-                                <label class="control-label">
-                                    Jam Seminar
-                                </label>
-                                <input type="time" class="form-control" name="jam_seminar"
-                                    value="{{ $item->jam_seminar }}">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label class="control-label"> Judul Kerja Praktik </label>
-                                <input type="text" class="form-control" name="judul" value="{{ $item->judul }}">
-                            </div>
-                            <div class="col">
-                                <label class="control-label"> Status Seminar</label>
-                                <select class="form-control" name="stts_seminar" required>
+                                <label class="control-label"> Status Sidang</label>
+                                <select class="form-control" name="stts_sidang" required>
                                     @if (Auth::user()->level==0)
                                     <option value="proses">Proses</option>
                                     @else
-                                    <option value="" hidden="">-- Status Seminar --</option>
-                                    <option @php if($item->stts_seminar == 'proses') echo 'selected';
+                                    <option value="" hidden="">-- Status Sidang --</option>
+                                    <option @php if($item->stts_sidang == 'proses') echo 'selected';
                                         @endphp value="proses">Proses</option>
-                                    <option @php if($item->stts_seminar == 'terjadwal') echo 'selected';
+                                    <option @php if($item->stts_sidang == 'terjadwal') echo 'selected';
                                         @endphp value="terjadwal">Terjadwal</option>
-                                    <option @php if($item->stts_seminar == 'selesai') echo 'selected';
+                                    <option @php if($item->stts_sidang == 'selesai') echo 'selected';
                                         @endphp value="selesai">Selesai</option>
                                     @endif
                                 </select>
@@ -491,23 +505,82 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Catatan</label>
-                                <input type="text" class="form-control" value="{{ $item->catatan }}">
+                                <label class="control-label">Tanggal Sidang</label>
+                                <input type="date" class="form-control" name="tgl_sidang"
+                                    value="{{ $item->tgl_sidang }}">
                             </div>
                             <div class="col">
-                                <label for="image" class="form-label">Form Bimbingan</label>
-                                <input type="hidden" name="oldImage" value="{{ $item->form_bimbingan }}">
-                                <input type="file" class="form-control picture" id="image2" name="form_bimbingan"
-                                    onchange="previewImage(2)">
+                                <label class="control-label">
+                                    Jam Sidang
+                                </label>
+                                <input type="time" class="form-control" name="jam_sidang"
+                                    value="{{ $item->jam_sidang }}">
+                            </div>
+                        </div>
+                    </div>
 
-                                @if ($item->form_bimbingan)
-                                <img src="{{ asset('storage/' . $item->form_bimbingan) }}"
-                                    class="img-preview img-fluid mt-2 col-sm-4 mt-1" id="preview2">
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label"> Judul Tugas Akhir </label>
+                                <input type="text" class="form-control" name="judul" value="{{ $item->judul }}">
+                            </div>
+                            <div class="col">
+                                <label>Catatan</label>
+                                <input type="text" class="form-control" name="catatan" value="{{ $item->catatan }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label for="image" class="form-label control-label">Form Bimbingan 1</label>
+                                <input type="hidden" name="oldImage1" value="{{ $item->f_bimbingan_1 }}">
+                                <input type="file" class="form-control picture" id="image4" name="f_bimbingan_1"
+                                    onchange="previewImage(4)">
+
+                                @if ($item->f_bimbingan_1)
+                                <img src="{{ asset('storage/' . $item->f_bimbingan_1) }}"
+                                    class="img-preview img-fluid mt-2 col-sm-5" id="preview4">
                                 @else
-                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview2">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview4">
+                                @endif
+                                <p class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</p>
+                            </div>
+                            <div class="col">
+                                <label for="image" class="form-label control-label">Form Bimbingan 2</label>
+                                <input type="hidden" name="oldImage2" value="{{ $item->f_bimbingan_2 }}">
+                                <input type="file" class="form-control picture" id="image5" name="f_bimbingan_2"
+                                    onchange="previewImage(5)">
+
+                                @if ($item->f_bimbingan_2)
+                                <img src="{{ asset('storage/' . $item->f_bimbingan_2) }}"
+                                    class="img-preview img-fluid mt-2 col-sm-5" id="preview5">
+                                @else
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview5">
+                                @endif
+                                <p class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="image" class="form-label control-label">Slip Pembayaran</label>
+                                <input type="hidden" name="oldImage3" value="{{ $item->slip_pembayaran }}">
+                                <input type="file" class="form-control picture" id="image6" name="slip_pembayaran"
+                                    onchange="previewImage(6)">
+
+                                @if ($item->slip_pembayaran)
+                                <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
+                                    class="img-preview img-fluid mt-2 col-sm-4" id="preview6">
+                                @else
                                 @endif
                                 <p class="mt-1 font-italic">biarkan kolom kosong
                                     jika tidak diganti</p>
@@ -532,14 +605,14 @@
 </div>
 @endforeach
 
-{{-- view Form Bimbingan --}}
-@foreach ($seminarkp as $item)
-<div class="modal fade" id="viewForm{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+{{-- view Form Bimbingan 1--}}
+@foreach ($s_list as $item)
+<div class="modal fade" id="viewForm_1{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan 1</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -548,9 +621,43 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @if ($item->form_bimbingan)
+                        @if ($item->f_bimbingan_1)
                         <div class="col">
-                            <img src="{{ asset('storage/' . $item->form_bimbingan) }}" alt=""
+                            <img src="{{ asset('storage/' . $item->f_bimbingan_1) }}" alt=""
+                                class="rounded mx-auto d-block" style="width: 30%">
+                        </div>
+                        @else
+                        <div class="col">
+                            <p class="text-center">Gambar Tidak Ditemukan</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- view Form Bimbingan 2--}}
+@foreach ($s_list as $item)
+<div class="modal fade" id="viewForm_2{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan 2</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        @if ($item->f_bimbingan_2)
+                        <div class="col">
+                            <img src="{{ asset('storage/' . $item->f_bimbingan_2) }}" alt=""
                                 class="rounded mx-auto d-block" style="width: 30%">
                         </div>
                         @else
@@ -567,7 +674,7 @@
 @endforeach
 
 {{-- Slip Pembayaran --}}
-@foreach ($seminarkp as $item)
+@foreach ($s_list as $item)
 <div class="modal fade" id="viewSlip{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -582,9 +689,9 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @if ($item->daftarkp->slip_pembayaran)
+                        @if ($item->slip_pembayaran)
                         <div class="col">
-                            <img src="{{ asset('storage/' . $item->daftarkp->slip_pembayaran) }}" alt=""
+                            <img src="{{ asset('storage/' . $item->slip_pembayaran) }}" alt=""
                                 class="rounded mx-auto d-block" style="width: 30%">
                         </div>
                         @else
@@ -665,30 +772,31 @@
 @endforeach --}}
 
 {{-- Hapus --}}
-@foreach ($seminarkp as $kp)
-<div class="modal fade" id="modalHapusSeminar{{ $kp->id }}" tabindex="-1" role="dialog"
+@foreach ($s_list as $item)
+<div class="modal fade" id="modalHapusSidang{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-open">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Data Seminar</h3>
+                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Data Sidang</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="/seminar-kp/{{ $kp->id }}">
+            <form method="POST" enctype="multipart/form-data" action="/sidang-ta/{{ $item->id }}">
                 @method('delete')
                 @csrf
                 <div class="modal-body">
 
-                    <input type="hidden" value="{{ $kp->id }}" name="id" required>
+                    <input type="hidden" value="{{ $item->id }}" name="id" required>
 
                     <div class=" form-group">
                         <h3>Apakah anda yakin menghapus data
-                            <span class="text-danger text-capitalize">{{ $kp->mahasiswa->biodata->nama }}</span> dengan
+                            <span class="text-danger text-capitalize">{{ $item->mahasiswa->biodata->nama }}</span>
+                            dengan
                             NIM <span class="text-danger">{{
-                                $kp->mahasiswa->biodata->no_induk
+                                $item->mahasiswa->biodata->no_induk
                                 }} </span> ?
                         </h3>
                         <h4 class="btn btn-warning text-uppercase">Data Terkait NIM tersebut juga akan terhapus!</h4>
@@ -707,18 +815,20 @@
     </div>
 </div>
 @endforeach
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 
 <script>
+    // untuk mendapatkan id mahasiswa
     function no_mahasiswa() {
-        let daftarkp_id = $("#daftarkp_id").val();
-        $("#mahasiswa_id").children().remove();
-        if (daftarkp_id != '' && daftarkp_id != null) {
-            $.ajax({
+        let daftar_ta_id = $("#daftar_ta_id").val();
+            $("#mahasiswa_id").children().remove();
+                if (daftar_ta_id != '' && daftar_ta_id != null) {
+                $.ajax({
 
-                url: "{{ url('') }}/seminar-kp/mahasiswa_id/" + daftarkp_id,
+                url: "{{ url('') }}/sidang-ta/daftar_ta_id/" + daftar_ta_id,
                 success: function (res) {
-                    $("#mahasiswa_id").val(res.mahasiswa_id);
+                $("#mahasiswa_id").val(res.mahasiswa_id);
                 }
             });
         }
@@ -733,7 +843,16 @@
             table.column($(this).data("column")).search($(this).val()).draw();
         });
     });
+</script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
+</script>
+<script>
     function previewImage(index) {
         const image = document.querySelector('#image' + index);
         const imgPreview = document.querySelector('#preview' + index);
@@ -744,17 +863,8 @@
         oFReader.readAsDataURL(image.files[0]);
 
         oFReader.onload = function (oFREvent) {
-            imgPreview.src = oFREvent.target.result;
+        imgPreview.src = oFREvent.target.result;
         }
-    }
-
-</script>
-<script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
+}
 </script>
 @endsection

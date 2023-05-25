@@ -67,4 +67,18 @@ class SeminarKP extends Model
             }
         })->get();
     }
+
+    public function m_daftar_ta()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->where('stts_seminar', '=', 'selesai')->get();
+    }
+
+    public function daftar_ta()
+    {
+        return self::where('stts_seminar', '=', 'selesai')->get();
+    }
 }

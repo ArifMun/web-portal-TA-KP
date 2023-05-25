@@ -68,6 +68,68 @@
                         @endif
 
                         <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <div class="filter tahun">
+                                                <label class="font-weight-bold h6">Filter Tahun</label>
+                                                <select data-column="11" class="form-control" id="filter-tahun">
+                                                    <option value="">-- Pilih Tahun --</option>
+                                                    @foreach ($thnakademik as $k)
+                                                    <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <div class="filter tahun">
+                                                <label class="font-weight-bold h6">Filter Status</label>
+                                                <select data-column="8" class="form-control" id="filter-stts">
+                                                    <option value="">-- Pilih Status --</option>
+                                                    @foreach ($filterStts as $item)
+                                                    <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">
+                                                        {{
+                                                        $item->stts_pengajuan }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <label class="font-weight-bold h6">Status Pengajuan</label>
+                                            <div class="row ml-1">
+                                                <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
+                                                    Diterima
+                                                    : {{
+                                                    $d_diterima}}
+                                                </p>
+                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
+                                                    Tertunda :
+                                                    {{
+                                                    $d_tertunda }}
+                                                </p>
+                                                <p class="font-weight-bold text-light p-1 btn-danger btn-round mr-1">
+                                                    Ditolak
+                                                    :
+                                                    {{
+                                                    $d_ditolak
+                                                    }}</p>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
                             {{-- <div class="row" style="">
                                 <div class="col-2">
                                     <div class="body-panel mb-2">
@@ -466,7 +528,8 @@
                                     <input type="text" class="form-control" name="judul" placeholder="Judul .."
                                         size="1">
                                 </div>
-                                <label for="image" class="form-label control-label">Kartu Rencan Studi (KRS) </label>
+                                <label for="image" class="form-label control-label">KRS (Tertera Mata Kuliah Skripsi)
+                                </label>
                                 <input type="file" class="form-control picture" id="krs" name="krs"
                                     onchange="previewImage()">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2">
@@ -675,7 +738,7 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label for="image" class="form-label ">Kartu Rencana Studi </label>
+                                <label for="image" class="form-label ">KRS (Tertera Mata Kuliah Skripsi) </label>
                                 <input type="hidden" name="oldImage" value="{{ $item->krs }}">
                                 <input type="file" class="form-control picture" id="krs" name="krs"
                                     onchange="Previews()">
