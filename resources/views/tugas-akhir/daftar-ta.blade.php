@@ -268,8 +268,8 @@
                                                     </i> </a>
 
                                             <td>{{ $item->tahunakademik->tahun }} </td>
-                                            <td>{{ $item->create_at }}</td>
                                             <td>{{ $item->konsentrasi }}</td>
+                                            <td>{{ $item->create_at }}</td>
                                             <td>
                                                 @if ($item->stts_pengajuan == 'diterima')
 

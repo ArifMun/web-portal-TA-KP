@@ -47,6 +47,7 @@ class BimbinganKPController extends Controller
                 $q->where('id', '=', Auth::user());
             }
         })->get()->sortByDesc('id');
+
         $mhskpd   = DaftarKP::with('dosen')->whereHas('dosen', function ($q) {
             if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
@@ -59,13 +60,13 @@ class BimbinganKPController extends Controller
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get()->sortByDesc('id');
+        })->get();
 
         $bimbingDosen   = BimbinganKP::with('dosen')->whereHas('dosen', function ($q) {
             if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             }
-        })->get()->sortByDesc('id');
+        })->get();
 
         $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
 
@@ -149,8 +150,7 @@ class BimbinganKPController extends Controller
         );
 
         if ($validation->fails()) {
-            return \redirect('bimbingan-kp')->with('warning', 'Data Tidak Tersimpan!')
-                ->withErrors($validation);
+            return \redirect('bimbingan-kp')->with('warning', 'Data Tidak Tersimpan!');
         } else {
 
             BimbinganKP::create([

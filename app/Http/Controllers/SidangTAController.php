@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DaftarTA;
 use App\Models\Dosen;
+use App\Models\DaftarTA;
 use App\Models\SidangTA;
 use Illuminate\Http\Request;
+use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -24,6 +25,8 @@ class SidangTAController extends Controller
         $m_list   = $list->m_list_sidang();
 
         $dosen    = Dosen::all();
+        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
+        $filterStts  = $s_list->filter();
 
         $d_ta     = new DaftarTA();
         $d_mhs_ta = $d_ta->m_ta_diterima();
@@ -33,7 +36,9 @@ class SidangTAController extends Controller
             'dosen',
             'd_mhs_ta',
             'daftarta',
-            'm_list'
+            'm_list',
+            'thnakademik',
+            'filterStts'
         ));
     }
 
@@ -133,10 +138,10 @@ class SidangTAController extends Controller
             [
                 'mahasiswa_id'      => 'required',
                 'daftar_ta_id'      => 'required',
-                'f_bimbingan_1'     => 'required|image|file|max:1024',
-                // 'f_bimbingan_2'     => 'required|image|file|max:1024',
-                // 'slip_pembayaran'   => 'required|image|file|max:1024',
-                // 'judul'             => 'required',
+                'f_bimbingan_1'     => 'image|file|max:1024',
+                'f_bimbingan_2'     => 'image|file|max:1024',
+                'slip_pembayaran'   => 'image|file|max:1024',
+                'judul'             => 'required',
                 'tgl_sidang'        => 'required',
                 'jam_sidang'        => 'required',
                 'stts_sidang'       => 'required'

@@ -46,13 +46,13 @@
                         </div>
 
                         <div class="card-body">
-                            {{-- <div class="row">
+                            <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="8" class="form-control" id="filter-tahun">
+                                                <select data-column="9" class="form-control" id="filter-tahun">
                                                     <option value="">-- Pilih Tahun --</option>
                                                     @foreach ($thnakademik as $k)
                                                     <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
@@ -68,11 +68,12 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="4" class="form-control" id="filter-stts">
+                                                <select data-column="5" class="form-control" id="filter-stts">
                                                     <option value="">-- Pilih Status --</option>
                                                     @foreach ($filterStts as $item)
-                                                    <option value="{{ $item->stts_seminar }}" class="text-capitalize">{{
-                                                        $item->stts_seminar }}</option>
+                                                    <option value="{{ $item->stts_sidang }}" class="text-capitalize">
+                                                        {{
+                                                        $item->stts_sidang }}</option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -80,33 +81,33 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-3">
+                                {{-- <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Seminar</label>
+                                            <label class="font-weight-bold h6">Status Pengajuan</label>
                                             <div class="row ml-1">
                                                 <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
-                                                    Selesai
+                                                    Diterima
                                                     : {{
-                                                    $sSelesai}}
-                                                </p>
-                                                <p class="font-weight-bold text-light p-1 btn-primary btn-round mr-1">
-                                                    Terjadwal :
-                                                    {{
-                                                    $sTerjadwal }}
+                                                    $d_diterima}}
                                                 </p>
                                                 <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    Proses
+                                                    Tertunda :
+                                                    {{
+                                                    $d_tertunda }}
+                                                </p>
+                                                <p class="font-weight-bold text-light p-1 btn-danger btn-round mr-1">
+                                                    Ditolak
                                                     :
                                                     {{
-                                                    $sProses
+                                                    $d_ditolak
                                                     }}</p>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                            </div> --}}
+                            </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="seminar-kp" class="display table table-striped table-hover">
@@ -154,59 +155,59 @@
                                                 @endforeach
                                             </td>
 
-                                            @if ($item->daftarta->seminarkp->stts_sidang=='proses')
+                                            @if ($item->daftarta->sidangta->stts_sidang=='proses')
                                             <td>
                                                 <a
                                                     class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarta->seminarkp->stts_sidang }}</a>
+                                                    $item->daftarta->sidangta->stts_sidang }}</a>
                                             </td>
-                                            @elseif($item->daftarta->seminarkp->stts_sidang=='selesai')
+                                            @elseif($item->daftarta->sidangta->stts_sidang=='selesai')
                                             <td>
                                                 <a
                                                     class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarta->seminarkp->stts_sidang }}</a>
+                                                    $item->daftarta->sidangta->stts_sidang }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
                                                     class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarta->seminarkp->stts_sidang }}</a>
+                                                    $item->daftarta->sidangta->stts_sidang }}</a>
                                             </td>
                                             @endif
 
-                                            <td><a href="sidang-ta/view-form_1/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewForm_1{{ $row->id }}"
+                                            <td><a href="sidang-ta/view-form_1/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewForm_1{{ $item->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="sidang-ta/view-form_2/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewForm_2{{ $row->id }}"
+                                            <td><a href="sidang-ta/view-form_2/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewForm_2{{ $item->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="sidang-ta/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $row->id }}"
+                                            <td><a href="sidang-ta/view-slip/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewSlip{{ $item->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
-                                            <td>{{ $row->daftarta->tahunakademik->tahun }}</td>
-                                            <td>{{ $row->judul }}</td>
-                                            <td>{{ $row->catatan }}</td>
-                                            <td>{{ $row->tgl_sidang }}</td>
-                                            <td>{{ $row->jam_sidang }}</td>
+                                            <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
+                                            <td>{{ $item->judul }}</td>
+                                            <td>{{ $item->catatan }}</td>
+                                            <td>{{ $item->tgl_sidang }}</td>
+                                            <td>{{ $item->jam_sidang }}</td>
                                             <td>
-                                                <a href="sidang-ta/edit/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalEditSidang{{ $row->id }}"
+                                                <a href="sidang-ta/edit/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalEditSidang{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="sidang-ta/hapus/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalHapusSidang{{ $row->id }}"
+                                                <a href="sidang-ta/hapus/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusSidang{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>

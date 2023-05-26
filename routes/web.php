@@ -10,6 +10,7 @@ use App\Http\Controllers\FormAksesController;
 use App\Http\Controllers\SeminarKPController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\BimbinganKPController;
+use App\Http\Controllers\BimbinganTAController;
 use App\Http\Controllers\KonsentrasiController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\KerjaPraktikController;
@@ -58,6 +59,9 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2']], function () {
 
     Route::resource('/sidang-ta', SidangTAController::class);
     Route::get('sidang-ta/daftar_ta_id/{id}', [SidangTAController::class, 'autofill']);
+
+    Route::resource('/bimbingan-ta', BimbinganTAController::class);
+    Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
 
     Route::get('manajemen-form', [ManajemenFormController::class, 'index']);
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);

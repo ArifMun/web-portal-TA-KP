@@ -27,13 +27,26 @@ class Dosen extends Model
         return $this->hasMany(DaftarKP::class, 'd_pembimbing_1');
     }
 
-    public function daftarta()
+    // 
+    public function daftarta1()
     {
-        return $this->hasMany(DaftarTA::class, 'd_pembimbing_1', 'd_pembimbing_2');
+        return $this->hasMany(DaftarTA::class);
+        // ->Where('d_pembimbing_2', '=', 'd_pembimbing_2');
     }
+    public function daftarta2()
+    {
+        return $this->hasMany(DaftarTA::class, 'd_pembimbing_2');
+        // ->Where('d_pembimbing_2', '=', 'd_pembimbing_2');
+    }
+    // 
 
     public function bimbingankp()
     {
         return $this->hasMany(BimbinganKP::class, 'dosen_id');
+    }
+
+    public function bimbinganta1()
+    {
+        return $this->hasMany(BimbinganTA1::class, 'd_pembimbing_1');
     }
 }

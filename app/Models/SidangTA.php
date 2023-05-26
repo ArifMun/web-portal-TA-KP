@@ -45,4 +45,9 @@ class SidangTA extends Model
             }
         })->get();
     }
+
+    public function filter()
+    {
+        return self::distinct()->select('stts_sidang')->get();
+    }
 }

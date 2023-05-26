@@ -60,6 +60,11 @@
                                     <span class="sub-item">Daftar Sidang TA</span>
                                 </a>
                             </li>
+                            <li class="nav-item {{ Request()->is('bimbingan-ta')? 'active' : '' }}">
+                                <a href="bimbingan-ta">
+                                    <span class="sub-item">Bimbingan TA</span>
+                                </a>
+                            </li>
                         </ul>
                     </div>
                 </li>

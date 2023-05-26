@@ -44,7 +44,7 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
-                                <a href="/bimbingan-kp/tambah" class="btn btn-primary btn-round ml-auto"
+                                <a href="/bimbingan-ta/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan">
                                     <i class="fa fa-plus"></i>
                                     Tambah
@@ -53,7 +53,7 @@
                         </div>
 
                         <div class="card-body">
-                            <div class="row">
+                            {{-- <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
@@ -106,43 +106,11 @@
                                     </div>
                                 </div>
 
-                            </div>
-                            {{-- <div class="row">
-                                <div class="body-panel col-2">
-                                    <label class="font-weight-bold">Filter Status</label>
-                                    <select data-column="5" class="form-control" id="filter-stts">
-                                        <option value="">-- Pilih Status --</option>
-                                        @foreach ($filterStts as $item)
-                                        <option value="{{ $item->stts }}" class="text-uppercase">{{
-                                            $item->stts }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="body-panel col-2">
-                                    <label class="font-weight-bold">Filter Tahun</label>
-                                    <select data-column="7" class="form-control" id="filter-tahun">
-                                        <option value="">-- Pilih Tahun --</option>
-                                        @foreach ($thnakademik as $k)
-                                        <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="body-panel ml-2">
-                                    <label class="font-weight-bold">Status Bimbingan</label>
-                                    @if (Auth::user()->level == 1)
-                                    <div class="btn-warning p-1 pl-3 btn-round block">
-                                        <b>PROSES : {{ $sttsDosen }}</b>
-                                    </div>
-                                    @elseif(Auth::user()->level == 0)
-                                    <div class="btn-warning p-1 pl-3 btn-round block">
-                                        <b>PROSES : {{ $sttsMhs }}</b>
-                                    </div>
-                                    @endif
-                                </div>
                             </div> --}}
+
                             <div class="divider"></div>
                             <div class="table-responsive">
-                                <table id="bimbingan-kp" class="display table table-striped table-hover">
+                                <table id="bimbingan-ta" class="display table table-striped table-hover">
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
@@ -161,11 +129,10 @@
                                     </thead>
 
                                     @if (Auth::user()->level==0)
-                                    <tbody>
+                                    {{-- <tbody>
                                         @php $no=1; @endphp
                                         @if (!empty(Auth::user()->biodata->mahasiswa->bimbingankp))
                                         @foreach ($bimbingMhs as $item)
-                                        {{-- {{ $item }} --}}
 
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
@@ -200,22 +167,17 @@
                                                     $item->stts}}</a>
                                             </td>
                                             @endif
-                                            {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewCatatan{{ $item->id }}"
-                                                    class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
-                                            </td> --}}
                                             <td>{{ $item->catatan }}</td>
                                             <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
                                             <td>{{ $item->updated_at }}</td>
                                             <td>
-                                                <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
+                                                <a href="bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
+                                                <a href="bimbingan-ta/hapus/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalHapusBimbingan{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
@@ -230,19 +192,19 @@
                                             </td>
                                         </tr>
                                         @endif
-                                    </tbody>
+                                    </tbody> --}}
 
-                                    {{-- All- --}}
                                     @elseif(Auth::user()->level == 1)
                                     <tbody> @php $no=1; @endphp
-                                        @foreach ($bimbingDosen as $item)
-                                        <tr align="center">
+                                        @foreach ($d_bimbing_1 as $item)
+                                        {{ $item }}
+                                        {{-- <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
+                                            <td>{{ $item->mahasiswa->biodata->no_induk }}</td>
+                                            <td>{{ $item->mahasiswa->biodata->nama }}</td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
-                                                <a href="storage/{{ $item->laporan_kp }}"
+                                                <a href="storage/{{ $item->laporan_ta }}"
                                                     class="btn btn-success btn-xs"><i class="fas fa-file-download">
                                                     </i>
                                                 </a>
@@ -269,27 +231,22 @@
                                                     $item->stts}}</a>
                                             </td>
                                             @endif
-                                            {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewCatatan{{ $item->id }}"
-                                                    class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
-                                            </td> --}}
                                             <td>{{ $item->catatan }}</td>
-                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
+                                            <td>{{ $item->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
                                             <td>{{ $item->updated_at }}</td>
                                             <td>
-                                                <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
+                                                <a href="bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
+                                                <a href="bimbingan-ta/hapus/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalHapusBimbingan{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
-                                        </tr>
+                                        </tr> --}}
                                         @endforeach
 
                                     </tbody>
@@ -311,13 +268,13 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Tambah Bimbingan KP</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Tambah Bimbingan TA</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="bimbingan-kp">
+            <form method="POST" enctype="multipart/form-data" action="bimbingan-ta">
                 @csrf
                 <div class="modal-body">
 
@@ -325,12 +282,12 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
-                                    id="daftarkp_id" required>
+                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
+                                    id="daftar_ta_id" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
                                     @if (Auth::user()->level==0 )
-                                    @foreach ($mhskps as $item)
+                                    @foreach ($m_bimbing_1 as $item)
                                     <option value="{{ $item->id}}">{{ $item->mahasiswa->biodata->no_induk }} - {{
                                         $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun
                                         }}
@@ -338,12 +295,13 @@
                                     @endforeach
                                     @else
 
-                                    @foreach ($mhskpd as $item)
+                                    @foreach ($d_bimbing_1 as $item)
                                     <option value="{{ $item->id }}">{{
                                         $item->mahasiswa->biodata->no_induk
                                         }} - {{ $item->mahasiswa->biodata->nama
                                         }} - {{ $item->tahunakademik->tahun
-                                        }}</option>
+                                        }}
+                                    </option>
                                     @endforeach
 
                                     @endif
@@ -362,18 +320,18 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan KP </label>
+                                <label for="file" class="form-label control-label">Laporan TA </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
+                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta"
                                     onchange="previewImage()">
                             </div>
                             <div class="col">
-                                <label class="control-label">Status </label>
+                                <label class="control-label">Status TA</label>
                                 <select class="form-control" name="stts" required>
                                     @if (Auth::user()->level==0)
                                     <option value="proses" @readonly(true)>Proses</option>
                                     @else
-                                    <option value="" hidden="">-- Status KP --</option>
+                                    <option value="" hidden="">-- Status TA --</option>
                                     <option value="proses">Proses</option>
                                     <option value="acc">ACC</option>
                                     <option value="revisi">Revisi</option>
@@ -413,7 +371,7 @@
 </div>
 
 {{-- Edit --}}
-@foreach ($bimbingkp as $item)
+{{-- @foreach ($bimbingkp as $item)
 <div class="modal fade" id="EditBimbingan{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -442,13 +400,6 @@
                                         $item->daftarkp->tahunakademik->tahun }}
                                     </option>
 
-                                    {{-- @foreach ($daftarkp as $k)
-                                    <option value="{{ $k->id }}">{{
-                                        $k->mahasiswa->biodata->no_induk
-                                        }} - {{ $k->mahasiswa->biodata->nama
-                                        }} - {{ $k->tahunakademik->tahun
-                                        }}</option>
-                                    @endforeach --}}
 
                                 </select>
                             </div>
@@ -517,10 +468,10 @@
         </div>
     </div>
 </div>
-@endforeach
+@endforeach --}}
 
 {{-- view Catatan --}}
-@foreach ($bimbingkp as $item)
+{{-- @foreach ($bimbingkp as $item)
 <div class="modal fade" id="viewCatatan{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -544,10 +495,10 @@
         </div>
     </div>
 </div>
-@endforeach
+@endforeach --}}
 
 {{-- Hapus --}}
-@foreach ($bimbingkp as $item)
+{{-- @foreach ($bimbingkp as $item)
 <div class="modal fade" id="modalHapusBimbingan{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-open">
@@ -582,7 +533,8 @@
         </div>
     </div>
 </div>
-@endforeach
+@endforeach --}}
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script type="text/javascript">
     $.ajaxSetup({
@@ -595,12 +547,12 @@
 
 <script>
     function no_mahasiswa() {
-        let daftarkp_id = $("#daftarkp_id").val();
+        let daftar_ta_id = $("#daftar_ta_id").val();
         $("#mahasiswa_id").children().remove();
-        if (daftarkp_id != '' && daftarkp_id != null) {
+        if (daftar_ta_id != '' && daftar_ta_id != null) {
             $.ajax({
 
-                url: "{{ url('') }}/bimbingan-kp/daftarkp_id/" + daftarkp_id,
+                url: "{{ url('') }}/bimbingan-ta/daftar_ta_id/" + daftar_ta_id,
                 success: function (res) {
                     $("#mahasiswa_id").val(res.mahasiswa_id);
                     $("#dosen_id").val(res.d_pembimbing_1);
@@ -610,7 +562,7 @@
     }
 
     $(document).ready(function () {
-    var table = $("#bimbingan-kp").DataTable({});
+    var table = $("#bimbingan-ta").DataTable({});
         $("#filter-tahun").change(function () {
         table.column($(this).data("column")).search($(this).val()).draw();
     });

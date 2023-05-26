@@ -38,15 +38,31 @@ class DaftarTA extends Model
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
 
-    public function dosen()
+    // public function dosen()
+    // {
+    //     return $this->belongsTo(Dosen::class, 'd_pembimbing_1', 'd_pembimbing_2');
+    //     // ->Where('d_pembimbing_2', '=', 'd_pembimbing_2');
+    // }
+
+    public function dosen1()
     {
-        return $this->belongsTo(Dosen::class, 'd_pembimbing_1', 'd_pembimbing_2');
+        return $this->belongsTo(Dosen::class, 'd_pembimbing_1');
     }
 
+    public function dosen2()
+    {
+        return $this->belongsTo(Dosen::class, 'd_pembimbing_2');
+    }
     public function sidangta()
     {
         return $this->hasOne(SidangTA::class, 'daftar_ta_id');
     }
+
+    public function bimbinganta()
+    {
+        return $this->hasMany(BimbinganTA::class);
+    }
+
 
     // 
     public function filter()
@@ -74,8 +90,6 @@ class DaftarTA extends Model
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
             }
         })->get();
     }
@@ -85,9 +99,38 @@ class DaftarTA extends Model
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->where('stts_pengajuan', '=', 'diterima')->get();
+    }
+
+    public function m_bimbing_1()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get()->sortByDesc('id');
+    }
+
+    public function d_bimbing_1()
+    {
+        return self::with('dosen1')->whereHas('dosen1', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());
             }
-        })->where('stts_pengajuan', '=', 'diterima')->get();
+        })->get()->sortByDesc('id');
+    }
+
+    public function d_bimbing_2()
+    {
+        return self::with('dosen2')->whereHas('dosen2', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('id', '=', Auth::user()->biodata->dosen->id);
+            } else {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->sortByDesc('id');
     }
 }
