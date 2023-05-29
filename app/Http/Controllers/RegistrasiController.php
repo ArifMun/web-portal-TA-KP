@@ -8,6 +8,7 @@ use App\Models\Biodata;
 use App\Models\Registrasi;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Konsentrasi;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -21,6 +22,7 @@ class RegistrasiController extends Controller
      */
     public function index()
     {
+        $konsentrasi = Konsentrasi::all();
         $biodata = Biodata::all();
         $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
             ->select('users.*', 'biodata.id', 'biodata.*')
@@ -40,7 +42,8 @@ class RegistrasiController extends Controller
             'biodata',
             'user',
             'users',
-            'dosen'
+            'dosen',
+            'konsentrasi'
         ));
     }
 
@@ -60,12 +63,14 @@ class RegistrasiController extends Controller
             ]
         );
 
-        // \dd($biodata);
+        // \dd($validation);
         if ($validation->fails()) {
             return \redirect('registrasi')->with('warning', 'Data Tidak Tersimpan !')
                 ->withErrors($validation);
         } else {
-            // if (Auth::user()->level == 1 | 2) {
+
+            $input = $request->input('keahlian');
+            $string = \implode(',', $input);
             $biodata = Biodata::create([
                 'nama'          => $request->nama,
                 'email'         => $request->email,
@@ -75,6 +80,7 @@ class RegistrasiController extends Controller
                 'tgl_lahir'     => $request->tgl_lahir,
                 'no_telp'       => $request->no_telp,
                 'alamat'        => $request->alamat,
+                'keahlian'      => $string,
             ]);
 
 
@@ -126,12 +132,12 @@ class RegistrasiController extends Controller
             [
                 'nama'          => 'required',
                 'email'          => 'required|email',
-                'no_induk'      => 'required|numeric',
+                'no_induk'      => 'numeric',
                 // 'jabatan'       => 'required',
                 // 'tempat_lahir'  => 'required',
-                'tgl_lahir'     => 'required',
-                'no_telp'       => 'required',
-                'password'      => 'required|min:5|max:255',
+                // 'tgl_lahir'     => 'required',
+                // 'no_telp'       => 'required',
+                'password'      => 'min:5|max:255',
             ]
         );
         // \dd($validation);
@@ -139,22 +145,27 @@ class RegistrasiController extends Controller
         if ($validation->fails()) {
             return \back()->with('warning', 'Data Tidak Tersimpan!');
         } else {
+
+            $input = $request->input('keahlian');
+            $string = \implode(',', $input);
+
             $biodata = Biodata::findOrFail($registrasi->id);
             $users = User::findOrFail($registrasi->id);
-            $biodata->nama = $request->nama;
-            $biodata->email = $request->email;
-            $biodata->no_induk = $request->no_induk;
-            $biodata->tempat_lahir = $request->tempat_lahir;
-            $biodata->tgl_lahir = $request->tgl_lahir;
-            $biodata->no_telp = $request->no_telp;
-            $biodata->alamat = $request->alamat;
+            $biodata->nama          = $request->nama;
+            $biodata->keahlian       = $string;
+            $biodata->email         = $request->email;
+            $biodata->no_induk      = $request->no_induk;
+            $biodata->tempat_lahir  = $request->tempat_lahir;
+            $biodata->tgl_lahir     = $request->tgl_lahir;
+            $biodata->no_telp       = $request->no_telp;
+            $biodata->alamat        = $request->alamat;
             // $biodata->jabatan = $request->jabatan;
-            $biodata->save();
+            $biodata->update();
 
             $users->password =
                 Hash::make($request->password);
             $users->level = $request->level;
-            $users->save();
+            $users->update();
 
             return \redirect('registrasi')->with('success', 'Data Berhasil Diubah');
         }

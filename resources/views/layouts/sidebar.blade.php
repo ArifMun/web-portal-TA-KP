@@ -42,7 +42,8 @@
                     </div>
                 </li>
 
-                <li class="nav-item {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*')? 'active' : '' }}">
+                <li
+                    class="nav-item {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') || Request()->is('bimbingan-ta*')? 'active' : '' }}">
                     <a data-toggle="collapse" href="#forms">
                         <i class="fas fa-user-graduate"></i>
                         <p>Tugas Akhir</p>
@@ -68,28 +69,15 @@
                         </ul>
                     </div>
                 </li>
-                {{--
-                <li class="nav-item">
-                    <a data-toggle="collapse" href="#forms">
+
+                <li class="nav-item {{ Request()->is('dosen*') ? 'active' : '' }}">
+                    <a href="dosen">
                         <i class="fas fa-user-graduate"></i>
-                        <p>Data</p>
-                        <span class="caret"></span>
+                        <p>Dosen</p>
+                        {{-- <span class="caret"></span> --}}
                     </a>
-                    <div class="collapse" id="forms">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="forms/forms.html">
-                                    <span class="sub-item">Data Dosen</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="forms/forms.html">
-                                    <span class="sub-item">Data Mahasiswa</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </div>
-                </li> --}}
+                </li>
+
                 @if(Auth::user()->level==1)
 
                 <li class="nav-section">

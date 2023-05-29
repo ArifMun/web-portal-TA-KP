@@ -102,10 +102,10 @@
                                             <td>{{ $row->nama_konsentrasi}}</td>
 
                                             <td>
-                                                <a href="#editDataKonsentrasi{{ $row->id }}" data-toggle="modal"
+                                                <a href="#editDataKonsentrasi/{{ $row->id }}" data-toggle="modal"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="#hapusDataKonsentrasi{{ $row->id }}" data-toggle="modal"
+                                                <a href="#hapusDataKonsentrasi/{{ $row->id }}" data-toggle="modal"
                                                     data-target="" class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
@@ -329,6 +329,46 @@
     </div>
 </div>
 
+{{-- Edit Konsentrasi --}}
+@foreach ($konsentrasi as $item)
+<div class="modal fade" id="editDataKonsentrasi/{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-open">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Ubah konsentrasi</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/konsentrasi/{{ $item->id }}/ubah">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label>Nama Konsentrasi</label>
+                                <input type="text" class="form-control" name="nama_konsentrasi" id="nama_konsentrasi"
+                                    required value="{{ $item->nama_konsentrasi }}">
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                            </i> Kembali</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
 {{-- Edit --}}
 {{-- @foreach($thnAkademik as $d) --}}
 {{-- @endforeach --}}

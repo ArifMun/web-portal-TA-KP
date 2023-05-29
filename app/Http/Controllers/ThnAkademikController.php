@@ -15,7 +15,7 @@ class ThnAkademikController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'tahun'  => 'required',
+                'tahun'  => 'required|unique:thn_akademik',
 
             ]
         );

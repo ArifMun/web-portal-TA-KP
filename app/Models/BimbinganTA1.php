@@ -51,6 +51,8 @@ class BimbinganTA1 extends Model
         return self::with('dosen1')->whereHas('dosen1', function ($q) {
             if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
+            } else {
+                $q->where('id', '=', Auth::user());
             }
         })->get();
     }

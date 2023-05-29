@@ -53,6 +53,7 @@ class DaftarTA extends Model
     {
         return $this->belongsTo(Dosen::class, 'd_pembimbing_2');
     }
+
     public function sidangta()
     {
         return $this->hasOne(SidangTA::class, 'daftar_ta_id');

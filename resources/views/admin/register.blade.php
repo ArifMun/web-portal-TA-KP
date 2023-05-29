@@ -155,10 +155,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Email</label>
+                                <label class="control-label">Email </label>
                                 <input type="text" class="form-control" name="email" placeholder="Email ..">
                             </div>
                             <div class="col">
@@ -178,18 +178,6 @@
                             <div class="col">
                                 <label>Tanggal Lahir</label>
                                 <input type="date" class="form-control" name="tgl_lahir" placeholder="Tanggal Lahir ..">
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Level </label>
-                                <select class="form-control" name="level" required>
-                                    <option value="" hidden="">-- Pilih Level --</option>
-                                    @php
-                                    $levels= array(0,1,2);
-                                    @endphp
-                                    @foreach ($levels as $k=>$level)
-                                    <option value="{{ $level }}">{{ $level }}</option>
-                                    @endforeach
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -218,13 +206,39 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Keahlian</label>
-                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian ..">
+                                <label class="">Konsentrasi </label>
+                                <select class="form-control keahlian" name="keahlian[]" id="keahlian" size="5" multiple
+                                    required>
+                                    <option value="" hidden="">-- Konsentrasi --</option>
+                                    @foreach ($konsentrasi as $item)
+                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
+                                    @endforeach
+                                </select>
+                                {{-- <label>Keahlian</label>
+                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian .."> --}}
                             </div>
                             <div class="col">
-                                <label class="control-label">Password </label>
+                                <label class="control-label">Level </label>
+                                <select class="form-control" name="level" required>
+                                    <option value="" hidden="">-- Pilih Level --</option>
+                                    @php
+                                    $levels= array(0,1,2);
+                                    @endphp
+                                    @foreach ($levels as $k=>$level)
+                                    <option value="{{ $level }}">{{ $level }}</option>
+                                    @endforeach
+                                </select>
+                                <label class="control-label mt-3">Password </label>
                                 <input type="password" class="form-control" name="password" placeholder="Password .."
                                     required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+
                             </div>
                         </div>
                     </div>
@@ -298,25 +312,14 @@
                             <div class="col">
                                 <label>Tempat Lahir</label>
                                 <input type="text" class="form-control" name="tempat_lahir"
-                                    placeholder="Tempat Lahir . ." value="{{ $d->tempat_lahir }}" required>
+                                    placeholder="Tempat Lahir . ." value="{{ $d->tempat_lahir }}">
                             </div>
                             <div class="col">
                                 <label>Tanggal Lahir</label>
                                 <input type="date" class="form-control" name="tgl_lahir" placeholder="Tanggal Lahir .."
                                     value="{{ $d->tgl_lahir }}">
                             </div>
-                            <div class="col">
-                                <label class="control-label">Level </label>
-                                <select class="form-control" name="level" required>
-                                    {{-- <option value="">-- Pilih Level --</option> --}}
-                                    <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
-                                    </option>
-                                    <option <?php if($d->users->level == 1) echo "selected"; ?>
-                                        value="1">1</option>
-                                    <option <?php if($d->users->level == 2) echo "selected"; ?>
-                                        value="2">2</option>
-                                </select>
-                            </div>
+
                         </div>
                     </div>
 
@@ -347,13 +350,28 @@
                         <div class="row">
                             <div class="col">
                                 <label>Keahlian</label>
-                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian .."
-                                    value="{{ $d->keahlian }}">
+                                <select class="form-control keahlian-select" name="keahlian[]"
+                                    id="keahlian_{{ $d->id }}" size="5" multiple>
+                                    @foreach ($konsentrasi as $item)
+                                    <option value="{{ $item->nama_konsentrasi }}" {{ in_array($item->nama_konsentrasi,
+                                        explode(',',$d->keahlian)) ? 'selected':'' }}>
+                                        {{ $item->nama_konsentrasi }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                             <div class="col">
-                                <label class="control-label">Password </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password .."
-                                    required>
+                                <label class="control-label">Level </label>
+                                <select class="form-control" name="level" required>
+                                    {{-- <option value="">-- Pilih Level --</option> --}}
+                                    <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
+                                    </option>
+                                    <option <?php if($d->users->level == 1) echo "selected"; ?>
+                                        value="1">1</option>
+                                    <option <?php if($d->users->level == 2) echo "selected"; ?>
+                                        value="2">2</option>
+                                </select>
+                                <label class="control-label mt-3">Password </label>
+                                <input type="password" class="form-control" name="password" placeholder="Password ..">
                             </div>
                         </div>
                     </div>
@@ -478,4 +496,20 @@
 </div>
 @endforeach
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    var selectElements = document.getElementsByClassName("keahlian");
+    
+    for (var i = 0; i < selectElements.length; i++) { var selectElement=selectElements[i];
+        selectElement.addEventListener("mousedown", function(e) { e.preventDefault(); e.target.selected=!e.target.selected;
+        this.focus(); }); } });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    var selectElements = document.getElementsByClassName("keahlian-select");
+    
+    for (var i = 0; i < selectElements.length; i++) { var selectElement=selectElements[i];
+        selectElement.addEventListener("mousedown", function(e) { e.preventDefault(); e.target.selected=!e.target.selected;
+        this.focus(); }); } });
+</script>
 @endsection

@@ -29,6 +29,26 @@ class KonsentrasiController extends Controller
         }
     }
 
+    public function update(Request $request, $id)
+    {
+        $validation = Validator::make(
+            $request->all(),
+            [
+                'nama_konsentrasi' => 'required',
+            ]
+        );
+
+        if ($validation->fails()) {
+            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan!');
+        } else {
+            $konsentrasi = Konsentrasi::findOrFail($id);
+            $konsentrasi->nama_konsentrasi = $request->nama_konsentrasi;
+            $konsentrasi->update();
+
+            return \redirect('manajemen-form')->with('success', 'Data Berhasil Diperbarui!');
+        }
+    }
+
     public function destroy(Konsentrasi $konsentrasi, $id)
     {
         $konsentrasi = Konsentrasi::find($id);

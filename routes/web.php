@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\DaftarTAController;
 use App\Http\Controllers\SidangTAController;
 use App\Http\Controllers\DashboardController;
@@ -68,9 +69,12 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2']], function () {
     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
 
     Route::post('konsentrasi/tambah', [KonsentrasiController::class, 'store']);
+    Route::post('konsentrasi/{id}/ubah', [KonsentrasiController::class, 'update']);
     Route::post('konsentrasi/{id}/destroy', [KonsentrasiController::class, 'destroy']);
 
     Route::get('akses/update', [FormAksesController::class, 'update']);
     Route::post('akses/tambah', [FormAksesController::class, 'store']);
     Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
+
+    Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
 });

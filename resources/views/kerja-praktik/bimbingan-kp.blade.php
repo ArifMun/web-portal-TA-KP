@@ -236,6 +236,7 @@
                                     @elseif(Auth::user()->level == 1)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($bimbingDosen as $item)
+                                        {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>

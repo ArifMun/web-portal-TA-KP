@@ -490,7 +490,7 @@
                                 <label class="control-label">Ganti Dosen Pembimbing </label>
                                 <select class="form-control" id="d_ganti" name="ganti_pembimbing" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
-                                    <option value="iya">Iya</option>
+                                    <option value="ya">Ya</option>
                                     <option value="tidak">Tidak</option>
                                 </select>
                             </div>
@@ -647,7 +647,7 @@
                                 <select class="form-control" name="ganti_pembimbing" id="d_ganti_1" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
                                     <option @php if($item->ganti_pembimbing == 'iya') echo 'selected';
-                                        @endphp value="iya">Iya</option>
+                                        @endphp value="ya">Ya</option>
                                     <option @php if($item->ganti_pembimbing == 'tidak') echo 'selected';
                                         @endphp value="tidak">Tidak</option>
                                 </select>
@@ -957,7 +957,7 @@
     });
     
     function toggleKolomBaru(formId) {
-            if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
+            if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'ya') {
                 $(formId + ' #kolomBaru').show();
             } else {
                 $(formId + ' #kolomBaru').hide();
@@ -979,7 +979,7 @@
         });
         
         function toggleKolomBaru_1(formId) {
-                if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
+                if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'ya') {
                     $(formId + ' #kolomBaru_1').show();
                 } else {
                     $(formId + ' #kolomBaru_1').hide();

@@ -198,6 +198,7 @@
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($d_bimbing_1 as $item)
                                         {{ $item }}
+                                        {{ $item->mahasiswa->id }}
                                         {{-- <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->mahasiswa->biodata->no_induk }}</td>

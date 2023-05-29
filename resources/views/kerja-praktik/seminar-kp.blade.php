@@ -52,7 +52,7 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="8" class="form-control" id="filter-tahun">
+                                                <select data-column="9" class="form-control" id="filter-tahun">
                                                     <option value="">-- Pilih Tahun --</option>
                                                     @foreach ($thnakademik as $k)
                                                     <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
@@ -120,8 +120,8 @@
                                             <th>Semester</th>
                                             <th>Form Bimbingan</th>
                                             <th>Slip Pembayaran</th>
-                                            <th>Tahun</th>
                                             <th>Judul</th>
+                                            <th>Tahun</th>
                                             <th>Catatan</th>
                                             <th>Tanggal Seminar</th>
                                             <th>Jam Seminar</th>
@@ -138,7 +138,7 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td>
+                                            <td class="text-capitalize">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarkp->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -178,14 +178,21 @@
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="seminar-kp/view-slip/{{ $item->daftarkp->id}}"
-                                                    data-toggle="modal" data-target="#viewSlip{{ $item->daftarkp->id}}"
+                                            <td><a href="seminar-kp/view-slip/{{ $item->id}}" data-toggle="modal"
+                                                    data-target="#viewSlip{{ $item->id}}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
                                                     </i> </a>
                                             </td>
 
+                                            {{-- <td>{{ $item->daftarkp->seminarkp->judul }}</td> --}}
+                                            <td>
+                                                <a href="seminar-kp/view-judul/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $item->id }}"
+                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
                                             <td>{{ $item->daftarkp->tahunakademik->tahun }} </td>
-                                            <td>{{ $item->daftarkp->seminarkp->judul }}</td>
                                             <td>{{ $item->daftarkp->seminarkp->catatan }}</td>
                                             <td>{{ $item->daftarkp->seminarkp->tgl_seminar }}</td>
                                             <td>{{ $item->daftarkp->seminarkp->jam_seminar }}</td>
@@ -215,7 +222,7 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td>
+                                            <td class="text-capitalize">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->daftarkp->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -247,20 +254,30 @@
 
                                             <td>{{ $row->daftarkp->semester }}</td>
 
-                                            <td><a href="seminar-kp/view-form/{{ $row->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="seminar-kp/view-form/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewForm{{ $row->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                             </td>
 
-                                            <td><a href="seminar-kp/view-slip/{{ $row->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="seminar-kp/view-slip/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $row->id }}"
                                                     class="btn-round btn-success btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                             </td>
 
+                                            <td>
+                                                <a href="seminar-kp/view-judul/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $row->id }}"
+                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
                                             <td>{{ $row->daftarkp->tahunakademik->tahun }}</td>
-                                            <td>{{ $row->judul }}</td>
                                             <td>{{ $row->catatan }}</td>
                                             <td>{{ $row->tgl_seminar }}</td>
                                             <td>{{ $row->jam_seminar }}</td>
@@ -539,7 +556,11 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan - {{
+                    $item->mahasiswa->biodata->no_induk }}
+                    | {{ $item->mahasiswa->biodata->nama
+                    }}
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -573,7 +594,11 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    Slip Pembayaran - {{ $item->mahasiswa->biodata->no_induk }}
+                    | {{ $item->mahasiswa->biodata->nama
+                    }}
+                </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -592,6 +617,36 @@
                             <p class="text-center">Gambar Tidak Ditemukan</p>
                         </div>
                         @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- Judul --}}
+@foreach ($seminarkp as $item)
+<div class="modal fade" id="viewJudul{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Judul KP - {{ $item->mahasiswa->biodata->no_induk }}
+                    | {{ $item->mahasiswa->biodata->nama
+                    }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {{ $item->judul }}
+                        </div>
                     </div>
                 </div>
             </div>

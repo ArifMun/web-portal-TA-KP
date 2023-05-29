@@ -148,10 +148,10 @@ class KerjaPraktikController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit(DaftarKP $daftarkp)
-    {
-        $daftarkp = DaftarKP::findOrFail($daftarkp->id);
-    }
+    // public function edit(DaftarKP $daftarkp)
+    // {
+    //     $daftarkp = DaftarKP::findOrFail($daftarkp->id);
+    // }
 
     /**
      * Update the specified resource in storage.

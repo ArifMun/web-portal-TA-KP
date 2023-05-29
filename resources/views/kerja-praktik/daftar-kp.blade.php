@@ -23,9 +23,6 @@
         display: none;
     }
 </style>
-<!-- Contoh menggunakan CDN -->
-<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/css/select2.min.css" rel="stylesheet" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script>
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
@@ -76,7 +73,7 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="11" class="form-control" id="filter-tahun">
+                                                <select data-column="12" class="form-control" id="filter-tahun">
                                                     <option value="">-- Pilih Tahun --</option>
                                                     @foreach ($thnakademik as $k)
                                                     <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
@@ -147,6 +144,7 @@
                                             <th>Status Pengajuan</th>
                                             <th>Status KP</th>
                                             <th>Semester</th>
+                                            <th>Judul</th>
                                             <th>Slip Pembayaran</th>
                                             <th>Tahun</th>
                                             <th>Konsentrasi</th>
@@ -214,6 +212,12 @@
 
                                             <td class="text-capitalize">{{ $item->stts_kp }}</td>
                                             <td>{{ $item->semester }}</td>
+                                            <td><a href="kerja-praktik/view-judul/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $item->id }}"
+                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
                                             <td><a href="kerja-praktik/view-slip/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $item->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-file-image">
@@ -299,19 +303,24 @@
                                             @endif
                                             <td class="text-capitalize">{{ $row->stts_kp }}</td>
                                             <td>{{ $row->semester }}</td>
+                                            <td><a href="kerja-praktik/view-judul/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $row->id }}"
+                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
                                             <td><a href="kerja-praktik/view-slip/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $row->id }}"
-                                                    class="btn btn-success btn-xs"><i class="fa fa-file-image">
-                                                    </i> </a>
-
-
+                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
                                             <td>
-                                                <a href="kerja-praktik/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewDataBarang{{ $row->id }}"
+                                                {{-- <a href="kerja-praktik/view-slip/{{ $row->id }}"
+                                                    data-toggle="modal" data-target="#viewDataBarang{{ $row->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
+                                                    </i> </a> --}}
                                                 <a href="kerja-praktik/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditKP{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
@@ -441,7 +450,7 @@
                                 <label class="control-label">Ganti Dosen Pembimbing </label>
                                 <select class="form-control" name="ganti_pembimbing" id="d_ganti" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
-                                    <option value="iya">Iya</option>
+                                    <option value="ya">Ya</option>
                                     <option value="tidak">Tidak</option>
                                 </select>
                             </div>
@@ -592,8 +601,8 @@
                                 <label class="control-label">Ganti Dosen Pembimbing </label>
                                 <select class="form-control" name="ganti_pembimbing" id="d_ganti_1" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
-                                    <option @php if($item->ganti_pembimbing == 'iya') echo 'selected';
-                                        @endphp value="iya">Iya</option>
+                                    <option @php if($item->ganti_pembimbing == 'ya') echo 'selected';
+                                        @endphp value="ya">Ya</option>
                                     <option @php if($item->ganti_pembimbing == 'tidak') echo 'selected';
                                         @endphp value="tidak">Tidak</option>
                                 </select>
@@ -714,7 +723,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran - {{ $item->mahasiswa->biodata->nama
+                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran - {{
+                    $item->mahasiswa->biodata->no_induk }}
+                    | {{ $item->mahasiswa->biodata->nama
                     }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
@@ -734,6 +745,35 @@
                             <p class="text-center">Gambar Tidak Ditemukan</p>
                         </div>
                         @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- Judul --}}
+@foreach ($daftarkp as $item)
+<div class="modal fade" id="viewJudul{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Judul KP - {{ $item->mahasiswa->biodata->no_induk }}
+                    | {{ $item->mahasiswa->biodata->nama
+                    }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {{ $item->judul }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -921,7 +961,7 @@
         toggleKolomBaru('#ganti');
     });
     function toggleKolomBaru(formId) {
-        if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
+        if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'ya') {
             $(formId + ' #kolomBaru').show();
         } else {
             $(formId + ' #kolomBaru').hide();
@@ -944,7 +984,7 @@
         });
         
         function toggleKolomBaru_1(formId) {
-                if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'iya') {
+                if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'ya') {
                     $(formId + ' #kolomBaru_1').show();
                 } else {
                     $(formId + ' #kolomBaru_1').hide();
