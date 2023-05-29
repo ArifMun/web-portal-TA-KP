@@ -22,10 +22,13 @@ class CheckLevel
         }
 
         $user = Auth::user();
-
         if (\in_array($user->level, $roles)) {
 
             return $next($request);
         }
+        // if (Auth::check() && Auth::user()->level == '0') {
+        //     return $next($request);
+        // }
+        abort(403);
     }
 }
