@@ -29,7 +29,7 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Bimbingan Kerja Praktik</h4>
+                <h4 class="page-title">Bimbingan Tugas Akhir</h4>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -117,7 +117,7 @@
                                             <th>NIM</th>
                                             <th>Nama</th>
                                             <th>Judul Bimbingan</th>
-                                            <th>Laporan KP</th>
+                                            <th>Laporan TA</th>
                                             <th>Status</th>
                                             <th>Catatan</th>
                                             <th>Tahun</th>
@@ -129,18 +129,18 @@
                                     </thead>
 
                                     @if (Auth::user()->level==0)
-                                    {{-- <tbody>
+                                    <tbody>
                                         @php $no=1; @endphp
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->bimbingankp))
-                                        @foreach ($bimbingMhs as $item)
-
+                                        @if (!empty(Auth::user()->biodata->mahasiswa->bimbinganta1))
+                                        @foreach ($b_mhs_1 as $item)
+                                        {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
-                                                <a href="storage/{{ $item->laporan_kp }}"
+                                                <a href="storage/{{ $item->laporan_ta }}"
                                                     class="btn btn-success btn-xs"><i class="fas fa-file-download">
                                                     </i>
                                                 </a>
@@ -168,7 +168,7 @@
                                             </td>
                                             @endif
                                             <td>{{ $item->catatan }}</td>
-                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
+                                            <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
                                             <td>{{ $item->updated_at }}</td>
@@ -192,14 +192,12 @@
                                             </td>
                                         </tr>
                                         @endif
-                                    </tbody> --}}
+                                    </tbody>
 
                                     @elseif(Auth::user()->level == 1)
                                     <tbody> @php $no=1; @endphp
-                                        @foreach ($d_bimbing_1 as $item)
-                                        {{ $item }}
-                                        {{ $item->mahasiswa->id }}
-                                        {{-- <tr align="center">
+                                        @foreach ($b_dosen_1 as $item)
+                                        <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td>
@@ -233,7 +231,7 @@
                                             </td>
                                             @endif
                                             <td>{{ $item->catatan }}</td>
-                                            <td>{{ $item->tahunakademik->tahun }}</td>
+                                            <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
                                             <td>{{ $item->updated_at }}</td>
@@ -247,7 +245,7 @@
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
-                                        </tr> --}}
+                                        </tr>
                                         @endforeach
 
                                     </tbody>
@@ -372,13 +370,13 @@
 </div>
 
 {{-- Edit --}}
-{{-- @foreach ($bimbingkp as $item)
+@foreach ($e_bimbing as $item)
 <div class="modal fade" id="EditBimbingan{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLongTitle">Ubah Data Bimbingan KP</h3>
+                <h3 class="modal-title" id="exampleModalLongTitle">Ubah Data Bimbingan TA</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -398,7 +396,7 @@
                                     <option value="{{ $item->daftarkp_id }}">{{ $item->mahasiswa->biodata->no_induk }} -
                                         {{
                                         $item->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarkp->tahunakademik->tahun }}
+                                        $item->daftarta->tahunakademik->tahun }}
                                     </option>
 
 
@@ -419,18 +417,18 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan KP </label>
-                                <input type="hidden" name="oldFile" value="{{ $item->laporan_kp }}">
+                                <label for="file" class="form-label control-label">Laporan TA </label>
+                                <input type="hidden" name="oldFile" value="{{ $item->laporan_ta }}">
                                 <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
-                                    value="{{ $item->laporan_kp }}">
+                                    value="{{ $item->laporan_ta }}">
                                 <span class="mt-1 font-italic">biarkan kolom kosong
                                     jika tidak diganti</span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
-                                <select class="form-control" name="stts" required>
+                                <select class="form-control text-capitalize" name="stts" required>
                                     @if (Auth::user()->level==0)
-                                    <option value="proses" @readonly(true)>Proses</option>
+                                    <option value="{{ $item->stts }}" @readonly(true)>{{ $item->stts }}</option>
                                     @else
                                     <option @php if($item->stts == 'proses') echo 'selected';
                                         @endphp value="proses">Proses</option>
@@ -469,7 +467,7 @@
         </div>
     </div>
 </div>
-@endforeach --}}
+@endforeach
 
 {{-- view Catatan --}}
 {{-- @foreach ($bimbingkp as $item)

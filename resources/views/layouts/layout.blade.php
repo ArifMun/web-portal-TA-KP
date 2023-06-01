@@ -39,7 +39,7 @@
             <div class="logo-header">
 
                 <a href="index.html" class="logo">
-                    <img src="/assets/img/psti-logo.png" alt="navbar brand" class="navbar-brand" width="90%">
+                    <img src="/assets/img/psti-logo.png" alt="navbar brand" class="navbar-brand" width="170px">
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
                     data-target="collapse" aria-expanded="false" aria-label="Toggle navigation">

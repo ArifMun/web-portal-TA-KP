@@ -22,7 +22,8 @@ class BimbinganTA1 extends Model
         'judul_bimbingan',
         'laporan_ta',
         'stts',
-        'catatan'
+        'catatan',
+        'author'
     ];
 
     public function daftarta()
@@ -54,6 +55,15 @@ class BimbinganTA1 extends Model
             } else {
                 $q->where('id', '=', Auth::user());
             }
-        })->get();
+        })->get()->sortByDesc('id');
+    }
+
+    public function b_mhs_1()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get()->sortByDesc('id');
     }
 }

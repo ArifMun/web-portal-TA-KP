@@ -90,8 +90,7 @@ class DaftarTAController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('daftar-ta')->with('warning', 'Data Tidak Tersimpan!')
-                ->withErrors($validation);
+            return \redirect('daftar-ta')->with('warning', 'Data Tidak Tersimpan!');
         } else {
             $input  = $request->input('konsentrasi');
             $string = \implode(',', $input);

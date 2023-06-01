@@ -25,10 +25,14 @@ class CheckLevel
         if (\in_array($user->level, $roles)) {
 
             return $next($request);
+        } else {
+            return \back();
+            abort(403);
         }
         // if (Auth::check() && Auth::user()->level == '0') {
         //     return $next($request);
         // }
-        abort(403);
+        // return \back()->with('warning','ANDA TIDAK PUNYA AKSES
+
     }
 }

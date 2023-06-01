@@ -22,21 +22,26 @@ class BimbinganTAController extends Controller
         $m_bimbing_1 = $d_ta->m_bimbing_1();
         $d_bimbing_1 = $d_ta->d_bimbing_1();
 
-        $bimbing_1   = new BimbinganTA1();
-        $l_bimbing_1 = $bimbing_1->all();
-        // $b_dosen_1   = $bimbing_1->b_dosen_1();
-        $b_dosen_1   = BimbinganTA1::with('dosen1')->whereHas('dosen1', function ($q) {
-            if (Auth::user()->level == 1) {
-                $q->where('id', '=', Auth::user()->biodata->dosen->id);
-            }
-        })->get();
+        $bimbing   = new BimbinganTA1();
+        $e_bimbing = $bimbing->all();
+
+        // data pada tabel yang tampil
+        $b_dosen_1  = $bimbing->b_dosen_1();
+        $b_mhs_1 = $bimbing->b_mhs_1();
+
+        // $b_dosen_1   = BimbinganTA1::with('dosen1')->whereHas('dosen1', function ($q) {
+        //     if (Auth::user()->level == 1) {
+        //         $q->where('id', '=', Auth::user()->biodata->dosen->id);
+        //     }
+        // })->get()->sortByDesc('id');
 
         return \view('tugas-akhir.bimbingan-ta', \compact(
-            'l_bimbing_1',
+            'e_bimbing',
             'm_bimbing_1',
             'd_bimbing_1',
             'l_ta',
-            'b_dosen_1'
+            'b_dosen_1',
+            'b_mhs_1'
         ));
     }
 
@@ -89,7 +94,8 @@ class BimbinganTAController extends Controller
                 'judul_bimbingan'   => $request->judul_bimbingan,
                 'laporan_ta'        => $request->file('laporan_ta')->store('dokumen-ta'),
                 'stts'              => $request->stts,
-                'catatan'           => $request->catatan
+                'catatan'           => $request->catatan,
+                'author'            => $request->author,
             ]);
 
             return \redirect('bimbingan-ta')->with('success', 'Data Berhasil Disimpan!');

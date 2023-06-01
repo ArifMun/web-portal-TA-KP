@@ -104,14 +104,7 @@ class DaftarTA extends Model
         })->where('stts_pengajuan', '=', 'diterima')->get();
     }
 
-    public function m_bimbing_1()
-    {
-        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            }
-        })->get()->sortByDesc('id');
-    }
+
 
     public function d_bimbing_1()
     {

@@ -362,7 +362,6 @@
                             <div class="col">
                                 <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
-                                    {{-- <option value="">-- Pilih Level --</option> --}}
                                     <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
                                     </option>
                                     <option <?php if($d->users->level == 1) echo "selected"; ?>

@@ -18,6 +18,7 @@ class AuthController extends Controller
         return \view('forms.login');
     }
 
+
     public function login_process(Request $request)
     {
         $request->validate([
