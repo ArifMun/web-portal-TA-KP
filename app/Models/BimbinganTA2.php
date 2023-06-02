@@ -2,18 +2,14 @@
 
 namespace App\Models;
 
-use App\Models\Dosen;
-use App\Models\DaftarTA;
-use App\Models\Mahasiswa;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class BimbinganTA1 extends Model
+class BimbinganTA2 extends Model
 {
     use HasFactory;
-
-    protected $table = 'bimbing_ta_1';
+    protected $table = 'bimbing_ta_2';
 
     protected $fillable = [
         'daftar_ta_id',
@@ -36,25 +32,23 @@ class BimbinganTA1 extends Model
         return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     }
 
-    public function dosen1()
+    public function dosen2()
     {
         return $this->belongsTo(Dosen::class, 'dosen_id');
     }
-    // public function dosen2()
-    // {
-    //     return $this->belongsTo(Dosen::class, 'd_pembimbing_2');
-    // }
 
-    public function b_dosen_1()
+    public function b_dosen_2()
     {
-        return self::with('dosen1')->whereHas('dosen1', function ($q) {
+        return self::with('dosen2')->whereHas('dosen2', function ($q) {
             if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
+            } else {
+                $q->where('id', '=', Auth::user());
             }
         })->get()->sortByDesc('id');
     }
 
-    public function b_mhs_1()
+    public function b_mhs_2()
     {
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {

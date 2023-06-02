@@ -414,6 +414,8 @@
                                 <input type="file" class="form-control picture" id="image1" name="form_bimbingan"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
+                                <p class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </p>
                             </div>
                         </div>
                     </div>
@@ -515,7 +517,7 @@
                                 <input type="text" class="form-control" value="{{ $item->catatan }}">
                             </div>
                             <div class="col">
-                                <label for="image" class="form-label">Form Bimbingan</label>
+                                <label for="image" class="form-label">Form Bimbingan </label>
                                 <input type="hidden" name="oldImage" value="{{ $item->form_bimbingan }}">
                                 <input type="file" class="form-control picture" id="image2" name="form_bimbingan"
                                     onchange="previewImage(2)">
@@ -526,8 +528,9 @@
                                 @else
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview2">
                                 @endif
-                                <p class="mt-1 font-italic">biarkan kolom kosong
-                                    jika tidak diganti</p>
+                                <p class="mt-1 font-italic text-muted">biarkan kolom kosong
+                                    jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </p>
                             </div>
                         </div>
                     </div>

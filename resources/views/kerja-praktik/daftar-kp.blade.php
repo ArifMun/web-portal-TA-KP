@@ -477,6 +477,8 @@
                                 <input type="file" class="form-control picture" id="slip_pembayaran1"
                                     name="slip_pembayaran" onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
+                                <p class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </p>
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
@@ -515,7 +517,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Data KP</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Ubah Data Kerja Praktik</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -646,10 +648,7 @@
                                         @endforeach
 
                                     </select>
-                                    <p class="mt-3 font-italic"><small>Tekan dan tahan tombol Ctrl jika ingin memilih
-                                            lebih dari
-                                            1
-                                            konsentrasi</small></p>
+
                                 </div>
                             </div>
                             <div class="col">
@@ -679,7 +678,7 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <label for="image" class="form-label control-label">Slip pembayaran </label>
+                                    <label for="image" class="form-label ">Slip pembayaran </label>
                                     <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
                                     <input type="file" class="form-control picture" id="slip_pembayaran2"
                                         name="slip_pembayaran" onchange="previewImage(2)">
@@ -691,8 +690,9 @@
                                     <img class="img-preview img-fluid mb-3 col-sm-5" alt="" id="preview2">
                                     @endif
 
-                                    <p class="mt-1 font-italic">biarkan kolom kosong
-                                        jika tidak diganti</p>
+                                    <p class="mt-1 font-italic text-muted">biarkan kolom kosong
+                                        jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
+                                            KB</span> </p>
                                 </div>
                             </div>
                         </div>

@@ -144,7 +144,7 @@ class BimbinganKPController extends Controller
                 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
-                'laporan_kp'        => 'required',
+                'laporan_kp'        => 'required|file|max:1024',
                 // 'catatan'           => 'required',
             ]
         );
@@ -205,7 +205,7 @@ class BimbinganKPController extends Controller
                 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
-                // 'laporan_kp'        => 'required',
+                'laporan_kp'        => 'file|max:1024',
                 // 'catatan'           => 'required',
             ]
         );
@@ -228,7 +228,7 @@ class BimbinganKPController extends Controller
             $bimbingankp->judul_bimbingan = $request->judul_bimbingan;
             $bimbingankp->author          = $request->author;
             $bimbingankp->stts            = $request->stts;
-            $bimbingankp->catatan            = $request->catatan;
+            $bimbingankp->catatan         = $request->catatan;
             // $bimbingankp->laporan_kp      = $request->laporan_kp;
             $bimbingankp->update();
 

@@ -365,8 +365,10 @@
                             <div class="col">
                                 <label for="file" class="form-label control-label">Laporan KP </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
-                                    onchange="previewImage()">
+                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp" o>
+                                <p class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </p>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
@@ -468,12 +470,13 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan KP </label>
+                                <label for="file" class="form-label">Laporan KP </label>
                                 <input type="hidden" name="oldFile" value="{{ $item->laporan_kp }}">
                                 <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
                                     value="{{ $item->laporan_kp }}">
-                                <span class="mt-1 font-italic">biarkan kolom kosong
-                                    jika tidak diganti</span>
+                                <p class="mt-1 font-italic text-muted">biarkan kolom kosong
+                                    jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </p>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
@@ -568,8 +571,8 @@
                     <input type="hidden" value="{{ $item->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data bimbingan</h>
-                            dengan Judul <span class="text-danger">{{ $item->judul_bimbingan }}</span> ?
+                        <h3>Apakah anda ingin menghapus data bimbingan</h3>
+                        dengan Judul <span class="text-danger">{{ $item->judul_bimbingan }}</span> ?
                     </div>
 
                 </div>

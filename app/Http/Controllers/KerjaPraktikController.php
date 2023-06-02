@@ -98,7 +98,7 @@ class KerjaPraktikController extends Controller
                 'stts_kp'           => 'required',
                 'ganti_pembimbing'  => 'required',
                 'semester'          => 'required',
-                'slip_pembayaran'   => 'required|image|file',
+                'slip_pembayaran'   => 'required|image|file|max:1024',
                 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required',
             ]
@@ -172,7 +172,7 @@ class KerjaPraktikController extends Controller
                 'stts_kp'           => 'required',
                 'ganti_pembimbing'  => 'required',
                 'semester'          => 'required',
-                'slip_pembayaran'   => 'image|file',
+                'slip_pembayaran'   => 'image|file|max:1024',
                 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required',
             ]

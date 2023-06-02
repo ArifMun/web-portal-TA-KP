@@ -12,6 +12,7 @@ use App\Http\Controllers\SeminarKPController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\BimbinganKPController;
 use App\Http\Controllers\BimbinganTAController;
+use App\Http\Controllers\BimbinganTA1Controller;
 use App\Http\Controllers\KonsentrasiController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\KerjaPraktikController;
@@ -37,64 +38,7 @@ Route::get('logout', [AuthController::class, 'logout']);
 Route::get('user-registrasi', [UserRegistrasiController::class, 'create'])->name('user-registrasi');
 Route::post('register-proccess', [UserRegistrasiController::class, 'store']);
 
-// Route::middleware(['auth', 'CheckLevel:0'])->group(function () {
-//     Route::resource('/dashboard', DashboardController::class);
-
-//     // Route::get('akun', [RegistrasiController::class, 'index']);
-//     Route::post('akun/daftar', [RegistrasiController::class, 'store']);
-//     // Route::get('edit-akun/{id}', [RegistrasiController::class, 'edit']);
-//     Route::resource('/registrasi', RegistrasiController::class);
-//     // Route::get('registrasi', [RegistrasiController::class, 'index']);
-//     Route::resource('/kerja-praktik', KerjaPraktikController::class);
-//     // Route::get('kerja-praktik/biodata/{id}', [KerjaPraktikController::class, 'autofill']);
-
-//     Route::resource('/seminar-kp', SeminarKPController::class);
-//     Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
-
-//     Route::resource('/bimbingan-kp', BimbinganKPController::class);
-//     Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);
-//     // Route::get('bimbing-kp/list/{id}/', [BimbinganKPController::class, 'list_index']);
-
-//     Route::resource('/daftar-ta', DaftarTAController::class);
-
-//     Route::resource('/sidang-ta', SidangTAController::class);
-//     Route::get('sidang-ta/daftar_ta_id/{id}', [SidangTAController::class, 'autofill']);
-
-//     Route::resource('/bimbingan-ta', BimbinganTAController::class);
-//     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
-
-//     Route::get('manajemen-form', [ManajemenFormController::class, 'index']);
-//     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
-//     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
-
-//     Route::post('konsentrasi/tambah', [KonsentrasiController::class, 'store']);
-//     Route::post('konsentrasi/{id}/ubah', [KonsentrasiController::class, 'update']);
-//     Route::post('konsentrasi/{id}/destroy', [KonsentrasiController::class, 'destroy']);
-
-//     Route::get('akses/update', [FormAksesController::class, 'update']);
-//     Route::post('akses/tambah', [FormAksesController::class, 'store']);
-//     Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
-
-//     Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
-// });
-// Route::group(
-//     ['middleware' => ['auth', 'CheckLevel:0']],
-//     function () {
-//         Route::resource('/dashboard', DashboardController::class);
-//         Route::get('manajemen-form', [ManajemenFormController::class, 'index']);
-//         Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
-//         Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
-
-//         Route::post('konsentrasi/tambah', [KonsentrasiController::class, 'store']);
-//         Route::post('konsentrasi/{id}/ubah', [KonsentrasiController::class, 'update']);
-//         Route::post('konsentrasi/{id}/destroy', [KonsentrasiController::class, 'destroy']);
-
-//         Route::get('akses/update', [FormAksesController::class, 'update']);
-//         Route::post('akses/tambah', [FormAksesController::class, 'store']);
-//         Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
-//     }
-// );
-Route::group(['middleware' => ['auth', 'CheckLevel:1,0']], function () {
+Route::group(['middleware' => ['auth', 'CheckLevel:2,1,0']], function () {
 
     Route::resource('/dashboard', DashboardController::class);
 
@@ -119,6 +63,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:1,0']], function () {
     Route::get('sidang-ta/daftar_ta_id/{id}', [SidangTAController::class, 'autofill']);
 
     Route::resource('/bimbingan-ta', BimbinganTAController::class);
+    Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class);
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
 
     Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:1');
