@@ -18,7 +18,7 @@ class CreateDaftarTa extends Migration
             $table->integer('mahasiswa_id');
             $table->integer('d_pembimbing_1');
             $table->integer('d_pembimbing_2');
-            $table->string('judul', 70)->nullable();
+            $table->string('judul', 100)->nullable();
             $table->integer('pembimbing_lama_1')->nullable();
             $table->integer('pembimbing_lama_2')->nullable();
             $table->enum('stts_pengajuan', ['tertunda', 'diterima', 'ditolak']);

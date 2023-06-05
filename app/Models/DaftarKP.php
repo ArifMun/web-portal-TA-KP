@@ -69,9 +69,7 @@ class DaftarKP extends Model
     {
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->where('stts_pengajuan', '=', 'diterima')->get();
     }

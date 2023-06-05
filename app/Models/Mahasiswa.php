@@ -24,7 +24,7 @@ class Mahasiswa extends Model
 
     public function daftarkp()
     {
-        return $this->hasMany(DaftarKP::class);
+        return $this->hasMany(DaftarKP::class, 'mahasiswa_id');
     }
 
     public function daftarta()
@@ -32,20 +32,20 @@ class Mahasiswa extends Model
         return $this->hasMany(DaftarTA::class, 'mahasiswa_id');
     }
 
-    public function seminarkp()
-    {
-        return $this->hasMany(SeminarKP::class);
-    }
+    // public function seminarkp()
+    // {
+    //     return $this->hasMany(SeminarKP::class);
+    // }
 
     public function sidangta()
     {
         return $this->hasMany(SidangTA::class, 'mahasiswa_id');
     }
 
-    public function bimbingankp()
-    {
-        return $this->hasMany(BimbinganKP::class, 'mahasiswa_id');
-    }
+    // public function bimbingankp()
+    // {
+    //     return $this->hasMany(BimbinganKP::class, 'mahasiswa_id');
+    // }
 
     public function bimbinganta1()
     {

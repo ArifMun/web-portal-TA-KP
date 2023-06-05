@@ -38,14 +38,14 @@ Route::get('logout', [AuthController::class, 'logout']);
 Route::get('user-registrasi', [UserRegistrasiController::class, 'create'])->name('user-registrasi');
 Route::post('register-proccess', [UserRegistrasiController::class, 'store']);
 
-Route::group(['middleware' => ['auth', 'CheckLevel:2,1,0']], function () {
+Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
 
     Route::resource('/dashboard', DashboardController::class);
 
     // Route::get('akun', [RegistrasiController::class, 'index']);
     // Route::post('akun/daftar', [RegistrasiController::class, 'store']);
     // Route::get('edit-akun/{id}', [RegistrasiController::class, 'edit']);
-    Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:1');
+    Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:0,1,2,3');
     // Route::get('registrasi', [RegistrasiController::class, 'index']);
     Route::resource('/kerja-praktik', KerjaPraktikController::class);
     // Route::get('kerja-praktik/biodata/{id}', [KerjaPraktikController::class, 'autofill']);
@@ -66,7 +66,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:2,1,0']], function () {
     Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class);
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
 
-    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:1');
+    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:2,3');
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
 

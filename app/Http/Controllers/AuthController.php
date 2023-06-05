@@ -33,7 +33,7 @@ class AuthController extends Controller
             $request->session()->regenerate();
             $user = Auth::user();
 
-            if ($user->level == 0 | 1 | 2) {
+            if ($user->level == 0 | 1 | 2 | 3) {
                 return redirect()->intended('dashboard')->with('success', 'Anda Berhasil Masuk!');
             }
         } else {

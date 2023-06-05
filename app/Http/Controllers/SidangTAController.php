@@ -30,7 +30,7 @@ class SidangTAController extends Controller
 
         $d_ta     = new DaftarTA();
         $d_mhs_ta = $d_ta->m_ta_diterima();
-        $daftarta = $d_ta->all();
+        $daftarta = $d_ta->d_diterima();
         return \view('tugas-akhir.sidang-ta', \compact(
             's_list',
             'dosen',
@@ -69,7 +69,7 @@ class SidangTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'mahasiswa_id'      => 'required',
+                // 'mahasiswa_id'      => 'required',
                 'daftar_ta_id'      => 'required',
                 'f_bimbingan_1'     => 'required|image|file|max:1024',
                 'f_bimbingan_2'     => 'required|image|file|max:1024',
@@ -77,7 +77,8 @@ class SidangTAController extends Controller
                 'judul'             => 'required',
                 'tgl_sidang'        => 'required|date',
                 'jam_sidang'        => 'required',
-                'stts_sidang'       => 'required'
+                'stts_sidang'       => 'required',
+                'd_penguji'         => 'required'
             ]
         );
         // \dd($validation);
@@ -86,8 +87,9 @@ class SidangTAController extends Controller
         } else {
 
             SidangTA::create([
-                'mahasiswa_id'      => $request->mahasiswa_id,
+                // 'mahasiswa_id'      => $request->mahasiswa_id,
                 'daftar_ta_id'      => $request->daftar_ta_id,
+                'd_penguji'         => $request->d_penguji,
                 'f_bimbingan_1'     => $request->file('f_bimbingan_1')->store('form-b1'),
                 'f_bimbingan_2'     => $request->file('f_bimbingan_2')->store('form-b2'),
                 'slip_pembayaran'   => $request->file('slip_pembayaran')->store('slip-ta'),
@@ -136,8 +138,9 @@ class SidangTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'mahasiswa_id'      => 'required',
+                // 'mahasiswa_id'      => 'required',
                 'daftar_ta_id'      => 'required',
+                'd_penguji'         => 'required',
                 'f_bimbingan_1'     => 'image|file|max:1024',
                 'f_bimbingan_2'     => 'image|file|max:1024',
                 'slip_pembayaran'   => 'image|file|max:1024',
@@ -175,8 +178,9 @@ class SidangTAController extends Controller
                 $sidang_ta->slip_pembayaran = $request->file('slip_pembayaran')->store('slip-ta');
             }
 
-            $sidang_ta->mahasiswa_id    = $request->mahasiswa_id;
+            // $sidang_ta->mahasiswa_id    = $request->mahasiswa_id;
             $sidang_ta->daftar_ta_id    = $request->daftar_ta_id;
+            $sidang_ta->d_penguji       = $request->d_penguji;
             $sidang_ta->judul           = $request->judul;
             $sidang_ta->catatan         = $request->catatan;
             $sidang_ta->tgl_sidang      = $request->tgl_sidang;

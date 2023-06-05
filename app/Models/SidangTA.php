@@ -14,6 +14,7 @@ class SidangTA extends Model
 
     protected $fillable = [
         'daftar_ta_id',
+        'd_penguji',
         'mahasiswa_id',
         'f_bimbingan_1',
         'f_bimbingan_2',
@@ -25,10 +26,10 @@ class SidangTA extends Model
         'stts_sidang',
     ];
 
-    public function mahasiswa()
-    {
-        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
-    }
+    // public function mahasiswa()
+    // {
+    //     return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
+    // }
 
     public function daftarta()
     {
@@ -37,11 +38,9 @@ class SidangTA extends Model
 
     public function m_list_sidang()
     {
-        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        return self::with('daftarta')->whereHas('daftarta', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->get();
     }

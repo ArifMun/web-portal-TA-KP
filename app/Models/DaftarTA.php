@@ -79,7 +79,7 @@ class DaftarTA extends Model
 
     public function d_diterima()
     {
-        return self::where('stts_pengajuan', '=', 'diterima')->get()->count();
+        return self::where('stts_pengajuan', '=', 'diterima')->get();
     }
 
     public function d_tertunda()
@@ -105,7 +105,7 @@ class DaftarTA extends Model
     {
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->where('stts_pengajuan', '=', 'diterima')->get();
     }
@@ -114,14 +114,14 @@ class DaftarTA extends Model
     {
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->get()->sortByDesc('id');
     }
 
     public function d_bimbing_1()
     {
-        return self::with('dosen1')->whereHas('dosen1', function ($q) {
+        return self::with('bimbinganta_1')->whereHas('bimbinganta_1', function ($q) {
             if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {

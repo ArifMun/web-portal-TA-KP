@@ -13,8 +13,8 @@ class BimbinganTA2 extends Model
 
     protected $fillable = [
         'daftar_ta_id',
-        'dosen_id',
-        'mahasiswa_id',
+        // 'dosen_id',
+        // 'mahasiswa_id',
         'judul_bimbingan',
         'laporan_ta',
         'stts',
@@ -27,32 +27,30 @@ class BimbinganTA2 extends Model
         return $this->belongsTo(DaftarTA::class, 'daftar_ta_id');
     }
 
-    public function mahasiswa()
-    {
-        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
-    }
+    // public function mahasiswa()
+    // {
+    //     return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
+    // }
 
-    public function dosen2()
-    {
-        return $this->belongsTo(Dosen::class, 'dosen_id');
-    }
+    // public function dosen2()
+    // {
+    //     return $this->belongsTo(Dosen::class, 'dosen_id');
+    // }
 
     public function b_dosen_2()
     {
-        return self::with('dosen2')->whereHas('dosen2', function ($q) {
+        return self::with('daftarta')->whereHas('daftarta', function ($q) {
             if (Auth::user()->level == 1) {
-                $q->where('id', '=', Auth::user()->biodata->dosen->id);
-            } else {
-                $q->where('id', '=', Auth::user());
+                $q->where('d_pembimbing_2', '=', Auth::user()->biodata->dosen->id);
             }
         })->get()->sortByDesc('id');
     }
 
     public function b_mhs_2()
     {
-        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        return self::with('daftarta')->whereHas('daftarta', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->get()->sortByDesc('id');
     }

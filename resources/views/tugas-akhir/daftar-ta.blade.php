@@ -111,7 +111,7 @@
                                                 <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
                                                     Diterima
                                                     : {{
-                                                    $d_diterima}}
+                                                    $d_diterima->count()}}
                                                 </p>
                                                 <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
                                                     Tertunda :
@@ -430,8 +430,9 @@
 
                                     @else
                                     @foreach ($mhs_dDaftar as $item)
-                                    <option value="{{ $item->mahasiswa_id}}">{{ $item->mahasiswa->biodata->no_induk
-                                        }} - {{ $item->mahasiswa->biodata->nama}}
+                                    <option value="{{ $item->daftarkp->mahasiswa_id}}">{{
+                                        $item->daftarkp->mahasiswa->biodata->no_induk
+                                        }} - {{ $item->daftarkp->mahasiswa->biodata->nama}}
                                     </option>
                                     @endforeach
 
@@ -945,8 +946,6 @@
         oFReader.onload = function (oFREvent) {
             slipimgPriview.src = oFREvent.target.result;
         }
-        // const blob = URL.createObjectURL(image.files[0]);
-        // imgPreview.src = blob;
     }
 
     // Tambah

@@ -18,7 +18,7 @@ class CreateUsersTable extends Migration
             $table->integer('biodata_id');
             $table->integer('username');
             $table->string('password');
-            $table->enum('level', [0, 1, 2]);
+            $table->enum('level', [0, 1, 2, 3]);
 
             // $table->timestamps();
         });

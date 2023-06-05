@@ -131,7 +131,7 @@
 
                                     @if (Auth::user()->level==0)
                                     <tbody>
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->seminarkp))
+                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarkp->seminarkp))
                                         @foreach ($seminarmhs as $item)
                                         {{-- {{ $item }} --}}
                                         <tr align="center">@php $no=1; @endphp
@@ -205,12 +205,6 @@
                                         </tr>
                                         @endforeach
 
-                                        @else
-                                        <tr>
-                                            <td colspan="13">
-                                                <p align="center"><i>Data Tidak Tersedia</i></p>
-                                            </td>
-                                        </tr>
                                         @endif
                                     </tbody>
 
@@ -322,9 +316,6 @@
             <form method="POST" enctype="multipart/form-data" action="seminar-kp">
                 @csrf
                 <div class="modal-body">
-                    {{-- <select name="stts_pengajuan" id="" hidden>
-                        <option value="tertunda" selected>tertunda</option>
-                    </select> --}}
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
@@ -339,15 +330,10 @@
                                         $item->mahasiswa->biodata->no_induk
                                         }} - {{ $item->mahasiswa->biodata->nama
                                         }} - {{ $item->tahunakademik->tahun }}
-                                        {{-- {{
-                                        $item->daftarkp->mahasiswa->biodata->nama
-                                        }} - {{
-                                        $item->daftarkp->tahunakademik->tahun
-                                        }} --}}
                                     </option>
                                     @endforeach
-                                    <input type="hidden" value="{{ Auth::user()->biodata->mahasiswa->id }}"
-                                        name="mahasiswa_id">
+                                    {{-- <input type="hidden" value="{{ Auth::user()->biodata->mahasiswa->id }}"
+                                        name="mahasiswa_id"> --}}
                                     @else
 
                                     @foreach ($daftarkp as $k)
@@ -463,7 +449,7 @@
                                         $item->daftarkp->mahasiswa->biodata->nama }} - {{
                                         $item->daftarkp->tahunakademik->tahun }}</option>
                                 </select>
-                                <input type="hidden" value="{{ $item->mahasiswa_id }}" name="mahasiswa_id">
+                                {{-- <input type="hidden" value="{{ $item->mahasiswa_id }}" name="mahasiswa_id"> --}}
                             </div>
                         </div>
                     </div>
@@ -560,8 +546,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan - {{
-                    $item->mahasiswa->biodata->no_induk }}
-                    | {{ $item->mahasiswa->biodata->nama
+                    $item->daftarkp->mahasiswa->biodata->no_induk }}
+                    | {{ $item->daftarkp->mahasiswa->biodata->nama
                     }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -598,8 +584,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">
-                    Slip Pembayaran - {{ $item->mahasiswa->biodata->no_induk }}
-                    | {{ $item->mahasiswa->biodata->nama
+                    Slip Pembayaran - {{ $item->daftarkp->mahasiswa->biodata->no_induk }}
+                    | {{ $item->daftarkp->mahasiswa->biodata->nama
                     }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -635,8 +621,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Judul KP - {{ $item->mahasiswa->biodata->no_induk }}
-                    | {{ $item->mahasiswa->biodata->nama
+                <h5 class="modal-title" id="exampleModalLongTitle">Judul KP - {{
+                    $item->daftarkp->mahasiswa->biodata->no_induk }}
+                    | {{ $item->daftarkp->mahasiswa->biodata->nama
                     }}
                 </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -744,9 +731,10 @@
 
                     <div class=" form-group">
                         <h3>Apakah anda yakin menghapus data
-                            <span class="text-danger text-capitalize">{{ $kp->mahasiswa->biodata->nama }}</span> dengan
+                            <span class="text-danger text-capitalize">{{ $kp->daftarkp->mahasiswa->biodata->nama
+                                }}</span> dengan
                             NIM <span class="text-danger">{{
-                                $kp->mahasiswa->biodata->no_induk
+                                $kp->daftarkp->mahasiswa->biodata->no_induk
                                 }} </span> ?
                         </h3>
                         <h4 class="btn btn-warning text-uppercase">Data Terkait NIM tersebut juga akan terhapus!</h4>
@@ -765,6 +753,7 @@
     </div>
 </div>
 @endforeach
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 
 <script>

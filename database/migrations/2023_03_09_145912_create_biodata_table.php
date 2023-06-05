@@ -20,7 +20,8 @@ class CreateBiodataTable extends Migration
             $table->string('nama');
             $table->integer('no_induk');
             $table->string('keahlian')->nullable();
-            $table->enum('jabatan', ['dosen', 'mahasiswa', 'TU']);
+            $table->string('email')->nullable();
+            $table->enum('jabatan', ['dosen', 'mahasiswa', 'TU', 'kaprodi']);
             $table->string('tempat_lahir', 20)->nullable();
             $table->date('tgl_lahir')->nullable();
             $table->string('no_telp', 12);

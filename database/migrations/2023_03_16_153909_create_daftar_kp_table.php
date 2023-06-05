@@ -19,15 +19,15 @@ class CreateDaftarKpTable extends Migration
             $table->integer('mahasiswa_id');
             $table->integer('d_pembimbing_1');
             $table->integer('d_pembimbing_2');
-            $table->string('judul', 70)->nullable();
+            $table->string('judul')->nullable();
             $table->integer('pembimbing_lama')->nullable();
-            $table->enum('ganti_pembimbing', ['iya', 'tidak']);
+            $table->enum('ganti_pembimbing', ['ya', 'tidak']);
             $table->enum('stts_pengajuan', ['tertunda', 'diterima', 'ditolak']);
             $table->enum('stts_kp', ['baru', 'melanjutkan']);
             $table->integer('semester');
             $table->string('slip_pembayaran');
             $table->integer('thn_akademik_id');
-            $table->integer('konsentrasi_id');
+            $table->string('konsentrasi');
             $table->timestamps();
         });
     }

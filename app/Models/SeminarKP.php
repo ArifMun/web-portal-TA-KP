@@ -16,7 +16,7 @@ class SeminarKP extends Model
     protected $table = 'seminar_kp';
 
     protected $fillable = [
-        'mahasiswa_id',
+        // 'mahasiswa_id',
         'daftarkp_id',
         'form_bimbingan',
         'tgl_seminar',
@@ -26,10 +26,10 @@ class SeminarKP extends Model
         'catatan'
     ];
 
-    public function mahasiswa()
-    {
-        return $this->belongsTo(Mahasiswa::class);
-    }
+    // public function mahasiswa()
+    // {
+    //     return $this->belongsTo(Mahasiswa::class);
+    // }
 
     public function daftarkp()
     {
@@ -59,20 +59,18 @@ class SeminarKP extends Model
 
     public function m_seminar()
     {
-        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->get();
     }
 
     public function m_daftar_ta()
     {
-        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->where('stts_seminar', '=', 'selesai')->get();
     }

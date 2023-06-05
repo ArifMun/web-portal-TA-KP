@@ -27,15 +27,22 @@ class BimbinganKPController extends Controller
         $thnakademik = TahunAkademik::all();
         $bimbingkp   = BimbinganKP::all();
 
-        $sttsDosen   = BimbinganKP::with('dosen')->whereHas('dosen', function ($q) {
+        $sttsDosen   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 1) {
-                $q->where('id', '=', Auth::user()->biodata->dosen->id)
-                    ->where('stts', '=', 'proses');
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
+                // ->where('stts', '=', 'proses');
             }
-        })->get()->count();
-        $sttsMhs   = BimbinganKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        })->get();
+        // testing
+        // $sttsDosen   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
+        //     if (Auth::user()->level == 1) {
+        //         $q->where('dosen_id', '=', Auth::user()->biodata->dosen->id)
+        //             ->where('stts', '=', 'proses');
+        //     }
+        // })->get()->count();
+        $sttsMhs   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id)
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id)
                     ->where('stts', '=', 'proses');
             }
         })->get()->count();
@@ -50,21 +57,35 @@ class BimbinganKPController extends Controller
 
         $mhskpd   = DaftarKP::with('dosen')->whereHas('dosen', function ($q) {
             if (Auth::user()->level == 1) {
-                $q->where('id', '=', Auth::user()->biodata->dosen->id);
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());
             }
         })->get()->sortByDesc('id');
 
-        $bimbingMhs   = BimbinganKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        $bimbingMhs   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
         })->get();
 
-        $bimbingDosen   = BimbinganKP::with('dosen')->whereHas('dosen', function ($q) {
+        // testing
+        $b   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get();
+
+        $bimbingDosen   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 1) {
-                $q->where('id', '=', Auth::user()->biodata->dosen->id);
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
+            }
+        })->get();
+
+        // testing
+        $d   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
             }
         })->get();
 
@@ -155,8 +176,8 @@ class BimbinganKPController extends Controller
 
             BimbinganKP::create([
                 'daftarkp_id'       => $request->daftarkp_id,
-                'dosen_id'          => $request->dosen_id,
-                'mahasiswa_id'      => $request->mahasiswa_id,
+                // 'dosen_id'          => $request->dosen_id,
+                // 'mahasiswa_id'      => $request->mahasiswa_id,
                 'judul_bimbingan'   => $request->judul_bimbingan,
                 'catatan'           => $request->catatan,
                 'stts'              => $request->stts,
@@ -223,8 +244,8 @@ class BimbinganKPController extends Controller
             }
 
             $bimbingankp->daftarkp_id     = $request->daftarkp_id;
-            $bimbingankp->mahasiswa_id    = $request->mahasiswa_id;
-            $bimbingankp->dosen_id        = $request->dosen_id;
+            // $bimbingankp->mahasiswa_id    = $request->mahasiswa_id;
+            // $bimbingankp->dosen_id        = $request->dosen_id;
             $bimbingankp->judul_bimbingan = $request->judul_bimbingan;
             $bimbingankp->author          = $request->author;
             $bimbingankp->stts            = $request->stts;

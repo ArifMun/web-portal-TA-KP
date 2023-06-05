@@ -59,7 +59,7 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="7" class="form-control" id="filter-tahun">
+                                                <select data-column="8" class="form-control" id="filter-tahun">
                                                     <option value="">-- Pilih Tahun --</option>
                                                     @foreach ($thnakademik as $k)
                                                     <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
@@ -75,7 +75,7 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="5" class="form-control" id="filter-stts">
+                                                <select data-column="6" class="form-control" id="filter-stts">
                                                     <option value="">-- Pilih Status --</option>
                                                     @foreach ($filterStts as $item)
                                                     <option value="{{ $item->stts }}" class="text-uppercase">{{
@@ -87,19 +87,34 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
+                                <div class="col-sm-1 col-md-3">
+                                    <div class="row">
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <label class="font-weight-bold h6">Status Bimbingan</label>
                                             <div class="row ml-1">
+                                                {{-- <p class="badge badge-warning font-weight-bold ">
+                                                    PROSES : {{ $sttsDosen }}
+                                                </p>
+                                                <p class="badge badge-warning font-weight-bold ">
+                                                    PROSES : {{ $sttsDosen }}
+                                                </p>
+                                                <p class="badge badge-warning font-weight-bold ">
+                                                    PROSES : {{ $sttsDosen }}
+                                                </p> --}}
                                                 @if (Auth::user()->level == 1)
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    <b>PROSES : {{ $sttsDosen }}</b>
+                                                <p class="badge badge-warning font-weight-bold ">
+                                                    PROSES : {{ $sttsDosen->stts == 'proses' }}
                                                 </p>
+                                                <p class="badge badge-warning font-weight-bold ">
+                                                    ACC : {{ $sttsDosen->stts == 'acc' }}
+                                                </p>
+                                                <p class="badge badge-warning font-weight-bold ">
+                                                    REVISI : {{ $sttsDosen->stts == 'revisi' }}
+                                                </p>
+
+
                                                 @elseif(Auth::user()->level == 0)
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    <b>PROSES : {{ $sttsDosen }}</b>
-                                                </p>
+                                                PROSES : {{ $sttsDosen }}
                                                 @endif
                                             </div>
                                         </div>
@@ -149,6 +164,7 @@
                                             <th>NIM</th>
                                             <th>Nama</th>
                                             <th>Judul Bimbingan</th>
+                                            <th>Dosen Pembimbing</th>
                                             <th>Laporan KP</th>
                                             <th>Status</th>
                                             <th>Catatan</th>
@@ -163,15 +179,16 @@
                                     @if (Auth::user()->level==0)
                                     <tbody>
                                         @php $no=1; @endphp
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->bimbingankp))
+                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarkp->bimbingankp))
                                         @foreach ($bimbingMhs as $item)
                                         {{-- {{ $item }} --}}
 
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->mahasiswa->biodata->nama }}</td>
+                                            <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
                                             <td>{{ $item->judul_bimbingan }}</td>
+                                            <td>{{ $item->daftarkp->dosen->biodata->nama }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_kp }}"
                                                     class="btn btn-success btn-xs"><i class="fas fa-file-download">
@@ -180,24 +197,21 @@
                                             </td>
                                             @if ($item->stts == 'proses')
                                             <td>
-                                                <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                <span class="font-weight-bold text-capitalize badge badge-warning">
                                                     {{
-                                                    $item->stts }}</a>
+                                                    $item->stts }}</span>
                                             </td>
                                             @elseif($item->stts == 'acc')
                                             <td>
-                                                <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                <span class="font-weight-bold text-capitalize badge badge-success">
                                                     {{
-                                                    $item->stts}}</a>
+                                                    $item->stts}}</span>
                                             </td>
                                             @else
                                             <td>
-                                                <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                <span class="badge badge-danger font-weight-bold text-capitalize">
                                                     {{
-                                                    $item->stts}}</a>
+                                                    $item->stts}}</span>
                                             </td>
                                             @endif
                                             {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
@@ -242,6 +256,7 @@
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
                                             <td>{{ $item->judul_bimbingan }}</td>
+                                            <td>{{ $item->daftarkp->dosen->biodata->nama }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_kp }}"
                                                     class="btn btn-success btn-xs"><i class="fas fa-file-download">
@@ -439,9 +454,10 @@
                                 <label class="control-label">NIM - Nama - Tahun </label>
                                 <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
                                     id="daftarkp_id" required>
-                                    <option value="{{ $item->daftarkp_id }}">{{ $item->mahasiswa->biodata->no_induk }} -
+                                    <option value="{{ $item->daftarkp_id }}">{{
+                                        $item->daftarkp->mahasiswa->biodata->no_induk }} -
                                         {{
-                                        $item->mahasiswa->biodata->nama }} - {{
+                                        $item->daftarkp->mahasiswa->biodata->nama }} - {{
                                         $item->daftarkp->tahunakademik->tahun }}
                                     </option>
 

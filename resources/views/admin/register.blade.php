@@ -126,8 +126,8 @@
 </div>
 
 {{-- Tambah --}}
-<div class="modal fade" id="modalAddAkun" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade modalTambahAkun" id="modalAddAkun" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -190,10 +190,11 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
-                                <select class="form-control" name="jabatan" required>
+                                <select class="form-control" name="jabatan" id="jabatan" required>
                                     <option value="" hidden="">-- Pilih Jabatan --</option>
                                     @php
-                                    $position = array('dosen'=>'Dosen','TU'=>'Tata Usaha','mahasiswa'=>'Mahasiswa');
+                                    $position = array('dosen'=>'Dosen','TU'=>'Tata
+                                    Usaha','mahasiswa'=>'Mahasiswa','kaprodi'=>'Kaprodi');
                                     @endphp
                                     @foreach ($position as $k=>$jabatan)
                                     <option value="{{ $k }}">{{ $jabatan }}</option>
@@ -206,23 +207,24 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="">Konsentrasi </label>
-                                <select class="form-control keahlian" name="keahlian[]" id="keahlian" size="5" multiple
-                                    required>
+                                <label id="kolomBaru_1" style="display: none">Konsentrasi </label>
+                                <select id="kolomBaru_1" style="display: none" class="form-control keahlian"
+                                    name="keahlian[]" id="keahlian" size="5" multiple>
                                     <option value="" hidden="">-- Konsentrasi --</option>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
                                     @endforeach
                                 </select>
-                                {{-- <label>Keahlian</label>
-                                <input type="text" class="form-control" name="keahlian" placeholder="Keahlian .."> --}}
+
+                                <input type="hidden" name="keahlian[]" class="form-control" name="keahlian"
+                                    placeholder="Keahlian ..">
                             </div>
                             <div class="col">
                                 <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
                                     <option value="" hidden="">-- Pilih Level --</option>
                                     @php
-                                    $levels= array(0,1,2);
+                                    $levels= array(0,1,2,3);
                                     @endphp
                                     @foreach ($levels as $k=>$level)
                                     <option value="{{ $level }}">{{ $level }}</option>
@@ -261,8 +263,8 @@
 
 {{-- Edit --}}
 @foreach($biodata as $d)
-<div class="modal fade" id="editDataAkun{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade modalEditAkun" id="editDataAkun{{ $d->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -332,7 +334,8 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
-                                <input type="text" class="form-control" value="{{ $d->jabatan }}" readonly>
+                                <input type="text" class="form-control" value="{{ $d->jabatan }}" id="jabatan_1"
+                                    name="jabatan_1" readonly>
                                 {{-- <select class="form-control" name="jabatan" required>
                                     <option value="" hidden="">-- Pilih Jabatan --</option>
                                     <option <?php if($d->jabatan == 'dosen') echo "selected"; ?> value="dosen">Dosen
@@ -368,6 +371,8 @@
                                         value="1">1</option>
                                     <option <?php if($d->users->level == 2) echo "selected"; ?>
                                         value="2">2</option>
+                                    <option <?php if($d->users->level == 3) echo "selected"; ?>
+                                        value="3">3</option>
                                 </select>
                                 <label class="control-label mt-3">Password </label>
                                 <input type="password" class="form-control" name="password" placeholder="Password ..">
@@ -500,15 +505,71 @@
     document.addEventListener('DOMContentLoaded', function() {
     var selectElements = document.getElementsByClassName("keahlian");
     
-    for (var i = 0; i < selectElements.length; i++) { var selectElement=selectElements[i];
-        selectElement.addEventListener("mousedown", function(e) { e.preventDefault(); e.target.selected=!e.target.selected;
-        this.focus(); }); } });
+    for (var i = 0; i < selectElements.length; i++) { 
+        var selectElement=selectElements[i];
+        selectElement.addEventListener("mousedown", function(e) { 
+                e.preventDefault(); e.target.selected=!e.target.selected;
+                this.focus(); 
+                }); 
+            } 
+        });
 
     document.addEventListener('DOMContentLoaded', function() {
     var selectElements = document.getElementsByClassName("keahlian-select");
     
-    for (var i = 0; i < selectElements.length; i++) { var selectElement=selectElements[i];
-        selectElement.addEventListener("mousedown", function(e) { e.preventDefault(); e.target.selected=!e.target.selected;
-        this.focus(); }); } });
+    for (var i = 0; i < selectElements.length; i++) { 
+        var selectElement=selectElements[i];
+        selectElement.addEventListener("mousedown", function(e) { 
+        e.preventDefault(); e.target.selected=!e.target.selected;
+        this.focus(); 
+                }); 
+            } 
+        });
 </script>
+
+<script>
+    $(document).ready(function() {
+        $('.modalTambahAkun').on('show.bs.modal', function() {
+            var formId = '#' + $(this).attr('id');
+            toggleKolomBaru_1(formId);
+        
+        $(formId + ' #jabatan').on('change', function() {
+            toggleKolomBaru_1(formId);
+        });
+        
+        function toggleKolomBaru_1(formId) {
+                if ($(formId + ' select[name="jabatan"]').val() === 'dosen') {
+                    $(formId + ' #kolomBaru_1').show();
+                }
+                else if ($(formId + ' select[name="jabatan"]').val() === 'kaprodi') {
+                    $(formId + ' #kolomBaru_1').show();
+                } else {
+                    $(formId + ' #kolomBaru_1').hide();
+                }
+            }
+        });
+    });
+
+    // edit
+    $(document).ready(function() {
+        $('.modalEditAkun').on('show.bs.modal', function() {
+            var formId = '#' + $(this).attr('id');
+            toggleKolomBaru_2(formId);
+        
+        $(formId + ' #jabatan_1').on('change', function() {
+            toggleKolomBaru_2(formId);
+        });
+        
+        function toggleKolomBaru_2(formId) {
+                if ($(formId + ' input[name="jabatan_1"]').val() === 'dosen') {
+                    $(formId + ' #keahlian_').show();
+                }
+                else {
+                    $(formId + ' #keahlian_').hide();
+                }
+            }
+        });
+    });
+</script>
+
 @endsection

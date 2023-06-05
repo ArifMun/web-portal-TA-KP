@@ -47,8 +47,8 @@ class BimbinganTA1Controller extends Controller
             $request->all(),
             [
                 'daftar_ta_id' => 'required',
-                'dosen_id'     => 'required',
-                'mahasiswa_id' => 'required',
+                // 'dosen_id'     => 'required',
+                // 'mahasiswa_id' => 'required',
                 'judul_bimbingan' => 'required',
                 'laporan_ta'   => 'required|file|image|max:1024',
                 'stts'         => 'required',
@@ -62,8 +62,8 @@ class BimbinganTA1Controller extends Controller
 
             BimbinganTA2::create([
                 'daftar_ta_id'      => $request->daftar_ta_id,
-                'dosen_id'          => $request->dosen_id,
-                'mahasiswa_id'      => $request->mahasiswa_id,
+                // 'dosen_id'          => $request->dosen_id,
+                // 'mahasiswa_id'      => $request->mahasiswa_id,
                 'judul_bimbingan'   => $request->judul_bimbingan,
                 'laporan_ta'        => $request->file('laporan_ta')->store('dokumen-ta'),
                 'stts'              => $request->stts,
@@ -129,8 +129,8 @@ class BimbinganTA1Controller extends Controller
             }
 
             $bimbingan_ta_1->daftar_ta_id       = $request->daftar_ta_id;
-            $bimbingan_ta_1->dosen_id           = $request->dosen_id;
-            $bimbingan_ta_1->mahasiswa_id       = $request->mahasiswa_id;
+            // $bimbingan_ta_1->dosen_id           = $request->dosen_id;
+            // $bimbingan_ta_1->mahasiswa_id       = $request->mahasiswa_id;
             $bimbingan_ta_1->judul_bimbingan    = $request->judul_bimbingan;
             $bimbingan_ta_1->author             = $request->author;
             $bimbingan_ta_1->stts               = $request->stts;

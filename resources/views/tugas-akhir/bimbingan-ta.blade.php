@@ -132,14 +132,15 @@
                                     @if (Auth::user()->level==0)
                                     <tbody>
                                         @php $no=1; @endphp
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->bimbinganta1))
+                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarta->bimbinganta1))
                                         @foreach ($b_mhs_1 as $item)
                                         {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">{{ $item->dosen1->biodata->nama }}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-capitalize">{{ $item->daftarta->dosen1->biodata->nama }}
+                                            </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_ta }}"
@@ -196,14 +197,15 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level == 1)
+                                    @elseif(Auth::user()->level != 0)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($b_dosen_1 as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">{{ $item->dosen1->biodata->nama }}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-capitalize">{{ $item->daftarta->dosen1->biodata->nama }}
+                                            </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_ta }}"
@@ -358,14 +360,15 @@
                                     @if (Auth::user()->level==0)
                                     <tbody>
                                         @php $no=1; @endphp
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->bimbinganta2))
+                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarta->bimbinganta2))
                                         @foreach ($b_mhs_2 as $item)
                                         {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">{{ $item->dosen2->biodata->nama }}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-capitalize">{{ $item->daftarta->dosen2->biodata->nama }}
+                                            </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_ta }}"
@@ -422,14 +425,15 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level == 1)
+                                    @elseif(Auth::user()->level != 0)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($b_dosen_2 as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">{{ $item->dosen2->biodata->nama }}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-capitalize">{{ $item->daftarta->dosen2->biodata->nama }}
+                                            </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_ta }}"
@@ -510,8 +514,7 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
-                                    id="daftar_ta_id" required>
+                                <select class="form-control" name="daftar_ta_id" id="daftar_ta_id" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
                                     @if (Auth::user()->level==0 )
@@ -538,8 +541,8 @@
                                 <label class="control-label">Judul Bimbingan </label>
                                 <input type="text" class="form-control" name="judul_bimbingan">
                             </div>
-                            <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
-                            <input type="hidden" name="dosen_id" id="dosen_id" readonly>
+                            {{-- <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
+                            <input type="hidden" name="dosen_id" id="dosen_id" readonly> --}}
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -731,10 +734,11 @@
                                 <label class="control-label">NIM - Nama - Tahun </label>
                                 <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
                                     id="daftar_ta_id">
-                                    <option value="{{ $item->daftar_ta_id }}">{{ $item->mahasiswa->biodata->no_induk }}
+                                    <option value="{{ $item->daftar_ta_id }}">{{
+                                        $item->daftarta->mahasiswa->biodata->no_induk }}
                                         -
                                         {{
-                                        $item->mahasiswa->biodata->nama }} - {{
+                                        $item->daftarta->mahasiswa->biodata->nama }} - {{
                                         $item->daftarta->tahunakademik->tahun }}
                                     </option>
                                 </select>
@@ -831,10 +835,11 @@
                                 <label class="control-label">NIM - Nama - Tahun </label>
                                 <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
                                     id="daftar_ta_id_1">
-                                    <option value="{{ $item->daftar_ta_id }}">{{ $item->mahasiswa->biodata->no_induk }}
+                                    <option value="{{ $item->daftar_ta_id }}">{{
+                                        $item->daftarta->mahasiswa->biodata->no_induk }}
                                         -
                                         {{
-                                        $item->mahasiswa->biodata->nama }} - {{
+                                        $item->daftarta->mahasiswa->biodata->nama }} - {{
                                         $item->daftarta->tahunakademik->tahun }}
                                     </option>
                                 </select>
@@ -844,9 +849,10 @@
                                 <input type="text" class="form-control" name="judul_bimbingan"
                                     value="{{ $item->judul_bimbingan }}">
                             </div>
-                            <input type="hidden" name="mahasiswa_id" id="mahasiswa_id_1"
+                            {{-- <input type="hidden" name="mahasiswa_id" id="mahasiswa_id_1"
                                 value="{{ $item->mahasiswa_id }}" readonly>
                             <input type="hidden" name="dosen_id" id="dosen_id_1" value="{{ $item->dosen_id }}" readonly>
+                            --}}
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -955,7 +961,7 @@
 
                     <div class=" form-group">
                         <h3>Apakah anda ingin menghapus data bimbingan <span class="text-danger text-capitalize">{{
-                                $item->mahasiswa->biodata->nama }}</span> dengan
+                                $item->daftarta->mahasiswa->biodata->nama }}</span> dengan
                             Judul <span class="text-danger text-capitalize">{{
                                 $item->judul_bimbingan
                                 }} </span> ?</h3>
@@ -998,7 +1004,7 @@
 
                     <div class=" form-group">
                         <h3>Apakah anda ingin menghapus data bimbingan <span class="text-danger text-capitalize">{{
-                                $item->mahasiswa->biodata->nama }}</span> dengan
+                                $item->daftarta->mahasiswa->biodata->nama }}</span> dengan
                             Judul <span class="text-danger text-capitalize">{{
                                 $item->judul_bimbingan
                                 }} </span> ?</h3>
@@ -1028,20 +1034,20 @@
 </script>
 
 <script>
-    function no_mahasiswa() {
-        let daftar_ta_id = $("#daftar_ta_id").val();
-        $("#mahasiswa_id").children().remove();
-        if (daftar_ta_id != '' && daftar_ta_id != null) {
-            $.ajax({
+    // function no_mahasiswa() {
+    //     let daftar_ta_id = $("#daftar_ta_id").val();
+    //     $("#mahasiswa_id").children().remove();
+    //     if (daftar_ta_id != '' && daftar_ta_id != null) {
+    //         $.ajax({
 
-                url: "{{ url('') }}/bimbingan-ta/daftar_ta_id/" + daftar_ta_id,
-                success: function (res) {
-                    $("#mahasiswa_id").val(res.mahasiswa_id);
-                    $("#dosen_id").val(res.d_pembimbing_1);
-                }
-            });
-        }
-    }
+    //             url: "{{ url('') }}/bimbingan-ta/daftar_ta_id/" + daftar_ta_id,
+    //             success: function (res) {
+    //                 $("#mahasiswa_id").val(res.mahasiswa_id);
+    //                 $("#dosen_id").val(res.d_pembimbing_1);
+    //             }
+    //         });
+    //     }
+    // }
 
     $(document).ready(function () {
     var table = $("#bimbingan-ta").DataTable({});

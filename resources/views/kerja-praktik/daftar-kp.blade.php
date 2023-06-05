@@ -103,21 +103,19 @@
                                 </div>
 
                                 <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
+                                    <div class="row">
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <label class="font-weight-bold h6">Status Pengajuan</label>
                                             <div class="row ml-1">
-                                                <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
-                                                    Diterima
-                                                    : {{
-                                                    $kpDiterima}}
+                                                <p class="font-weight-bold badge badge-success mr-1">
+                                                    Diterima: {{$kpDiterima}}
                                                 </p>
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
+                                                <p class="font-weight-bold badge badge-warning mr-1">
                                                     Tertunda :
                                                     {{
                                                     $kpTertunda }}
                                                 </p>
-                                                <p class="font-weight-bold text-light p-1 btn-danger btn-round mr-1">
+                                                <p class="font-weight-bold badge badge-danger">
                                                     Ditolak
                                                     :
                                                     {{
@@ -189,24 +187,21 @@
 
                                             @if ($item->stts_pengajuan=='tertunda')
                                             <td>
-                                                <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                <span class="font-weight-bold text-capitalize badge badge-warning">
                                                     {{
-                                                    $item->stts_pengajuan }}</a>
+                                                    $item->stts_pengajuan }}</span>
                                             </td>
                                             @elseif($item->stts_pengajuan=='diterima')
                                             <td>
-                                                <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                <span class="font-weight-bold text-capitalize badge badge-success ">
                                                     {{
-                                                    $item->stts_pengajuan }}</a>
+                                                    $item->stts_pengajuan }}</span>
                                             </td>
                                             @else
                                             <td>
-                                                <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                <span class="badge badge-danger font-weight-bold text-capitalize">
                                                     {{
-                                                    $item->stts_pengajuan }}</a>
+                                                    $item->stts_pengajuan }}</span>
                                             </td>
                                             @endif
 

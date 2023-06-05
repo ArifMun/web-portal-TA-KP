@@ -116,6 +116,7 @@
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
+                                            <th>Dosen Penguji</th>
                                             <th>Dosen Pembimbing 1</th>
                                             <th>Dosen Pembimbing 2</th>
                                             <th>Status Sidang</th>
@@ -133,13 +134,20 @@
 
                                     @if (Auth::user()->level==0)
                                     <tbody>
-                                        @if (!empty(Auth::user()->biodata->mahasiswa->sidangta))
+                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarta->sidangta))
                                         @foreach ($m_list as $item)
                                         <tr align="center">@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
 
+                                            <td>
+                                                @foreach ($dosen as $k)
+                                                {{ $k->id == $item->d_penguji ?
+                                                $k->biodata->nama :''
+                                                }}
+                                                @endforeach
+                                            </td>
                                             <td>
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarta->d_pembimbing_1 ?
@@ -160,21 +168,21 @@
                                                 <a
                                                     class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarta->sidangta->stts_sidang }}</a>
+                                                    $item->stts_sidang }}</a>
                                             </td>
-                                            @elseif($item->daftarta->sidangta->stts_sidang=='selesai')
+                                            @elseif($item->stts_sidang=='selesai')
                                             <td>
                                                 <a
                                                     class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarta->sidangta->stts_sidang }}</a>
+                                                    $item->stts_sidang }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
                                                     class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarta->sidangta->stts_sidang }}</a>
+                                                    $item->stts_sidang }}</a>
                                             </td>
                                             @endif
 
@@ -202,6 +210,10 @@
                                             <td>{{ $item->tgl_sidang }}</td>
                                             <td>{{ $item->jam_sidang }}</td>
                                             <td>
+
+                                                @if (($item->stts_sidang == 'terjadwal') || ($item->stts_sidang ==
+                                                'selesai') )
+                                                @else
                                                 <a href="sidang-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalEditSidang{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
@@ -210,6 +222,7 @@
                                                     data-target="#modalHapusSidang{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach
@@ -231,6 +244,14 @@
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarta->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $row->daftarta->mahasiswa->biodata->nama }}</td>
+
+                                            <td>
+                                                @foreach ($dosen as $k)
+                                                {{ $k->id == $item->d_penguji ?
+                                                $k->biodata->nama :''
+                                                }}
+                                                @endforeach
+                                            </td>
                                             <td>
                                                 @foreach ($dosen as $d)
                                                 {{ $d->id == $row->daftarta->d_pembimbing_1 ?
@@ -363,7 +384,7 @@
 
                                     @endif
                                 </select>
-                                <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
+                                {{-- <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly> --}}
                             </div>
                             <div class="col">
                                 <label class="control-label">Status Sidang </label>
@@ -400,45 +421,51 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Judul Tugas Akhir </label>
-                                <input type="text" class="form-control" name="judul" size="1">
+                                <textarea class="form-control" name="judul" size="1"></textarea>
                             </div>
                             <div class="col">
                                 <label>Catatan</label>
-                                <input type="text" class="form-control" name="catatan" size="1">
+                                <textarea class="form-control" name="catatan" size="1"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group required">
                         <div class="row">
+                            @if (Auth::user()->level!=0)
                             <div class="col">
+                                <label for="" class="form-label control-label">Dosen Penguji </label>
+                                <select class="form-control" name="d_penguji" size="1">
+                                    <option value="" hidden="">-- Dosen Penguji--</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @endif
+                            <div class="col-6">
                                 <label for="image" class="form-label control-label">Form Bimbingan 1</label>
                                 <input type="file" class="form-control picture" id="image1" name="f_bimbingan_1"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
                             </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <div class="row">
                             <div class="col">
                                 <label for="image" class="form-label control-label">Form Bimbingan 2</label>
                                 <input type="file" class="form-control picture" id="image2" name="f_bimbingan_2"
                                     onchange="previewImage(2)">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview2">
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col-6">
+                            <div class="col">
                                 <label for="image" class="form-label control-label">Slip Pembayaran</label>
                                 <input type="file" class="form-control picture" name="slip_pembayaran"
                                     onchange="previewImage(3)" id="image3">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview3">
                             </div>
-                            {{-- <div class="col">
-                                <label for="image" class="form-label control-label">Form Bimbingan 2</label>
-                                <img class="img-preview img-fluid mb-3 col-sm-5" id="preview1">
-                                <input type="file" class="form-control picture" id="f_bimbingan_2" name="f_bimbingan_2"
-                                    onchange="previewImage()">
-                            </div> --}}
                         </div>
                     </div>
 
@@ -527,18 +554,32 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label"> Judul Tugas Akhir </label>
-                                <input type="text" class="form-control" name="judul" value="{{ $item->judul }}">
+                                <textarea type="text" class="form-control" name="judul"
+                                    value="{{ $item->judul }}"></textarea>
                             </div>
                             <div class="col">
                                 <label>Catatan</label>
-                                <input type="text" class="form-control" name="catatan" value="{{ $item->catatan }}">
+                                <textarea type="text" class="form-control" name="catatan"
+                                    value="{{ $item->catatan }}"></textarea>
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group required">
                         <div class="row">
+                            @if (Auth::user()->level!=0)
                             <div class="col">
+                                <label for="" class="form-label control-label">Dosen Penguji </label>
+                                <select class="form-control" name="d_penguji" size="1">
+                                    <option value="" hidden="">-- Dosen Penguji--</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}" {{ $k->id == $item->d_penguji ? 'selected':'' }}>{{
+                                        $k->biodata->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @endif
+                            <div class="col-6">
                                 <label for="image" class="form-label control-label">Form Bimbingan 1</label>
                                 <input type="hidden" name="oldImage1" value="{{ $item->f_bimbingan_1 }}">
                                 <input type="file" class="form-control picture" id="image4" name="f_bimbingan_1"
@@ -553,6 +594,11 @@
                                 <p class="mt-1 font-italic">biarkan kolom kosong
                                     jika tidak diganti</p>
                             </div>
+
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <div class="row">
                             <div class="col">
                                 <label for="image" class="form-label control-label">Form Bimbingan 2</label>
                                 <input type="hidden" name="oldImage2" value="{{ $item->f_bimbingan_2 }}">
@@ -568,10 +614,6 @@
                                 <p class="mt-1 font-italic">biarkan kolom kosong
                                     jika tidak diganti</p>
                             </div>
-                        </div>
-                    </div>
-                    <div class="form-group required">
-                        <div class="row">
                             <div class="col-6">
                                 <label for="image" class="form-label control-label">Slip Pembayaran</label>
                                 <input type="hidden" name="oldImage3" value="{{ $item->slip_pembayaran }}">
@@ -794,10 +836,11 @@
 
                     <div class=" form-group">
                         <h3>Apakah anda yakin menghapus data
-                            <span class="text-danger text-capitalize">{{ $item->mahasiswa->biodata->nama }}</span>
+                            <span class="text-danger text-capitalize">{{ $item->daftarta->mahasiswa->biodata->nama
+                                }}</span>
                             dengan
                             NIM <span class="text-danger">{{
-                                $item->mahasiswa->biodata->no_induk
+                                $item->daftarta->mahasiswa->biodata->no_induk
                                 }} </span> ?
                         </h3>
                         <h4 class="btn btn-warning text-uppercase">Data Terkait NIM tersebut juga akan terhapus!</h4>

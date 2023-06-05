@@ -39,6 +39,13 @@ class SeminarKPController extends Controller
         $daftarkp    = $d_kp->d_kp_diterima();
         $mhskps      = $d_kp->m_kp_diterima();
 
+        // testing
+        $d = SeminarKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get();
+
         return \view('kerja-praktik.seminar-kp', \compact(
             'seminarkp',
             'seminarmhs',
@@ -49,7 +56,8 @@ class SeminarKPController extends Controller
             'filterStts',
             'sSelesai',
             'sTerjadwal',
-            'sProses'
+            'sProses',
+            'd'
         ));
     }
 
@@ -75,7 +83,7 @@ class SeminarKPController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'mahasiswa_id'      => 'required',
+                // 'mahasiswa_id'      => 'required',
                 'daftarkp_id'       => 'required|unique:seminar_kp',
                 'form_bimbingan'    => 'required|image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
@@ -90,7 +98,7 @@ class SeminarKPController extends Controller
             return \redirect('seminar-kp')->with('warning', 'Data Tidak Tersimpan!');
         } else {
             $seminarkp = SeminarKP::create([
-                'mahasiswa_id'   => $request->mahasiswa_id,
+                // 'mahasiswa_id'   => $request->mahasiswa_id,
                 'daftarkp_id'    => $request->daftarkp_id,
                 'form_bimbingan' => $request->file('form_bimbingan')->store('post-images'),
                 'tgl_seminar'    => $request->tgl_seminar,
@@ -138,7 +146,7 @@ class SeminarKPController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'mahasiswa_id'      => 'required',
+                // 'mahasiswa_id'      => 'required',
                 'daftarkp_id'       => 'required',
                 'form_bimbingan'    => 'image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
@@ -161,7 +169,7 @@ class SeminarKPController extends Controller
                 $seminarkp->form_bimbingan = $request->file('form_bimbingan')->store('post-images');
             }
 
-            $seminarkp->mahasiswa_id    = $request->mahasiswa_id;
+            // $seminarkp->mahasiswa_id    = $request->mahasiswa_id;
             $seminarkp->daftarkp_id     = $request->daftarkp_id;
             $seminarkp->tgl_seminar     = $request->tgl_seminar;
             $seminarkp->jam_seminar     = $request->jam_seminar;

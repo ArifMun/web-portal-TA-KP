@@ -11,8 +11,8 @@ class BimbinganKP extends Model
     protected $table = 'bimbing_kp';
     protected $fillable = [
         'daftarkp_id',
-        'dosen_id',
-        'mahasiswa_id',
+        // 'dosen_id',
+        // 'mahasiswa_id',
         'judul_bimbingan',
         'laporan_kp',
         'catatan',
@@ -20,15 +20,15 @@ class BimbinganKP extends Model
         'author'
     ];
 
-    public function mahasiswa()
-    {
-        return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
-    }
+    // public function mahasiswa()
+    // {
+    //     return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
+    // }
 
-    public function dosen()
-    {
-        return $this->belongsTo(Dosen::class, 'dosen_id');
-    }
+    // public function dosen()
+    // {
+    //     return $this->belongsTo(Dosen::class, 'dosen_id');
+    // }
 
     public function daftarkp()
     {

@@ -15,7 +15,7 @@ class CreateKonsentrasiTable extends Migration
     {
         Schema::create('konsentrasi', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->string('nama_konsentrasi', 20);
+            $table->string('nama_konsentrasi', 40);
         });
     }
 

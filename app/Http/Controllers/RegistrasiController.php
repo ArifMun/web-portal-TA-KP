@@ -91,7 +91,7 @@ class RegistrasiController extends Controller
                 'level'      => $request->level,
             ]);
 
-            if ($request->jabatan == 'dosen') {
+            if (($request->jabatan == 'dosen') || ($request->jabatan == 'kaprodi')) {
                 $biodata->dosen()->create([
                     'biodata_id' => $biodata->id,
                     // 'nama'       => $biodata->nama
@@ -180,7 +180,7 @@ class RegistrasiController extends Controller
     public function destroy($id)
     {
         $biodata = Biodata::find($id);
-        \dd($biodata);
+        // \dd($biodata);
         $biodata->delete();
 
         return redirect('/registrasi')->with('success', 'Data Berhasil Dihapus');

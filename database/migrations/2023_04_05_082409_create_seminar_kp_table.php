@@ -15,13 +15,13 @@ class CreateSeminarKpTable extends Migration
     {
         Schema::create('seminar_kp', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
-            $table->integer('mahasiswa_id');
+            // $table->integer('mahasiswa_id');
             $table->integer('daftarkp_id');
             $table->string('form_bimbingan');
             $table->date('tgl_seminar')->nullable();
             $table->time('jam_seminar')->nullable();
             $table->string('catatan')->nullable();
-            $table->string('judul');
+            $table->string('judul', 100);
             $table->enum('stts_seminar', ['proses', 'terjadwal', 'selesai']);
             $table->timestamps();
         });

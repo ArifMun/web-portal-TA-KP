@@ -13,12 +13,13 @@ class CreateBimbinganKpTable extends Migration
      */
     public function up()
     {
-        Schema::create('bimbingan_kp', function (Blueprint $table) {
+        Schema::create('bimbing_kp', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->integer('daftarkp_id');
-            $table->integer('dosen_id');
-            $table->integer('mahasiswa_id');
-            $table->string('judul_bimbingan', 50);
+            // $table->integer('dosen_id');
+            // $table->integer('mahasiswa_id');
+            $table->string('judul_bimbingan', 100);
+            $table->string('author', 50);
             $table->string('laporan_kp');
             $table->enum('stts', ['acc', 'revisi', 'proses']);
             $table->text('catatan');

@@ -38,10 +38,10 @@ class Dosen extends Model
     }
 
 
-    public function bimbingankp()
-    {
-        return $this->hasMany(BimbinganKP::class, 'dosen_id');
-    }
+    // public function bimbingankp()
+    // {
+    //     return $this->hasMany(BimbinganKP::class, 'dosen_id');
+    // }
 
     // dengan dua dosen pembimbing
     public function bimbinganta1()

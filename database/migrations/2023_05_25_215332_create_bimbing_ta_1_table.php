@@ -16,8 +16,8 @@ class CreateBimbingTa1Table extends Migration
         Schema::create('bimbing_ta_1', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->integer('daftar_ta_id');
-            $table->integer('dosen_id');
-            $table->integer('mahasiswa_id');
+            // $table->integer('dosen_id');
+            // $table->integer('mahasiswa_id');
             $table->string('judul_bimbingan');
             $table->string('laporan_ta');
             $table->enum('stts', ['acc', 'revisi', 'proses']);

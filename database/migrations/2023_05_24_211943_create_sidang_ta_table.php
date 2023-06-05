@@ -16,12 +16,12 @@ class CreateSidangTaTable extends Migration
         Schema::create('sidang_ta', function (Blueprint $table) {
             $table->integer('id')->autoIncrement();
             $table->integer('daftar_ta_id');
-            $table->integer('mahasiswa_id');
+            // $table->integer('mahasiswa_id');
             $table->string('f_bimbingan_1');
             $table->string('f_bimbingan_2');
             $table->string('slip_pembayaran');
-            $table->string('catatan');
-            $table->string('judul');
+            $table->text('catatan')->nullable();
+            $table->string('judul', 100);
             $table->date('tgl_sidang');
             $table->time('jam_sidang');
             $table->enum('stts_sidang', ['proses', 'terjadwal', 'selesai']);
