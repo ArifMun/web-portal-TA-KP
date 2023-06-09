@@ -32,10 +32,12 @@
   <link rel="stylesheet" href="/assets/css/azzara.min.css">
 </head>
 
+
 <body class="login">
   <div class="wrapper wrapper-login border">
-    <div class="container container-login animated fadeIn">
-      <h3 class="text-center">Silahkan Masuk</h3>
+    {{-- <h3 class="text-center">WEB PORTAL TUGAS AKHIR DAN KERJA PRAKTIK</h3> --}}
+    <div class="container container-login">
+      <h3 class="text-center">SILAHKAN MASUK</h3>
       <form method="POST" action="{{url('login-process')}}">
         @csrf
         <div class="login-form">
@@ -62,7 +64,6 @@
         <a href="user-registrasi" class="link">Registrasi</a>
       </div>
     </div>
-  </div>
   </div>
   <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
   <script src="/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>

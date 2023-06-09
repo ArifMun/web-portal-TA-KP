@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class BimbinganKP extends Model
 {
@@ -33,5 +34,43 @@ class BimbinganKP extends Model
     public function daftarkp()
     {
         return $this->belongsTo(DaftarKP::class, 'daftarkp_id');
+    }
+
+    public function sttsDosen()
+    {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id)
+                    ->where('stts', '=', 'proses');
+            }
+        })->get()->count();
+    }
+
+    public function sttsMhs()
+    {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id)
+                    ->where('stts', '=', 'proses');
+            }
+        })->get()->count();
+    }
+
+    public function bimbingMhs()
+    {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get();
+    }
+
+    public function bimbingDosen()
+    {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
+            }
+        })->get();
     }
 }

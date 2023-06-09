@@ -31,13 +31,16 @@
             <div class="page-header">
                 <h4 class="page-title">Bimbingan Kerja Praktik</h4>
             </div>
+            @if (empty($pengumuman))
+            @else
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <p><i> Disini tempat untuk pengumuman</i> </p>
+                        <p><i> {{ $pengumuman->cttn_bimbingan_kp }}</i> </p>
                     </div>
                 </div>
             </div>
+            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -75,10 +78,11 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="6" class="form-control" id="filter-stts">
+                                                <select data-column="6" class="form-control text-capitalize"
+                                                    id="filter-stts">
                                                     <option value="">-- Pilih Status --</option>
                                                     @foreach ($filterStts as $item)
-                                                    <option value="{{ $item->stts }}" class="text-uppercase">{{
+                                                    <option value="{{ $item->stts }}" class="text-capitalize">{{
                                                         $item->stts }}</option>
                                                     @endforeach
                                                 </select>
@@ -90,8 +94,8 @@
                                 <div class="col-sm-1 col-md-3">
                                     <div class="row">
                                         <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Bimbingan</label>
-                                            <div class="row ml-1">
+                                            <p class="font-weight-bold h6">Status Bimbingan</p>
+                                            {{-- <div class="row ml-1"> --}}
                                                 {{-- <p class="badge badge-warning font-weight-bold ">
                                                     PROSES : {{ $sttsDosen }}
                                                 </p>
@@ -103,20 +107,16 @@
                                                 </p> --}}
                                                 @if (Auth::user()->level == 1)
                                                 <p class="badge badge-warning font-weight-bold ">
-                                                    PROSES : {{ $sttsDosen->stts == 'proses' }}
+                                                    Proses : {{ $sttsDosen}}
                                                 </p>
-                                                <p class="badge badge-warning font-weight-bold ">
-                                                    ACC : {{ $sttsDosen->stts == 'acc' }}
-                                                </p>
-                                                <p class="badge badge-warning font-weight-bold ">
-                                                    REVISI : {{ $sttsDosen->stts == 'revisi' }}
-                                                </p>
-
 
                                                 @elseif(Auth::user()->level == 0)
-                                                PROSES : {{ $sttsDosen }}
+                                                <p class="badge badge-warning font-weight-bold ">
+                                                    Proses : {{ $sttsMhs}}
+                                                </p>
                                                 @endif
-                                            </div>
+                                                {{--
+                                            </div> --}}
                                         </div>
                                     </div>
                                 </div>
@@ -197,19 +197,22 @@
                                             </td>
                                             @if ($item->stts == 'proses')
                                             <td>
-                                                <span class="font-weight-bold text-capitalize badge badge-warning">
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts }}</span>
                                             </td>
                                             @elseif($item->stts == 'acc')
                                             <td>
-                                                <span class="font-weight-bold text-capitalize badge badge-success">
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $item->stts}}</span>
                                             </td>
                                             @else
                                             <td>
-                                                <span class="badge badge-danger font-weight-bold text-capitalize">
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $item->stts}}</span>
                                             </td>
@@ -266,21 +269,21 @@
                                             @if ($item->stts == 'proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts }}</a>
                                             </td>
                                             @elseif($item->stts == 'acc')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
@@ -380,7 +383,7 @@
                             <div class="col">
                                 <label for="file" class="form-label control-label">Laporan KP </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp" o>
+                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp">
                                 <p class="font-italic text-muted mt-1">ukuran file maksimal <span
                                         class="text-danger">1024
                                         KB</span> </p>

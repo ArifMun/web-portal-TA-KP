@@ -18,6 +18,6 @@ class Pengumuman extends Model
         'cttn_seminar_kp',
         'cttn_daftar_ta',
         'cttn_bimbingan_ta',
-        'cttn_sidang_kp',
+        'cttn_sidang_ta',
     ];
 }

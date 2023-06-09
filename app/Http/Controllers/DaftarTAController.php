@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\DaftarTA;
 use App\Models\Dosen;
-use App\Models\Konsentrasi;
+use App\Models\DaftarTA;
+use App\Models\FormAkses;
 use App\Models\Mahasiswa;
 use App\Models\SeminarKP;
-use App\Models\TahunAkademik;
+use App\Models\Konsentrasi;
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
+use App\Models\TahunAkademik;
+use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Validation\Rule;
 
 class DaftarTAController extends Controller
 {
@@ -37,8 +39,8 @@ class DaftarTAController extends Controller
         $dosen       = Dosen::all();
         $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
-
-
+        $pengumuman  = Pengumuman::where('cttn_daftar_ta', '!=', '')->get()->first();
+        $formakses = FormAkses::get()->first();
         return \view('tugas-akhir.daftar-ta', \compact(
             'daftarta',
             'mhs_dDaftar',
@@ -50,7 +52,9 @@ class DaftarTAController extends Controller
             'filterStts',
             'd_diterima',
             'd_tertunda',
-            'd_ditolak'
+            'd_ditolak',
+            'formakses',
+            'pengumuman'
         ));
     }
 

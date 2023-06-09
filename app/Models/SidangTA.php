@@ -49,4 +49,19 @@ class SidangTA extends Model
     {
         return self::distinct()->select('stts_sidang')->get();
     }
+
+    public function s_proses()
+    {
+        return self::where('stts_sidang', '=', 'proses')->count();
+    }
+
+    public function s_terjadwal()
+    {
+        return self::where('stts_sidang', '=', 'terjadwal')->count();
+    }
+
+    public function s_selesai()
+    {
+        return self::where('stts_sidang', '=', 'selesai')->count();
+    }
 }

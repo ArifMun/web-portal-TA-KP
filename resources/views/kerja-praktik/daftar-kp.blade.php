@@ -29,10 +29,23 @@
             <div class="page-header">
                 <h4 class="page-title">Kerja Praktik</h4>
             </div>
+            @if (empty($pengumuman))
+
+            @else
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        @if (empty($formakses->akses))
+                        <div class="d-flex align-items-center">
+                            <p><i> {{ $pengumuman->cttn_daftar_kp }}</i> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        @if (empty($formakses))
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
@@ -43,7 +56,7 @@
                                 </a>
                             </div>
                         </div>
-                        @elseif(Auth::user()->level == 0 && $formakses->akses == 1 ||
+                        @elseif(Auth::user()->level == 0 && $formakses->akses_kp == 1 ||
                         Auth::user()->level==1 )
                         <div class="card-header">
                             <div class="d-flex align-items-center">
@@ -55,10 +68,10 @@
                                 </a>
                             </div>
                         </div>
-                        @elseif(Auth::user()->level == 0 && $formakses->akses == 0)
+                        @elseif(Auth::user()->level == 0 && $formakses->akses_kp == 0)
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <a href="#" class="btn btn-danger">
+                                <a href="#" class="btn btn-danger ml-auto">
                                     <h4 class="card-title text-light">Pendaftaran Kerja Praktik Sudah Ditutup</h4>
                                 </a>
 
@@ -89,7 +102,8 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Status Pengajuan</label>
-                                                <select data-column="7" class="form-control" id="filter-stts">
+                                                <select data-column="7" class="form-control text-capitalize"
+                                                    id="filter-stts">
                                                     <option value="">-- Pilih Status --</option>
                                                     @foreach ($filterStts as $item)
                                                     <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">
@@ -105,23 +119,21 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row">
                                         <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Pengajuan</label>
-                                            <div class="row ml-1">
-                                                <p class="font-weight-bold badge badge-success mr-1">
-                                                    Diterima: {{$kpDiterima}}
-                                                </p>
-                                                <p class="font-weight-bold badge badge-warning mr-1">
-                                                    Tertunda :
-                                                    {{
-                                                    $kpTertunda }}
-                                                </p>
-                                                <p class="font-weight-bold badge badge-danger">
-                                                    Ditolak
-                                                    :
-                                                    {{
-                                                    $kpDitolak
-                                                    }}</p>
-                                            </div>
+                                            <p class="font-weight-bold h6">Status Pengajuan</p>
+                                            <p class="font-weight-bold badge badge-success mr-1">
+                                                Diterima: {{$kpDiterima}}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-warning mr-1">
+                                                Tertunda :
+                                                {{
+                                                $kpTertunda }}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-danger">
+                                                Ditolak
+                                                :
+                                                {{
+                                                $kpDitolak
+                                                }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -187,19 +199,22 @@
 
                                             @if ($item->stts_pengajuan=='tertunda')
                                             <td>
-                                                <span class="font-weight-bold text-capitalize badge badge-warning">
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts_pengajuan }}</span>
                                             </td>
                                             @elseif($item->stts_pengajuan=='diterima')
                                             <td>
-                                                <span class="font-weight-bold text-capitalize badge badge-success ">
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success ">
                                                     {{
                                                     $item->stts_pengajuan }}</span>
                                             </td>
                                             @else
                                             <td>
-                                                <span class="badge badge-danger font-weight-bold text-capitalize">
+                                                <span
+                                                    class="badge badge-danger text-light font-weight-bold text-capitalize">
                                                     {{
                                                     $item->stts_pengajuan }}</span>
                                             </td>
@@ -207,13 +222,15 @@
 
                                             <td class="text-capitalize">{{ $item->stts_kp }}</td>
                                             <td>{{ $item->semester }}</td>
-                                            <td><a href="kerja-praktik/view-judul/{{ $item->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="kerja-praktik/view-judul/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewJudul{{ $item->id }}"
                                                     class="btn btn-success btn-xs"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
-                                            <td><a href="kerja-praktik/view-slip/{{ $item->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="kerja-praktik/view-slip/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $item->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-file-image">
                                                     </i> </a>
@@ -277,21 +294,21 @@
                                             @if ($row->stts_pengajuan=='tertunda')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @elseif($row->stts_pengajuan=='diterima')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
@@ -472,8 +489,9 @@
                                 <input type="file" class="form-control picture" id="slip_pembayaran1"
                                     name="slip_pembayaran" onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
-                                <p class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
-                                        KB</span> </p>
+                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>

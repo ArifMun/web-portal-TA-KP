@@ -30,10 +30,22 @@
             <div class="page-header">
                 <h4 class="page-title">Tugas Akhir</h4>
             </div>
+            @if (empty($pwngumuman))
+            @else
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        @if (empty($formakses->akses))
+                        <div class="d-flex align-items-center">
+                            <p><i> {{ $pengumuman->cttn_daftar_ta }}</i> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        @if (empty($formakses))
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title"></h4>
@@ -44,7 +56,7 @@
                                 </a>
                             </div>
                         </div>
-                        @elseif(Auth::user()->level == 0 && $formakses->akses == 1 ||
+                        @elseif(Auth::user()->level == 0 && $formakses->akses_ta == 1 ||
                         Auth::user()->level==1 )
                         <div class="card-header">
                             <div class="d-flex align-items-center">
@@ -56,11 +68,11 @@
                                 </a>
                             </div>
                         </div>
-                        @elseif(Auth::user()->level == 0 && $formakses->akses == 0)
-                        <div class="card-header">
+                        @elseif(Auth::user()->level == 0 && $formakses->akses_ta == 0)
+                        <div class="card-header ">
                             <div class="d-flex align-items-center">
-                                <a href="#" class="btn btn-danger">
-                                    <h4 class="card-title text-light">Pendaftaran Kerja Praktik Sudah Ditutup</h4>
+                                <a href="#" class="btn btn-danger ml-auto">
+                                    <h4 class="card-title text-light">Pendaftaran Tugas Akhir Sudah Ditutup</h4>
                                 </a>
 
                             </div>
@@ -106,25 +118,23 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Pengajuan</label>
-                                            <div class="row ml-1">
-                                                <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
-                                                    Diterima
-                                                    : {{
-                                                    $d_diterima->count()}}
-                                                </p>
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    Tertunda :
-                                                    {{
-                                                    $d_tertunda }}
-                                                </p>
-                                                <p class="font-weight-bold text-light p-1 btn-danger btn-round mr-1">
-                                                    Ditolak
-                                                    :
-                                                    {{
-                                                    $d_ditolak
-                                                    }}</p>
-                                            </div>
+                                            <p class="font-weight-bold h6">Status Pengajuan</p>
+                                            <p class="font-weight-bold badge badge-success mr-1">
+                                                Diterima
+                                                : {{
+                                                $d_diterima->count()}}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-warning mr-1">
+                                                Tertunda :
+                                                {{
+                                                $d_tertunda }}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-danger">
+                                                Ditolak
+                                                :
+                                                {{
+                                                $d_ditolak
+                                                }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -241,21 +251,21 @@
                                             @if ($item->stts_pengajuan=='tertunda')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold badge badge-warning text-light text-capitalize">
                                                     {{
                                                     $item->stts_pengajuan }}</a>
                                             </td>
                                             @elseif($item->stts_pengajuan=='diterima')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold badge badge-success text-light text-capitalize">
                                                     {{
                                                     $item->stts_pengajuan }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold badge badge-danger text-light text-capitalize">
                                                     {{
                                                     $item->stts_pengajuan }}</a>
                                             </td>
@@ -333,21 +343,21 @@
                                             @if ($row->stts_pengajuan=='tertunda')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold badge badge-warning text-light text-capitalize">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @elseif($row->stts_pengajuan=='diterima')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold badge badge-success text-light text-capitalize">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold badge badge-danger text-light text-capitalize">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
@@ -422,9 +432,10 @@
                                     @if (Auth::user()->level==0 )
                                     @foreach ($mhsDaftar as $item)
 
-                                    <option value="{{ $item->mahasiswa_id }}">{{ $item->mahasiswa->biodata->no_induk }}
+                                    <option value="{{ $item->mahasiswa_id }}">{{
+                                        $item->daftarkp->mahasiswa->biodata->no_induk }}
                                         - {{
-                                        $item->mahasiswa->biodata->nama }}
+                                        $item->daftarkp->mahasiswa->biodata->nama }}
                                     </option>
                                     @endforeach
 
@@ -534,6 +545,9 @@
                                 <input type="file" class="form-control picture" id="krs" name="krs"
                                     onchange="previewImage()">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2">
+                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span></span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
@@ -752,7 +766,8 @@
                                 @endif
 
                                 <p class="mt-1 font-italic">biarkan kolom kosong
-                                    jika tidak diganti</p>
+                                    jika tidak diganti | ukuran file maksimal <span class="text-danger">1024 KB</span>
+                                </p>
                             </div>
                         </div>
                     </div>

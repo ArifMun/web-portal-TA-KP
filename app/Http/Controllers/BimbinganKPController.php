@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\DaftarKP;
 use App\Models\SeminarKP;
+use App\Models\Pengumuman;
 use App\Models\BimbinganKP;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\TahunAkademik;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -27,67 +28,16 @@ class BimbinganKPController extends Controller
         $thnakademik = TahunAkademik::all();
         $bimbingkp   = BimbinganKP::all();
 
-        $sttsDosen   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 1) {
-                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-                // ->where('stts', '=', 'proses');
-            }
-        })->get();
-        // testing
-        // $sttsDosen   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-        //     if (Auth::user()->level == 1) {
-        //         $q->where('dosen_id', '=', Auth::user()->biodata->dosen->id)
-        //             ->where('stts', '=', 'proses');
-        //     }
-        // })->get()->count();
-        $sttsMhs   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id)
-                    ->where('stts', '=', 'proses');
-            }
-        })->get()->count();
+        $daftar_kp  = new DaftarKP();
+        $mhskps     = $daftar_kp->mhskps();
+        $mhskpd     = $daftar_kp->mhskpd();
 
-        $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
-            }
-        })->get()->sortByDesc('id');
-
-        $mhskpd   = DaftarKP::with('dosen')->whereHas('dosen', function ($q) {
-            if (Auth::user()->level == 1) {
-                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-            } else {
-                $q->where('id', '=', Auth::user());
-            }
-        })->get()->sortByDesc('id');
-
-        $bimbingMhs   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
-            }
-        })->get();
-
-        // testing
-        $b   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
-            }
-        })->get();
-
-        $bimbingDosen   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 1) {
-                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-            }
-        })->get();
-
-        // testing
-        $d   = BimbinganKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 1) {
-                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-            }
-        })->get();
+        $bimbing_kp = new BimbinganKP();
+        $sttsDosen   = $bimbing_kp->sttsDosen();
+        $sttsMhs   = $bimbing_kp->sttsMhs();
+        $bimbingMhs   = $bimbing_kp->bimbingMhs();
+        $bimbingDosen   = $bimbing_kp->bimbingDosen();
+        $pengumuman  = Pengumuman::where('cttn_bimbingan_kp', '!=', '')->get()->first();
 
         $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
 
@@ -103,6 +53,7 @@ class BimbinganKPController extends Controller
             'filterStts',
             'sttsDosen',
             'sttsMhs',
+            'pengumuman'
         ));
     }
 

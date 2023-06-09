@@ -30,7 +30,7 @@ class ThnAkademikController extends Controller
         }
     }
 
-    public function destroy(TahunAkademik $thnAkademik, $id)
+    public function destroy($id)
     {
         $thnAkademik = TahunAkademik::find($id);
         $thnAkademik->delete();

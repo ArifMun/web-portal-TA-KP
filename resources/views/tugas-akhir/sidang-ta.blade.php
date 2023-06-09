@@ -31,6 +31,19 @@
             <div class="page-header">
                 <h4 class="page-title">Sidang Tugas Akhir</h4>
             </div>
+            @if (empty($pengumuman))
+
+            @else
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="d-flex align-items-center">
+                            <p><i> {{ $pengumuman->cttn_sidang_ta }}</i> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -81,32 +94,27 @@
                                     </div>
                                 </div>
 
-                                {{-- <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row">
                                         <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Pengajuan</label>
-                                            <div class="row ml-1">
-                                                <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
-                                                    Diterima
-                                                    : {{
-                                                    $d_diterima}}
-                                                </p>
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    Tertunda :
-                                                    {{
-                                                    $d_tertunda }}
-                                                </p>
-                                                <p class="font-weight-bold text-light p-1 btn-danger btn-round mr-1">
-                                                    Ditolak
-                                                    :
-                                                    {{
-                                                    $d_ditolak
-                                                    }}</p>
-                                            </div>
+                                            <p class="font-weight-bold h6">Status Sidang</p>
+                                            <p class="font-weight-bold badge badge-success mr-1">
+                                                Selesai: {{$s_selesai}}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-primary mr-1">
+                                                Terjadwal :
+                                                {{
+                                                $s_terjadwal }}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-warning">
+                                                Proses
+                                                :
+                                                {{
+                                                $s_proses
+                                                }}</p>
                                         </div>
                                     </div>
-                                </div> --}}
-
+                                </div>
                             </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
@@ -166,21 +174,21 @@
                                             @if ($item->daftarta->sidangta->stts_sidang=='proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts_sidang }}</a>
                                             </td>
                                             @elseif($item->stts_sidang=='selesai')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $item->stts_sidang }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-primary">
                                                     {{
                                                     $item->stts_sidang }}</a>
                                             </td>
@@ -270,21 +278,21 @@
                                             @if ($row->stts_sidang=='proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $row->stts_sidang }}</a>
                                             </td>
                                             @elseif($row->stts_sidang=='selesai')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $row->stts_sidang }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-primary">
                                                     {{
                                                     $row->stts_sidang }}</a>
                                             </td>
@@ -443,11 +451,12 @@
                                 </select>
                             </div>
                             @endif
-                            <div class="col-6">
+                            <div class="col">
                                 <label for="image" class="form-label control-label">Form Bimbingan 1</label>
                                 <input type="file" class="form-control picture" id="image1" name="f_bimbingan_1"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
+
                             </div>
 
                         </div>
@@ -472,7 +481,9 @@
                     <div class="modal-footer required">
                         <div class="col">
                             <label class="control-label font-italic">
-                                : Kolom Wajib Diisi
+                                : Kolom Wajib Diisi | Ukuran file maksimal
+                                <span class="text-danger">1024
+                                    KB</span>
                             </label>
                         </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
@@ -634,7 +645,9 @@
                     <div class="modal-footer required">
                         <div class="col">
                             <label class="control-label font-italic">
-                                : Kolom Wajib Diisi
+                                : Kolom Wajib Diisi | Ukuran file maksimal
+                                <span class="text-danger">1024
+                                    KB</span>
                             </label>
                         </div>
                         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">

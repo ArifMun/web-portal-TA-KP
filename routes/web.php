@@ -9,12 +9,13 @@ use App\Http\Controllers\SidangTAController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormAksesController;
 use App\Http\Controllers\SeminarKPController;
+use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\BimbinganKPController;
 use App\Http\Controllers\BimbinganTAController;
-use App\Http\Controllers\BimbinganTA1Controller;
 use App\Http\Controllers\KonsentrasiController;
 use App\Http\Controllers\ThnAkademikController;
+use App\Http\Controllers\BimbinganTA1Controller;
 use App\Http\Controllers\KerjaPraktikController;
 use App\Http\Controllers\ManajemenFormController;
 use App\Http\Controllers\UserRegistrasiController;
@@ -66,7 +67,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class);
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
 
-    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:2,3');
+    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:2,3,1');
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
 
@@ -74,8 +75,14 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::post('konsentrasi/{id}/ubah', [KonsentrasiController::class, 'update']);
     Route::post('konsentrasi/{id}/destroy', [KonsentrasiController::class, 'destroy']);
 
+    Route::post('pengumuman/tambah', [PengumumanController::class, 'store']);
+    Route::post('pengumuman/{id}/update', [PengumumanController::class, 'update']);
+    Route::post('pengumuman/{id}/destroy', [PengumumanController::class, 'destroy']);
+
     Route::get('akses/update', [FormAksesController::class, 'update']);
     Route::post('akses/tambah', [FormAksesController::class, 'store']);
+    Route::POST('/toggle/update/kp', [FormAksesController::class, 'update_kp'])->name('toggle.update-kp');
+    Route::POST('/toggle/update/ta', [FormAksesController::class, 'update_ta'])->name('toggle.update-ta');
     Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
 
     Route::get('dosen', [DosenController::class, 'index'])->name('dosen');

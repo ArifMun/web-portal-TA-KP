@@ -31,6 +31,19 @@
             <div class="page-header">
                 <h4 class="page-title">Seminar Kerja Praktik</h4>
             </div>
+            @if (empty($pengumuman))
+
+            @else
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="d-flex align-items-center">
+                            <p><i> {{ $pengumuman->cttn_seminar_kp }}</i> </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -68,7 +81,8 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="4" class="form-control" id="filter-stts">
+                                                <select data-column="4" class="form-control text-capitalize"
+                                                    id="filter-stts">
                                                     <option value="">-- Pilih Status --</option>
                                                     @foreach ($filterStts as $item)
                                                     <option value="{{ $item->stts_seminar }}" class="text-capitalize">{{
@@ -83,25 +97,23 @@
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Seminar</label>
-                                            <div class="row ml-1">
-                                                <p class="font-weight-bold text-light p-1 btn-success btn-round mr-1">
-                                                    Selesai
-                                                    : {{
-                                                    $sSelesai}}
-                                                </p>
-                                                <p class="font-weight-bold text-light p-1 btn-primary btn-round mr-1">
-                                                    Terjadwal :
-                                                    {{
-                                                    $sTerjadwal }}
-                                                </p>
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    Proses
-                                                    :
-                                                    {{
-                                                    $sProses
-                                                    }}</p>
-                                            </div>
+                                            <p class="font-weight-bold h6">Status Seminar</p>
+                                            <p class="font-weight-bold badge badge-success mr-1">
+                                                Selesai
+                                                : {{
+                                                $sSelesai}}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-primary mr-1">
+                                                Terjadwal :
+                                                {{
+                                                $sTerjadwal }}
+                                            </p>
+                                            <p class="font-weight-bold badge badge-warning">
+                                                Proses
+                                                :
+                                                {{
+                                                $sProses
+                                                }}</p>
                                         </div>
                                     </div>
                                 </div>
@@ -320,13 +332,13 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
-                                    id="daftarkp_id" required>
+                                <select class="form-control text-capitalize" name="daftarkp_id"
+                                    onchange="no_mahasiswa()" id="daftarkp_id" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
                                     @if (Auth::user()->level==0 )
                                     @foreach ($mhskps as $item)
-                                    <option value="{{ $item->id}}">{{
+                                    <option value="{{ $item->id}}" class="text-capitalize">{{
                                         $item->mahasiswa->biodata->no_induk
                                         }} - {{ $item->mahasiswa->biodata->nama
                                         }} - {{ $item->tahunakademik->tahun }}
@@ -337,7 +349,7 @@
                                     @else
 
                                     @foreach ($daftarkp as $k)
-                                    <option value="{{ $k->id }}">{{
+                                    <option value="{{ $k->id }}" class="text-capitalize">{{
                                         $k->mahasiswa->biodata->no_induk
                                         }} - {{ $k->mahasiswa->biodata->nama
                                         }} - {{ $k->tahunakademik->tahun
@@ -400,8 +412,8 @@
                                 <input type="file" class="form-control picture" id="image1" name="form_bimbingan"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
-                                <p class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
-                                        KB</span> </p>
+                                <span class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </span>
                             </div>
                         </div>
                     </div>

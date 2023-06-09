@@ -6,14 +6,15 @@ use App\Models\Dosen;
 use App\Models\Biodata;
 use App\Models\DaftarKP;
 use App\Models\SeminarKP;
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\TahunAkademik;
+use App\Http\Controllers\Controller;
+use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Auth;
+
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
-
-use function GuzzleHttp\Promise\all;
 
 class SeminarKPController extends Controller
 {
@@ -39,6 +40,8 @@ class SeminarKPController extends Controller
         $daftarkp    = $d_kp->d_kp_diterima();
         $mhskps      = $d_kp->m_kp_diterima();
 
+        $pengumuman  = Pengumuman::where('cttn_seminar_kp', '!=', '')->get()->first();
+
         // testing
         $d = SeminarKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 0) {
@@ -57,7 +60,7 @@ class SeminarKPController extends Controller
             'sSelesai',
             'sTerjadwal',
             'sProses',
-            'd'
+            'pengumuman'
         ));
     }
 

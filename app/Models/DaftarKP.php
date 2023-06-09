@@ -73,4 +73,26 @@ class DaftarKP extends Model
             }
         })->where('stts_pengajuan', '=', 'diterima')->get();
     }
+
+    public function mhskps()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            } else {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->where('stts_pengajuan', '=', 'diterima')->sortByDesc('id');
+    }
+
+    public function mhskpd()
+    {
+        return self::with('dosen')->whereHas('dosen', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
+            } else {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->where('stts_pengajuan', '=', 'diterima')->sortByDesc('id');
+    }
 }

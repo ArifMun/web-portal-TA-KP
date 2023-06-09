@@ -31,13 +31,16 @@
             <div class="page-header">
                 <h4 class="page-title">Bimbingan Tugas Akhir</h4>
             </div>
+            @if (empty($pengumuman))
+            @else
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
-                        <p><i> Disini tempat untuk pengumuman</i> </p>
+                        <p><i> {{ $pengumuman->cttn_sidang_ta }}</i> </p>
                     </div>
                 </div>
             </div>
+            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -151,21 +154,21 @@
                                             @if ($item->stts == 'proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts }}</a>
                                             </td>
                                             @elseif($item->stts == 'acc')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
@@ -216,21 +219,21 @@
                                             @if ($item->stts == 'proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts }}</a>
                                             </td>
                                             @elseif($item->stts == 'acc')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
@@ -379,21 +382,21 @@
                                             @if ($item->stts == 'proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts }}</a>
                                             </td>
                                             @elseif($item->stts == 'acc')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
@@ -444,21 +447,21 @@
                                             @if ($item->stts == 'proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $item->stts }}</a>
                                             </td>
                                             @elseif($item->stts == 'acc')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-danger btn-round p-1 font-weight-bold text-light text-uppercase">
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $item->stts}}</a>
                                             </td>
@@ -552,8 +555,10 @@
                             <div class="col">
                                 <label for="file" class="form-label control-label">Laporan TA </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta"
-                                    onchange="previewImage()">
+                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta">
+                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span></span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status TA</label>
@@ -660,8 +665,10 @@
                             <div class="col">
                                 <label for="file" class="form-label control-label">Laporan TA </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta"
-                                    onchange="previewImage()">
+                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta">
+                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span></span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status TA</label>
@@ -763,7 +770,9 @@
                                 <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
                                     value="{{ $item->laporan_ta }}">
                                 <span class="mt-1 font-italic">biarkan kolom kosong
-                                    jika tidak diganti</span>
+                                    jika tidak diganti | ukuran file maksimal
+                                    <span class="text-danger">1024
+                                        KB</span></span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
@@ -865,7 +874,9 @@
                                 <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
                                     value="{{ $item->laporan_ta }}">
                                 <span class="mt-1 font-italic">biarkan kolom kosong
-                                    jika tidak diganti</span>
+                                    jika tidak diganti | ukuran file maksimal
+                                    <span class="text-danger">1024
+                                        KB</span></span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>

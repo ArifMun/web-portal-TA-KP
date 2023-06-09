@@ -8,6 +8,7 @@ use App\Models\DaftarKP;
 use App\Models\FormAkses;
 use App\Models\Mahasiswa;
 use App\Models\Konsentrasi;
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
 use Illuminate\Validation\Rule;
@@ -29,21 +30,22 @@ class KerjaPraktikController extends Controller
         $daftarkp    = DaftarKP::all();
         $filterStts  = DaftarKP::distinct()->select('stts_pengajuan')->get();
         $dosen       = Dosen::all();
-        $thnakademik = TahunAkademik::all();
+        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
         $mahasiswa   = Mahasiswa::all();
         $mhskp       = Auth::user()->biodata->mahasiswa;
         $kpDiterima  = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get()->count();
         $kpTertunda  = DaftarKP::where('stts_pengajuan', '=', 'tertunda')->get()->count();
-        $kpDitolak  = DaftarKP::where('stts_pengajuan', '=', 'ditolak')->get()->count();
-        $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+        $kpDitolak   = DaftarKP::where('stts_pengajuan', '=', 'ditolak')->get()->count();
+        $pengumuman  = Pengumuman::where('cttn_daftar_kp', '!=', '')->get()->first();
+        $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
             } else {
                 $q->where('id', '=', Auth::user());
             }
         })->get();
-        $formakses = FormAkses::all();
+        $formakses = FormAkses::get()->first();
         // \dd($mhskps);
 
         return \view('kerja-praktik.daftar-kp', \compact(
@@ -58,7 +60,8 @@ class KerjaPraktikController extends Controller
             'filterStts',
             'kpDiterima',
             'kpTertunda',
-            'kpDitolak'
+            'kpDitolak',
+            'pengumuman'
         ));
     }
 

@@ -1,11 +1,16 @@
+<style>
+    .divider {
+        width: 100%;
+        height: 2px;
+        background: #BBB;
+        margin: 1rem 0;
+    }
+</style>
 <div class="sidebar">
-
     <div class="sidebar-background"></div>
     <div class="sidebar-wrapper scrollbar-inner">
         <div class="sidebar-content">
-
             <ul class="nav">
-
                 <li class="nav-item {{  Request()->is('dashboard')? 'active' : ''  }}">
                     <a href="dashboard">
                         <i class="fas fa-home"></i>
@@ -20,21 +25,22 @@
                         <p>Kerja Praktik</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="base">
+                    <div class="collapse {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') || Request()->is('bimbingan-kp*') ? 'show' : '' }}"
+                        id="base">
                         <ul class="nav nav-collapse">
                             <li class="nav-item {{ Request()->is('kerja-praktik')? 'active' : '' }}">
                                 <a href="kerja-praktik">
                                     <span class="sub-item">Daftar KP</span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ Request()->is('bimbingan-kp')? 'active' : '' }}">
-                                <a href="bimbingan-kp">
-                                    <span class="sub-item">Bimbingan KP</span>
-                                </a>
-                            </li>
                             <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
                                 <a href="seminar-kp">
                                     <span class="sub-item">Daftar Seminar KP</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request()->is('bimbingan-kp')? 'active' : '' }}">
+                                <a href="bimbingan-kp">
+                                    <span class="sub-item">Bimbingan KP</span>
                                 </a>
                             </li>
 
@@ -49,7 +55,8 @@
                         <p>Tugas Akhir</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse" id="forms">
+                    <div class="collapse {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') ||
+                        Request()->is('bimbingan-ta*')? 'show' : '' }}" id="forms">
                         <ul class="nav nav-collapse">
                             <li class="nav-item {{ Request()->is('daftar-ta')? 'active' : '' }}">
                                 <a href="daftar-ta">
@@ -72,8 +79,8 @@
 
                 <li class="nav-item {{ Request()->is('dosen*') ? 'active' : '' }}">
                     <a href="dosen">
-                        <i class="fas fa-user-graduate"></i>
-                        <p>Dosen</p>
+                        <i class="fas fa-list"></i>
+                        <p>Data Dosen</p>
                         {{-- <span class="caret"></span> --}}
                     </a>
                 </li>
@@ -88,38 +95,36 @@
                 </li>
                 <li class="nav-item {{ Request()->is('registrasi')? 'active' : '' }}">
                     <a href="registrasi">
-                        <i class="fas fa-users"></i>
+                        <i class="fas fa-address-book"></i>
                         <p>Daftar Akun</p>
                     </a>
                 </li>
 
                 <li class="nav-item {{ Request()->is('manajemen-form')? 'active' : '' }}">
                     <a href="manajemen-form">
-                        <i class="fas fa-pen-square"></i>
-                        <p>Manajemen Form</p>
+                        <i class="fas fa-cog"></i>
+                        <p>Pengaturan</p>
                     </a>
                 </li>
                 @endif
-                {{-- <li class="nav-item">
-                    <a data-toggle="collapse" href="#forms">
-                        <i class="fas fa-pen-square"></i>
-                        <p>Manajemen KP/TA</p>
-                        <span class="caret"></span>
-                    </a>
-                    <div class="collapse" id="forms">
-                        <ul class="nav nav-collapse">
-                            <li>
-                                <a href="forms/forms.html">
-                                    <span class="sub-item">Tahun Akademik/span>
-                                </a>
-                            </li>
-
-                        </ul>
-                    </div>
-                </li> --}}
-
-
+                <li class="nav-item mt-5 ml-2 mr-2">
+                    {{-- <div class="divider"></div> --}}
+                    <h4 class="text-dark text-center font-weight-bold">Teknologi Informasi Universitas Muhammadiyah
+                        Purworejo</h4>
+                    <p class="text-dark text-center font-weight-normal">NSPN : Terakreditasi Baik</p>
+                    <div class="divider "></div>
+                    <h6 class="text-dark font-weight-normal">
+                        Jl. Taman Siswa II, Plaosan, Purworejo, Kec. Purworejo, Kabupaten Purworejo, Jawa Tengah 54151
+                    </h6>
+                </li>
             </ul>
         </div>
+        {{-- <div class="sidebar-content">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a href="a">a</a>
+                </li>
+            </ul>
+        </div> --}}
     </div>
 </div>

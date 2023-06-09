@@ -11,47 +11,44 @@ use Illuminate\Support\Facades\Validator;
 class FormAksesController extends Controller
 {
 
-    // public function store(Request $request)
-    // {
-    //     $validation = Validator::make(
-    //         $request->all(),
-    //         [
-    //             'akses' => 'required|unique:form_akses',
-    //         ]
-    //     );
-
-    //     if ($validation->fails()) {
-    //         return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan !');
-    //     } else {
-
-    //         $formakses = FormAkses::create([
-    //             'akses' => $request->akses
-    //         ]);
-
-    //         return \redirect('manajemen-form')->with('success', 'Akses Form KP Telah Disimpan !');
-    //     }
-    // }
-
     public function store(Request $request)
     {
         $validation = Validator::make(
             $request->all(),
             [
-                'tgl_buka' => 'required',
-                'tgl_tutup' => 'required',
+                'akses_kp' => 'required',
+                'akses_ta' => 'required',
+                // 'tgl_tutup' => 'required',
             ]
         );
 
         if ($validation->fails()) {
-            return \redirect('manajemen-form')->with('warning', 'Tanggal Tidak Tersimpan!');
+            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan!');
         } else {
             $formakses = FormAkses::create([
-                'tgl_buka' => $request->tgl_buka,
-                'tgl_tutup' => $request->tgl_tutup,
+                'akses_kp' => $request->akses_kp,
+                'akses_ta' => $request->akses_ta,
+                // 'tgl_tutup' => $request->tgl_tutup,
             ]);
 
-            return \redirect('manajemen-form')->with('success', 'Tanggal Pendaftaran Kerja Praktik Berhasil Dibuat!');
+            return \redirect('manajemen-form')->with('success', 'Akses Daftar KP Berhasil Di buat');
         }
+    }
+
+    public function update_kp(Request $request)
+    {
+        $formakses = FormAkses::find($request->id);
+        $formakses->akses_kp = $request->akses_kp;
+        $formakses->save();
+        return response()->json(['message' => 'Toggle switch updated successfully.']);
+    }
+
+    public function update_ta(Request $request)
+    {
+        $formakses = FormAkses::find($request->id);
+        $formakses->akses_ta = $request->akses_ta;
+        $formakses->save();
+        return response()->json(['message' => 'Toggle switch updated successfully.']);
     }
 
     public function destroy(FormAkses $formakses, $id)

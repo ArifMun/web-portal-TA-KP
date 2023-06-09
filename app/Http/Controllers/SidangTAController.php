@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Dosen;
 use App\Models\DaftarTA;
+use App\Models\Pengumuman;
 use App\Models\SidangTA;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
@@ -19,10 +20,13 @@ class SidangTAController extends Controller
      */
     public function index()
     {
-        $s_list   = SidangTA::all();
+        $s_list      = SidangTA::all();
 
         $list     = new SidangTA();
         $m_list   = $list->m_list_sidang();
+        $s_proses    = $list->s_proses();
+        $s_terjadwal = $list->s_terjadwal();
+        $s_selesai   = $list->s_selesai();
 
         $dosen    = Dosen::all();
         $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
@@ -31,6 +35,8 @@ class SidangTAController extends Controller
         $d_ta     = new DaftarTA();
         $d_mhs_ta = $d_ta->m_ta_diterima();
         $daftarta = $d_ta->d_diterima();
+
+        $pengumuman  = Pengumuman::where('cttn_sidang_ta', '!=', '')->get()->first();
         return \view('tugas-akhir.sidang-ta', \compact(
             's_list',
             'dosen',
@@ -38,7 +44,11 @@ class SidangTAController extends Controller
             'daftarta',
             'm_list',
             'thnakademik',
-            'filterStts'
+            'filterStts',
+            's_proses',
+            's_terjadwal',
+            's_selesai',
+            'pengumuman'
         ));
     }
 

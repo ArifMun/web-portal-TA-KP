@@ -11,7 +11,8 @@ class FormAkses extends Model
     public $timestamps = false;
     protected $table = 'form_akses';
     protected $fillable = [
-        'akses'
+        'akses_kp',
+        'akses_ta'
     ];
 
     // public function setStatusAttribute($value)

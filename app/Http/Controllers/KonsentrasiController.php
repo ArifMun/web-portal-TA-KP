@@ -20,7 +20,7 @@ class KonsentrasiController extends Controller
         );
 
         if ($validation->fails()) {
-            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan!');
+            return \redirect('manajemen-form')->with('warning', 'Konsentrasi Tidak Tersimpan!');
         } else {
             $thnAkademik = Konsentrasi::create([
                 'nama_konsentrasi' => $request->nama_konsentrasi
@@ -39,21 +39,21 @@ class KonsentrasiController extends Controller
         );
 
         if ($validation->fails()) {
-            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan!');
+            return \redirect('manajemen-form')->with('warning', 'Konsentrasi Tidak Tersimpan!');
         } else {
             $konsentrasi = Konsentrasi::findOrFail($id);
             $konsentrasi->nama_konsentrasi = $request->nama_konsentrasi;
             $konsentrasi->update();
 
-            return \redirect('manajemen-form')->with('success', 'Data Berhasil Diperbarui!');
+            return \redirect('manajemen-form')->with('success', 'Konsentrasi Berhasil Diperbarui!');
         }
     }
 
-    public function destroy(Konsentrasi $konsentrasi, $id)
+    public function destroy($id)
     {
         $konsentrasi = Konsentrasi::find($id);
         $konsentrasi->delete();
 
-        return redirect('manajemen-form')->with('success', 'Data Berhasil Dihapus');
+        return redirect('manajemen-form')->with('success', 'Konsentrasi Berhasil Dihapus');
     }
 }

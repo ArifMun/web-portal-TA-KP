@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\DaftarTA;
+use App\Models\Pengumuman;
 use App\Models\BimbinganTA1;
 use App\Models\BimbinganTA2;
 use Illuminate\Http\Request;
@@ -47,7 +48,7 @@ class BimbinganTAController extends Controller
         // select pada form tambah bimbingan 1
         // $m_bimbing_2 = $d_ta->m_bimbing_2();
         $d_bimbing_2 = $d_ta->d_bimbing_2();
-
+        $pengumuman  = Pengumuman::where('cttn_bimbingan_ta', '!=', '')->get()->first();
 
         return \view('tugas-akhir.bimbingan-ta', \compact(
             'e_bimbing',
@@ -59,7 +60,8 @@ class BimbinganTAController extends Controller
             'b_dosen_1',
             'b_mhs_1',
             'b_dosen_2',
-            'b_mhs_2'
+            'b_mhs_2',
+            'pengumuman'
         ));
     }
 

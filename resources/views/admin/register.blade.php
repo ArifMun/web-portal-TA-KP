@@ -484,7 +484,7 @@
                     <div class=" form-group">
                         <h3>Apakah anda yakin menghapus akun <span class="text-danger">{{ $d->nama }}
                             </span> dengan No Induk <span class="text-danger">{{ $d->no_induk }}</span> ?</h3>
-                        <b><span class="text-danger"> Data terkait akun tersebut akan ikut terhapus !</span></b>
+                        <h4 class="btn btn-warning text-uppercase ">Data Terkait Nama tersebut juga akan terhapus!</h4>
                     </div>
 
                 </div>
