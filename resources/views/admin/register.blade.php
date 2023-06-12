@@ -92,23 +92,23 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->no_induk }}</td>
-                                            <td>{{ $row->nama }}</td>
+                                            <td class="text-capitalize">{{ $row->nama }}</td>
                                             <td>{{ $row->email }}</td>
                                             <td>{{ $row->keahlian }}</td>
-                                            <td>{{ $row->jabatan }}</td>
+                                            <td class="text-capitalize">{{ $row->jabatan }}</td>
                                             <td>{{ $row->tempat_lahir }}</td>
                                             <td>{{ $row->tgl_lahir }}</td>
                                             <td>{{ $row->no_telp }}</td>
                                             <td>{{ $row->alamat }}</td>
                                             <td>{{ $row->level }}</td>
                                             <td>
-                                                <a href="#viewDataBarang{{ $row->id }}" data-toggle="modal"
+                                                {{-- <a href="#viewDataBarang{{ $row->id }}" data-toggle="modal"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i> </a>
+                                                    </i> </a> --}}
                                                 <a href="#editDataAkun{{ $row->id }}" data-toggle="modal"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="#modalHapusBarang{{ $row->id }}" data-toggle="modal"
+                                                <a href="#modalHapusAkun{{ $row->id }}" data-toggle="modal"
                                                     data-target="" class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
@@ -206,20 +206,7 @@
                     </div>
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
-                                <label id="kolomBaru_1" style="display: none">Konsentrasi </label>
-                                <select id="kolomBaru_1" style="display: none" class="form-control keahlian"
-                                    name="keahlian[]" id="keahlian" size="5" multiple>
-                                    <option value="" hidden="">-- Konsentrasi --</option>
-                                    @foreach ($konsentrasi as $item)
-                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
-                                    @endforeach
-                                </select>
-
-                                <input type="hidden" name="keahlian[]" class="form-control" name="keahlian"
-                                    placeholder="Keahlian ..">
-                            </div>
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
                                     <option value="" hidden="">-- Pilih Level --</option>
@@ -233,6 +220,18 @@
                                 <label class="control-label mt-3">Password </label>
                                 <input type="password" class="form-control" name="password" placeholder="Password .."
                                     required>
+                            </div>
+                            <div class="col" id="kolomBaru_1" style="display: none">
+                                <label>Konsentrasi </label>
+                                <select class="form-control konsentrasi" name="keahlian[]" multiple>
+                                    {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
+                                    @foreach ($konsentrasi as $item)
+                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
+                                    @endforeach
+                                </select>
+
+                                <input type="hidden" name="keahlian[]" class="form-control" name="keahlian"
+                                    placeholder="Keahlian ..">
                             </div>
                         </div>
                     </div>
@@ -334,27 +333,36 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
+
+                                @if ($d->jabatan=='mahasiswa' || $d->jabatan=='TU')
                                 <input type="text" class="form-control" value="{{ $d->jabatan }}" id="jabatan_1"
                                     name="jabatan_1" readonly>
-                                {{-- <select class="form-control" name="jabatan" required>
+                                @else
+
+                                <select class="form-control" name="jabatan" id="jabatan_1" required>
                                     <option value="" hidden="">-- Pilih Jabatan --</option>
+
+                                    <option <?php if($d->jabatan == 'kaprodi') echo "selected"; ?>
+                                        value="kaprodi">Kaprodi
+                                    </option>
                                     <option <?php if($d->jabatan == 'dosen') echo "selected"; ?> value="dosen">Dosen
                                     </option>
-                                    <option <?php if($d->jabatan == 'mahasiswa') echo "selected"; ?>
+                                    {{-- <option <?php if($d->jabatan == 'mahasiswa') echo "selected"; ?>
                                         value="mahasiswa">Mahasiswa</option>
                                     <option <?php if($d->jabatan == 'TU') echo "selected"; ?>
-                                        value="TU">TU</option>
-                                </select> --}}
+                                        value="TU">TU</option> --}}
+                                </select>
+                                @endif
                             </div>
                         </div>
                     </div>
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
-                                <label>Keahlian</label>
-                                <select class="form-control keahlian-select" name="keahlian[]"
-                                    id="keahlian_{{ $d->id }}" size="5" multiple>
+                            <div class="col" id="kolomBaru_2" style="display: none">
+                                <label>Konsentrasi</label>
+                                <select class="form-control konsentrasi_" name="keahlian[]" id="keahlian_{{ $d->id }}"
+                                    multiple>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}" {{ in_array($item->nama_konsentrasi,
                                         explode(',',$d->keahlian)) ? 'selected':'' }}>
@@ -463,8 +471,8 @@
 
 {{-- Hapus --}}
 @foreach ($biodata as $d)
-<div class="modal fade" id="modalHapusBarang{{ $d->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade" id="modalHapusAkun{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog modal-open">
         <div class="modal-content">
             <div class="modal-header">
@@ -499,32 +507,22 @@
     </div>
 </div>
 @endforeach
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="/assets/js/select2.min.js"></script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-    var selectElements = document.getElementsByClassName("keahlian");
-    
-    for (var i = 0; i < selectElements.length; i++) { 
-        var selectElement=selectElements[i];
-        selectElement.addEventListener("mousedown", function(e) { 
-                e.preventDefault(); e.target.selected=!e.target.selected;
-                this.focus(); 
-                }); 
-            } 
+    $(document).ready(function() {
+        $('.konsentrasi').select2({
+            width: '100%',
+            // theme: 'bootstrap'
         });
-
-    document.addEventListener('DOMContentLoaded', function() {
-    var selectElements = document.getElementsByClassName("keahlian-select");
-    
-    for (var i = 0; i < selectElements.length; i++) { 
-        var selectElement=selectElements[i];
-        selectElement.addEventListener("mousedown", function(e) { 
-        e.preventDefault(); e.target.selected=!e.target.selected;
-        this.focus(); 
-                }); 
-            } 
+    });
+    $(document).ready(function() {
+        $('.konsentrasi_').select2({
+            width: '100%'
         });
+    });
 </script>
 
 <script>
@@ -540,9 +538,11 @@
         function toggleKolomBaru_1(formId) {
                 if ($(formId + ' select[name="jabatan"]').val() === 'dosen') {
                     $(formId + ' #kolomBaru_1').show();
+
                 }
                 else if ($(formId + ' select[name="jabatan"]').val() === 'kaprodi') {
                     $(formId + ' #kolomBaru_1').show();
+                    
                 } else {
                     $(formId + ' #kolomBaru_1').hide();
                 }
@@ -561,11 +561,12 @@
         });
         
         function toggleKolomBaru_2(formId) {
-                if ($(formId + ' input[name="jabatan_1"]').val() === 'dosen') {
-                    $(formId + ' #keahlian_').show();
-                }
-                else {
-                    $(formId + ' #keahlian_').hide();
+                if ($(formId + ' select[name="jabatan"]').val() === 'dosen') {
+                    $(formId + ' #kolomBaru_2').show();
+                }else if ($(formId + ' select[name="jabatan"]').val() === 'kaprodi') {
+                    $(formId + ' #kolomBaru_1').show();
+                }else {
+                    $(formId + ' #kolomBaru_2').hide();
                 }
             }
         });

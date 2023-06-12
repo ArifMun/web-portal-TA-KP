@@ -9,6 +9,10 @@
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
     <link rel="stylesheet" href="/assets/css/azzara.min.css">
     <link rel="stylesheet" href="/assets/css/mandatory.css">
+    <link rel="stylesheet" href="/assets/css/select2.min.css">
+    <link rel="stylesheet" href="/assets/css/layout.scss">
+    <link rel="stylesheet" href="/assets/css/select2-bootstrap.min.css">
+
     <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
     <script>
         WebFont.load({
@@ -70,6 +74,7 @@
     </div>
 
     <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+    <script src="/assets/js/select2.min.js"></script>
     <script src="/assets/js/core/popper.min.js"></script>
     <script src="/assets/js/core/bootstrap.min.js"></script>
     <!-- jQuery UI -->

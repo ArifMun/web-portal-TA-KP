@@ -85,7 +85,7 @@
                     </a>
                 </li>
 
-                @if(Auth::user()->level==1)
+                @if(Auth::user()->level==3)
 
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">

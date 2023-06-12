@@ -122,7 +122,7 @@ class DaftarTA extends Model
     public function d_bimbing_1()
     {
         return self::with('bimbinganta_1')->whereHas('bimbinganta_1', function ($q) {
-            if (Auth::user()->level == 1) {
+            if (Auth::user()->level == 2) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());
@@ -133,7 +133,7 @@ class DaftarTA extends Model
     public function d_bimbing_2()
     {
         return self::with('dosen2')->whereHas('dosen2', function ($q) {
-            if (Auth::user()->level == 1) {
+            if (Auth::user()->level == 2) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());

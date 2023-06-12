@@ -29,8 +29,13 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Bimbingan Tugas Akhir</h4>
+                @if (Auth::user()->level==0)
+                <h4 class="page-title">Bimbingan Tugas Akhir [Mahasiswa]</h4>
+                @elseif(Auth::user()->level== 2 || 3)
+                <h4 class="page-title">Bimbingan Tugas Akhir [Dosen]</h4>
+                @endif
             </div>
+
             @if (empty($pengumuman))
             @else
             <div class="row">
@@ -46,7 +51,11 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
+                                @if (Auth::user()->level==0)
                                 <h4 class="card-title">Dosen Pembimbing 1</h4>
+                                @elseif(Auth::user()->level==2||3)
+                                <h4 class="card-title">Mahasiswa Bimbingan 1</h4>
+                                @endif
                                 <a href="/bimbingan-ta/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan">
                                     <i class="fa fa-plus"></i>
@@ -200,7 +209,7 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level != 0)
+                                    @elseif(Auth::user()->level == 2 || 3)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($b_dosen_1 as $item)
                                         <tr align="center">
@@ -274,7 +283,11 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
+                                @if (Auth::user()->level==0)
                                 <h4 class="card-title">Dosen Pembimbing 2</h4>
+                                @elseif(Auth::user()->level==2 ||3)
+                                <h4 class="card-title">Mahasiswa Bimbingan 2</h4>
+                                @endif
                                 <a href="/bimbingan-ta-1/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan1">
                                     <i class="fa fa-plus"></i>
@@ -428,7 +441,7 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level != 0)
+                                    @elseif(Auth::user()->level == 2||3)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($b_dosen_2 as $item)
                                         <tr align="center">
@@ -1073,20 +1086,20 @@
     // ================================================================
 
     // bimbingan 2
-    function no_mahasiswa_1() {
-        let daftar_ta_id = $("#daftar_ta_id_1").val();
-        $("#mahasiswa_id_1").children().remove();
-        if (daftar_ta_id != '' && daftar_ta_id != null) {
-            $.ajax({
+    // function no_mahasiswa_1() {
+    //     let daftar_ta_id = $("#daftar_ta_id_1").val();
+    //     $("#mahasiswa_id_1").children().remove();
+    //     if (daftar_ta_id != '' && daftar_ta_id != null) {
+    //         $.ajax({
 
-                url: "{{ url('') }}/bimbingan-ta/daftar_ta_id/" + daftar_ta_id,
-                success: function (res) {
-                    $("#mahasiswa_id_1").val(res.mahasiswa_id);
-                    $("#dosen_id_1").val(res.d_pembimbing_2);
-                }
-            });
-        }
-    }
+    //             url: "{{ url('') }}/bimbingan-ta/daftar_ta_id/" + daftar_ta_id,
+    //             success: function (res) {
+    //                 $("#mahasiswa_id_1").val(res.mahasiswa_id);
+    //                 $("#dosen_id_1").val(res.d_pembimbing_2);
+    //             }
+    //         });
+    //     }
+    // }
 
     $(document).ready(function () {
     var table = $("#bimbingan-ta-1").DataTable({});

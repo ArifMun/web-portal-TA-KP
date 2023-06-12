@@ -88,10 +88,10 @@ class DaftarKP extends Model
     public function mhskpd()
     {
         return self::with('dosen')->whereHas('dosen', function ($q) {
-            if (Auth::user()->level == 1) {
+            if (Auth::user()->level == 2) {
                 $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-            } else {
-                $q->where('id', '=', Auth::user());
+            } else if (Auth::user()->level == 3) {
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
             }
         })->get()->where('stts_pengajuan', '=', 'diterima')->sortByDesc('id');
     }

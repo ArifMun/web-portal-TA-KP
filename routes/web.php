@@ -46,28 +46,79 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     // Route::get('akun', [RegistrasiController::class, 'index']);
     // Route::post('akun/daftar', [RegistrasiController::class, 'store']);
     // Route::get('edit-akun/{id}', [RegistrasiController::class, 'edit']);
-    Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:0,1,2,3');
-    // Route::get('registrasi', [RegistrasiController::class, 'index']);
-    Route::resource('/kerja-praktik', KerjaPraktikController::class);
-    // Route::get('kerja-praktik/biodata/{id}', [KerjaPraktikController::class, 'autofill']);
 
-    Route::resource('/seminar-kp', SeminarKPController::class);
+    // Route::middleware('CheckLevel:0,2')->group(function () {
+    //     Route::resource('/kerja-praktik', KerjaPraktikController::class);
+    //     Route::resource('/bimbingan-kp', BimbinganKPController::class);
+    //     Route::resource('/bimbingan-ta', BimbinganTAController::class);
+    //     Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class);
+    //     Route::resource('/seminar-kp', SeminarKPController::class);
+    //     Route::resource('/daftar-ta', DaftarTAController::class);
+    //     Route::resource('/sidang-ta', SidangTAController::class);
+    // });
+
+    // Route::middleware('CheckLevel:1')->group(function () {
+    //     Route::resource('/kerja-praktik', KerjaPraktikController::class);
+    //     Route::resource('/seminar-kp', SeminarKPController::class);
+    //     Route::resource('/daftar-ta', DaftarTAController::class);
+    //     Route::resource('/sidang-ta', SidangTAController::class);
+    // });
+
+    // Route::middleware('CheckLevel:2')->group(function () {
+    //     Route::resource('/bimbingan-kp', BimbinganKPController::class);
+    //     Route::resource('/bimbingan-ta', BimbinganTAController::class);
+    //     Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class);
+    // });
+
+    // // Rute-rute untuk administrator
+    // Route::middleware('CheckLevel:3')->group(function () {
+    //     Route::resource('/bimbingan-kp', BimbinganKPController::class);
+    //     Route::resource('/bimbingan-ta', BimbinganTAController::class);
+    //     Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class);
+    //     Route::resource('/registrasi', RegistrasiController::class);
+    //     Route::get('manajemen-form', [ManajemenFormController::class, 'index']);
+    //     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
+    //     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
+    //     // Tambahkan rute-rute administrator lainnya di sini
+    //     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
+    //     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
+
+    //     Route::post('konsentrasi/tambah', [KonsentrasiController::class, 'store']);
+    //     Route::post('konsentrasi/{id}/ubah', [KonsentrasiController::class, 'update']);
+    //     Route::post('konsentrasi/{id}/destroy', [KonsentrasiController::class, 'destroy']);
+
+    //     Route::post('pengumuman/tambah', [PengumumanController::class, 'store']);
+    //     Route::post('pengumuman/{id}/update', [PengumumanController::class, 'update']);
+    //     Route::post('pengumuman/{id}/destroy', [PengumumanController::class, 'destroy']);
+
+    //     Route::get('akses/update', [FormAksesController::class, 'update']);
+    //     Route::post('akses/tambah', [FormAksesController::class, 'store']);
+    //     Route::POST('/toggle/update/kp', [FormAksesController::class, 'update_kp'])->name('toggle.update-kp');
+    //     Route::POST('/toggle/update/ta', [FormAksesController::class, 'update_ta'])->name('toggle.update-ta');
+    //     Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
+    // });
+
+    // // Rute-rute untuk dosen
+    // Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
+
+    Route::resource('/kerja-praktik', KerjaPraktikController::class)->middleware('CheckLevel:0,1');
+    Route::resource('/seminar-kp', SeminarKPController::class)->middleware('CheckLevel:0,1');
     Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
-
-    Route::resource('/bimbingan-kp', BimbinganKPController::class);
+    Route::resource('/bimbingan-kp', BimbinganKPController::class)->middleware('CheckLevel:0,2,3');
     Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);
-    // Route::get('bimbing-kp/list/{id}/', [BimbinganKPController::class, 'list_index']);
 
-    Route::resource('/daftar-ta', DaftarTAController::class);
-
-    Route::resource('/sidang-ta', SidangTAController::class);
+    Route::resource('/daftar-ta', DaftarTAController::class)->middleware('CheckLevel:0,1');
+    Route::resource('/sidang-ta', SidangTAController::class)->middleware('CheckLevel:0,1');
     Route::get('sidang-ta/daftar_ta_id/{id}', [SidangTAController::class, 'autofill']);
-
-    Route::resource('/bimbingan-ta', BimbinganTAController::class);
-    Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class);
+    Route::resource('/bimbingan-ta', BimbinganTAController::class)->middleware('CheckLevel:0,2,3');
+    Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class)->middleware('CheckLevel:0,2,3');
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
 
-    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:2,3,1');
+    Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
+
+    // ADMINISTRATOR
+    Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:3');
+    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:3');
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
 
@@ -84,6 +135,4 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::POST('/toggle/update/kp', [FormAksesController::class, 'update_kp'])->name('toggle.update-kp');
     Route::POST('/toggle/update/ta', [FormAksesController::class, 'update_ta'])->name('toggle.update-ta');
     Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
-
-    Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
 });

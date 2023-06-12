@@ -131,7 +131,7 @@ class RegistrasiController extends Controller
             $request->all(),
             [
                 'nama'          => 'required',
-                'email'          => 'required|email',
+                'email'         => 'required|email',
                 'no_induk'      => 'numeric',
                 // 'jabatan'       => 'required',
                 // 'tempat_lahir'  => 'required',
@@ -152,14 +152,14 @@ class RegistrasiController extends Controller
             $biodata = Biodata::findOrFail($registrasi->id);
             $users = User::findOrFail($registrasi->id);
             $biodata->nama          = $request->nama;
-            $biodata->keahlian       = $string;
+            $biodata->keahlian      = $string;
             $biodata->email         = $request->email;
             $biodata->no_induk      = $request->no_induk;
             $biodata->tempat_lahir  = $request->tempat_lahir;
             $biodata->tgl_lahir     = $request->tgl_lahir;
             $biodata->no_telp       = $request->no_telp;
             $biodata->alamat        = $request->alamat;
-            // $biodata->jabatan = $request->jabatan;
+            $biodata->jabatan       = $request->jabatan;
             $biodata->update();
 
             $users->password =

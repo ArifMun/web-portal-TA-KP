@@ -29,10 +29,14 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
+                @if (Auth::user()->level ==0)
+                <h4 class="page-title">Sidang Tugas Akhir [Mahasiswa]</h4>
+                @else
                 <h4 class="page-title">Sidang Tugas Akhir</h4>
+                @endif
             </div>
-            @if (empty($pengumuman))
 
+            @if (empty($pengumuman))
             @else
             <div class="row">
                 <div class="col-md-12">
@@ -225,11 +229,13 @@
                                                 <a href="sidang-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalEditSidang{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                                 <a href="sidang-ta/hapus/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalHapusSidang{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -325,11 +331,13 @@
                                                 <a href="sidang-ta/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditSidang{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                                 <a href="sidang-ta/hapus/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalHapusSidang{{ $row->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -566,7 +574,7 @@
                             <div class="col">
                                 <label class="control-label"> Judul Tugas Akhir </label>
                                 <textarea type="text" class="form-control" name="judul"
-                                    value="{{ $item->judul }}"></textarea>
+                                    value="">{{ $item->judul }}</textarea>
                             </div>
                             <div class="col">
                                 <label>Catatan</label>
@@ -877,19 +885,19 @@
 
 <script>
     // untuk mendapatkan id mahasiswa
-    function no_mahasiswa() {
-        let daftar_ta_id = $("#daftar_ta_id").val();
-            $("#mahasiswa_id").children().remove();
-                if (daftar_ta_id != '' && daftar_ta_id != null) {
-                $.ajax({
+    // function no_mahasiswa() {
+    //     let daftar_ta_id = $("#daftar_ta_id").val();
+    //         $("#mahasiswa_id").children().remove();
+    //             if (daftar_ta_id != '' && daftar_ta_id != null) {
+    //             $.ajax({
 
-                url: "{{ url('') }}/sidang-ta/daftar_ta_id/" + daftar_ta_id,
-                success: function (res) {
-                $("#mahasiswa_id").val(res.mahasiswa_id);
-                }
-            });
-        }
-    }
+    //             url: "{{ url('') }}/sidang-ta/daftar_ta_id/" + daftar_ta_id,
+    //             success: function (res) {
+    //             $("#mahasiswa_id").val(res.mahasiswa_id);
+    //             }
+    //         });
+    //     }
+    // }
 
     $(document).ready(function () {
         var table = $("#seminar-kp").DataTable({});

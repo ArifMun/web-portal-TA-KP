@@ -27,7 +27,11 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
+                @if (Auth::user()->level == 0)
+                <h4 class="page-title">Kerja Praktik [Mahasiswa]</h4>
+                @else
                 <h4 class="page-title">Kerja Praktik</h4>
+                @endif
             </div>
             @if (empty($pengumuman))
 
@@ -244,7 +248,13 @@
                                                 <a href="kerja-praktik/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalEditKP{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
+                                                <a href="kerja-praktik/hapus/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusKP{{ $item->id }}"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                    </i>
+                                                </a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -495,32 +505,34 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control konsentrasi" name="konsentrasi[]" id="konsentrasi" size="5"
-                                    multiple required>
-                                    <option value="" hidden="">-- Konsentrasi --</option>
+                                <select class="form-control select2 " name="konsentrasi[]" id="konsentrasi" size="5"
+                                    style="width: 100%; " multiple="true" required>
+                                    {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
                                     @foreach ($konsentrasi as $item)
-                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
+                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
                     </div>
-
-                    <div class="modal-footer required">
-                        <div class="col">
-                            <label class="control-label font-italic">
-                                : Kolom Wajib Diisi
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
-                            </i> Kembali</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i>
-                            Simpan</button>
-                    </div>
                 </div>
-            </form>
+
+                <div class="modal-footer required">
+                    <div class="col">
+                        <label class="control-label font-italic">
+                            : Kolom Wajib Diisi
+                        </label>
+                    </div>
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                        </i> Kembali</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i>
+                        Simpan</button>
+                </div>
         </div>
+        </form>
     </div>
+</div>
 </div>
 
 {{-- Edit --}}
@@ -647,9 +659,9 @@
 
                                 <div>
                                     <label class="control-label">Konsentrasi </label>
-                                    <select class="form-control konsentrasi-select" name="konsentrasi[]"
-                                        id="konsentrasi_{{ $item->id }}" size="5" multiple required>
-                                        <option value="" hidden="">-- Konsentrasi --</option>
+                                    <select class="form-control konsentrasi_" name="konsentrasi[]"
+                                        id="konsentrasi_{{ $item->id }}" multiple required>
+                                        {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
 
                                         @foreach($konsentrasi as $option)
                                         <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
@@ -904,7 +916,7 @@
 @endforeach
 
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
-
+<script src="/assets/js/select2.min.js"></script>
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
@@ -941,31 +953,25 @@
 </script>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        var selectElements = document.getElementsByClassName("konsentrasi-select");
-
-        for (var i = 0; i < selectElements.length; i++) { 
-            var selectElement=selectElements[i];
-                    selectElement.addEventListener("mousedown", function(e) {
-                    e.preventDefault(); e.target.selected=!e.target.selected;
-                    this.focus(); 
-                }); 
-            } 
+    $(document).ready(function() {
+        $('#konsentrasi').select2({
+            placeholder: '-- Pilih Konsentrasi --',
+            // theme: 'bootstrap'
         });
+    });
 
-    document.addEventListener('DOMContentLoaded', function() {
-        var selectElements = document.getElementsByClassName("konsentrasi");
-
-        for (var i = 0; i < selectElements.length; i++) { 
-            var selectElement=selectElements[i];
-                    selectElement.addEventListener("mousedown", function(e) {
-                    e.preventDefault(); e.target.selected=!e.target.selected;
-                    this.focus(); 
-                }); 
-            } 
+    $(document).ready(function() {
+        $('.konsentrasi_').select2({
+            theme: 'classic',
+            width: '100%'
         });
+    });
 </script>
 
+
+<script>
+
+</script>
 {{-- tambah --}}
 <script>
     $(document).ready(function() {

@@ -29,7 +29,11 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
+                @if (Auth::user()->level==0)
+                <h4 class="page-title">Seminar Kerja Praktik [Mahasiswa]</h4>
+                @else
                 <h4 class="page-title">Seminar Kerja Praktik</h4>
+                @endif
             </div>
             @if (empty($pengumuman))
 
@@ -209,10 +213,20 @@
                                             <td>{{ $item->daftarkp->seminarkp->tgl_seminar }}</td>
                                             <td>{{ $item->daftarkp->seminarkp->jam_seminar }}</td>
                                             <td>
+                                                @if ($item->stts_seminar=='selesai' || $item->stts_seminar=='terjadwal')
+
+                                                @else
                                                 <a href="seminar-kp/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalEditSeminar{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
+                                                <a href="seminar-kp/hapus/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusSeminar{{ $item->id }}"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                    </i>
+                                                </a>
+                                                @endif
                                             </td>
                                         </tr>
                                         @endforeach

@@ -47,13 +47,13 @@ class Mahasiswa extends Model
     //     return $this->hasMany(BimbinganKP::class, 'mahasiswa_id');
     // }
 
-    public function bimbinganta1()
-    {
-        return $this->hasMany(BimbinganTA1::class, 'mahasiswa_id');
-    }
+    // public function bimbinganta1()
+    // {
+    //     return $this->hasMany(BimbinganTA1::class, 'mahasiswa_id');
+    // }
 
-    public function bimbinganta2()
-    {
-        return $this->hasMany(BimbinganTA1::class, 'mahasiswa_id');
-    }
+    // public function bimbinganta2()
+    // {
+    //     return $this->hasMany(BimbinganTA2::class, 'mahasiswa_id');
+    // }
 }

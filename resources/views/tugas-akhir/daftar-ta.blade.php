@@ -28,7 +28,11 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
+                @if (Auth::user()->level ==0)
+                <h4 class="page-title">Tugas Akhir [Mahasiswa]</h4>
+                @else
                 <h4 class="page-title">Tugas Akhir</h4>
+                @endif
             </div>
             @if (empty($pwngumuman))
             @else
@@ -287,7 +291,13 @@
                                                 <a href="daftar-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalEditTA{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
+                                                <a href="daftar-ta/hapus/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusTA{{ $item->id }}"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                    </i>
+                                                </a>
                                                 @endif
                                             </td>
                                         </tr>
@@ -380,11 +390,13 @@
                                                 <a href="daftar-ta/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditTA{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                                 <a href="daftar-ta/hapus/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalHapusTA{{ $row->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
-                                                    </i> </a>
+                                                    </i>
+                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -432,7 +444,7 @@
                                     @if (Auth::user()->level==0 )
                                     @foreach ($mhsDaftar as $item)
 
-                                    <option value="{{ $item->mahasiswa_id }}">{{
+                                    <option value="{{ $item->daftarkp->mahasiswa_id }}">{{
                                         $item->daftarkp->mahasiswa->biodata->no_induk }}
                                         - {{
                                         $item->daftarkp->mahasiswa->biodata->nama }}
@@ -551,8 +563,7 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control konsentrasi" name="konsentrasi[]" id="konsentrasi" size="5"
-                                    required multiple>
+                                <select class="form-control" name="konsentrasi[]" id="konsentrasi" required multiple>
                                     <option value="" hidden="">-- Konsentrasi --</option>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
@@ -737,8 +748,8 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control konsentrasi-select" name="konsentrasi[]"
-                                    id="konsentrasi_{{ $item->id }}" size="5" multiple required>
+                                <select class="form-control konsentrasi_" name="konsentrasi[]"
+                                    id="konsentrasi_{{ $item->id }}" multiple required>
                                     <option value="" hidden="">-- Konsentrasi --</option>
 
                                     @foreach($konsentrasi as $option)
@@ -872,6 +883,23 @@
 @endforeach
 
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="/assets/js/select2.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        $('#konsentrasi').select2({
+            placeholder: '-- Pilih Konsentrasi --',
+            width: '100%'
+        });
+    });
+
+    $(document).ready(function() {
+        $('.konsentrasi_').select2({
+            width: '100%'
+        });
+    });
+</script>
+
 <script>
     function no_biodata() {
         let biodata = $("#biodata").val();
@@ -921,32 +949,6 @@
     });
     });
 
-</script>
-<script>
-    // Tambah
-    document.addEventListener('DOMContentLoaded', function() {
-    var selectElements = document.getElementsByClassName("konsentrasi");
-    
-    for (var i = 0; i < selectElements.length; i++) { var selectElement=selectElements[i];
-            selectElement.addEventListener("mousedown", function(e) { 
-                e.preventDefault(); e.target.selected=!e.target.selected;
-                this.focus(); 
-                }); 
-            } 
-        });
-
-    // Edit
-    document.addEventListener('DOMContentLoaded', function() {
-        var selectElements = document.getElementsByClassName("konsentrasi-select");
-
-        for (var i = 0; i < selectElements.length; i++) { 
-            var selectElement=selectElements[i];
-                    selectElement.addEventListener("mousedown", function(e) {
-                    e.preventDefault(); e.target.selected=!e.target.selected;
-                    this.focus(); 
-                }); 
-            } 
-        });
 </script>
 <script>
     function Previews() {

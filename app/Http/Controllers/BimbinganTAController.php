@@ -92,12 +92,12 @@ class BimbinganTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'daftar_ta_id' => 'required',
+                'daftar_ta_id'    => 'required',
                 // 'dosen_id'     => 'required',
                 // 'mahasiswa_id' => 'required',
                 'judul_bimbingan' => 'required',
-                'laporan_ta'   => 'required|file|image|max:1024',
-                'stts'         => 'required',
+                'laporan_ta'      => 'required|file|image|max:1024',
+                'stts'            => 'required',
                 // 'catatan'      => 'required'
             ]
         );

@@ -88,7 +88,7 @@ class SidangTAController extends Controller
                 'tgl_sidang'        => 'required|date',
                 'jam_sidang'        => 'required',
                 'stts_sidang'       => 'required',
-                'd_penguji'         => 'required'
+                // 'd_penguji'         => 'required'
             ]
         );
         // \dd($validation);

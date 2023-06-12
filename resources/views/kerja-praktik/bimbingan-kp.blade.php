@@ -29,7 +29,11 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Bimbingan Kerja Praktik</h4>
+                @if (Auth::user()->level==0)
+                <h4 class="page-title">Bimbingan Kerja Praktik [Mahasiswa]</h4>
+                @elseif(Auth::user()->level==1)
+                <h4 class="page-title">Bimbingan Kerja Praktik [Dosen]</h4>
+                @endif
             </div>
             @if (empty($pengumuman))
             @else
@@ -250,7 +254,7 @@
                                     </tbody>
 
                                     {{-- All- --}}
-                                    @elseif(Auth::user()->level == 1)
+                                    @elseif(Auth::user()->level == 2 ||3)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($bimbingDosen as $item)
                                         {{-- {{ $item }} --}}
