@@ -162,6 +162,7 @@
                                             <th>Slip Pembayaran</th>
                                             <th>Tahun</th>
                                             <th>Konsentrasi</th>
+                                            <th>Tanggal Daftar</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -241,6 +242,7 @@
 
                                             <td>{{ $item->tahunakademik->tahun }} </td>
                                             <td>{{ $item->konsentrasi }}</td>
+                                            <td>{{ $item->created_at }}</td>
                                             <td>
                                                 @if ($item->stts_pengajuan == 'diterima')
 
@@ -496,8 +498,8 @@
                                     </select>
                                 </div>
                                 <label for="image" class="form-label control-label">Slip pembayaran </label>
-                                <input type="file" class="form-control picture" id="slip_pembayaran1"
-                                    name="slip_pembayaran" onchange="previewImage(1)">
+                                <input type="file" class="form-control picture" id="image1" name="slip_pembayaran"
+                                    onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
                                 <span class="font-italic text-muted mt-1">ukuran file maksimal <span
                                         class="text-danger">1024
@@ -703,16 +705,16 @@
                                     @endif
                                 </div>
                                 <div>
-                                    <label for="image" class="form-label ">Slip pembayaran </label>
+                                    <label for="image" class="form-label">Slip pembayaran </label>
                                     <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
-                                    <input type="file" class="form-control picture" id="slip_pembayaran2"
-                                        name="slip_pembayaran" onchange="previewImage(2)">
+                                    <input type="file" class="form-control picture" id="image2" name="slip_pembayaran"
+                                        onchange="previewImage(2)">
 
                                     @if ($item->slip_pembayaran)
                                     <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
-                                        class="img-preview img-fluid mb-3 col-sm-4 mt-1" id="preview2">
+                                        class="img-preview img-fluid mb-3 col-sm-5" id="preview2">
                                     @else
-                                    <img class="img-preview img-fluid mb-3 col-sm-5" alt="" id="preview2">
+                                    <img class="img-preview img-fluid mb-3 col-sm-5" id="preview2">
                                     @endif
 
                                     <p class="mt-1 font-italic text-muted">biarkan kolom kosong
@@ -917,29 +919,9 @@
 
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="/assets/js/select2.min.js"></script>
-<script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
 
-</script>
+
 <script>
-    function previewImage(index) {
-        const image = document.querySelector('#slip_pembayaran' + index);
-        const imgPreview = document.querySelector('#preview' + index);
-        
-        imgPreview.style.display = 'block';
-        
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(image.files[0]);
-        
-        oFReader.onload = function (oFREvent) {
-        imgPreview.src = oFREvent.target.result;
-        }
-    }
-
     $(document).ready(function () {
     var table = $("#kerja-praktik").DataTable({});
         $("#filter-tahun").change(function () {
@@ -949,9 +931,7 @@
             table.column($(this).data("column")).search($(this).val()).draw();
         });
     });
-
 </script>
-
 <script>
     $(document).ready(function() {
         $('#konsentrasi').select2({
@@ -1011,6 +991,29 @@
             }
         });
     });
+</script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+
+</script>
+<script>
+    function previewImage(index) {
+        const image = document.querySelector('#image' + index);
+        const imgPreview = document.querySelector('#preview' + index);
+        
+        imgPreview.style.display = 'block';
+        
+        const oFReader = new FileReader();
+        oFReader.readAsDataURL(image.files[0]);
+        
+        oFReader.onload = function (oFREvent) {
+        imgPreview.src = oFREvent.target.result;
+        }
+}
 </script>
 
 @endsection

@@ -24,13 +24,13 @@
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
             </li>
-            <li class="nav-item dropdown hidden-caret">
+            {{-- <li class="nav-item dropdown hidden-caret">
             <li class="nav-item toggle-nav-search hidden-caret">
                 <a class="nav-link" data-toggle="collapse" href="#search-nav" role="button" aria-expanded="false"
                     aria-controls="search-nav">
                     <i class="fas fa-sign-out-alt"></i>
                 </a>
-            </li>
+            </li> --}}
             {{-- <a class="dropdown-toggle profile-pic" data-toggle="dropdown" href="#" aria-expanded="false">
                 <div class="avatar-sm">
                     <img src="/assets/img/profile.jpg" alt="..." class="avatar-img rounded-circle">

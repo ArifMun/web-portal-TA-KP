@@ -70,18 +70,6 @@
                         <input id="alamat" name="alamat" type="text" class="form-control input-border-bottom" required>
                         <label for="alamat" class="placeholder">Alamat</label>
                     </div>
-                    {{-- <div class="form-group form-floating-label">
-                        <label>Jabatan</label>
-                        <select class="form-control" name="jabatan" required>
-                            <option value="" hidden="">-- Pilih Jabatan --</option>
-                            @php
-                            $position = array('dosen'=>'Dosen','mahasiswa'=>'Mahasiswa','TU'=>'Tata Usaha');
-                            @endphp
-                            @foreach ($position as $k=>$jabatan)
-                            <option value="{{ $k }}">{{ $jabatan }}</option>
-                            @endforeach
-                        </select>
-                    </div> --}}
                     <div class="form-group form-floating-label">
                         <input id="password" name="password" type="password" class="form-control input-border-bottom"
                             required>
@@ -91,10 +79,8 @@
                     <input name="jabatan" type="hidden" value="mahasiswa">
                     {{-- <input name="id_biodata" type="hidden" value=""> --}}
                     <div class="form-action">
-                        <a href="/login-page" id="show-signin"
-                            class="btn btn-danger btn-rounded btn-login mr-3">Cancel</a>
+                        <a href="/" id="show-signin" class="btn btn-danger btn-rounded btn-login mr-3">Cancel</a>
                         <button type="submit" class="btn btn-primary btn-rounded btn-login">Registrasi</button>
-                        {{-- <a href="#" type="submit" class="btn btn-primary btn-rounded btn-login">Register</a> --}}
                     </div>
                 </div>
             </form>

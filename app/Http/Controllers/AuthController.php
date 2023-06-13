@@ -48,6 +48,6 @@ class AuthController extends Controller
 
         $request->session()->flush();
         $request->session()->regenerateToken();
-        return \redirect('login-page');
+        return \redirect('/');
     }
 }

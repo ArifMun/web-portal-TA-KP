@@ -131,13 +131,13 @@
                                             <p class="font-weight-bold badge badge-warning mr-1">
                                                 Tertunda :
                                                 {{
-                                                $d_tertunda }}
+                                                $d_tertunda->count() }}
                                             </p>
                                             <p class="font-weight-bold badge badge-danger">
                                                 Ditolak
                                                 :
                                                 {{
-                                                $d_ditolak
+                                                $d_ditolak->count()
                                                 }}</p>
                                         </div>
                                     </div>

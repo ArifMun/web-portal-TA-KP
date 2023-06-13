@@ -65,6 +65,11 @@ class DaftarKP extends Model
         return self::where('stts_pengajuan', '=', 'diterima')->get();
     }
 
+    public function data_kp()
+    {
+        return self::where('stts_pengajuan', '=', 'diterima')->get();
+    }
+
     public function m_kp_diterima()
     {
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {

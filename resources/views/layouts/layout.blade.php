@@ -10,7 +10,8 @@
     <link rel="stylesheet" href="/assets/css/azzara.min.css">
     <link rel="stylesheet" href="/assets/css/mandatory.css">
     <link rel="stylesheet" href="/assets/css/select2.min.css">
-    <link rel="stylesheet" href="/assets/css/layout.scss">
+    {{--
+    <link rel="stylesheet" href="/assets/css/layout.scss"> --}}
     <link rel="stylesheet" href="/assets/css/select2-bootstrap.min.css">
 
     <script src="/assets/js/plugin/webfont/webfont.min.js"></script>

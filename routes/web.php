@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\DataKPController;
+use App\Http\Controllers\DataTAController;
 use App\Http\Controllers\DaftarTAController;
 use App\Http\Controllers\SidangTAController;
 use App\Http\Controllers\DashboardController;
@@ -31,7 +33,7 @@ use App\Http\Controllers\UserRegistrasiController;
 |
 */
 
-Route::get('login-page', [AuthController::class, 'index'])->name('login-page');
+Route::get('/', [AuthController::class, 'index'])->name('login-page');
 Route::post('login-process', [AuthController::class, 'login_process']);
 Route::get('logout', [AuthController::class, 'logout']);
 
@@ -115,6 +117,8 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
 
     Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
+    Route::get('data-kp', [DataKPController::class, 'index'])->name('data-kp');
+    Route::get('data-ta', [DataTAController::class, 'index'])->name('data-ta');
 
     // ADMINISTRATOR
     Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:3');

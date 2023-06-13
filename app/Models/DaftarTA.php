@@ -84,12 +84,12 @@ class DaftarTA extends Model
 
     public function d_tertunda()
     {
-        return self::where('stts_pengajuan', '=', 'tertunda')->get()->count();
+        return self::where('stts_pengajuan', '=', 'tertunda')->get();
     }
 
     public function d_ditolak()
     {
-        return self::where('stts_pengajuan', '=', 'ditolak')->get()->count();
+        return self::where('stts_pengajuan', '=', 'ditolak')->get();
     }
 
     public function m_list_ta()

@@ -44,7 +44,7 @@ class KerjaPraktikController extends Controller
             } else {
                 $q->where('id', '=', Auth::user());
             }
-        })->get();
+        })->get()->sortByDesc('id');
         $formakses = FormAkses::get()->first();
         // \dd($mhskps);
 

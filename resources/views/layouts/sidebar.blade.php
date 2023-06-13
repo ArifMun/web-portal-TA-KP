@@ -18,15 +18,15 @@
                     </a>
                 </li>
 
-                <li
-                    class="nav-item {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') || Request()->is('bimbingan-kp*') ? 'active' : '' }}">
+                <li class="nav-item {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') 
+                    || Request()->is('bimbingan-kp*')|| Request()->is('data-kp*') ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-user"></i>
                         <p>Kerja Praktik</p>
                         <span class="caret"></span>
                     </a>
-                    <div class="collapse {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') || Request()->is('bimbingan-kp*') ? 'show' : '' }}"
-                        id="base">
+                    <div class="collapse {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') 
+                    || Request()->is('bimbingan-kp*') || Request()->is('data-kp*') ? 'show' : '' }}" id="base">
                         <ul class="nav nav-collapse">
                             <li class="nav-item {{ Request()->is('kerja-praktik')? 'active' : '' }}">
                                 <a href="kerja-praktik">
@@ -43,20 +43,25 @@
                                     <span class="sub-item">Bimbingan KP</span>
                                 </a>
                             </li>
+                            <li class="nav-item {{ Request()->is('data-kp')? 'active' : '' }}">
+                                <a href="data-kp">
+                                    <span class="sub-item">Data KP</span>
+                                </a>
+                            </li>
 
                         </ul>
                     </div>
                 </li>
 
-                <li
-                    class="nav-item {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') || Request()->is('bimbingan-ta*')? 'active' : '' }}">
+                <li class="nav-item {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') || 
+                    Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#forms">
                         <i class="fas fa-user-graduate"></i>
                         <p>Tugas Akhir</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') ||
-                        Request()->is('bimbingan-ta*')? 'show' : '' }}" id="forms">
+                        Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'show' : '' }}" id="forms">
                         <ul class="nav nav-collapse">
                             <li class="nav-item {{ Request()->is('daftar-ta')? 'active' : '' }}">
                                 <a href="daftar-ta">
@@ -71,6 +76,11 @@
                             <li class="nav-item {{ Request()->is('bimbingan-ta')? 'active' : '' }}">
                                 <a href="bimbingan-ta">
                                     <span class="sub-item">Bimbingan TA</span>
+                                </a>
+                            </li>
+                            <li class="nav-item {{ Request()->is('data-ta')? 'active' : '' }}">
+                                <a href="data-ta">
+                                    <span class="sub-item">Data TA</span>
                                 </a>
                             </li>
                         </ul>
