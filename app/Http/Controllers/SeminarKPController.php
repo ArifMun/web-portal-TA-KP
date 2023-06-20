@@ -40,7 +40,7 @@ class SeminarKPController extends Controller
         $daftarkp    = $d_kp->d_kp_diterima();
         $mhskps      = $d_kp->m_kp_diterima();
 
-        $pengumuman  = Pengumuman::where('cttn_seminar_kp', '!=', '')->get()->first();
+        $pengumuman  = Pengumuman::get()->first();
 
         // testing
         $d = SeminarKP::with('daftarkp')->whereHas('daftarkp', function ($q) {

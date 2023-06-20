@@ -35,22 +35,18 @@
                 <h4 class="page-title">Bimbingan Kerja Praktik [Dosen]</h4>
                 @endif
             </div>
-            @if (empty($pengumuman))
-            @else
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <p><i> {{ $pengumuman->cttn_bimbingan_kp }}</i> </p>
-                    </div>
-                </div>
-            </div>
-            @endif
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title"></h4>
+                                <div class="">Readme First
+                                    <a href="bimbingan-kp/view-pengumuman" data-toggle="modal"
+                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                        </i>
+                                    </a>
+                                </div>
                                 <a href="/bimbingan-kp/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan">
                                     <i class="fa fa-plus"></i>
@@ -194,8 +190,8 @@
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>{{ $item->daftarkp->dosen->biodata->nama }}</td>
                                             <td>
-                                                <a href="storage/{{ $item->laporan_kp }}"
-                                                    class="btn btn-success btn-xs"><i class="fas fa-file-download">
+                                                <a href="storage/{{ $item->laporan_kp }}"><i
+                                                        class="fa fa-file-download fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
@@ -572,6 +568,31 @@
     </div>
 </div>
 @endforeach
+
+{{-- Pengumuman --}}
+<div class="modal fade" id="viewPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Readme First </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {!! $pengumuman->cttn_bimbingan_kp !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{-- Hapus --}}
 @foreach ($bimbingkp as $item)

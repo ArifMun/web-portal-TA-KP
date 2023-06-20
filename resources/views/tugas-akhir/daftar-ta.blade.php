@@ -34,18 +34,7 @@
                 <h4 class="page-title">Tugas Akhir</h4>
                 @endif
             </div>
-            @if (empty($pwngumuman))
-            @else
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="d-flex align-items-center">
-                            <p><i> {{ $pengumuman->cttn_daftar_ta }}</i> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
+
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -64,7 +53,12 @@
                         Auth::user()->level==1 )
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title"></h4>
+                                <div class="">Readme First
+                                    <a href="tugas-akhir/view-pengumuman" data-toggle="modal"
+                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                        </i>
+                                    </a>
+                                </div>
                                 <a href="/tugas-akhir/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarTA">
                                     <i class="fa fa-plus"></i>
@@ -277,8 +271,8 @@
 
                                             <td>{{ $item->stts_ta }}</td>
                                             <td><a href="daftar-ta/view-krs/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewKRS{{ $item->id }}"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-file-image">
+                                                    data-target="#viewKRS{{ $item->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i> </a>
 
                                             <td>{{ $item->tahunakademik->tahun }} </td>
@@ -375,8 +369,8 @@
                                             <td class="text-capitalize">{{ $row->stts_ta }}</td>
                                             {{-- <td>{{ $row->krs }}</td> --}}
                                             <td><a href="daftar-ta/view-krs/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewKRS{{ $row->id }}"
-                                                    class="btn btn-success btn-xs"><i class="fa fa-file-image">
+                                                    data-target="#viewKRS{{ $row->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i> </a>
 
                                             <td>{{ $row->tahunakademik->tahun }}</td>
@@ -439,7 +433,7 @@
                                 <label class="control-label">NIM - Nama </label>
                                 <select class="form-control" name="mahasiswa_id" onchange="no_biodata()" size="1"
                                     required>
-                                    <option value="" hidden="">-- Pilih NIM --</option>
+                                    <option value="">-- Pilih NIM --</option>
 
                                     @if (Auth::user()->level==0 )
                                     @foreach ($mhsDaftar as $item)
@@ -563,7 +557,8 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control" name="konsentrasi[]" id="konsentrasi" required multiple>
+                                <select class="form-control" name="konsentrasi[]" id="konsentrasi" size="1" required
+                                    multiple>
                                     <option value="" hidden="">-- Konsentrasi --</option>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
@@ -837,6 +832,31 @@
 </div>
 @endforeach
 
+{{-- Pengumuman --}}
+<div class="modal fade" id="viewPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Readme First </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {!! $pengumuman->cttn_daftar_ta !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 {{-- Hapus --}}
 @foreach ($daftarta as $item)
 <div class="modal fade" id="modalHapusTA{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -888,8 +908,8 @@
 <script>
     $(document).ready(function() {
         $('#konsentrasi').select2({
-            placeholder: '-- Pilih Konsentrasi --',
-            width: '100%'
+            // placeholder: '-- Pilih Konsentrasi --',
+            width: '100%',
         });
     });
 

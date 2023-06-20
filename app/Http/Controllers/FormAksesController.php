@@ -13,6 +13,12 @@ class FormAksesController extends Controller
 
     public function store(Request $request)
     {
+
+        $existingData = FormAkses::first();
+        if ($existingData) {
+            return \redirect('manajemen-form')->with('warning', 'Hanya Dapat Menampung Satu Data!');
+        }
+        
         $validation = Validator::make(
             $request->all(),
             [

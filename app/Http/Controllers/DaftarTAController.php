@@ -39,7 +39,7 @@ class DaftarTAController extends Controller
         $dosen       = Dosen::all();
         $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
-        $pengumuman  = Pengumuman::where('cttn_daftar_ta', '!=', '')->get()->first();
+        $pengumuman  = Pengumuman::get()->first();
         $formakses = FormAkses::get()->first();
         return \view('tugas-akhir.daftar-ta', \compact(
             'daftarta',

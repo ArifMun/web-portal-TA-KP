@@ -39,7 +39,7 @@
         <!--
 			Tip 1: You can change the background color of the main header using: data-background-color="blue | purple | light-blue | green | orange | red"
 		-->
-        <div class="main-header" data-background-color="purple">
+        <div class="main-header" data-background-color="dark">
             <!-- Logo Header -->
             <div class="logo-header">
 
@@ -71,7 +71,7 @@
         <!-- End Sidebar -->
 
         @yield('content')
-
+        @include('layouts.footer')
     </div>
 
     <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
@@ -92,54 +92,61 @@
     <!-- Azzara DEMO methods, don't include it in your project! -->
     <script src="/assets/js/setting-demo.js"></script>
 
-    <script src="/assets/js/plugin/chart.js/chart.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $('#add-row').DataTable({
 
             });
         });
-        var myPieChart = new Chart(pieChart, {
-            type: 'pie',
-            data: {
-                datasets: [{
-                    data: [50, 35, 15],
-                    backgroundColor: ["#1d7af3", "#f3545d", "#fdaf4b"],
-                    borderWidth: 0
-                }],
-                labels: ['New Visitors', 'Subscribers', 'Active Users']
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                legend: {
-                    position: 'bottom',
-                    labels: {
-                        fontColor: 'rgb(154, 154, 154)',
-                        fontSize: 11,
-                        usePointStyle: true,
-                        padding: 20
-                    }
-                },
-                pieceLabel: {
-                    render: 'percentage',
-                    fontColor: 'white',
-                    fontSize: 14,
-                },
-                tooltips: false,
-                layout: {
-                    padding: {
-                        left: 20,
-                        right: 20,
-                        top: 20,
-                        bottom: 20
-                    }
-                }
-            }
-        })
+
+    
     </script>
 
+    {{-- <script>
+        var multipleLineChart = document.getElementById('multipleLineChart').getContext('2d');
+        // var total = {{ Js::from($datakp) }};
+        var myMultipleLineChart = new Chart(multipleLineChart, {
+			type: 'line',
+			data: {
+				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+				datasets: [{
+					label: "2021",
+					borderColor: "#1d7af3",
+					pointBorderColor: "#FFF",
+					pointBackgroundColor: "#1d7af3",
+					pointBorderWidth: 2,
+					pointHoverRadius: 4,
+					pointHoverBorderWidth: 1,
+					pointRadius: 4,
+					backgroundColor: 'transparent',
+					fill: true,
+					borderWidth: 2,
+					data: [{{ $datakp}}]
+				}]
+			},
+			options : {
+				responsive: true, 
+				maintainAspectRatio: false,
+				legend: {
+					position: 'top',
+				},
+				tooltips: {
+					bodySpacing: 4,
+					mode:"nearest",
+					intersect: 0,
+					position:"nearest",
+					xPadding:10,
+					yPadding:10,
+					caretPadding:10
+				},
+				layout:{
+					padding:{left:15,right:15,top:15,bottom:15}
+				}
+			}
+		});
 
+    </script> --}}
 </body>
 
 </html>

@@ -9,6 +9,10 @@ class PengumumanController extends Controller
 {
     public function store(Request $request)
     {
+        $existingData = Pengumuman::first();
+        if ($existingData) {
+            return \redirect('manajemen-form')->with('warning', 'Hanya Dapat Menampung Satu Data!');
+        }
         Pengumuman::create([
             'cttn_daftar_kp'    => $request->cttn_daftar_kp,
             'cttn_bimbingan_kp' => $request->cttn_bimbingan_kp,
@@ -26,7 +30,7 @@ class PengumumanController extends Controller
         $pengumuman = Pengumuman::findOrFail($id);
         $pengumuman->cttn_daftar_kp     = $request->cttn_daftar_kp;
         $pengumuman->cttn_bimbingan_kp  = $request->cttn_bimbingan_kp;
-        $pengumuman->cttn_semianr_kp    = $request->cttn_semianr_kp;
+        $pengumuman->cttn_seminar_kp    = $request->cttn_seminar_kp;
         $pengumuman->cttn_daftar_ta     = $request->cttn_daftar_ta;
         $pengumuman->cttn_sidang_ta     = $request->cttn_sidang_ta;
         $pengumuman->cttn_bimbingan_ta  = $request->cttn_bimbingan_ta;
@@ -35,11 +39,11 @@ class PengumumanController extends Controller
         return \redirect('manajemen-form')->with('success', 'Pengumuman Berhasil Diperbarui !');
     }
 
-    public function destroy($id)
+    public function destroy(Pengumuman $pengumuman, $id)
     {
         $pengumuman = Pengumuman::find($id);
         $pengumuman->delete();
 
-        return \redirect('manajemen-form')->with('success', 'Pengumuman Berhasil Dihapus !');
+        return \redirect('manajemen-form')->with('success', 'Pengumuman Berhasil Dihapus!');
     }
 }

@@ -37,7 +37,7 @@ class BimbinganKPController extends Controller
         $sttsMhs   = $bimbing_kp->sttsMhs();
         $bimbingMhs   = $bimbing_kp->bimbingMhs();
         $bimbingDosen   = $bimbing_kp->bimbingDosen();
-        $pengumuman  = Pengumuman::where('cttn_bimbingan_kp', '!=', '')->get()->first();
+        $pengumuman  = Pengumuman::get()->first();
 
         $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
 

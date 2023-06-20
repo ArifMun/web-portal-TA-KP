@@ -37,7 +37,7 @@ class KerjaPraktikController extends Controller
         $kpDiterima  = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get()->count();
         $kpTertunda  = DaftarKP::where('stts_pengajuan', '=', 'tertunda')->get()->count();
         $kpDitolak   = DaftarKP::where('stts_pengajuan', '=', 'ditolak')->get()->count();
-        $pengumuman  = Pengumuman::where('cttn_daftar_kp', '!=', '')->get()->first();
+        $pengumuman  = Pengumuman::get()->first();
         $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);

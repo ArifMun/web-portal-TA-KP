@@ -22,6 +22,13 @@
     .kolomBaru {
         display: none;
     }
+
+    #mahasiswa_id {
+        max-height: 50px;
+        /* Atur tinggi maksimum elemen select */
+        overflow-y: auto;
+        /* Tampilkan scroll jika konten melebihi tinggi maksimum */
+    }
 </style>
 <div class="main-panel">
     <div class="content">
@@ -33,19 +40,7 @@
                 <h4 class="page-title">Kerja Praktik</h4>
                 @endif
             </div>
-            @if (empty($pengumuman))
 
-            @else
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="d-flex align-items-center">
-                            <p><i> {{ $pengumuman->cttn_daftar_kp }}</i> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -64,7 +59,13 @@
                         Auth::user()->level==1 )
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title"></h4>
+                                <div class="">Readme First
+                                    <a href="kerja-praktik/view-pengumuman" data-toggle="modal"
+                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                        </i>
+                                    </a>
+                                </div>
+
                                 <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarKP">
                                     <i class="fa fa-plus"></i>
@@ -229,15 +230,14 @@
                                             <td>{{ $item->semester }}</td>
                                             <td>
                                                 <a href="kerja-praktik/view-judul/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $item->id }}"
-                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewJudul{{ $item->id }}"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
                                             <td>
                                                 <a href="kerja-praktik/view-slip/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $item->id }}"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-file-image">
+                                                    data-target="#viewSlip{{ $item->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i> </a>
 
                                             <td>{{ $item->tahunakademik->tahun }} </td>
@@ -340,6 +340,7 @@
                                                 </a>
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
+                                            <td>{{ $row->created_at }}</td>
                                             <td>
                                                 {{-- <a href="kerja-praktik/view-slip/{{ $row->id }}"
                                                     data-toggle="modal" data-target="#viewDataBarang{{ $row->id }}"
@@ -393,8 +394,9 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama </label>
-                                <select class="form-control" name="mahasiswa_id" size="1" required>
-                                    <option value="" hidden="">-- Pilih NIM --</option>
+                                <select class="form-control " name="mahasiswa_id" id="mahasiswa_id" size="1" id=""
+                                    required>
+                                    <option value="">-- Pilih NIM --</option>
 
                                     @if (Auth::user()->level==0)
                                     <option value="{{ $mhskp->id }}">{{ $mhskp->biodata->no_induk }} - {{
@@ -507,7 +509,7 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
-                                <select class="form-control select2 " name="konsentrasi[]" id="konsentrasi" size="5"
+                                <select class="form-control select2" name="konsentrasi[]" id="konsentrasi"
                                     style="width: 100%; " multiple="true" required>
                                     {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
                                     @foreach ($konsentrasi as $item)
@@ -558,11 +560,16 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM </label>
-                                <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" size="1" required>
+                                <input type="hidden" name="mahasiswa_id" id="mahasiswa_id"
+                                    value="{{ $item->mahasiswa_id }}">
+                                <input type="text" class="form-control" size="1" readonly
+                                    placeholder="{{ $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}">
+                                {{-- <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" size="1"
+                                    readonly required>
                                     <option value="{{ $item->mahasiswa_id }}">{{
                                         $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}
                                     </option>
-                                </select>
+                                </select> --}}
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
@@ -662,7 +669,7 @@
                                 <div>
                                     <label class="control-label">Konsentrasi </label>
                                     <select class="form-control konsentrasi_" name="konsentrasi[]"
-                                        id="konsentrasi_{{ $item->id }}" multiple required>
+                                        id="konsentrasi_{{ $item->id }}" multiple required size="1">
                                         {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
 
                                         @foreach($konsentrasi as $option)
@@ -809,14 +816,13 @@
 </div>
 @endforeach
 
-{{-- View --}}
-{{-- @foreach ($barang as $d)
-<div class="modal fade" id="viewDataBarang{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+{{-- Pengumuman --}}
+<div class="modal fade" id="viewPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Detail Barang</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Readme First </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -825,45 +831,8 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @if ($d->image)
                         <div class="col">
-                            <img src="{{ asset('storage/' . $d->image) }}" alt="" class="rounded mx-auto d-block"
-                                style="width: 18%">
-                        </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">Nama Barang</li>
-                                <li class="list-group-item">Kategori</li>
-                                <li class="list-group-item">No Barang</li>
-                                <li class="list-group-item">Penulis</li>
-                                <li class="list-group-item">Jumlah</li>
-                                <li class="list-group-item">Unit</li>
-                                <li class="list-group-item">Tahun</li>
-                                <li class="list-group-item">Kondisi</li>
-                                <li class="list-group-item">Keterangan</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">{{ $d->nama_barang }}</li>
-                                <li class="list-group-item">{{ $d->nama_kategori }}</li>
-                                <li class="list-group-item">{{ $d->no_barang }}</li>
-                                <li class="list-group-item">{{ Auth::user()->level }}</li>
-                                <li class="list-group-item">{{ $d->jumlah }}</li>
-                                <li class="list-group-item">{{ $d->unit }}</li>
-                                <li class="list-group-item">{{ $d->tahun }}</li>
-                                <li class="list-group-item">{{ $d->kondisi }}</li>
-                                <li class="list-group-item">{{ $d->keterangan }}.</li>
-                            </ul>
+                            {!! $pengumuman->cttn_daftar_kp !!}
                         </div>
                     </div>
                 </div>
@@ -871,7 +840,7 @@
         </div>
     </div>
 </div>
-@endforeach --}}
+
 
 {{-- Hapus --}}
 @foreach ($daftarkp as $kp)
@@ -942,10 +911,17 @@
 
     $(document).ready(function() {
         $('.konsentrasi_').select2({
-            theme: 'classic',
+            // theme: 'classic',
             width: '100%'
         });
     });
+
+    // $(document).ready(function() {
+    //     $('#mahasiswa_id').select2({
+    //         placeholder: '-- Pilih Konsentrasi --',
+    //         width: '100%'
+    //     });
+    // });
 </script>
 
 

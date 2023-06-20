@@ -36,7 +36,7 @@ class SidangTAController extends Controller
         $d_mhs_ta = $d_ta->m_ta_diterima();
         $daftarta = $d_ta->d_diterima();
 
-        $pengumuman  = Pengumuman::where('cttn_sidang_ta', '!=', '')->get()->first();
+        $pengumuman  = Pengumuman::get()->first();
         return \view('tugas-akhir.sidang-ta', \compact(
             's_list',
             'dosen',

@@ -48,7 +48,7 @@ class BimbinganTAController extends Controller
         // select pada form tambah bimbingan 1
         // $m_bimbing_2 = $d_ta->m_bimbing_2();
         $d_bimbing_2 = $d_ta->d_bimbing_2();
-        $pengumuman  = Pengumuman::where('cttn_bimbingan_ta', '!=', '')->get()->first();
+        $pengumuman  = Pengumuman::get()->first();
 
         return \view('tugas-akhir.bimbingan-ta', \compact(
             'e_bimbing',

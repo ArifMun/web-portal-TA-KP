@@ -247,12 +247,12 @@
                                                 </a>
                                             </td>
                                             <td>
-                                                <a href="kerja-praktik/edit/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalEditKP{{ $row->id }}"
+                                                <a href="manajemen-form/{{ $item->id }}/update" data-toggle="modal"
+                                                    data-target="#EditPengumuman{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="kerja-praktik/hapus/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#modalHapusKP{{ $row->id }}"
+                                                <a href="manajemen-form/{{ $item->id }}/destroy" data-toggle="modal"
+                                                    data-target="#HapusPengumuman{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
@@ -310,7 +310,7 @@
 {{-- Tambah Pengumuman--}}
 <div class="modal fade" id="tambahPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-open">
+    <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLongTitle">Tambah Pengumuman</h5>
@@ -324,36 +324,44 @@
                 <div class="modal-body">
 
                     <div class="form-group">
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col">
                                 <label>Form Daftar KP</label>
-                                <textarea name="cttn_daftar_kp" class="form-control"></textarea>
+                                <textarea name="cttn_daftar_kp" class="form-control ckeditor" id="ckedtor"></textarea>
                             </div>
+                        </div>
+                        <div class="row mb-3">
                             <div class="col">
                                 <label>Form Seminar KP</label>
-                                <textarea name="cttn_seminar_kp" class="form-control"></textarea>
+                                <textarea name="cttn_seminar_kp" class="form-control ckeditor" id="ckedtor"></textarea>
                             </div>
                         </div>
-                        <div class="row">
+                        <div class="row mb-3">
                             <div class="col">
                                 <label>Form Bimbingan KP</label>
-                                <textarea name="cttn_bimbingan_kp" class="form-control"></textarea>
-                            </div>
-                            <div class="col">
-                                <label>Form Daftar TA</label>
-                                <textarea name="cttn_daftar_ta" class="form-control"></textarea>
+                                <textarea name="cttn_bimbingan_kp" class="form-control ckeditor"
+                                    id="ckedtor"></textarea>
                             </div>
                         </div>
-
-                        <div class="row">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Form Daftar TA</label>
+                                <textarea name="cttn_daftar_ta" class="form-control ckeditor" id="ckedtor"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
                             <div class="col">
                                 <label>Form Bimbingan TA</label>
-                                <textarea name="cttn_bimbingan_ta" class="form-control"></textarea>
+                                <textarea name="cttn_bimbingan_ta" class="form-control ckeditor"
+                                    id="ckedtor"></textarea>
                             </div>
+                        </div>
+                        <div class="row mb-3">
                             <div class="col">
                                 <label>Form Sidang TA</label>
-                                <textarea name="cttn_sidang_ta" class="form-control"></textarea>
+                                <textarea name="cttn_sidang_ta" class="form-control ckeditor" id="ckedtor"></textarea>
                             </div>
+
                         </div>
                     </div>
 
@@ -368,6 +376,82 @@
         </div>
     </div>
 </div>
+
+{{-- Edit Pengumuman --}}
+@foreach ($pengumuman as $item)
+<div class="modal fade" id="EditPengumuman{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Perbarui Pengumuman</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="pengumuman/{{ $item->id }}/update">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Form Daftar KP</label>
+                                <textarea name="cttn_daftar_kp" class="form-control ckeditor"
+                                    id="ckedtor">{!! $item->cttn_daftar_kp !!}</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Form Seminar KP</label>
+                                <textarea name="cttn_seminar_kp" class="form-control ckeditor"
+                                    id="ckedtor">{!! $item->cttn_seminar_kp !!}</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Form Bimbingan KP</label>
+                                <textarea name="cttn_bimbingan_kp" class="form-control ckeditor"
+                                    id="ckedtor">{!! $item->cttn_bimbingan_kp !!}</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Form Daftar TA</label>
+                                <textarea name="cttn_daftar_ta" class="form-control ckeditor"
+                                    id="ckedtor">{!! $item->cttn_daftar_ta !!}</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Form Bimbingan TA</label>
+                                <textarea name="cttn_bimbingan_ta" class="form-control ckeditor"
+                                    id="ckedtor">{!! $item->cttn_bimbingan_ta !!}</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Form Sidang TA</label>
+                                <textarea name="cttn_sidang_ta" class="form-control ckeditor"
+                                    id="ckedtor">{!! $item->cttn_sidang_ta !!}</textarea>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                            </i> Kembali</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
 
 {{-- akses tambah --}}
 <div class="modal fade" id="tambahAkses" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -425,26 +509,6 @@
             </div>
             <form method="POST" enctype="multipart/form-data" action="form-akses/{{ $item->id }}/update">
                 @csrf
-                {{-- <div class="modal-body">
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col">
-                                <label>Pilih Akses</label>
-                                <select name="akses" id="" class="form-control">
-                                    <option value="buka">Buka</option>
-                                    <option value="tutup">Tutup</option>
-                                </select>
-                            </div>
-
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
-                            </i> Kembali</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
-                    </div>
-                </div> --}}
 
             </form>
         </div>
@@ -536,70 +600,6 @@
 {{-- @foreach($thnAkademik as $d) --}}
 {{-- @endforeach --}}
 
-{{-- View --}}
-{{-- @foreach ($barang as $d)
-<div class="modal fade" id="viewDataBarang{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Detail Barang</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        @if ($d->image)
-                        <div class="col">
-                            <img src="{{ asset('storage/' . $d->image) }}" alt="" class="rounded mx-auto d-block"
-                                style="width: 18%">
-                        </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">Nama Barang</li>
-                                <li class="list-group-item">Kategori</li>
-                                <li class="list-group-item">No Barang</li>
-                                <li class="list-group-item">Penulis</li>
-                                <li class="list-group-item">Jumlah</li>
-                                <li class="list-group-item">Unit</li>
-                                <li class="list-group-item">Tahun</li>
-                                <li class="list-group-item">Kondisi</li>
-                                <li class="list-group-item">Keterangan</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">{{ $d->nama_barang }}</li>
-                                <li class="list-group-item">{{ $d->nama_kategori }}</li>
-                                <li class="list-group-item">{{ $d->no_barang }}</li>
-                                <li class="list-group-item">{{ Auth::user()->level }}</li>
-                                <li class="list-group-item">{{ $d->jumlah }}</li>
-                                <li class="list-group-item">{{ $d->unit }}</li>
-                                <li class="list-group-item">{{ $d->tahun }}</li>
-                                <li class="list-group-item">{{ $d->kondisi }}</li>
-                                <li class="list-group-item">{{ $d->keterangan }}.</li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach --}}
-
 {{-- Hapus Tahun--}}
 @foreach ($thnAkademik as $d)
 <div class="modal fade" id="hapusDataTahun{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -673,6 +673,40 @@
 </div>
 @endforeach
 
+{{-- Hapus Pengumuman--}}
+@foreach ($pengumuman as $d)
+<div class="modal fade" id="HapusPengumuman{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-open">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Pengumuman</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/pengumuman/{{ $d->id }}/destroy">
+                @csrf
+                <div class="modal-body">
+
+                    <div class=" form-group">
+                        <h3>Apakah anda yakin ingin menghapus Pengumuman ? </h3>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
 {{-- Hapus konsentrasi--}}
 @foreach ($konsentrasi as $d)
 <div class="modal fade" id="hapusDataKonsentrasi{{ $d->id }}" tabindex="-1" role="dialog"
@@ -731,7 +765,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            {{ $item->cttn_daftar_kp }}
+                            {!! $item->cttn_daftar_kp !!}
                         </div>
                     </div>
                 </div>
@@ -868,6 +902,7 @@
 @endforeach
 
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script type="text/javascript" src="assets/ckeditor/ckeditor.js"></script>
 <script>
     $(function() {
     $('.toggle-class').change(function() {

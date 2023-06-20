@@ -3,8 +3,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <div class="footer-copy-right">
-                    <p>Copyright © 2023. All rights reserved. Template by <a
-                            href="https://colorlib.com/wp/templates/">Colorlib</a></p>
+                    <p>Copyright 2023 Support by Armun &#9829;</a></p>
                 </div>
             </div>
         </div>

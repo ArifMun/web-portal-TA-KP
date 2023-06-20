@@ -116,13 +116,13 @@ class DaftarTA extends Model
             if (Auth::user()->level == 0) {
                 $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get()->sortByDesc('id');
+        })->where('stts_pengajuan', '=', 'diterima')->get()->sortByDesc('id');
     }
 
     public function d_bimbing_1()
     {
-        return self::with('bimbinganta_1')->whereHas('bimbinganta_1', function ($q) {
-            if (Auth::user()->level == 2) {
+        return self::with('dosen1')->whereHas('dosen1', function ($q) {
+            if (Auth::user()->level == 2 || Auth::user()->level == 3) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());
@@ -133,7 +133,7 @@ class DaftarTA extends Model
     public function d_bimbing_2()
     {
         return self::with('dosen2')->whereHas('dosen2', function ($q) {
-            if (Auth::user()->level == 2) {
+            if (Auth::user()->level == 2 || Auth::user()->level == 3) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());

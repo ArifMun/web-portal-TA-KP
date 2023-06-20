@@ -36,16 +36,6 @@
                 @endif
             </div>
 
-            @if (empty($pengumuman))
-            @else
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <p><i> {{ $pengumuman->cttn_sidang_ta }}</i> </p>
-                    </div>
-                </div>
-            </div>
-            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
@@ -56,6 +46,9 @@
                                 @elseif(Auth::user()->level==2||3)
                                 <h4 class="card-title">Mahasiswa Bimbingan 1</h4>
                                 @endif
+
+
+
                                 <a href="/bimbingan-ta/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan">
                                     <i class="fa fa-plus"></i>
@@ -119,7 +112,12 @@
                                 </div>
 
                             </div> --}}
-
+                            <div class="d-flex align-items-center">Readme First
+                                <a href="bimbingan-ta/view-pengumuman" data-toggle="modal"
+                                    data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                    </i>
+                                </a>
+                            </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="bimbingan-ta" class="display table table-striped table-hover">
@@ -155,8 +153,8 @@
                                             </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
-                                                <a href="storage/{{ $item->laporan_ta }}"
-                                                    class="btn btn-success btn-xs"><i class="fas fa-file-download">
+                                                <a href="storage/{{ $item->laporan_ta }}"><i
+                                                        class="fas fa-file-download fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
@@ -220,8 +218,8 @@
                                             </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
-                                                <a href="storage/{{ $item->laporan_ta }}"
-                                                    class="btn btn-success btn-xs"><i class="fas fa-file-download">
+                                                <a href="storage/{{ $item->laporan_ta }}"><i
+                                                        class="fas fa-file-download fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
@@ -387,8 +385,8 @@
                                             </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
-                                                <a href="storage/{{ $item->laporan_ta }}"
-                                                    class="btn btn-success btn-xs"><i class="fas fa-file-download">
+                                                <a href="storage/{{ $item->laporan_ta }}"><i
+                                                        class="fas fa-file-download fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
@@ -452,8 +450,8 @@
                                             </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
-                                                <a href="storage/{{ $item->laporan_ta }}"
-                                                    class="btn btn-success btn-xs"><i class="fas fa-file-download">
+                                                <a href="storage/{{ $item->laporan_ta }}"><i
+                                                        class="fas fa-file-download fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
@@ -935,6 +933,31 @@
     </div>
 </div>
 @endforeach
+
+{{-- Pengumuman --}}
+<div class="modal fade" id="viewPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Readme First </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {!! $pengumuman->cttn_bimbingan_ta !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 {{-- view Catatan --}}
 {{-- @foreach ($bimbingkp as $item)

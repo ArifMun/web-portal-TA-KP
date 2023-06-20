@@ -35,25 +35,17 @@
                 <h4 class="page-title">Seminar Kerja Praktik</h4>
                 @endif
             </div>
-            @if (empty($pengumuman))
-
-            @else
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="d-flex align-items-center">
-                            <p><i> {{ $pengumuman->cttn_seminar_kp }}</i> </p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            @endif
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title"></h4>
+                                <div class="">Readme First
+                                    <a href="seminar-kp/view-pengumuman" data-toggle="modal"
+                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                        </i>
+                                    </a>
+                                </div>
                                 <a href="/seminar-kp/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarSeminar">
                                     <i class="fa fa-plus"></i>
@@ -165,21 +157,21 @@
                                             @if ($item->daftarkp->seminarkp->stts_seminar=='proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="badge badge-warning font-weight-bold text-light text-capitalize">
                                                     {{
                                                     $item->daftarkp->seminarkp->stts_seminar }}</a>
                                             </td>
                                             @elseif($item->daftarkp->seminarkp->stts_seminar=='selesai')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="badge badge-success font-weight-bold text-light text-capitalize">
                                                     {{
                                                     $item->daftarkp->seminarkp->stts_seminar }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="badge badge-primary font-weight-bold text-light text-capitalize">
                                                     {{
                                                     $item->daftarkp->seminarkp->stts_seminar }}</a>
                                             </td>
@@ -189,22 +181,21 @@
 
                                             <td><a href="seminar-kp/view-form/{{ $item->daftarkp->seminarkp->id }}"
                                                     data-toggle="modal"
-                                                    data-target="#viewForm{{ $item->daftarkp->seminarkp->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewForm{{ $item->daftarkp->seminarkp->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
 
                                             <td><a href="seminar-kp/view-slip/{{ $item->id}}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $item->id}}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewSlip{{ $item->id}}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
 
                                             {{-- <td>{{ $item->daftarkp->seminarkp->judul }}</td> --}}
                                             <td>
                                                 <a href="seminar-kp/view-judul/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $item->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewJudul{{ $item->id }}"><i class="fa fa-eye ">
                                                     </i>
                                                 </a>
                                             </td>
@@ -252,21 +243,21 @@
                                             @if ($row->stts_seminar=='proses')
                                             <td>
                                                 <a
-                                                    class="btn-warning btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="badge badge-warning font-weight-bold text-light text-capitalize">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
                                             @elseif($row->stts_seminar=='selesai')
                                             <td>
                                                 <a
-                                                    class="btn-success btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="badge badge-success font-weight-bold text-light text-capitalize">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
-                                                    class="btn-primary btn-round p-1 font-weight-bold text-light text-capitalize">
+                                                    class="badge badge-primary font-weight-bold text-light text-capitalize">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
@@ -276,24 +267,23 @@
 
                                             <td>
                                                 <a href="seminar-kp/view-form/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewForm{{ $row->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewForm{{ $row->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
 
                                             <td>
                                                 <a href="seminar-kp/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $row->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewSlip{{ $row->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
 
                                             <td>
                                                 <a href="seminar-kp/view-judul/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $row->id }}"
-                                                    class="btn-round btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewJudul{{ $row->id }}"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
@@ -671,14 +661,13 @@
 </div>
 @endforeach
 
-{{-- View --}}
-{{-- @foreach ($barang as $d)
-<div class="modal fade" id="viewDataBarang{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+{{-- Pengumuman --}}
+<div class="modal fade" id="viewPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Detail Barang</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Readme First </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -687,45 +676,8 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @if ($d->image)
                         <div class="col">
-                            <img src="{{ asset('storage/' . $d->image) }}" alt="" class="rounded mx-auto d-block"
-                                style="width: 18%">
-                        </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">Nama Barang</li>
-                                <li class="list-group-item">Kategori</li>
-                                <li class="list-group-item">No Barang</li>
-                                <li class="list-group-item">Penulis</li>
-                                <li class="list-group-item">Jumlah</li>
-                                <li class="list-group-item">Unit</li>
-                                <li class="list-group-item">Tahun</li>
-                                <li class="list-group-item">Kondisi</li>
-                                <li class="list-group-item">Keterangan</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">{{ $d->nama_barang }}</li>
-                                <li class="list-group-item">{{ $d->nama_kategori }}</li>
-                                <li class="list-group-item">{{ $d->no_barang }}</li>
-                                <li class="list-group-item">{{ Auth::user()->level }}</li>
-                                <li class="list-group-item">{{ $d->jumlah }}</li>
-                                <li class="list-group-item">{{ $d->unit }}</li>
-                                <li class="list-group-item">{{ $d->tahun }}</li>
-                                <li class="list-group-item">{{ $d->kondisi }}</li>
-                                <li class="list-group-item">{{ $d->keterangan }}.</li>
-                            </ul>
+                            {!! $pengumuman->cttn_seminar_kp !!}
                         </div>
                     </div>
                 </div>
@@ -733,7 +685,6 @@
         </div>
     </div>
 </div>
-@endforeach --}}
 
 {{-- Hapus --}}
 @foreach ($seminarkp as $kp)
