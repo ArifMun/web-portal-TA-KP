@@ -17,7 +17,7 @@
             <li class="nav-item dropdown hidden-caret">
                 <span class="text-capitalize text-light text-bold">
                     Selamat Datang,
-                    {{ Auth::user()->biodata->nama }}
+                    {{ Auth::user()->biodata->nama }} | {{ Auth::user()->biodata->no_induk }}
                 </span>
                 <a class="nav-link dropdown-toggle" href="/logout">
                     {{-- <span class="notification">4</span> --}}

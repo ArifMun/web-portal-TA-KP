@@ -66,20 +66,28 @@
                                     </a>
                                 </div>
 
+                                @if ($existKp)
+                                <a href="/kerja-praktik/melanjutkan" class="btn btn-success btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalMelanjutkan">
+                                    <i class="fa fa-plus"></i>
+                                    Melanjutkan
+                                </a>
+                                @elseif($newRegisterKp)
                                 <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarKP">
                                     <i class="fa fa-plus"></i>
                                     Daftar
                                 </a>
+                                @endif
                             </div>
                         </div>
+
                         @elseif(Auth::user()->level == 0 && $formakses->akses_kp == 0)
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <a href="#" class="btn btn-danger ml-auto">
                                     <h4 class="card-title text-light">Pendaftaran Kerja Praktik Sudah Ditutup</h4>
                                 </a>
-
                             </div>
                         </div>
                         @endif
@@ -121,6 +129,8 @@
                                     </div>
                                 </div>
 
+                                @if (Auth::user()->level !=0)
+
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row">
                                         <div class="col col-stats ml-3 ml-sm-0">
@@ -142,6 +152,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
 
                             </div>
                             <div class="divider"></div>
@@ -150,8 +161,11 @@
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
+                                            @if (Auth::user()->level==0)
+                                            @else
                                             <th>NIM</th>
                                             <th>Nama</th>
+                                            @endif
                                             <th>Dosen Pilihan 1</th>
                                             <th>Dosen Pilihan 2</th>
                                             <th>Ganti Dosen Pembimbing</th>
@@ -161,7 +175,7 @@
                                             <th>Semester</th>
                                             <th>Judul</th>
                                             <th>Slip Pembayaran</th>
-                                            <th>Tahun</th>
+                                            <th>Tahun Akademik</th>
                                             <th>Konsentrasi</th>
                                             <th>Tanggal Daftar</th>
                                             <th>Action</th>
@@ -176,8 +190,8 @@
                                         {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->mahasiswa->biodata->nama }}</td>
+                                            {{-- <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->mahasiswa->biodata->nama }}</td> --}}
                                             <td class="text-capitalize">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_1 ?
@@ -394,16 +408,19 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama </label>
+
+                                @if (Auth::user()->level==0)
+                                <input type="hidden" name="mahasiswa_id" value="{{ $mhskp->id}}">
+                                <input type="text" class="form-control" value="{{ $mhskp->biodata->no_induk }} - {{
+                                        $mhskp->biodata->nama }}" readonly>
+                                {{-- <option value=" {{ $mhskp->id }}">{{ $mhskp->biodata->no_induk }} - {{
+                                    $mhskp->biodata->nama }}
+                                </option> --}}
+
+                                @else
                                 <select class="form-control " name="mahasiswa_id" id="mahasiswa_id" size="1" id=""
                                     required>
                                     <option value="">-- Pilih NIM --</option>
-
-                                    @if (Auth::user()->level==0)
-                                    <option value="{{ $mhskp->id }}">{{ $mhskp->biodata->no_induk }} - {{
-                                        $mhskp->biodata->nama }}
-                                    </option>
-
-                                    @else
                                     @foreach ($mahasiswa as $k)
                                     <option value="{{ $k->id}}">{{ $k->biodata->no_induk
                                         }} - {{ $k->biodata->nama
@@ -417,12 +434,7 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
-                                <select class="form-control" name="thn_akademik_id" size="1" required>
-                                    <option value="" hidden="">-- Tahun Akademik --</option>
-                                    @foreach ($thnakademik as $k)
-                                    <option value="{{ $k->id }}">{{ $k->tahun }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control" value="{{ $last_year->tahun }}" readonly>
                             </div>
                         </div>
                     </div>
@@ -461,11 +473,18 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Status Kerja Praktik </label>
+                                @if ($newRegisterKp)
+                                <input type="text" class="form-control text-capitalize" value="baru" name="stts_kp"
+                                    readonly>
+
+                                @elseif(Auth::user()->level !=0)
+                                {{-- <label class="control-label">Status Kerja Praktik </label> --}}
                                 <select class="form-control" name="stts_kp" size="1" required>
                                     <option value="" hidden="">-- Status KP --</option>
                                     <option value="baru">Baru</option>
                                     <option value="melanjutkan">Melanjutkan</option>
                                 </select>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -473,12 +492,35 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col" id="ganti">
-                                <label class="control-label">Ganti Dosen Pembimbing </label>
+                                {{-- <label class="control-label">Ganti Dosen Pembimbing </label>
                                 <select class="form-control" name="ganti_pembimbing" id="d_ganti" size="1" required>
                                     <option value="" hidden="">-- Ganti --</option>
                                     <option value="ya">Ya</option>
                                     <option value="tidak">Tidak</option>
-                                </select>
+                                </select> --}}
+                                <label class="control-label">Ganti Dosen Pembimbing </label><br>
+                                @if ($newRegisterKp)
+                                <label class="form-radio-label">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="ya"
+                                        disabled>
+                                    <span class="form-radio-sign">Ya</span>
+                                </label>
+                                <label class="form-radio-label ml-3">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="tidak"
+                                        checked="">
+                                    <span class="form-radio-sign">Tidak</span>
+                                </label>
+                                @else
+                                <label class="form-radio-label">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="ya">
+                                    <span class="form-radio-sign">Ya</span>
+                                </label>
+                                <label class="form-radio-label ml-3">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="tidak"
+                                        checked="">
+                                    <span class="form-radio-sign">Tidak</span>
+                                </label>
+                                @endif
                             </div>
                             <div class="col">
                                 <label>Judul</label>
@@ -533,10 +575,198 @@
                     <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i>
                         Simpan</button>
                 </div>
+            </form>
         </div>
-        </form>
     </div>
 </div>
+
+
+{{-- Melanjutkan --}}
+<div class="modal fade modalMelanjutkan" id="modalMelanjutkan" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Melanjutkan Kerja Praktik</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form id="ganti_1" method="POST" enctype="multipart/form-data" action="kerja-praktik">
+                @csrf
+                <div class="modal-body">
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">NIM </label>
+                                <input type="hidden" name="mahasiswa_id" id="mahasiswa_id"
+                                    value="{{ $nextkp->mahasiswa_id }}">
+                                <input type="text" class="form-control" size="1" readonly
+                                    placeholder="{{ $nextkp->mahasiswa->biodata->no_induk }} - {{ $nextkp->mahasiswa->biodata->nama }}">
+                                {{-- <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" size="1"
+                                    readonly required>
+                                    <option value="{{ $nextkp->mahasiswa_id }}">{{
+                                        $nextkp->mahasiswa->biodata->no_induk }} - {{ $nextkp->mahasiswa->biodata->nama
+                                        }}
+                                    </option>
+                                </select> --}}
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Tahun Akademik </label>
+                                <input type="text" value="{{ $last_year->tahun }}" class="form-control" size="1"
+                                    readonly>
+                                <input type="hidden" value="{{ $last_year->tahun }}" class="form-control"
+                                    name="thn_akademik_id">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Pilih Dosen Pembimbing </label>
+                                <select class="form-control" name="d_pembimbing_1" size="1" required>
+                                    <option value="" hidden="">-- Pilihan Ke-1 --</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}" {{ $k->id == $nextkp->d_pembimbing_1 ?
+                                        'selected' :''
+                                        }}>{{ $k->biodata->nama
+                                        }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Pilihan Pembimbing ke-2 </label>
+                                <select class="form-control" name="d_pembimbing_2" size="1" required>
+                                    <option value="" hidden="">-- Pilihan Ke-2 --</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}" {{ $k->id == $nextkp->d_pembimbing_2 ?
+                                        'selected' :''
+                                        }}>{{ $k->biodata->nama
+                                        }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Semester </label>
+                                <input type="number" class="form-control" name="semester"
+                                    value="{{ $nextkp->semester }}" placeholder="Semester .." size="1" required>
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Status Kerja Praktik </label>
+                                <input type="text" class="form-control text-capitalize" name="stts_kp"
+                                    value="melanjutkan" readonly>
+                                <input type="hidden" value="melanjutkan" name="stts_kp">
+                                {{-- <select class="form-control" name="stts_kp" size="1" required>
+                                    <option value="" hidden="">-- Status KP --</option>
+                                    <option @php if($nextkp->stts_kp == 'baru') echo 'selected';
+                                        @endphp value="baru">Baru</option>
+                                    <option @php if($nextkp->stts_kp == 'melanjutkan') echo 'selected';
+                                        @endphp value="melanjutkan">Melanjutkan</option>
+                                </select> --}}
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group required ">
+                        <div class="row">
+                            <div class="col d_ganti_2" id="d_ganti_2">
+
+                                <label class="control-label">Ganti Dosen Pembimbing </label><br>
+                                <label class="form-radio-label">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="ya" {{
+                                        $nextkp->ganti_pembimbing == 'ya' ? 'checked' : '' }}>
+                                    <span class="form-radio-sign">Ya</span>
+                                </label>
+                                <label class="form-radio-label ml-3">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="tidak"
+                                        {{ $nextkp->ganti_pembimbing == 'tidak' ? 'checked' : '' }}
+                                    checked="">
+                                    <span class="form-radio-sign">Tidak</span>
+                                </label>
+                            </div>
+                            <div class="col">
+                                <label>Judul</label>
+                                <input type="text" id="judul" class="form-control" name="judul" size="1"
+                                    placeholder="Judul .." value="{{ $nextkp->judul }}">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-3" name="pembimbing_lama" style="display: none" id="kolomBaru_2">
+                                    <label>Dosen Pembimbing Lama</label>
+                                    <select class="form-control" size="1" name="pembimbing_lama">
+                                        <option value="">-- Pembimbing Lama --</option>
+                                        @foreach ($dosen as $k)
+                                        <option value="{{ $k->id }}" {{ $k->id == $nextkp->pembimbing_lama ? 'selected'
+                                            :'' }}>{{
+                                            $k->biodata->nama}}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="control-label">Konsentrasi </label>
+                                    <select class="form-control konsentrasi_1" name="konsentrasi[]"
+                                        id="konsentrasi_1{{ $nextkp->id }}" multiple required size="1">
+                                        {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
+
+                                        @foreach($konsentrasi as $option)
+                                        <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
+                                            nama_konsentrasi,
+                                            explode(',',
+                                            $nextkp->konsentrasi)) ? 'selected' : '' }}>
+                                            {{ $option->nama_konsentrasi }}
+                                        </option>
+                                        @endforeach
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div class="mb-3">
+                                    <label class="control-label">Status Pengajuan </label>
+                                    <input type="text" class="form-control text-capitalize" value="tertunda" readonly>
+                                    <input type="hidden" name="stts_pengajuan" value="tertunda">
+                                </div>
+                                <div>
+                                    <label for="image" class="form-label control-label">Slip pembayaran </label>
+                                    <input type="file" class="form-control picture" id="image1" name="slip_pembayaran"
+                                        onchange="previewImage(1)">
+                                    <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
+                                    <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                            class="text-danger">1024
+                                            KB</span> </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer required">
+                        <div class="col">
+                            <label class="control-label font-italic">
+                                : Kolom Wajib Diisi
+                            </label>
+                        </div>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                            </i> Kembali</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i>
+                            Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 </div>
 
 {{-- Edit --}}
@@ -633,15 +863,20 @@
 
                     <div class="form-group required ">
                         <div class="row">
-                            <div class="col">
-                                <label class="control-label">Ganti Dosen Pembimbing </label>
-                                <select class="form-control" name="ganti_pembimbing" id="d_ganti_1" size="1" required>
-                                    <option value="" hidden="">-- Ganti --</option>
-                                    <option @php if($item->ganti_pembimbing == 'ya') echo 'selected';
-                                        @endphp value="ya">Ya</option>
-                                    <option @php if($item->ganti_pembimbing == 'tidak') echo 'selected';
-                                        @endphp value="tidak">Tidak</option>
-                                </select>
+                            <div class="col d_ganti_1" id="d_ganti_1">
+
+                                <label class="control-label">Ganti Dosen Pembimbing </label><br>
+                                <label class="form-radio-label">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="ya" {{
+                                        $item->ganti_pembimbing == 'ya' ? 'checked' : '' }}>
+                                    <span class="form-radio-sign">Ya</span>
+                                </label>
+                                <label class="form-radio-label ml-3">
+                                    <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="tidak"
+                                        {{ $item->ganti_pembimbing == 'tidak' ? 'checked' : '' }}
+                                    checked="">
+                                    <span class="form-radio-sign">Tidak</span>
+                                </label>
                             </div>
                             <div class="col">
                                 <label>Judul</label>
@@ -665,7 +900,6 @@
                                         @endforeach
                                     </select>
                                 </div>
-
                                 <div>
                                     <label class="control-label">Konsentrasi </label>
                                     <select class="form-control konsentrasi_" name="konsentrasi[]"
@@ -689,15 +923,8 @@
                                 <div class="mb-3">
                                     <label class="control-label">Status Pengajuan </label>
                                     @if (Auth::user()->level==0)
-                                    <select class="form-control" size="1" disabled>
-                                        <option value="" hidden="">-- Status Pengajuan --</option>
-                                        <option @php if($item->stts_pengajuan == 'tertunda') echo 'selected';
-                                            @endphp value="tertunda">Tertunda</option>
-                                        <option @php if($item->stts_pengajuan == 'diterima') echo 'selected';
-                                            @endphp value="diterima">Diterima</option>
-                                        <option @php if($item->stts_pengajuan == 'ditolak') echo 'selected';
-                                            @endphp value="ditolak">Ditolak</option>
-                                    </select>
+                                    <input type="text" class="form-control text-capitalize"
+                                        value="{{ $item->stts_pengajuan }}" readonly>
                                     <input type="hidden" name="stts_pengajuan" value="tertunda">
                                     @else
                                     <select class="form-control" name="stts_pengajuan" size="1" required>
@@ -916,6 +1143,13 @@
         });
     });
 
+    $(document).ready(function() {
+        $('.konsentrasi_1').select2({
+            // theme: 'classic',
+            width: '100%'
+        });
+    });
+
     // $(document).ready(function() {
     //     $('#mahasiswa_id').select2({
     //         placeholder: '-- Pilih Konsentrasi --',
@@ -932,19 +1166,18 @@
 <script>
     $(document).ready(function() {
         toggleKolomBaru('#ganti');
-    $('#d_ganti').on('change', function() {
-        toggleKolomBaru('#ganti');
-    });
-    function toggleKolomBaru(formId) {
-        if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'ya') {
-            $(formId + ' #kolomBaru').show();
-        } else {
-            $(formId + ' #kolomBaru').hide();
+            $('input[name="ganti_pembimbing"]').on('change', function() {
+            toggleKolomBaru('#ganti');
+        });
+        
+        function toggleKolomBaru(formId) {
+            if ($(formId + ' input[name="ganti_pembimbing"]:checked').val() === 'ya') {
+                $(formId + ' #kolomBaru').show();
+            } else {
+                $(formId + ' #kolomBaru').hide();
+            }
         }
-    }
-
     });
-
 </script>
 
 {{-- edit --}}
@@ -959,15 +1192,38 @@
         });
         
         function toggleKolomBaru_1(formId) {
-                if ($(formId + ' select[name="ganti_pembimbing"]').val() === 'ya') {
-                    $(formId + ' #kolomBaru_1').show();
-                } else {
-                    $(formId + ' #kolomBaru_1').hide();
+            if ($(formId + ' input[name="ganti_pembimbing"]:checked').val() === 'ya') {
+                $(formId + ' #kolomBaru_1').show();
+            } else {
+            $(formId + ' #kolomBaru_1').hide();
                 }
             }
         });
     });
 </script>
+
+{{-- melanjutkan --}}
+<script>
+    $(document).ready(function() {
+        $('.modalMelanjutkan').on('show.bs.modal', function() {
+            var formId = '#' + $(this).attr('id');
+            toggleKolomBaru_2(formId);
+        
+        $(formId + ' #d_ganti_2').on('change', function() {
+            toggleKolomBaru_2(formId);
+        });
+        
+        function toggleKolomBaru_2(formId) {
+            if ($(formId + ' input[name="ganti_pembimbing"]:checked').val() === 'ya') {
+                $(formId + ' #kolomBaru_2').show();
+            } else {
+                $(formId + ' #kolomBaru_2').hide();
+                }
+            }
+        });
+    });
+</script>
+
 <script type="text/javascript">
     $.ajaxSetup({
         headers: {
@@ -976,6 +1232,7 @@
     });
 
 </script>
+
 <script>
     function previewImage(index) {
         const image = document.querySelector('#image' + index);

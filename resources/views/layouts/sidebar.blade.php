@@ -33,16 +33,19 @@
                                     <span class="sub-item">Daftar KP</span>
                                 </a>
                             </li>
-                            <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
-                                <a href="seminar-kp">
-                                    <span class="sub-item">Daftar Seminar KP</span>
-                                </a>
-                            </li>
                             <li class="nav-item {{ Request()->is('bimbingan-kp')? 'active' : '' }}">
                                 <a href="bimbingan-kp">
                                     <span class="sub-item">Bimbingan KP</span>
                                 </a>
                             </li>
+                            @if (UserCheck::checkBimbinganKP()||Auth::user()->level!=0)
+                            <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
+                                <a href="seminar-kp">
+                                    <span class="sub-item">Daftar Seminar KP</span>
+                                </a>
+                            </li>
+                            @else
+                            @endif
                             <li class="nav-item {{ Request()->is('data-kp')? 'active' : '' }}">
                                 <a href="data-kp">
                                     <span class="sub-item">Data KP</span>
@@ -57,7 +60,7 @@
                     Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#forms">
                         <i class="fas fa-user-graduate"></i>
-                        <p>Tugas Akhir</p>
+                        <p>Skripsi</p>
                         <span class="caret"></span>
                     </a>
                     <div class="collapse {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') ||
@@ -65,22 +68,35 @@
                         <ul class="nav nav-collapse">
                             <li class="nav-item {{ Request()->is('daftar-ta')? 'active' : '' }}">
                                 <a href="daftar-ta">
-                                    <span class="sub-item">Daftar TA</span>
-                                </a>
-                            </li>
-                            <li class="nav-item {{ Request()->is('sidang-ta')? 'active' : '' }}">
-                                <a href="sidang-ta">
-                                    <span class="sub-item">Daftar Sidang TA</span>
+                                    <span class="sub-item">Daftar Skripsi</span>
                                 </a>
                             </li>
                             <li class="nav-item {{ Request()->is('bimbingan-ta')? 'active' : '' }}">
                                 <a href="bimbingan-ta">
-                                    <span class="sub-item">Bimbingan TA</span>
+                                    <span class="sub-item">Bimbingan Skripsi</span>
                                 </a>
                             </li>
+
+                            @if (Auth::user()->level ==0)
+                            @if (UserCheck::checkBimbinganTA())
+                            <li class="nav-item {{ Request()->is('sidang-ta')? 'active' : '' }}">
+                                <a href="sidang-ta">
+                                    <span class="sub-item">Daftar Sidang Skripsi</span>
+                                </a>
+                            </li>
+                            @endif
+
+                            @elseif(Auth::user()->level !=0)
+                            <li class="nav-item {{ Request()->is('sidang-ta')? 'active' : '' }}">
+                                <a href="sidang-ta">
+                                    <span class="sub-item">Daftar Sidang Skripsi</span>
+                                </a>
+                            </li>
+                            @endif
+
                             <li class="nav-item {{ Request()->is('data-ta')? 'active' : '' }}">
                                 <a href="data-ta">
-                                    <span class="sub-item">Data TA</span>
+                                    <span class="sub-item">Data Skripsi</span>
                                 </a>
                             </li>
                         </ul>

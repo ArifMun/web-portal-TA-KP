@@ -24,13 +24,24 @@ class KerjaPraktikController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
+    protected $TahunAkademik;
+
+    public function __construct(TahunAkademik $TahunAkademik)
+    {
+        $this->TahunAkademik = $TahunAkademik;
+    }
     public function index()
     {
+        $existKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() != 0;
+        $newRegisterKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() == 0 || Auth::user()->level != 0;
+        $nextkp      = DaftarKP::orderBy('id', 'desc')->first();
 
         $daftarkp    = DaftarKP::all();
         $filterStts  = DaftarKP::distinct()->select('stts_pengajuan')->get();
         $dosen       = Dosen::all();
-        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
+        $last_year   = $this->TahunAkademik->orderBy('id', 'desc')->first();
+        $thnakademik = $this->TahunAkademik->latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
         $mahasiswa   = Mahasiswa::all();
         $mhskp       = Auth::user()->biodata->mahasiswa;
@@ -46,7 +57,6 @@ class KerjaPraktikController extends Controller
             }
         })->get()->sortByDesc('id');
         $formakses = FormAkses::get()->first();
-        // \dd($mhskps);
 
         return \view('kerja-praktik.daftar-kp', \compact(
             'daftarkp',
@@ -61,7 +71,11 @@ class KerjaPraktikController extends Controller
             'kpDiterima',
             'kpTertunda',
             'kpDitolak',
-            'pengumuman'
+            'pengumuman',
+            'last_year',
+            'newRegisterKp',
+            'existKp',
+            'nextkp'
         ));
     }
 
@@ -100,9 +114,9 @@ class KerjaPraktikController extends Controller
                 'stts_pengajuan'    => 'required',
                 'stts_kp'           => 'required',
                 'ganti_pembimbing'  => 'required',
-                'semester'          => 'required',
+                'semester'          => 'required|numeric|min:6|max:14',
                 'slip_pembayaran'   => 'required|image|file|max:1024',
-                'thn_akademik_id'   => 'required',
+                // 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required',
             ]
         );
@@ -115,6 +129,8 @@ class KerjaPraktikController extends Controller
 
             $input = $request->input('konsentrasi');
             $string = \implode(',', $input);
+            $last_year = $this->TahunAkademik;
+            $input_year = $last_year->latest('id')->first('id');
             // DaftarKP::create($string);
             DaftarKP::create([
                 'mahasiswa_id'      => $request->mahasiswa_id,
@@ -127,7 +143,7 @@ class KerjaPraktikController extends Controller
                 'ganti_pembimbing'  => $request->ganti_pembimbing,
                 'semester'          => $request->semester,
                 'slip_pembayaran'   => $request->file('slip_pembayaran')->store('post-images'),
-                'thn_akademik_id'   => $request->thn_akademik_id,
+                'thn_akademik_id'   => $input_year->id,
                 'konsentrasi'       => $string,
             ]);
             return \redirect('kerja-praktik')->with('success', 'Data Berhasil Disimpan!');
@@ -174,7 +190,7 @@ class KerjaPraktikController extends Controller
                 'stts_pengajuan'    => 'required',
                 'stts_kp'           => 'required',
                 'ganti_pembimbing'  => 'required',
-                'semester'          => 'required',
+                'semester'          => 'required|numeric|min:6|max:14',
                 'slip_pembayaran'   => 'image|file|max:1024',
                 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required',

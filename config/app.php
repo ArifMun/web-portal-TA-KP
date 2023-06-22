@@ -232,6 +232,7 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'Froala' => Froala\WysiwygEditor\Facades\Froala::class,
+        'UserCheck' => App\Helpers\UserCheck::class,
     ],
 
 ];

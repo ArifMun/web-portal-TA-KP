@@ -57,7 +57,7 @@ class DaftarKP extends Model
 
     public function bimbingankp()
     {
-        return $this->hasMany(BimbinganKP::class);
+        return $this->hasMany(BimbinganKP::class, 'daftarkp_id');
     }
 
     public function d_kp_diterima()

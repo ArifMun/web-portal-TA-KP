@@ -19,7 +19,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+        require_once app_path() . '/Helpers/UserCheck.php';
     }
 
     /**
@@ -33,8 +33,7 @@ class AppServiceProvider extends ServiceProvider
         config(['app.locale' => 'id']);
         Carbon::setLocale('id');
 
-        // $formakses = FormAkses::all();
-        // $user      = Auth::user();
-        // View::share('formakses', $formakses);
+        // $seminarRegister = Auth::user()->level == 0 &&  Auth::user()->biodata->mahasiswa->bimbingankp->count >= 12 || Auth::user()->level != 0;
+        // View::share('seminarRegister', Auth::user()->level == 0 &&  Auth::user()->biodata->mahasiswa->bimbingankp->count >= 12 || Auth::user()->level != 0);
     }
 }
