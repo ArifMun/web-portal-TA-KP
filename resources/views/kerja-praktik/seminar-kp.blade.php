@@ -90,6 +90,8 @@
                                     </div>
                                 </div>
 
+                                @if (Auth::user()->level==0)
+                                @else
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
@@ -113,6 +115,7 @@
                                         </div>
                                     </div>
                                 </div>
+                                @endif
 
                             </div>
                             <div class="divider"></div>
@@ -226,7 +229,7 @@
                                     </tbody>
 
                                     {{-- All- --}}
-                                    @elseif(Auth::user()->level == 1)
+                                    @elseif(Auth::user()->level !=0)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($seminarkp as $row)
                                         <tr align="center">
@@ -336,21 +339,26 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
+                                @if (Auth::user()->level==0 )
+                                <input type="text" class="form-control" value="{{
+                                        $mhskps->mahasiswa->biodata->no_induk
+                                        }} - {{ $mhskps->mahasiswa->biodata->nama
+                                        }} - {{ $mhskps->tahunakademik->tahun }}" readonly>
+                                <input type="hidden" value="{{ $mhskps->id }}" name="daftarkp_id">
+                                @else
                                 <select class="form-control text-capitalize" name="daftarkp_id"
                                     onchange="no_mahasiswa()" id="daftarkp_id" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
-                                    @if (Auth::user()->level==0 )
-                                    @foreach ($mhskps as $item)
+                                    {{-- @foreach ($mhskps as $item)
                                     <option value="{{ $item->id}}" class="text-capitalize">{{
                                         $item->mahasiswa->biodata->no_induk
                                         }} - {{ $item->mahasiswa->biodata->nama
                                         }} - {{ $item->tahunakademik->tahun }}
                                     </option>
-                                    @endforeach
+                                    @endforeach --}}
                                     {{-- <input type="hidden" value="{{ Auth::user()->biodata->mahasiswa->id }}"
                                         name="mahasiswa_id"> --}}
-                                    @else
 
                                     @foreach ($daftarkp as $k)
                                     <option value="{{ $k->id }}" class="text-capitalize">{{
@@ -386,14 +394,19 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Judul Kerja Praktik </label>
-                                <input type="text" class="form-control" name="judul">
+                                @if (Auth::user()->level==0)
+                                <input type="text" class="form-control" name="judul" value="{{ $mhskps->judul }}">
+                                @else
+                                <input type="text" class="form-control" name="judul" id="judul">
+                                @endif
                             </div>
                             <div class="col">
                                 <label class="control-label">Status Seminar </label>
+                                @if (Auth::user()->level==0)
+                                <input type="text" class="form-control" value="Proses" readonly>
+                                <input type="hidden" value="Proses">
+                                @else
                                 <select class="form-control" name="stts_seminar" required>
-                                    @if (Auth::user()->level==0)
-                                    <option value="proses" @readonly(true)>Proses</option>
-                                    @else
                                     <option value="" hidden="">-- Status KP --</option>
                                     <option value="proses">Proses</option>
                                     <option value="terjadwal">Terjadwal</option>
@@ -737,12 +750,15 @@
     function no_mahasiswa() {
         let daftarkp_id = $("#daftarkp_id").val();
         $("#mahasiswa_id").children().remove();
+        $("#judul").children().remove();
         if (daftarkp_id != '' && daftarkp_id != null) {
             $.ajax({
 
                 url: "{{ url('') }}/seminar-kp/mahasiswa_id/" + daftarkp_id,
                 success: function (res) {
                     $("#mahasiswa_id").val(res.mahasiswa_id);
+                    $("#judul").val(res.judul);
+                    console.log(res.mahasiswa_id);
                 }
             });
         }

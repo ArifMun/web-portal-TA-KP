@@ -35,15 +35,23 @@ class KerjaPraktikController extends Controller
     {
         $existKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() != 0;
         $newRegisterKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() == 0 || Auth::user()->level != 0;
-        $nextkp      = DaftarKP::orderBy('id', 'desc')->first();
 
-        $daftarkp    = DaftarKP::all();
+        $nextkp      =
+            DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+                if (Auth::user()->level == 0) {
+                    $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+                } else if (Auth::user()->level != 1) {
+                    $q->where('id', '=', Auth::user());
+                }
+            })->get()->sortByDesc('id')->first();
+
+        $daftarkp    = DaftarKP::with('mahasiswa', 'tahunakademik')->get();
         $filterStts  = DaftarKP::distinct()->select('stts_pengajuan')->get();
-        $dosen       = Dosen::all();
+        $dosen       = Dosen::with('biodata')->get();
         $last_year   = $this->TahunAkademik->orderBy('id', 'desc')->first();
         $thnakademik = $this->TahunAkademik->latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
-        $mahasiswa   = Mahasiswa::all();
+        $mahasiswa   = Mahasiswa::with('biodata')->get();
         $mhskp       = Auth::user()->biodata->mahasiswa;
         $kpDiterima  = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get()->count();
         $kpTertunda  = DaftarKP::where('stts_pengajuan', '=', 'tertunda')->get()->count();

@@ -30,21 +30,38 @@
                         <ul class="nav nav-collapse">
                             <li class="nav-item {{ Request()->is('kerja-praktik')? 'active' : '' }}">
                                 <a href="kerja-praktik">
+                                    @if (Auth::user()->level==0)
                                     <span class="sub-item">Daftar KP</span>
+                                    @else
+                                    <span class="sub-item">Pendaftar KP</span>
+                                    @endif
                                 </a>
                             </li>
+
+                            @if (UserCheck::authBimbingan())
                             <li class="nav-item {{ Request()->is('bimbingan-kp')? 'active' : '' }}">
                                 <a href="bimbingan-kp">
                                     <span class="sub-item">Bimbingan KP</span>
                                 </a>
                             </li>
-                            @if (UserCheck::checkBimbinganKP()||Auth::user()->level!=0)
+                            @endif
+
+                            @if (Auth::user()->level != 0)
+                            <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
+                                <a href="seminar-kp">
+                                    <span class="sub-item">Pendaftar Seminar KP</span>
+                                </a>
+                            </li>
+                            @elseif(UserCheck::checkDaftarKP())
+
+                            @elseif (UserCheck::checkBimbinganKP()||Auth::user()->level!=0)
                             <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
                                 <a href="seminar-kp">
                                     <span class="sub-item">Daftar Seminar KP</span>
                                 </a>
                             </li>
                             @else
+
                             @endif
                             <li class="nav-item {{ Request()->is('data-kp')? 'active' : '' }}">
                                 <a href="data-kp">
@@ -68,14 +85,23 @@
                         <ul class="nav nav-collapse">
                             <li class="nav-item {{ Request()->is('daftar-ta')? 'active' : '' }}">
                                 <a href="daftar-ta">
+                                    @if (Auth::user()->level==0)
                                     <span class="sub-item">Daftar Skripsi</span>
+                                    @else
+                                    <span class="sub-item">Pendaftar Skripsi</span>
+
+                                    @endif
                                 </a>
                             </li>
+
+                            @if (UserCheck::authBimbingan())
                             <li class="nav-item {{ Request()->is('bimbingan-ta')? 'active' : '' }}">
                                 <a href="bimbingan-ta">
                                     <span class="sub-item">Bimbingan Skripsi</span>
                                 </a>
                             </li>
+
+                            @endif
 
                             @if (Auth::user()->level ==0)
                             @if (UserCheck::checkBimbinganTA())
@@ -111,7 +137,7 @@
                     </a>
                 </li>
 
-                @if(Auth::user()->level==3)
+                @if(Auth::user()->level==2)
 
                 <li class="nav-section">
                     <span class="sidebar-mini-icon">
@@ -137,7 +163,7 @@
                     {{-- <div class="divider"></div> --}}
                     <h4 class="text-dark text-center font-weight-bold">Teknologi Informasi Universitas Muhammadiyah
                         Purworejo</h4>
-                    <p class="text-dark text-center font-weight-normal">NSPN : Terakreditasi Baik</p>
+                    {{-- <p class="text-dark text-center font-weight-normal">NSPN : Terakreditasi Baik</p> --}}
                     <div class="divider "></div>
                     <h6 class="text-dark font-weight-normal">
                         Jl. Taman Siswa II, Plaosan, Purworejo, Kec. Purworejo, Kabupaten Purworejo, Jawa Tengah 54151

@@ -337,6 +337,7 @@
                                 @if ($d->jabatan=='mahasiswa' || $d->jabatan=='TU')
                                 <input type="text" class="form-control" value="{{ $d->jabatan }}" id="jabatan_1"
                                     name="jabatan_1" readonly>
+                                <input type="hidden" name="jabatan" value="{{ $d->jabatan }}">
                                 @else
 
                                 <select class="form-control" name="jabatan" id="jabatan_1" required>
@@ -347,10 +348,6 @@
                                     </option>
                                     <option <?php if($d->jabatan == 'dosen') echo "selected"; ?> value="dosen">Dosen
                                     </option>
-                                    {{-- <option <?php if($d->jabatan == 'mahasiswa') echo "selected"; ?>
-                                        value="mahasiswa">Mahasiswa</option>
-                                    <option <?php if($d->jabatan == 'TU') echo "selected"; ?>
-                                        value="TU">TU</option> --}}
                                 </select>
                                 @endif
                             </div>
@@ -364,13 +361,15 @@
                                 <select class="form-control konsentrasi_" name="keahlian[]" id="keahlian_{{ $d->id }}"
                                     multiple>
                                     @foreach ($konsentrasi as $item)
-                                    <option value="{{ $item->nama_konsentrasi }}" {{ in_array($item->nama_konsentrasi,
-                                        explode(',',$d->keahlian)) ? 'selected':'' }}>
-                                        {{ $item->nama_konsentrasi }}</option>
+                                    <option value="{{ $item->nama_konsentrasi }}" {{ in_array($item->
+                                        nama_konsentrasi,
+                                        explode(',', $d->keahlian)) ? 'selected' : '' }}>
+                                        {{ $item->nama_konsentrasi }}
+                                    </option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
                                     <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0

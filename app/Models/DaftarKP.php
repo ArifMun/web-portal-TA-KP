@@ -87,7 +87,7 @@ class DaftarKP extends Model
             } else {
                 $q->where('id', '=', Auth::user());
             }
-        })->get()->where('stts_pengajuan', '=', 'diterima')->sortByDesc('id');
+        })->get()->where('stts_pengajuan', '=', 'diterima')->sortByDesc('id')->first();
     }
 
     public function mhskpd()

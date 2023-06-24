@@ -38,16 +38,12 @@ class SeminarKPController extends Controller
 
         $d_kp        = new DaftarKP();
         $daftarkp    = $d_kp->d_kp_diterima();
-        $mhskps      = $d_kp->m_kp_diterima();
+        $mhskps      = $d_kp->mhskps();
 
         $pengumuman  = Pengumuman::get()->first();
 
         // testing
-        $d = SeminarKP::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
-            }
-        })->get();
+        // $cek = Auth::user()->biodata->mahasiswa->daftarkp[0]->bimbingankp->count();
 
         return \view('kerja-praktik.seminar-kp', \compact(
             'seminarkp',
@@ -60,7 +56,8 @@ class SeminarKPController extends Controller
             'sSelesai',
             'sTerjadwal',
             'sProses',
-            'pengumuman'
+            'pengumuman',
+            // 'cek'
         ));
     }
 

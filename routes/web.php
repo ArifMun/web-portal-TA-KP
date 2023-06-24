@@ -103,17 +103,17 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     // // Rute-rute untuk dosen
     // Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
 
-    Route::resource('/kerja-praktik', KerjaPraktikController::class)->middleware('CheckLevel:0,1');
-    Route::resource('/seminar-kp', SeminarKPController::class)->middleware('CheckLevel:0,1');
+    Route::resource('/kerja-praktik', KerjaPraktikController::class)->middleware('CheckLevel:0,2');
+    Route::resource('/seminar-kp', SeminarKPController::class)->middleware('CheckLevel:0,2');
     Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
-    Route::resource('/bimbingan-kp', BimbinganKPController::class)->middleware('CheckLevel:0,2,3');
+    Route::resource('/bimbingan-kp', BimbinganKPController::class)->middleware('CheckLevel:0,1');
     Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);
 
-    Route::resource('/daftar-ta', DaftarTAController::class)->middleware('CheckLevel:0,1');
-    Route::resource('/sidang-ta', SidangTAController::class)->middleware('CheckLevel:0,1');
+    Route::resource('/daftar-ta', DaftarTAController::class)->middleware('CheckLevel:0,2');
+    Route::resource('/sidang-ta', SidangTAController::class)->middleware('CheckLevel:0,2');
     Route::get('sidang-ta/daftar_ta_id/{id}', [SidangTAController::class, 'autofill']);
-    Route::resource('/bimbingan-ta', BimbinganTAController::class)->middleware('CheckLevel:0,2,3');
-    Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class)->middleware('CheckLevel:0,2,3');
+    Route::resource('/bimbingan-ta', BimbinganTAController::class)->middleware('CheckLevel:0,1');
+    Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class)->middleware('CheckLevel:0,1');
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
 
     Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
@@ -121,8 +121,8 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::get('data-ta', [DataTAController::class, 'index'])->name('data-ta');
 
     // ADMINISTRATOR
-    Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:3');
-    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:3');
+    Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:2');
+    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:2');
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
 

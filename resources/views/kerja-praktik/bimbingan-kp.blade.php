@@ -171,7 +171,7 @@
                                             <th>Tahun</th>
                                             <th>Author</th>
                                             <th>Dibuat</th>
-                                            <th>Diubah</th>
+                                            {{-- <th>Diubah</th> --}}
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -226,7 +226,7 @@
                                             <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
-                                            <td>{{ $item->updated_at }}</td>
+                                            {{-- <td>{{ $item->updated_at }}</td> --}}
                                             <td>
                                                 <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
@@ -297,7 +297,7 @@
                                             <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
-                                            <td>{{ $item->updated_at }}</td>
+                                            {{-- <td>{{ $item->updated_at }}</td> --}}
                                             <td>
                                                 <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
@@ -344,18 +344,24 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
+
+                                @if (Auth::user()->level==0 )
+                                <input type="text" class="form-control" value="{{ $mhskps->mahasiswa->biodata->no_induk }} - {{
+                                    $mhskps->mahasiswa->biodata->nama }} - {{ $mhskps->tahunakademik->tahun
+                                    }}" readonly>
+                                <input type="hidden" value="{{ $mhskps->id }}" name="daftarkp_id">
+                                @else
                                 <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
                                     id="daftarkp_id" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
-                                    @if (Auth::user()->level==0 )
-                                    @foreach ($mhskps as $item)
+                                    {{-- @foreach ($mhskps as $item)
                                     <option value="{{ $item->id}}">{{ $item->mahasiswa->biodata->no_induk }} - {{
                                         $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun
                                         }}
                                     </option>
-                                    @endforeach
-                                    @else
+                                    @endforeach --}}
+
 
                                     @foreach ($mhskpd as $item)
                                     <option value="{{ $item->id }}">{{

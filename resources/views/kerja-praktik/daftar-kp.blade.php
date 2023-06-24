@@ -184,6 +184,7 @@
 
                                     @if (Auth::user()->level==0)
                                     <tbody>
+                                        {{-- {{ $nextkp }} --}}
                                         @php $no=1; @endphp
                                         @if (!empty(Auth::user()->biodata->mahasiswa->daftarkp))
                                         @foreach ($mhskps as $item)
@@ -581,7 +582,10 @@
 </div>
 
 
-{{-- Melanjutkan --}}
+{{-- Melanjutkan BELUM FIX?--}}
+@if (Auth::user()->level!=0)
+
+@else
 <div class="modal fade modalMelanjutkan" id="modalMelanjutkan" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -604,13 +608,6 @@
                                     value="{{ $nextkp->mahasiswa_id }}">
                                 <input type="text" class="form-control" size="1" readonly
                                     placeholder="{{ $nextkp->mahasiswa->biodata->no_induk }} - {{ $nextkp->mahasiswa->biodata->nama }}">
-                                {{-- <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" size="1"
-                                    readonly required>
-                                    <option value="{{ $nextkp->mahasiswa_id }}">{{
-                                        $nextkp->mahasiswa->biodata->no_induk }} - {{ $nextkp->mahasiswa->biodata->nama
-                                        }}
-                                    </option>
-                                </select> --}}
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
@@ -663,13 +660,6 @@
                                 <input type="text" class="form-control text-capitalize" name="stts_kp"
                                     value="melanjutkan" readonly>
                                 <input type="hidden" value="melanjutkan" name="stts_kp">
-                                {{-- <select class="form-control" name="stts_kp" size="1" required>
-                                    <option value="" hidden="">-- Status KP --</option>
-                                    <option @php if($nextkp->stts_kp == 'baru') echo 'selected';
-                                        @endphp value="baru">Baru</option>
-                                    <option @php if($nextkp->stts_kp == 'melanjutkan') echo 'selected';
-                                        @endphp value="melanjutkan">Melanjutkan</option>
-                                </select> --}}
                             </div>
 
                         </div>
@@ -718,7 +708,6 @@
                                     <label class="control-label">Konsentrasi </label>
                                     <select class="form-control konsentrasi_1" name="konsentrasi[]"
                                         id="konsentrasi_1{{ $nextkp->id }}" multiple required size="1">
-                                        {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
 
                                         @foreach($konsentrasi as $option)
                                         <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
@@ -741,9 +730,9 @@
                                 </div>
                                 <div>
                                     <label for="image" class="form-label control-label">Slip pembayaran </label>
-                                    <input type="file" class="form-control picture" id="image1" name="slip_pembayaran"
-                                        onchange="previewImage(1)">
-                                    <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
+                                    <input type="file" class="form-control picture" id="image3" name="slip_pembayaran"
+                                        onchange="previewImage(3)">
+                                    <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview3">
                                     <span class="font-italic text-muted mt-1">ukuran file maksimal <span
                                             class="text-danger">1024
                                             KB</span> </span>
@@ -768,6 +757,7 @@
         </div>
     </div>
 </div>
+@endif
 
 {{-- Edit --}}
 @foreach ($daftarkp as $item)
@@ -1132,36 +1122,23 @@
     $(document).ready(function() {
         $('#konsentrasi').select2({
             placeholder: '-- Pilih Konsentrasi --',
-            // theme: 'bootstrap'
         });
     });
 
     $(document).ready(function() {
         $('.konsentrasi_').select2({
-            // theme: 'classic',
             width: '100%'
         });
     });
 
     $(document).ready(function() {
         $('.konsentrasi_1').select2({
-            // theme: 'classic',
             width: '100%'
         });
     });
 
-    // $(document).ready(function() {
-    //     $('#mahasiswa_id').select2({
-    //         placeholder: '-- Pilih Konsentrasi --',
-    //         width: '100%'
-    //     });
-    // });
 </script>
 
-
-<script>
-
-</script>
 {{-- tambah --}}
 <script>
     $(document).ready(function() {

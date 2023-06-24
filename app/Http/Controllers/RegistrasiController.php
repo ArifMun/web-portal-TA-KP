@@ -146,13 +146,17 @@ class RegistrasiController extends Controller
             return \back()->with('warning', 'Data Tidak Tersimpan!');
         } else {
 
-            $input = $request->input('keahlian');
-            $string = \implode(',', $input);
-
             $biodata = Biodata::findOrFail($registrasi->id);
             $users = User::findOrFail($registrasi->id);
+
+            if ($request->keahlian == null) {
+            } else {
+                $input = $request->input('keahlian');
+                $string = \implode(',', $input);
+                $biodata->keahlian      = $string;
+            }
+
             $biodata->nama          = $request->nama;
-            $biodata->keahlian      = $string;
             $biodata->email         = $request->email;
             $biodata->no_induk      = $request->no_induk;
             $biodata->tempat_lahir  = $request->tempat_lahir;
