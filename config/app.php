@@ -162,6 +162,8 @@ return [
         Illuminate\Validation\ValidationServiceProvider::class,
         Illuminate\View\ViewServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
         // Froala\WysiwygEditor\FroalaEditorServiceProvider::class,
         /*
          * Package Service Providers...
@@ -233,6 +235,8 @@ return [
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'Froala' => Froala\WysiwygEditor\Facades\Froala::class,
         'UserCheck' => App\Helpers\UserCheck::class,
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+
     ],
 
 ];

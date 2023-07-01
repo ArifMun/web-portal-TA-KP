@@ -26,50 +26,60 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
+                                @if(Auth::user()->level!=2)
+                                <h4 class="card-title">Biodata Diri</h4>
+                                {{-- <form method="post" enctype="multipart/form-data" action="import-excel">
+                                    @csrf
+                                    <div class="form-group">
+                                        <table class="table">
+                                            <tr>
+                                                <td width="40%" align="right"><label>Select File for Upload</label></td>
+                                                <td width="30">
+                                                    <input type="file" name="file-import">
+                                                </td>
+                                                <td width="30%" align="left">
+                                                    <input type="submit" name="upload"
+                                                        class="btn btn-primary btn-round ml-auto" value="upload">
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td width="40%" align="right"></td>
+                                                <td width="30"><span class="text-muted">.xls, .xslx</span></td>
+                                                <td width="30%" align="left"></td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                </form> --}}
+                                @elseif (Auth::user()->level==2)
                                 <h4 class="card-title">Tambah Akun</h4>
+                                <a href="/akun/import" class="btn btn-success btn-round ml-auto" data-toggle="modal"
+                                    data-target="#importFile">
+                                    <i class="fas fa-file-import"></i>
+                                    Import
+                                </a>
                                 <a href="/akun/tambah" class="btn btn-primary btn-round ml-auto" data-toggle="modal"
                                     data-target="#modalAddAkun">
                                     <i class="fa fa-plus"></i>
                                     Tambah Akun
                                 </a>
+                                @if ($errors->any())
+                                @foreach ($errors->all() as $item)
+                                @php
+                                alert()->warning('Terdapat Data Yang Duplikat')
+                                @endphp
+                                @endforeach
+                                @endif
+                                @endif
                             </div>
                         </div>
                         <div class="card-body">
-                            {{-- <div class="row">
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kategori</label>
-                                    <select data-column="1" class="form-control col-sm-12" id="filter-kategori">
-                                        <option value="">-- Pilih Kategori --</option>
-                                        @foreach ($kategori as $k)
-                                        <option value=" {{ $k->kode_kategori }}">{{ $k->nama_kategori }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Kondisi</label>
-                                    <select data-column="8" class="form-control col-sm-12" id="filter-kondisi">
-                                        <option value="">-- Pilih Kondisi --</option>
-                                        <option value="BAIK">BAIK</option>
-                                        <option value="RUSAK">RUSAK</option>
-                                    </select>
-                                </div>
-                                <div class="body-panel col-4">
-                                    <label class="font-weight-bold h6">Filter Tahun</label>
-                                    <select data-column="7" class="form-control col-sm-12" id="filter-tahun">
-                                        <option value="">-- Pilih Tahun --</option>
-                                        @for ($i = date('Y'); $i >= date('Y')-5; $i-=1)
-                                        <option value="{{ $i }}">{{ $i }}</option>
-                                        @endfor
-                                    </select>
-                                </div>
-                            </div> --}}
                             <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="add-row" class="display table table-striped table-hover">
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
-                                            <th>No Induk</th>
+                                            <th>NIM/Username</th>
                                             <th>Nama</th>
                                             <th>Email</th>
                                             <th>Keahlian</th>
@@ -83,11 +93,38 @@
                                         </tr>
                                     </thead>
 
+                                    @if (Auth::user()->level!=2)
                                     <tbody>
                                         @php
                                         $no=1;
                                         @endphp
-                                        @foreach ($users as $row)
+
+                                        <tr align="center">
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $authUser->biodata->no_induk }}</td>
+                                            <td class="text-capitalize">{{ $authUser->biodata->nama }}</td>
+                                            <td>{{ $authUser->biodata->email }}</td>
+                                            <td>{{ $authUser->biodata->keahlian }}</td>
+                                            <td class="text-capitalize">{{ $authUser->biodata->jabatan }}</td>
+                                            <td>{{ $authUser->biodata->tempat_lahir }}</td>
+                                            <td>{{ $authUser->biodata->tgl_lahir }}</td>
+                                            <td>{{ $authUser->biodata->no_telp }}</td>
+                                            <td>{{ $authUser->biodata->alamat }}</td>
+                                            <td>{{ $authUser->level }}</td>
+                                            <td>
+                                                <a href="#editDataAkun{{ $authUser->biodata->id }}" data-toggle="modal"
+                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
+                                                    </i> </a>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                    @elseif(Auth::user()->level==2)
+                                    <tbody>
+                                        @php
+                                        $no=1;
+                                        @endphp
+                                        @foreach ($biodata as $row)
 
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
@@ -100,7 +137,7 @@
                                             <td>{{ $row->tgl_lahir }}</td>
                                             <td>{{ $row->no_telp }}</td>
                                             <td>{{ $row->alamat }}</td>
-                                            <td>{{ $row->level }}</td>
+                                            <td>{{ $row->users->level }}</td>
                                             <td>
                                                 {{-- <a href="#viewDataBarang{{ $row->id }}" data-toggle="modal"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
@@ -115,6 +152,7 @@
                                         </tr>
                                         @endforeach
                                     </tbody>
+                                    @endif
                                 </table>
                             </div>
                         </div>
@@ -327,10 +365,11 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label>Alamat</label>
                                 <input type="text" class="form-control" name="alamat" placeholder="Alamat ..">
                             </div>
+                            @if (Auth::user()->level==2)
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
 
@@ -351,9 +390,16 @@
                                 </select>
                                 @endif
                             </div>
+                            @else
+                            <div class="col">
+                                <label class="control-label">Password </label>
+                                <input type="password" class="form-control" name="password" placeholder="Password ..">
+                            </div>
+                            @endif
                         </div>
                     </div>
 
+                    @if (Auth::user()->level==2)
                     <div class="form-group required">
                         <div class="row">
                             <div class="col" id="kolomBaru_2" style="display: none">
@@ -386,6 +432,7 @@
                             </div>
                         </div>
                     </div>
+                    @endif
 
                     <div class="modal-footer required">
                         <div class="col">
@@ -404,70 +451,43 @@
 </div>
 @endforeach
 
-{{-- View --}}
-{{-- @foreach ($barang as $d)
-<div class="modal fade" id="viewDataBarang{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="importFile" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div class="modal-dialog modal-open">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Detail Barang</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Import File</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
 
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        @if ($d->image)
-                        <div class="col">
-                            <img src="{{ asset('storage/' . $d->image) }}" alt="" class="rounded mx-auto d-block"
-                                style="width: 18%">
-                        </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">Nama Barang</li>
-                                <li class="list-group-item">Kategori</li>
-                                <li class="list-group-item">No Barang</li>
-                                <li class="list-group-item">Penulis</li>
-                                <li class="list-group-item">Jumlah</li>
-                                <li class="list-group-item">Unit</li>
-                                <li class="list-group-item">Tahun</li>
-                                <li class="list-group-item">Kondisi</li>
-                                <li class="list-group-item">Keterangan</li>
-                            </ul>
-                        </div>
-                        <div class="col">
-                            <ul class="list-group">
-                                <li class="list-group-item">{{ $d->nama_barang }}</li>
-                                <li class="list-group-item">{{ $d->nama_kategori }}</li>
-                                <li class="list-group-item">{{ $d->no_barang }}</li>
-                                <li class="list-group-item">{{ Auth::user()->level }}</li>
-                                <li class="list-group-item">{{ $d->jumlah }}</li>
-                                <li class="list-group-item">{{ $d->unit }}</li>
-                                <li class="list-group-item">{{ $d->tahun }}</li>
-                                <li class="list-group-item">{{ $d->kondisi }}</li>
-                                <li class="list-group-item">{{ $d->keterangan }}.</li>
-                            </ul>
+            <form method="POST" enctype="multipart/form-data" action="import-excel">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label>Pilih File</label>
+                                <input type="file" class="form-control" name="file-import">
+                                <span class="text-muted">.xls, .xslx</span>
+                            </div>
+
                         </div>
                     </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                            </i> Kembali</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Upload</button>
+                    </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>
-@endforeach --}}
-
 {{-- Hapus --}}
 @foreach ($biodata as $d)
 <div class="modal fade" id="modalHapusAkun{{ $d->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"

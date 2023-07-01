@@ -8,6 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class User extends Authenticatable
 {
@@ -18,6 +19,7 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    const LEVEL_OPTIONS = [0, 1, 2];
     public $timestamps = false;
     protected $table = 'users';
     protected $fillable = [
@@ -38,20 +40,6 @@ class User extends Authenticatable
 
     public function biodata()
     {
-        return $this->belongsTo(Biodata::class);
+        return $this->belongsTo(Biodata::class, 'biodata_id');
     }
-
-
-    // public function mahasiswa()
-    // {
-    //     return $this->hasOne(Mahasiswa::class);
-    // }
-    // public function dosen()
-    // {
-    //     return $this->hasOne(Dosen::class);
-    // }
-    // public function tu()
-    // {
-    //     return $this->hasOne(TU::class);
-    // }
 }

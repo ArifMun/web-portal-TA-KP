@@ -44,19 +44,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
+
                         @if (empty($formakses))
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <h4 class="card-title"></h4>
-                                <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarKP">
-                                    <i class="fa fa-plus"></i>
-                                    Daftar
-                                </a>
-                            </div>
-                        </div>
-                        @elseif(Auth::user()->level == 0 && $formakses->akses_kp == 1 ||
-                        Auth::user()->level==1 )
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <div class="">Readme First
@@ -73,6 +62,33 @@
                                     Melanjutkan
                                 </a>
                                 @elseif($newRegisterKp)
+                                <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalDaftarKP">
+                                    <i class="fa fa-plus"></i>
+                                    Daftar
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+
+                        @elseif(Auth::user()->level == 0 && $formakses->akses_kp == 1 ||
+                        Auth::user()->level==2 )
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="">Readme First
+                                    <a href="kerja-praktik/view-pengumuman" data-toggle="modal"
+                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                        </i>
+                                    </a>
+                                </div>
+
+                                @if ($existKp)
+                                <a href="/kerja-praktik/melanjutkan" class="btn btn-success btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalMelanjutkan">
+                                    <i class="fa fa-plus"></i>
+                                    Melanjutkan
+                                </a>
+                                @elseif($newRegisterKp )
                                 <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarKP">
                                     <i class="fa fa-plus"></i>
@@ -161,8 +177,7 @@
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
-                                            @if (Auth::user()->level==0)
-                                            @else
+                                            @if (Auth::user()->level!=0)
                                             <th>NIM</th>
                                             <th>Nama</th>
                                             @endif
@@ -421,7 +436,7 @@
                                 @else
                                 <select class="form-control " name="mahasiswa_id" id="mahasiswa_id" size="1" id=""
                                     required>
-                                    <option value="">-- Pilih NIM --</option>
+                                    <option value="">-- Pilih --</option>
                                     @foreach ($mahasiswa as $k)
                                     <option value="{{ $k->id}}">{{ $k->biodata->no_induk
                                         }} - {{ $k->biodata->nama
@@ -436,6 +451,8 @@
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
                                 <input type="text" class="form-control" value="{{ $last_year->tahun }}" readonly>
+                                <input type="hidden" class="form-control" value="{{ $last_year->id }}"
+                                    name="thn_akademik_id">
                             </div>
                         </div>
                     </div>
@@ -546,9 +563,7 @@
                                 <input type="file" class="form-control picture" id="image1" name="slip_pembayaran"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
-                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span> </span>
+
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
@@ -583,7 +598,7 @@
 
 
 {{-- Melanjutkan BELUM FIX?--}}
-@if (Auth::user()->level!=0)
+@if (Auth::user()->level!=0 || UserCheck::checkDaftarKP())
 
 @else
 <div class="modal fade modalMelanjutkan" id="modalMelanjutkan" tabindex="-1" role="dialog"
@@ -613,7 +628,7 @@
                                 <label class="control-label">Tahun Akademik </label>
                                 <input type="text" value="{{ $last_year->tahun }}" class="form-control" size="1"
                                     readonly>
-                                <input type="hidden" value="{{ $last_year->tahun }}" class="form-control"
+                                <input type="hidden" value="{{ $last_year->id }}" class="form-control"
                                     name="thn_akademik_id">
                             </div>
                         </div>
@@ -668,7 +683,6 @@
                     <div class="form-group required ">
                         <div class="row">
                             <div class="col d_ganti_2" id="d_ganti_2">
-
                                 <label class="control-label">Ganti Dosen Pembimbing </label><br>
                                 <label class="form-radio-label">
                                     <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="ya" {{
@@ -783,7 +797,7 @@
                                 <input type="hidden" name="mahasiswa_id" id="mahasiswa_id"
                                     value="{{ $item->mahasiswa_id }}">
                                 <input type="text" class="form-control" size="1" readonly
-                                    placeholder="{{ $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}">
+                                    value="{{ $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}">
                                 {{-- <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" size="1"
                                     readonly required>
                                     <option value="{{ $item->mahasiswa_id }}">{{
@@ -795,7 +809,7 @@
                                 <label class="control-label">Tahun Akademik </label>
                                 <input type="text" value="{{ $item->tahunakademik->tahun }}" class="form-control"
                                     size="1" readonly>
-                                <input type="hidden" value="{{ $item->tahunakademik->id }}" class="form-control"
+                                <input type="hidden" value="{{ $item->thn_akademik_id }}" class="form-control"
                                     name="thn_akademik_id">
                             </div>
                         </div>
@@ -1139,23 +1153,7 @@
 
 </script>
 
-{{-- tambah --}}
-<script>
-    $(document).ready(function() {
-        toggleKolomBaru('#ganti');
-            $('input[name="ganti_pembimbing"]').on('change', function() {
-            toggleKolomBaru('#ganti');
-        });
-        
-        function toggleKolomBaru(formId) {
-            if ($(formId + ' input[name="ganti_pembimbing"]:checked').val() === 'ya') {
-                $(formId + ' #kolomBaru').show();
-            } else {
-                $(formId + ' #kolomBaru').hide();
-            }
-        }
-    });
-</script>
+<script src="/assets/js/native/checkboxkp.js"></script>
 
 {{-- edit --}}
 <script>
@@ -1180,7 +1178,7 @@
 </script>
 
 {{-- melanjutkan --}}
-<script>
+{{-- <script>
     $(document).ready(function() {
         $('.modalMelanjutkan').on('show.bs.modal', function() {
             var formId = '#' + $(this).attr('id');
@@ -1199,7 +1197,7 @@
             }
         });
     });
-</script>
+</script> --}}
 
 <script type="text/javascript">
     $.ajaxSetup({

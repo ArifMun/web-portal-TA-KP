@@ -48,9 +48,7 @@ class BimbinganTA1 extends Model
     public function b_dosen_1()
     {
         return self::with('daftarta')->whereHas('daftarta', function ($q) {
-            if (Auth::user()->level == 2) {
-                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-            } elseif (Auth::user()->level == 3) {
+            if (Auth::user()->level == 1) {
                 $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
             }
         })->get()->sortByDesc('id');

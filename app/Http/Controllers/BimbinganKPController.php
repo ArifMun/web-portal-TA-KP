@@ -57,40 +57,6 @@ class BimbinganKPController extends Controller
         ));
     }
 
-    // public function list_index()
-    // {
-
-    //     $daftarkp = DaftarKP::all();
-    //     // $mhskp = Auth::user()->biodata->mahasiswa;
-    //     $bimbingkp = BimbinganKP::all();
-
-    //     $mhskps   = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-    //         if (Auth::user()->level == 0) {
-    //             $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-    //         } else {
-    //             $q->where('id', '=', Auth::user());
-    //         }
-    //     })->get()->sortByDesc('id');
-
-    //     $bimbingMhs   = BimbinganKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-    //         if (Auth::user()->level == 0) {
-    //             $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-    //         }
-    //     })->get()->sortByDesc('id');
-
-    //     $bimbingDosen   = BimbinganKP::with('dosen')->whereHas('dosen', function ($q) {
-    //         if (Auth::user()->level == 1) {
-    //             $q->where('id', '=', Auth::user()->biodata->dosen->id);
-    //         }
-    //     })->get()->sortByDesc('id');
-
-    //     $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
-
-    //     return \view('kerja-praktik.bimbingan-kp', \compact('daftarkp', 'bimbingMhs', 'bimbingDosen', 'mhskps', 'bimbingkp', 'list'));
-    // }
-
-
-
     public function autofill($id)
     {
         $data = DaftarKP::find($id);

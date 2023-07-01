@@ -18,13 +18,18 @@ use Illuminate\Support\Facades\Validator;
 
 class DaftarTAController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {
+        $existTA = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarta->count() != 0;
+        $newRegisterTA = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarta->count() == 0
+            || Auth::user()->level != 0;
+
+        $thn         = new TahunAkademik();
+        $thnakademik = $thn->latest('id')->limit(5)->get();
+        $last_year   = $thn->orderBy('id', 'desc')->first();
+
+
         $s_kp        = new SeminarKP();
         $mhs_dDaftar = $s_kp->daftar_ta();
         $mhsDaftar   = $s_kp->m_daftar_ta();
@@ -35,12 +40,16 @@ class DaftarTAController extends Controller
         $d_tertunda  = $d_ta->d_tertunda();
         $d_ditolak   = $d_ta->d_ditolak();
         $mhsta       = $d_ta->m_list_ta();
-        $daftarta    = DaftarTA::all();
+        $nextTA      = $d_ta->nextta();
+
+        $mahasiswa   = Mahasiswa::with('biodata')->get();
+        $mhsAuth     = Auth::user()->biodata->mahasiswa;
+        $daftarta    = DaftarTA::with('mahasiswa', 'tahunakademik')->latest()->get();
         $dosen       = Dosen::all();
-        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
         $pengumuman  = Pengumuman::get()->first();
-        $formakses = FormAkses::get()->first();
+        $formakses  = FormAkses::get()->first();
+
         return \view('tugas-akhir.daftar-ta', \compact(
             'daftarta',
             'mhs_dDaftar',
@@ -54,7 +63,13 @@ class DaftarTAController extends Controller
             'd_tertunda',
             'd_ditolak',
             'formakses',
-            'pengumuman'
+            'pengumuman',
+            'mahasiswa',
+            'mhsAuth',
+            'last_year',
+            'existTA',
+            'newRegisterTA',
+            'nextTA'
         ));
     }
 
@@ -87,7 +102,7 @@ class DaftarTAController extends Controller
                 'ganti_pembimbing'  => 'required',
                 'stts_ta'           => 'required',
                 'krs'               => 'required|image|file',
-                'thn_akademik_id'   => 'required',
+                // 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required'
             ]
         );

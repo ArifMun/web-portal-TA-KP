@@ -46,11 +46,15 @@
                                         </i>
                                     </a>
                                 </div>
+
+                                @if ($registerSeminar || Auth::user()->level==2)
                                 <a href="/seminar-kp/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarSeminar">
                                     <i class="fa fa-plus"></i>
                                     Daftar
                                 </a>
+                                @endif
+
                             </div>
                         </div>
 
@@ -132,8 +136,8 @@
                                             <th>Form Bimbingan</th>
                                             <th>Slip Pembayaran</th>
                                             <th>Judul</th>
-                                            <th>Tahun</th>
-                                            <th>Catatan</th>
+                                            <th>Tahun Akademik</th>
+                                            {{-- <th>Catatan</th> --}}
                                             <th>Tanggal Seminar</th>
                                             <th>Jam Seminar</th>
                                             <th>Action</th>
@@ -157,26 +161,26 @@
                                                 @endforeach
                                             </td>
 
-                                            @if ($item->daftarkp->seminarkp->stts_seminar=='proses')
+                                            @if ($item->stts_seminar=='proses')
                                             <td>
                                                 <a
                                                     class="badge badge-warning font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
+                                                    $item->stts_seminar }}</a>
                                             </td>
-                                            @elseif($item->daftarkp->seminarkp->stts_seminar=='selesai')
+                                            @elseif($item->stts_seminar=='selesai')
                                             <td>
                                                 <a
                                                     class="badge badge-success font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
+                                                    $item->stts_seminar }}</a>
                                             </td>
                                             @else
                                             <td>
                                                 <a
                                                     class="badge badge-primary font-weight-bold text-light text-capitalize">
                                                     {{
-                                                    $item->daftarkp->seminarkp->stts_seminar }}</a>
+                                                    $item->stts_seminar }}</a>
                                             </td>
                                             @endif
 
@@ -202,10 +206,10 @@
                                                     </i>
                                                 </a>
                                             </td>
-                                            <td>{{ $item->daftarkp->tahunakademik->tahun }} </td>
-                                            <td>{{ $item->daftarkp->seminarkp->catatan }}</td>
-                                            <td>{{ $item->daftarkp->seminarkp->tgl_seminar }}</td>
-                                            <td>{{ $item->daftarkp->seminarkp->jam_seminar }}</td>
+                                            <td>{{ $item->thnakademik->tahun }} </td>
+                                            {{-- <td>{{ $item->daftarkp->seminarkp->catatan }}</td> --}}
+                                            <td>{{ $item->tgl_seminar }}</td>
+                                            <td>{{ $item->jam_seminar }}</td>
                                             <td>
                                                 @if ($item->stts_seminar=='selesai' || $item->stts_seminar=='terjadwal')
 
@@ -290,8 +294,8 @@
                                                     </i>
                                                 </a>
                                             </td>
-                                            <td>{{ $row->daftarkp->tahunakademik->tahun }}</td>
-                                            <td>{{ $row->catatan }}</td>
+                                            <td>{{ $row->thnakademik->tahun }}</td>
+                                            {{-- <td>{{ $row->catatan }}</td> --}}
                                             <td>{{ $row->tgl_seminar }}</td>
                                             <td>{{ $row->jam_seminar }}</td>
                                             <td>
@@ -343,7 +347,7 @@
                                 <input type="text" class="form-control" value="{{
                                         $mhskps->mahasiswa->biodata->no_induk
                                         }} - {{ $mhskps->mahasiswa->biodata->nama
-                                        }} - {{ $mhskps->tahunakademik->tahun }}" readonly>
+                                        }}" readonly>
                                 <input type="hidden" value="{{ $mhskps->id }}" name="daftarkp_id">
                                 @else
                                 <select class="form-control text-capitalize" name="daftarkp_id"
@@ -371,11 +375,16 @@
                                     @endif
                                 </select>
                             </div>
-                            <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
+                            <div class="col">
+                                <label class="control-label">Tahun Akademik </label>
+                                <input type="text" class="form-control" value="{{ $last_year->tahun }}" readonly>
+                                <input type="hidden" class="form-control" name="thn_akademik_id"
+                                    value="{{ $last_year->id }}">
+                            </div>
                         </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group ">
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Tanggal Seminar </label>
@@ -404,15 +413,15 @@
                                 <label class="control-label">Status Seminar </label>
                                 @if (Auth::user()->level==0)
                                 <input type="text" class="form-control" value="Proses" readonly>
-                                <input type="hidden" value="Proses">
+                                <input type="hidden" value="proses" name="stts_seminar">
                                 @else
                                 <select class="form-control" name="stts_seminar" required>
                                     <option value="" hidden="">-- Status KP --</option>
                                     <option value="proses">Proses</option>
                                     <option value="terjadwal">Terjadwal</option>
                                     <option value="selesai">Selesai</option>
-                                    @endif
                                 </select>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -420,11 +429,8 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
-                                <label>Catatan</label>
-                                <input type="text" class="form-control" name="catatan">
-                            </div>
-                            <div class="col">
+
+                            <div class="col-6">
                                 <label for="image" class="form-label control-label">Form Bimbingan</label>
                                 <input type="file" class="form-control picture" id="image1" name="form_bimbingan"
                                     onchange="previewImage(1)">
@@ -471,19 +477,27 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label"> NIM</label>
-                                <select class="form-control" name="daftarkp_id" id="daftarkp_id">
+                                <label class="control-label">NIM - Nama</label>
+                                <input type="text" class="form-control" size="1" name="daftarkp_id" value="{{ $item->daftarkp->mahasiswa->biodata->no_induk }} - {{
+                                    $item->daftarkp->mahasiswa->biodata->nama }}" readonly>
+                                <input type="hidden" size="1" name="daftarkp_id" value="{{ $item->daftarkp_id }}">
+                                {{-- <select class="form-control" name="daftarkp_id" id="daftarkp_id">
                                     <option value="{{ $item->daftarkp_id }}">{{
                                         $item->daftarkp->mahasiswa->biodata->no_induk }} - {{
-                                        $item->daftarkp->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarkp->tahunakademik->tahun }}</option>
-                                </select>
-                                {{-- <input type="hidden" value="{{ $item->mahasiswa_id }}" name="mahasiswa_id"> --}}
+                                        $item->daftarkp->mahasiswa->biodata->nama }}</option>
+                                </select> --}}
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Tahun Akademik </label>
+                                <input type="text" class="form-control" value="{{ $item->thnakademik->tahun }}"
+                                    readonly>
+                                <input type="hidden" class="form-control" value="{{ $item->thn_akademik_id }}"
+                                    name="thn_akademik_id">
                             </div>
                         </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group">
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">&nbsp;Tanggal Seminar</label>
@@ -508,10 +522,13 @@
                             </div>
                             <div class="col">
                                 <label class="control-label"> Status Seminar</label>
+                                @if (Auth::user()->level==0)
+                                <input type="text" class="form-control text-capitalize" value="proses" readonly>
+                                <input type="hidden" class="form-control text-capitalize" value="proses"
+                                    name="stts_seminar">
+                                {{-- <option value="proses">Proses</option> --}}
+                                @else
                                 <select class="form-control" name="stts_seminar" required>
-                                    @if (Auth::user()->level==0)
-                                    <option value="proses">Proses</option>
-                                    @else
                                     <option value="" hidden="">-- Status Seminar --</option>
                                     <option @php if($item->stts_seminar == 'proses') echo 'selected';
                                         @endphp value="proses">Proses</option>
@@ -527,11 +544,7 @@
 
                     <div class="form-group">
                         <div class="row">
-                            <div class="col">
-                                <label>Catatan</label>
-                                <input type="text" class="form-control" value="{{ $item->catatan }}">
-                            </div>
-                            <div class="col">
+                            <div class="col-6">
                                 <label for="image" class="form-label">Form Bimbingan </label>
                                 <input type="hidden" name="oldImage" value="{{ $item->form_bimbingan }}">
                                 <input type="file" class="form-control picture" id="image2" name="form_bimbingan"
@@ -756,9 +769,9 @@
 
                 url: "{{ url('') }}/seminar-kp/mahasiswa_id/" + daftarkp_id,
                 success: function (res) {
-                    $("#mahasiswa_id").val(res.mahasiswa_id);
+                    // $("#mahasiswa_id").val(res.mahasiswa_id);
                     $("#judul").val(res.judul);
-                    console.log(res.mahasiswa_id);
+                    // console.log(res.mahasiswa_id);
                 }
             });
         }

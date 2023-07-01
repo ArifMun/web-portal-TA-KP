@@ -22,19 +22,24 @@ class SidangTAController extends Controller
     {
         $s_list      = SidangTA::all();
 
-        $list     = new SidangTA();
-        $m_list   = $list->m_list_sidang();
+        $list        = new SidangTA();
+        $registerSidang = $list->registerSidang();
+        $m_list      = $list->m_list_sidang();
         $s_proses    = $list->s_proses();
         $s_terjadwal = $list->s_terjadwal();
         $s_selesai   = $list->s_selesai();
 
-        $dosen    = Dosen::all();
-        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
+        $thn         = new TahunAkademik();
+        $last_year   = $thn->orderBy('id', 'desc')->first();
+        $thnakademik = $thn->latest('id')->limit(5)->get();
+
+        $dosen       = Dosen::all();
         $filterStts  = $s_list->filter();
 
         $d_ta     = new DaftarTA();
         $d_mhs_ta = $d_ta->m_ta_diterima();
         $daftarta = $d_ta->d_diterima();
+        $inputMhsDiterima = $d_ta->inputMhsDiterima();
 
         $pengumuman  = Pengumuman::get()->first();
         return \view('tugas-akhir.sidang-ta', \compact(
@@ -48,7 +53,10 @@ class SidangTAController extends Controller
             's_proses',
             's_terjadwal',
             's_selesai',
-            'pengumuman'
+            'pengumuman',
+            'registerSidang',
+            'inputMhsDiterima',
+            'last_year'
         ));
     }
 
@@ -85,9 +93,10 @@ class SidangTAController extends Controller
                 'f_bimbingan_2'     => 'required|image|file|max:1024',
                 'slip_pembayaran'   => 'required|image|file|max:1024',
                 'judul'             => 'required',
-                'tgl_sidang'        => 'required|date',
-                'jam_sidang'        => 'required',
+                // 'tgl_sidang'        => 'required|date',
+                // 'jam_sidang'        => 'required',
                 'stts_sidang'       => 'required',
+                'thn_akademik_id'   => 'required'
                 // 'd_penguji'         => 'required'
             ]
         );
@@ -104,7 +113,7 @@ class SidangTAController extends Controller
                 'f_bimbingan_2'     => $request->file('f_bimbingan_2')->store('form-b2'),
                 'slip_pembayaran'   => $request->file('slip_pembayaran')->store('slip-ta'),
                 'judul'             => $request->judul,
-                'catatan'           => $request->catatan,
+                'thn_akademik_id'   => $request->thn_akademik_id,
                 'tgl_sidang'        => $request->tgl_sidang,
                 'jam_sidang'        => $request->jam_sidang,
                 'stts_sidang'       => $request->stts_sidang,
@@ -150,7 +159,7 @@ class SidangTAController extends Controller
             [
                 // 'mahasiswa_id'      => 'required',
                 'daftar_ta_id'      => 'required',
-                'd_penguji'         => 'required',
+                // 'd_penguji'         => 'required',
                 'f_bimbingan_1'     => 'image|file|max:1024',
                 'f_bimbingan_2'     => 'image|file|max:1024',
                 'slip_pembayaran'   => 'image|file|max:1024',
@@ -192,10 +201,11 @@ class SidangTAController extends Controller
             $sidang_ta->daftar_ta_id    = $request->daftar_ta_id;
             $sidang_ta->d_penguji       = $request->d_penguji;
             $sidang_ta->judul           = $request->judul;
-            $sidang_ta->catatan         = $request->catatan;
+            // $sidang_ta->catatan         = $request->catatan;
             $sidang_ta->tgl_sidang      = $request->tgl_sidang;
             $sidang_ta->jam_sidang      = $request->jam_sidang;
             $sidang_ta->stts_sidang     = $request->stts_sidang;
+            $sidang_ta->thn_akademik_id = $request->thn_akademik_id;
             $sidang_ta->update();
 
             return \redirect('sidang-ta')->with('success', 'Data Berhasil Diperbarui!');

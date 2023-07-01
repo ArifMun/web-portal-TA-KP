@@ -5,6 +5,7 @@ namespace App\Models;
 use PDO;
 use App\Models\DaftarKP;
 use App\Models\Mahasiswa;
+use App\Models\TahunAkademik;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,13 +24,14 @@ class SeminarKP extends Model
         'jam_seminar',
         'stts_seminar',
         'judul',
-        'catatan'
+        // 'catatan',
+        'thn_akademik_id'
     ];
 
-    // public function mahasiswa()
-    // {
-    //     return $this->belongsTo(Mahasiswa::class);
-    // }
+    public function thnakademik()
+    {
+        return $this->belongsTo(TahunAkademik::class, 'thn_akademik_id');
+    }
 
     public function daftarkp()
     {
@@ -78,5 +80,14 @@ class SeminarKP extends Model
     public function daftar_ta()
     {
         return self::where('stts_seminar', '=', 'selesai')->get();
+    }
+
+    public static function registerSeminar()
+    {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) { //cek apakah seminar sudah selesai
+            if (Auth::user()->level == 0) {
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get()->sortByDesc('id')->count() == 0;
     }
 }

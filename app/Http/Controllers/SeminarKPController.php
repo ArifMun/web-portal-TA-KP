@@ -23,13 +23,17 @@ class SeminarKPController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        $seminarkp   = SeminarKP::all();
-        $thnakademik = TahunAkademik::latest('id')->limit(5)->get();
+        $thn         = new TahunAkademik();
+        $last_year   = $thn->orderBy('id', 'desc')->first();
+        $thnakademik = $thn->latest('id')->limit(5)->get();
         $dosen       = Dosen::all();
 
         $s_kp        = new SeminarKP();
+        $seminarkp   = $s_kp->latest()->get();
+        $registerSeminar = $s_kp->registerSeminar();
         $sSelesai    = $s_kp->s_Selesai();
         $sTerjadwal  = $s_kp->s_Terjadwal();
         $sProses     = $s_kp->s_Proses();
@@ -57,7 +61,8 @@ class SeminarKPController extends Controller
             'sTerjadwal',
             'sProses',
             'pengumuman',
-            // 'cek'
+            'registerSeminar',
+            'last_year'
         ));
     }
 
@@ -87,7 +92,7 @@ class SeminarKPController extends Controller
                 'daftarkp_id'       => 'required|unique:seminar_kp',
                 'form_bimbingan'    => 'required|image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
-                // 'jam_seminar'    => 'required',
+                'thn_akademik_id'   => 'required',
                 'stts_seminar'      => 'required',
                 'judul'             => 'required'
             ]
@@ -97,15 +102,16 @@ class SeminarKPController extends Controller
         if ($validation->fails()) {
             return \redirect('seminar-kp')->with('warning', 'Data Tidak Tersimpan!');
         } else {
-            $seminarkp = SeminarKP::create([
+
+            SeminarKP::create([
                 // 'mahasiswa_id'   => $request->mahasiswa_id,
-                'daftarkp_id'    => $request->daftarkp_id,
-                'form_bimbingan' => $request->file('form_bimbingan')->store('post-images'),
-                'tgl_seminar'    => $request->tgl_seminar,
-                'jam_seminar'    => $request->jam_seminar,
-                'judul'          => $request->judul,
-                'catatan'        => $request->catatan,
-                'stts_seminar'   => $request->stts_seminar,
+                'daftarkp_id'     => $request->daftarkp_id,
+                'form_bimbingan'  => $request->file('form_bimbingan')->store('post-images'),
+                'tgl_seminar'     => $request->tgl_seminar,
+                'jam_seminar'     => $request->jam_seminar,
+                'judul'           => $request->judul,
+                'thn_akademik_id' => $request->thn_akademik_id,
+                'stts_seminar'    => $request->stts_seminar,
             ]);
 
             return \redirect('seminar-kp')->with('success', 'Data Berhasil Disimpan!');
@@ -175,7 +181,7 @@ class SeminarKPController extends Controller
             $seminarkp->jam_seminar     = $request->jam_seminar;
             $seminarkp->stts_seminar    = $request->stts_seminar;
             $seminarkp->judul           = $request->judul;
-            $seminarkp->catatan         = $request->catatan;
+            $seminarkp->thn_akademik_id = $request->thn_akademik_id;
             $seminarkp->update();
 
             return \redirect('seminar-kp')->with('success', 'Data Berhasil Diperbarui!');

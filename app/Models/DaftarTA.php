@@ -98,7 +98,7 @@ class DaftarTA extends Model
             if (Auth::user()->level == 0) {
                 $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get();
+        })->get()->sortByDesc('id');
     }
 
     public function m_ta_diterima()
@@ -110,19 +110,28 @@ class DaftarTA extends Model
         })->where('stts_pengajuan', '=', 'diterima')->get();
     }
 
+    public function inputMhsDiterima()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get()->where('stts_pengajuan', '=', 'diterima')->sortByDesc('id')->first();
+    }
+
     public function m_bimbing_1()
     {
         return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
             if (Auth::user()->level == 0) {
                 $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->where('stts_pengajuan', '=', 'diterima')->get()->sortByDesc('id');
+        })->where('stts_pengajuan', '=', 'diterima')->get()->sortByDesc('id')->first();
     }
 
     public function d_bimbing_1()
     {
         return self::with('dosen1')->whereHas('dosen1', function ($q) {
-            if (Auth::user()->level == 2 || Auth::user()->level == 3) {
+            if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());
@@ -133,11 +142,22 @@ class DaftarTA extends Model
     public function d_bimbing_2()
     {
         return self::with('dosen2')->whereHas('dosen2', function ($q) {
-            if (Auth::user()->level == 2 || Auth::user()->level == 3) {
+            if (Auth::user()->level == 1) {
                 $q->where('id', '=', Auth::user()->biodata->dosen->id);
             } else {
                 $q->where('id', '=', Auth::user());
             }
         })->get()->sortByDesc('id');
+    }
+
+    public static function nextta()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            } else if (Auth::user()->level != 1) {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->sortByDesc('id')->first();
     }
 }

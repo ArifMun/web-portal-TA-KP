@@ -19,7 +19,8 @@ class SidangTA extends Model
         'f_bimbingan_1',
         'f_bimbingan_2',
         'slip_pembayaran',
-        'catatan',
+        // 'catatan',
+        'thn_akademik_id',
         'judul',
         'tgl_sidang',
         'jam_sidang',
@@ -30,6 +31,10 @@ class SidangTA extends Model
     // {
     //     return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
     // }
+    public function thnakademik()
+    {
+        return $this->belongsTo(TahunAkademik::class, 'thn_akademik_id');
+    }
 
     public function daftarta()
     {
@@ -63,5 +68,14 @@ class SidangTA extends Model
     public function s_selesai()
     {
         return self::where('stts_sidang', '=', 'selesai')->count();
+    }
+
+    public static function registerSidang()
+    {
+        return self::with('daftarta')->whereHas('daftarta', function ($q) { //cek apakah seminar sudah selesai
+            if (Auth::user()->level == 0) {
+                $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
+            }
+        })->get()->sortByDesc('id')->count() == 0;
     }
 }

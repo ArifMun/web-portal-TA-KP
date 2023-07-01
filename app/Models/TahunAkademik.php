@@ -19,4 +19,14 @@ class TahunAkademik extends Model
     {
         return $this->hasMany(DaftarKP::class, 'thn_akademik_id');
     }
+
+    public function daftarta()
+    {
+        return $this->hasMany(DaftarTA::class, 'thn_akademik_id');
+    }
+
+    function seminarkp()
+    {
+        return $this->hasMany(SeminarKP::class, 'thn_akademik_id');
+    }
 }

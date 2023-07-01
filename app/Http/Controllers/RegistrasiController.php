@@ -23,11 +23,11 @@ class RegistrasiController extends Controller
     public function index()
     {
         $konsentrasi = Konsentrasi::all();
-        $biodata = Biodata::all();
-        $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
-            ->select('users.*', 'biodata.id', 'biodata.*')
-            ->get()
-            ->sortByDesc('id');
+        $biodata     = Biodata::all();
+        $users       = User::with('biodata')->latest('id')->get();
+
+        $User    = new User();
+        $authUser = Auth::user();
         $user = User::select('level')
             ->distinct()
             ->get();
@@ -43,7 +43,8 @@ class RegistrasiController extends Controller
             'user',
             'users',
             'dosen',
-            'konsentrasi'
+            'konsentrasi',
+            'authUser'
         ));
     }
 
@@ -91,7 +92,7 @@ class RegistrasiController extends Controller
                 'level'      => $request->level,
             ]);
 
-            if (($request->jabatan == 'dosen') || ($request->jabatan == 'kaprodi')) {
+            if (($request->jabatan == 'dosen')) {
                 $biodata->dosen()->create([
                     'biodata_id' => $biodata->id,
                     // 'nama'       => $biodata->nama

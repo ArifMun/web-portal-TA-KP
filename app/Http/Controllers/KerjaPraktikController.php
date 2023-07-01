@@ -25,31 +25,22 @@ class KerjaPraktikController extends Controller
      * @return \Illuminate\Http\Response
      */
 
-    protected $TahunAkademik;
-
-    public function __construct(TahunAkademik $TahunAkademik)
-    {
-        $this->TahunAkademik = $TahunAkademik;
-    }
     public function index()
     {
         $existKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() != 0;
-        $newRegisterKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() == 0 || Auth::user()->level != 0;
+        $newRegisterKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() == 0 || Auth::user()->level == 2;
 
-        $nextkp      =
-            DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-                if (Auth::user()->level == 0) {
-                    $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-                } else if (Auth::user()->level != 1) {
-                    $q->where('id', '=', Auth::user());
-                }
-            })->get()->sortByDesc('id')->first();
+        $daftar_kp   = new DaftarKP();
+        $mhskps      = $daftar_kp->authDaftarKP();
+        $nextkp      = $daftar_kp->nextkp();
 
-        $daftarkp    = DaftarKP::with('mahasiswa', 'tahunakademik')->get();
+        $thn         = new TahunAkademik();
+        $last_year   = $thn->orderBy('id', 'desc')->first();
+        $thnakademik = $thn->latest('id')->limit(5)->get();
+
+        $daftarkp    = DaftarKP::with('mahasiswa', 'tahunakademik')->latest()->get();
         $filterStts  = DaftarKP::distinct()->select('stts_pengajuan')->get();
         $dosen       = Dosen::with('biodata')->get();
-        $last_year   = $this->TahunAkademik->orderBy('id', 'desc')->first();
-        $thnakademik = $this->TahunAkademik->latest('id')->limit(5)->get();
         $konsentrasi = Konsentrasi::all();
         $mahasiswa   = Mahasiswa::with('biodata')->get();
         $mhskp       = Auth::user()->biodata->mahasiswa;
@@ -57,13 +48,7 @@ class KerjaPraktikController extends Controller
         $kpTertunda  = DaftarKP::where('stts_pengajuan', '=', 'tertunda')->get()->count();
         $kpDitolak   = DaftarKP::where('stts_pengajuan', '=', 'ditolak')->get()->count();
         $pengumuman  = Pengumuman::get()->first();
-        $mhskps      = DaftarKP::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
-            if (Auth::user()->level == 0) {
-                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
-            } else {
-                $q->where('id', '=', Auth::user());
-            }
-        })->get()->sortByDesc('id');
+
         $formakses = FormAkses::get()->first();
 
         return \view('kerja-praktik.daftar-kp', \compact(
@@ -137,8 +122,7 @@ class KerjaPraktikController extends Controller
 
             $input = $request->input('konsentrasi');
             $string = \implode(',', $input);
-            $last_year = $this->TahunAkademik;
-            $input_year = $last_year->latest('id')->first('id');
+
             // DaftarKP::create($string);
             DaftarKP::create([
                 'mahasiswa_id'      => $request->mahasiswa_id,
@@ -151,7 +135,7 @@ class KerjaPraktikController extends Controller
                 'ganti_pembimbing'  => $request->ganti_pembimbing,
                 'semester'          => $request->semester,
                 'slip_pembayaran'   => $request->file('slip_pembayaran')->store('post-images'),
-                'thn_akademik_id'   => $input_year->id,
+                'thn_akademik_id'   => $request->thn_akademik_id,
                 'konsentrasi'       => $string,
             ]);
             return \redirect('kerja-praktik')->with('success', 'Data Berhasil Disimpan!');

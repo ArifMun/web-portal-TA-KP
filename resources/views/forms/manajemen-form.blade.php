@@ -940,7 +940,7 @@
         url: '{{ route('toggle.update-ta') }}',
         data: {'akses_ta': akses_ta, 'id': id},
         success: function(data){
-                nsole.log(data.success)
+                console.log(data.success)
                 }   
             });
         })

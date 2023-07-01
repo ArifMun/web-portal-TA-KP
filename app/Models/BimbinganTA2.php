@@ -40,7 +40,7 @@ class BimbinganTA2 extends Model
     public function b_dosen_2()
     {
         return self::with('daftarta')->whereHas('daftarta', function ($q) {
-            if (Auth::user()->level == 2) {
+            if (Auth::user()->level == 1) {
                 $q->where('d_pembimbing_2', '=', Auth::user()->biodata->dosen->id);
             }
         })->get()->sortByDesc('id');

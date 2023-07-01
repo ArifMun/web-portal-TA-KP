@@ -46,12 +46,12 @@
                     <div class="form-group form-floating-label">
                         <input id="no_induk" name="no_induk" type="number" class="form-control input-border-bottom"
                             required>
-                        <label for="no_induk" class="placeholder">No Induk</label>
+                        <label for="no_induk" class="placeholder">NIM</label>
                     </div>
                     <div class="form-group form-floating-label">
                         <input id="tempat_lahir" name="tempat_lahir" type="text"
-                            class="form-control input-border-bottom">
-                        <label for="tempat_lahir" class="placeholder">Tempat Lahir</label>
+                            class="form-control input-border-bottom" required>
+                        <label for="no_induk" class="placeholder">Tempat Lahir</label>
                     </div>
                     <div class="form-group form-floating-label">
                         <label for="tgl_lahir">Tanggal Lahir</label>

@@ -43,11 +43,9 @@
                             <div class="d-flex align-items-center">
                                 @if (Auth::user()->level==0)
                                 <h4 class="card-title">Dosen Pembimbing 1</h4>
-                                @elseif(Auth::user()->level==2||3)
+                                @elseif(Auth::user()->level==1)
                                 <h4 class="card-title">Mahasiswa Bimbingan 1</h4>
                                 @endif
-
-
 
                                 <a href="/bimbingan-ta/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan">
@@ -58,60 +56,6 @@
                         </div>
 
                         <div class="card-body">
-                            {{-- <div class="row">
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
-                                        <div class="col col-stats ml-3 ml-sm-0">
-                                            <div class="filter tahun">
-                                                <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="7" class="form-control" id="filter-tahun">
-                                                    <option value="">-- Pilih Tahun --</option>
-                                                    @foreach ($thnakademik as $k)
-                                                    <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
-                                        <div class="col col-stats ml-3 ml-sm-0">
-                                            <div class="filter tahun">
-                                                <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="5" class="form-control" id="filter-stts">
-                                                    <option value="">-- Pilih Status --</option>
-                                                    @foreach ($filterStts as $item)
-                                                    <option value="{{ $item->stts }}" class="text-uppercase">{{
-                                                        $item->stts }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
-                                        <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Bimbingan</label>
-                                            <div class="row ml-1">
-                                                @if (Auth::user()->level == 1)
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    <b>PROSES : {{ $sttsDosen }}</b>
-                                                </p>
-                                                @elseif(Auth::user()->level == 0)
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    <b>PROSES : {{ $sttsDosen }}</b>
-                                                </p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div> --}}
                             <div class="d-flex align-items-center">Readme First
                                 <a href="bimbingan-ta/view-pengumuman" data-toggle="modal"
                                     data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
@@ -124,9 +68,15 @@
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
+                                            @if (Auth::user()->level==1)
                                             <th>NIM</th>
                                             <th>Nama</th>
+                                            @endif
+
+                                            @if (Auth::user()->level==0)
                                             <th>Dosen Pembimbing 1</th>
+                                            @endif
+
                                             <th>Judul Bimbingan</th>
                                             <th>Laporan TA</th>
                                             <th>Status</th>
@@ -134,7 +84,7 @@
                                             <th>Tahun</th>
                                             <th>Author</th>
                                             <th>Dibuat</th>
-                                            <th>Diubah</th>
+                                            {{-- <th>Diubah</th> --}}
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -147,8 +97,8 @@
                                         {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            {{-- <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td> --}}
                                             <td class="text-capitalize">{{ $item->daftarta->dosen1->biodata->nama }}
                                             </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
@@ -184,7 +134,7 @@
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
-                                            <td>{{ $item->updated_at }}</td>
+                                            {{-- <td>{{ $item->updated_at }}</td> --}}
                                             <td>
                                                 <a href="bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
@@ -207,15 +157,13 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level == 2 || 3)
+                                    @elseif(Auth::user()->level == 1)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($b_dosen_1 as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarta->dosen1->biodata->nama }}
-                                            </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_ta }}"><i
@@ -249,7 +197,7 @@
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
-                                            <td>{{ $item->updated_at }}</td>
+                                            {{-- <td>{{ $item->updated_at }}</td> --}}
                                             <td>
                                                 <a href="bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
@@ -283,7 +231,7 @@
                             <div class="d-flex align-items-center">
                                 @if (Auth::user()->level==0)
                                 <h4 class="card-title">Dosen Pembimbing 2</h4>
-                                @elseif(Auth::user()->level==2 ||3)
+                                @elseif(Auth::user()->level==1)
                                 <h4 class="card-title">Mahasiswa Bimbingan 2</h4>
                                 @endif
                                 <a href="/bimbingan-ta-1/tambah" class="btn btn-primary btn-round ml-auto"
@@ -295,60 +243,6 @@
                         </div>
 
                         <div class="card-body">
-                            {{-- <div class="row">
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
-                                        <div class="col col-stats ml-3 ml-sm-0">
-                                            <div class="filter tahun">
-                                                <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="7" class="form-control" id="filter-tahun">
-                                                    <option value="">-- Pilih Tahun --</option>
-                                                    @foreach ($thnakademik as $k)
-                                                    <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
-                                        <div class="col col-stats ml-3 ml-sm-0">
-                                            <div class="filter tahun">
-                                                <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="5" class="form-control" id="filter-stts">
-                                                    <option value="">-- Pilih Status --</option>
-                                                    @foreach ($filterStts as $item)
-                                                    <option value="{{ $item->stts }}" class="text-uppercase">{{
-                                                        $item->stts }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div class="col-sm-6 col-md-3">
-                                    <div class="row align-items-center">
-                                        <div class="col col-stats ml-3 ml-sm-0">
-                                            <label class="font-weight-bold h6">Status Bimbingan</label>
-                                            <div class="row ml-1">
-                                                @if (Auth::user()->level == 1)
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    <b>PROSES : {{ $sttsDosen }}</b>
-                                                </p>
-                                                @elseif(Auth::user()->level == 0)
-                                                <p class="font-weight-bold text-light p-1 btn-warning btn-round mr-1">
-                                                    <b>PROSES : {{ $sttsDosen }}</b>
-                                                </p>
-                                                @endif
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div> --}}
 
                             <div class="divider"></div>
                             <div class="table-responsive">
@@ -356,9 +250,15 @@
                                     <thead>
                                         <tr align="center">
                                             <th>No</th>
+                                            @if (Auth::user()->level==1)
                                             <th>NIM</th>
                                             <th>Nama</th>
+                                            @endif
+
+                                            @if (Auth::user()->level==0)
                                             <th>Dosen Pembimbing 2</th>
+                                            @endif
+
                                             <th>Judul Bimbingan</th>
                                             <th>Laporan TA</th>
                                             <th>Status</th>
@@ -366,7 +266,7 @@
                                             <th>Tahun</th>
                                             <th>Author</th>
                                             <th>Dibuat</th>
-                                            <th>Diubah</th>
+                                            {{-- <th>Diubah</th> --}}
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -379,8 +279,8 @@
                                         {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            {{-- <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td> --}}
                                             <td class="text-capitalize">{{ $item->daftarta->dosen2->biodata->nama }}
                                             </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
@@ -416,7 +316,7 @@
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
-                                            <td>{{ $item->updated_at }}</td>
+                                            {{-- <td>{{ $item->updated_at }}</td> --}}
                                             <td>
                                                 <a href="bimbingan-ta-1/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan1{{ $item->id }}"
@@ -439,15 +339,16 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level == 2||3)
+                                    @elseif(Auth::user()->level == 1)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($b_dosen_2 as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarta->dosen2->biodata->nama }}
-                                            </td>
+                                            {{-- <td class="text-capitalize">{{ $item->daftarta->dosen2->biodata->nama
+                                                }}
+                                            </td> --}}
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
                                                 <a href="storage/{{ $item->laporan_ta }}"><i
@@ -528,17 +429,21 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
+                                @if (Auth::user()->level==0 )
+                                <input type="text" class="form-control"
+                                    value="{{ $m_bimbing_1->mahasiswa->biodata->no_induk }} - {{ $m_bimbing_1->mahasiswa->biodata->nama }} - {{ $m_bimbing_1->tahunakademik->tahun }}"
+                                    readonly>
+                                <input type="hidden" name="daftar_ta_id" value="{{ $m_bimbing_1->id }}">
+                                @else
                                 <select class="form-control" name="daftar_ta_id" id="daftar_ta_id" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
-                                    @if (Auth::user()->level==0 )
-                                    @foreach ($m_bimbing_1 as $item)
+                                    {{-- @foreach ($m_bimbing_1 as $item)
                                     <option value="{{ $item->id}}">{{ $item->mahasiswa->biodata->no_induk }} - {{
                                         $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun
                                         }}
                                     </option>
-                                    @endforeach
-                                    @else
+                                    @endforeach --}}
                                     @foreach ($d_bimbing_1 as $item)
                                     <option value="{{ $item->id }}">{{
                                         $item->mahasiswa->biodata->no_induk
@@ -552,12 +457,35 @@
                                 </select>
                             </div>
                             <div class="col">
+                                <label class="control-label">Dosen Pembimbing 1 </label>
+                                <input type="text" class="form-control"
+                                    value="{{ $m_bimbing_1->dosen1->biodata->nama }}" readonly>
+                            </div>
+                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
                                 <label class="control-label">Judul Bimbingan </label>
                                 <input type="text" class="form-control" name="judul_bimbingan">
                             </div>
-                            {{-- <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
-                            <input type="hidden" name="dosen_id" id="dosen_id" readonly> --}}
-                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
+                            <div class="col">
+                                <label class="control-label">Status TA </label>
+                                @if (Auth::user()->level==0)
+                                <input type="text" size="1" class="form-control" value="Proses" readonly>
+                                <input type="hidden" value="proses" name="stts">
+                                {{-- <option value="proses" @readonly(true)>Proses</option> --}}
+                                @else
+                                <select class="form-control" name="stts" required>
+                                    <option value="" hidden="">-- Status TA --</option>
+                                    <option value="proses">Proses</option>
+                                    <option value="acc">ACC</option>
+                                    <option value="revisi">Revisi</option>
+                                    @endif
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -571,25 +499,6 @@
                                         class="text-danger">1024
                                         KB</span></span>
                             </div>
-                            <div class="col">
-                                <label class="control-label">Status TA</label>
-                                <select class="form-control" name="stts" required>
-                                    @if (Auth::user()->level==0)
-                                    <option value="proses" @readonly(true)>Proses</option>
-                                    @else
-                                    <option value="" hidden="">-- Status TA --</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="acc">ACC</option>
-                                    <option value="revisi">Revisi</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-
                             <div class="col">
                                 <label>Catatan</label>
                                 {{-- <input type="textarea" class="form-control" name="catatan"> --}}
@@ -637,18 +546,16 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
+                                @if (Auth::user()->level==0 )
+                                <input type="text" class="form-control"
+                                    value="{{ $m_bimbing_1->mahasiswa->biodata->no_induk }} - {{ $m_bimbing_1->mahasiswa->biodata->nama }} - {{ $m_bimbing_1->tahunakademik->tahun }}"
+                                    readonly>
+                                <input type="hidden" name="daftar_ta_id" value="{{ $m_bimbing_1->id }}">
+                                @else
+
                                 <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa_1()"
                                     id="daftar_ta_id_1" required>
                                     <option value="" hidden="">-- Pilih --</option>
-
-                                    @if (Auth::user()->level==0 )
-                                    @foreach ($m_bimbing_1 as $item)
-                                    <option value="{{ $item->id}}">{{ $item->mahasiswa->biodata->no_induk }} - {{
-                                        $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun
-                                        }}
-                                    </option>
-                                    @endforeach
-                                    @else
                                     @foreach ($d_bimbing_2 as $item)
                                     <option value="{{ $item->id }}">{{
                                         $item->mahasiswa->biodata->no_induk
@@ -662,11 +569,10 @@
                                 </select>
                             </div>
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan">
+                                <label class="control-label">Dosen Pembimbing 2 </label>
+                                <input type="text" class="form-control"
+                                    value="{{ $m_bimbing_1->dosen2->biodata->nama }}" readonly>
                             </div>
-                            <input type="hidden" name="mahasiswa_id" id="mahasiswa_id_1" readonly>
-                            <input type="hidden" name="dosen_id" id="dosen_id_1" readonly>
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -674,19 +580,17 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan TA </label>
-                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta">
-                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span></span>
+                                <label class="control-label">Judul Bimbingan </label>
+                                <input type="text" class="form-control" name="judul_bimbingan">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status TA</label>
+                                @if (Auth::user()->level==0)
+                                <input type="text" class="form-control" value="Proses" readonly>
+                                <input type="hidden" class="form-control" value="proses" name="stts">
+                                {{-- <option value="proses" @readonly(true)>Proses</option> --}}
+                                @else
                                 <select class="form-control" name="stts" required>
-                                    @if (Auth::user()->level==0)
-                                    <option value="proses" @readonly(true)>Proses</option>
-                                    @else
                                     <option value="" hidden="">-- Status TA --</option>
                                     <option value="proses">Proses</option>
                                     <option value="acc">ACC</option>
@@ -700,7 +604,14 @@
 
                     <div class="form-group required">
                         <div class="row">
-
+                            <div class="col">
+                                <label for="file" class="form-label control-label">Laporan TA </label>
+                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
+                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta">
+                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span></span>
+                            </div>
                             <div class="col">
                                 <label>Catatan</label>
                                 {{-- <input type="textarea" class="form-control" name="catatan"> --}}
@@ -762,14 +673,40 @@
                                 </select>
                             </div>
                             <div class="col">
+                                <label class="control-label">Dosen Pembimbing 1 </label>
+                                <input type="text" class="form-control"
+                                    value="{{ $item->daftarta->dosen1->biodata->nama }}" readonly>
+                            </div>
+                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
                                 <label class="control-label">Judul Bimbingan </label>
                                 <input type="text" class="form-control" name="judul_bimbingan"
                                     value="{{ $item->judul_bimbingan }}">
                             </div>
-                            <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" value="{{ $item->mahasiswa_id }}"
-                                readonly>
-                            <input type="hidden" name="dosen_id" id="dosen_id" value="{{ $item->dosen_id }}" readonly>
-                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
+                            <div class="col">
+                                <label class="control-label">Status </label>
+                                @if (Auth::user()->level==0)
+                                <input type="text" class="form-control text-capitalize" value="{{ $item->stts }}"
+                                    readonly>
+                                <input type="hidden" class="form-control text-capitalize" value="{{ $item->stts }}"
+                                    name="stts">
+                                {{-- <option value="{{ $item->stts }}" @readonly(true)>{{ $item->stts }}</option> --}}
+                                @else
+                                <select class="form-control text-capitalize" name="stts" required>
+                                    <option @php if($item->stts == 'proses') echo 'selected';
+                                        @endphp value="proses">Proses</option>
+                                    <option @php if($item->stts == 'acc') echo 'selected';
+                                        @endphp value="acc">ACC</option>
+                                    <option @php if($item->stts == 'revisi') echo 'selected';
+                                        @endphp value="revisi">Revisi</option>
+                                    @endif
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -785,26 +722,6 @@
                                     <span class="text-danger">1024
                                         KB</span></span>
                             </div>
-                            <div class="col">
-                                <label class="control-label">Status </label>
-                                <select class="form-control text-capitalize" name="stts" required>
-                                    @if (Auth::user()->level==0)
-                                    <option value="{{ $item->stts }}" @readonly(true)>{{ $item->stts }}</option>
-                                    @else
-                                    <option @php if($item->stts == 'proses') echo 'selected';
-                                        @endphp value="proses">Proses</option>
-                                    <option @php if($item->stts == 'acc') echo 'selected';
-                                        @endphp value="acc">ACC</option>
-                                    <option @php if($item->stts == 'revisi') echo 'selected';
-                                        @endphp value="revisi">Revisi</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
                             <div class="col">
                                 <label>Catatan</label>
                                 <textarea class="form-control" name="catatan"
@@ -865,15 +782,39 @@
                                 </select>
                             </div>
                             <div class="col">
+                                <label class="control-label">Dosen Pembimbing 2 </label>
+                                <input type="text" class="form-control"
+                                    value="{{ $item->daftarta->dosen2->biodata->nama }}" readonly>
+                            </div>
+                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
                                 <label class="control-label">Judul Bimbingan </label>
                                 <input type="text" class="form-control" name="judul_bimbingan"
                                     value="{{ $item->judul_bimbingan }}">
                             </div>
-                            {{-- <input type="hidden" name="mahasiswa_id" id="mahasiswa_id_1"
-                                value="{{ $item->mahasiswa_id }}" readonly>
-                            <input type="hidden" name="dosen_id" id="dosen_id_1" value="{{ $item->dosen_id }}" readonly>
-                            --}}
-                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
+                            <div class="col">
+                                <label class="control-label">Status </label>
+                                @if (Auth::user()->level==0)
+                                <input type="text" class="form-control text-capitalize" value="{{ $item->stts }}"
+                                    readonly>
+                                <input type="hidden" class="form-control" value="{{ $item->stts }}" name="stts">
+                                {{-- <option value="{{ $item->stts }}" @readonly(true)>{{ $item->stts }}</option> --}}
+                                @else
+                                <select class="form-control text-capitalize" name="stts" required>
+                                    <option @php if($item->stts == 'proses') echo 'selected';
+                                        @endphp value="proses">Proses</option>
+                                    <option @php if($item->stts == 'acc') echo 'selected';
+                                        @endphp value="acc">ACC</option>
+                                    <option @php if($item->stts == 'revisi') echo 'selected';
+                                        @endphp value="revisi">Revisi</option>
+                                    @endif
+                                </select>
+                            </div>
                         </div>
                     </div>
 
@@ -889,26 +830,6 @@
                                     <span class="text-danger">1024
                                         KB</span></span>
                             </div>
-                            <div class="col">
-                                <label class="control-label">Status </label>
-                                <select class="form-control text-capitalize" name="stts" required>
-                                    @if (Auth::user()->level==0)
-                                    <option value="{{ $item->stts }}" @readonly(true)>{{ $item->stts }}</option>
-                                    @else
-                                    <option @php if($item->stts == 'proses') echo 'selected';
-                                        @endphp value="proses">Proses</option>
-                                    <option @php if($item->stts == 'acc') echo 'selected';
-                                        @endphp value="acc">ACC</option>
-                                    <option @php if($item->stts == 'revisi') echo 'selected';
-                                        @endphp value="revisi">Revisi</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
                             <div class="col">
                                 <label>Catatan</label>
                                 <textarea class="form-control" name="catatan"

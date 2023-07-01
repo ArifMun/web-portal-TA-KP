@@ -26,14 +26,13 @@ class AuthController extends Controller
             'password' => 'required',
         ]);
 
-        // dd($request->all());
         $credentials = $request->only('username', 'password');
         if (Auth::attempt($credentials)) {
 
             $request->session()->regenerate();
             $user = Auth::user();
 
-            if ($user->level == 0 | 1 | 2 | 3) {
+            if (in_array($user->level, [0, 1, 2, 3])) {
                 return redirect()->intended('dashboard')->with('success', 'Anda Berhasil Masuk!');
             }
         } else {

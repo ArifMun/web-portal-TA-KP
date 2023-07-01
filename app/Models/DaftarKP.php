@@ -93,11 +93,31 @@ class DaftarKP extends Model
     public function mhskpd()
     {
         return self::with('dosen')->whereHas('dosen', function ($q) {
-            if (Auth::user()->level == 2) {
-                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-            } else if (Auth::user()->level == 3) {
+            if (Auth::user()->level == 1) {
                 $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
             }
         })->get()->where('stts_pengajuan', '=', 'diterima')->sortByDesc('id');
+    }
+
+    public static function nextkp()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            } else if (Auth::user()->level != 1) {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->sortByDesc('id')->first();
+    }
+
+    public static function authDaftarKP()
+    {
+        return self::with('mahasiswa')->whereHas('mahasiswa', function ($q) {
+            if (Auth::user()->level == 0) {
+                $q->where('id', '=', Auth::user()->biodata->mahasiswa->id);
+            } else {
+                $q->where('id', '=', Auth::user());
+            }
+        })->get()->sortByDesc('id');
     }
 }

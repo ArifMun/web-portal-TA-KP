@@ -39,6 +39,8 @@ class Kernel extends HttpKernel
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
             \RealRashid\SweetAlert\ToSweetAlert::class,
 
+            // \App\Http\Middleware\CheckProgres::class
+
         ],
 
         'api' => [
@@ -66,6 +68,6 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'CheckLevel' => \App\Http\Middleware\CheckLevel::class,
-
+        'CheckProgres' => \App\Http\Middleware\CheckProgres::class,
     ];
 }
