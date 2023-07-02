@@ -25,6 +25,7 @@ class SidangTA extends Model
         'tgl_sidang',
         'jam_sidang',
         'stts_sidang',
+        'tempat'
     ];
 
     // public function mahasiswa()

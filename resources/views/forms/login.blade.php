@@ -34,6 +34,7 @@
 
 
 <body class="login">
+  <h4 class="text-center"><a href="home/jadwal-sidang">JADWAL SIDANG</a></h4>
   <div class="wrapper wrapper-login border">
     {{-- <h3 class="text-center">WEB PORTAL TUGAS AKHIR DAN KERJA PRAKTIK</h3> --}}
     <div class="container container-login">

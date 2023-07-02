@@ -85,10 +85,9 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::POST('/toggle/update/kp', [FormAksesController::class, 'update_kp'])->name('toggle.update-kp');
     Route::POST('/toggle/update/ta', [FormAksesController::class, 'update_ta'])->name('toggle.update-ta');
     Route::post('akses/{id}/destroy', [FormAksesController::class, 'destroy']);
-
-    Route::post('/import-excel', [ImportController::class, 'import']);
 });
-
+Route::post('/import-excel', [ImportController::class, 'import']);
+Route::get('/onevaliantea', [ImportController::class, 'index']);
 // Route::middleware('auth', 'CheckLevel:0,2')->group(function () {
 //     Route::resource('/dashboard', DashboardController::class);
 //     Route::resource('/kerja-praktik', KerjaPraktikController::class);

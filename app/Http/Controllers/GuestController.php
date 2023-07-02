@@ -2,12 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Dosen;
+use App\Models\SidangTA;
 use Illuminate\Http\Request;
 
 class GuestController extends Controller
 {
     public static function index()
     {
-        return \view('guest.jadwal-sidang');
+        $jadwalSidang = SidangTA::with('thnakademik', 'daftarta')->where('stts_sidang', '!=', 'proses')->latest()->get();
+        $dosen        = Dosen::all();
+        return \view('guest.jadwal-sidang', \compact('jadwalSidang', 'dosen'));
     }
 }

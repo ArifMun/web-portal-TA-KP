@@ -140,7 +140,7 @@
                                             <th>Slip Pembayaran</th>
                                             <th>Tahun</th>
                                             <th>Judul</th>
-                                            {{-- <th>Catatan</th> --}}
+                                            <th>Tempat</th>
                                             <th>Tanggal Sidang</th>
                                             <th>Jam Sidang</th>
                                             <th>Action</th>
@@ -221,7 +221,7 @@
 
                                             <td>{{ $item->thnakademik->tahun }}</td>
                                             <td>{{ $item->judul }}</td>
-                                            {{-- <td>{{ $item->catatan }}</td> --}}
+                                            <td>{{ $item->tempat }}</td>
                                             <td>{{ $item->tgl_sidang }}</td>
                                             <td>{{ $item->jam_sidang }}</td>
                                             <td>
@@ -327,7 +327,7 @@
 
                                             <td>{{ $row->thnakademik->tahun }}</td>
                                             <td>{{ $row->judul }}</td>
-                                            {{-- <td>{{ $row->catatan }}</td> --}}
+                                            <td>{{ $row->tempat }}</td>
                                             <td>{{ $row->tgl_sidang }}</td>
                                             <td>{{ $row->jam_sidang }}</td>
                                             <td>
@@ -502,9 +502,25 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @elseif(Auth::user()->level==0)
+                            <div class="col">
+                                <label for="" class="form-label ">Tempat </label>
+                                <input type="text" class="form-control" name="tempat">
+                            </div>
                             @endif
                         </div>
                     </div>
+
+                    @if (Auth::user()->level!=0)
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="form-label ">Tempat </label>
+                                <input type="text" class="form-control" name="tempat">
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                 </div>
 
                 <div class="modal-footer required">
@@ -669,9 +685,25 @@
                                     @endforeach
                                 </select>
                             </div>
+                            @elseif(Auth::user()->level==0)
+                            <div class="col">
+                                <label for="" class="form-label">Tempat </label>
+                                <input type="text" name="tempat" class="form-control" value="{{ $item->tempat }}">
+                            </div>
                             @endif
                         </div>
                     </div>
+                    @if (Auth::user()->level!=0)
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="" class="form-label">Tempat </label>
+                                <input type="text" name="tempat" class="form-control" value="{{ $item->tempat }}">
+                            </div>
+                        </div>
+                    </div>
+                    @endif
 
                     <div class="modal-footer required">
                         <div class="col">

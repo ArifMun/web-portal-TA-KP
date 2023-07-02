@@ -25,7 +25,8 @@ class SeminarKP extends Model
         'stts_seminar',
         'judul',
         // 'catatan',
-        'thn_akademik_id'
+        'thn_akademik_id',
+        'ket_selesai'
     ];
 
     public function thnakademik()

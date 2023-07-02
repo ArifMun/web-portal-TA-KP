@@ -10,6 +10,10 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ImportController extends Controller
 {
+    public static function index()
+    {
+        return \view('guest.import');
+    }
     public static function import(Request $request)
     {
         $validation = Validator::make(
@@ -18,7 +22,7 @@ class ImportController extends Controller
                 'file-import' => 'required',
             ]
         );
-        
+
         if ($validation->fails()) {
             return \redirect('registrasi')->with('warning', 'Data Tidak Tersimpan!')
                 ->withErrors($validation);

@@ -113,6 +113,7 @@ class SidangTAController extends Controller
                 'f_bimbingan_2'     => $request->file('f_bimbingan_2')->store('form-b2'),
                 'slip_pembayaran'   => $request->file('slip_pembayaran')->store('slip-ta'),
                 'judul'             => $request->judul,
+                'tempat'            => $request->tempat,
                 'thn_akademik_id'   => $request->thn_akademik_id,
                 'tgl_sidang'        => $request->tgl_sidang,
                 'jam_sidang'        => $request->jam_sidang,
@@ -164,8 +165,8 @@ class SidangTAController extends Controller
                 'f_bimbingan_2'     => 'image|file|max:1024',
                 'slip_pembayaran'   => 'image|file|max:1024',
                 'judul'             => 'required',
-                'tgl_sidang'        => 'required',
-                'jam_sidang'        => 'required',
+                // 'tgl_sidang'        => 'required',
+                // 'jam_sidang'        => 'required',
                 'stts_sidang'       => 'required'
             ]
         );
@@ -201,6 +202,7 @@ class SidangTAController extends Controller
             $sidang_ta->daftar_ta_id    = $request->daftar_ta_id;
             $sidang_ta->d_penguji       = $request->d_penguji;
             $sidang_ta->judul           = $request->judul;
+            $sidang_ta->tempat           = $request->tempat;
             // $sidang_ta->catatan         = $request->catatan;
             $sidang_ta->tgl_sidang      = $request->tgl_sidang;
             $sidang_ta->jam_sidang      = $request->jam_sidang;

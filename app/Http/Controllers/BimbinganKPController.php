@@ -32,12 +32,12 @@ class BimbinganKPController extends Controller
         $mhskps     = $daftar_kp->mhskps();
         $mhskpd     = $daftar_kp->mhskpd();
 
-        $bimbing_kp = new BimbinganKP();
-        $sttsDosen   = $bimbing_kp->sttsDosen();
-        $sttsMhs   = $bimbing_kp->sttsMhs();
-        $bimbingMhs   = $bimbing_kp->bimbingMhs();
+        $bimbing_kp     = new BimbinganKP();
+        $sttsDosen      = $bimbing_kp->sttsDosen();
+        $sttsMhs        = $bimbing_kp->sttsMhs();
+        $bimbingMhs     = $bimbing_kp->bimbingMhs();
         $bimbingDosen   = $bimbing_kp->bimbingDosen();
-        $pengumuman  = Pengumuman::get()->first();
+        $pengumuman     = Pengumuman::get()->first();
 
         $list = BimbinganKP::select('daftarkp_id')->groupBy('daftarkp_id')->get();
 
@@ -82,7 +82,7 @@ class BimbinganKPController extends Controller
                 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
-                'laporan_kp'        => 'required|file|max:1024',
+                // 'laporan_kp'        => 'required|file|max:1024',
                 // 'catatan'           => 'required',
             ]
         );
@@ -99,7 +99,7 @@ class BimbinganKPController extends Controller
                 'catatan'           => $request->catatan,
                 'stts'              => $request->stts,
                 'author'            => $request->author,
-                'laporan_kp'        => $request->file('laporan_kp')->store('dokumen-kp')
+                'laporan_kp'        => $request->hasFile('laporan_kp') ? $request->file('laporan_kp')->store('dokumen-kp') : null
             ]);
 
             return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Disimpan!');
@@ -143,7 +143,7 @@ class BimbinganKPController extends Controller
                 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
-                'laporan_kp'        => 'file|max:1024',
+                // 'laporan_kp'        => 'file|max:1024',
                 // 'catatan'           => 'required',
             ]
         );

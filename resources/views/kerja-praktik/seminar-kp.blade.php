@@ -429,12 +429,19 @@
 
                     <div class="form-group required">
                         <div class="row">
-
                             <div class="col-6">
                                 <label for="image" class="form-label control-label">Form Bimbingan</label>
                                 <input type="file" class="form-control picture" id="image1" name="form_bimbingan"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
+                                <span class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </span>
+                            </div>
+                            <div class="col-6">
+                                <label for="image" class="form-label control-label">Surat Keterangan Selesai</label>
+                                <input type="file" class="form-control picture" id="image3" name="ket_selesai"
+                                    onchange="previewImage(3)">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview3">
                                 <span class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
                                         KB</span> </span>
                             </div>
@@ -555,6 +562,22 @@
                                     class="img-preview img-fluid mt-2 col-sm-4 mt-1" id="preview2">
                                 @else
                                 <img class="img-preview img-fluid mt-2 col-sm-5" id="preview2">
+                                @endif
+                                <p class="mt-1 font-italic text-muted">biarkan kolom kosong
+                                    jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </p>
+                            </div>
+                            <div class="col-6">
+                                <label for="image" class="form-label">Surat Keterangan Selesai </label>
+                                <input type="hidden" name="oldImage" value="{{ $item->ket_selesai }}">
+                                <input type="file" class="form-control picture" id="image4" name="ket_selesai"
+                                    onchange="previewImage(4)">
+
+                                @if ($item->ket_selesai)
+                                <img src="{{ asset('storage/' . $item->ket_selesai) }}"
+                                    class="img-preview img-fluid mt-4 col-sm-4 mt-1" id="preview4">
+                                @else
+                                <img class="img-preview img-fluid mt-4 col-sm-5" id="preview4">
                                 @endif
                                 <p class="mt-1 font-italic text-muted">biarkan kolom kosong
                                     jika tidak diganti | ukuran file maksimal <span class="text-danger">1024

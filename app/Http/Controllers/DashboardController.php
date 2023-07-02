@@ -21,7 +21,7 @@ class DashboardController extends Controller
         $notifAcc = DaftarKP::all()->count();
         $notifWait = DaftarKP::where('stts_pengajuan', '=', 'tertunda')
             ->count();
-        $seminar   = SeminarKP::all()->count();
+        $seminar   = SeminarKP::get()->where('stts_seminar', '=', 'selesai')->count();
 
         $kpditerima = new DaftarKP();
         $datakp = $kpditerima->d_kp_diterima()->count();

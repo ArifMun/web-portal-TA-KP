@@ -91,6 +91,7 @@ class SeminarKPController extends Controller
                 // 'mahasiswa_id'      => 'required',
                 'daftarkp_id'       => 'required|unique:seminar_kp',
                 'form_bimbingan'    => 'required|image|file|max:1024',
+                'ket_selesai'    => 'required|image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
                 'thn_akademik_id'   => 'required',
                 'stts_seminar'      => 'required',
@@ -107,6 +108,7 @@ class SeminarKPController extends Controller
                 // 'mahasiswa_id'   => $request->mahasiswa_id,
                 'daftarkp_id'     => $request->daftarkp_id,
                 'form_bimbingan'  => $request->file('form_bimbingan')->store('post-images'),
+                'ket_selesai'     => $request->file('ket_selesai')->store('surat-selesai-kp'),
                 'tgl_seminar'     => $request->tgl_seminar,
                 'jam_seminar'     => $request->jam_seminar,
                 'judul'           => $request->judul,
@@ -155,6 +157,7 @@ class SeminarKPController extends Controller
                 // 'mahasiswa_id'      => 'required',
                 'daftarkp_id'       => 'required',
                 'form_bimbingan'    => 'image|file|max:1024',
+                'ket_selesai'       => 'image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
                 // 'jam_seminar'    => 'required',
                 'stts_seminar'      => 'required',
@@ -173,6 +176,12 @@ class SeminarKPController extends Controller
                     Storage::delete($request->oldImage);
                 }
                 $seminarkp->form_bimbingan = $request->file('form_bimbingan')->store('post-images');
+            }
+            if ($request->file('ket_selesai')) {
+                if ($request->oldImaage1) {
+                    Storage::delete($request->oldImage1);
+                }
+                $seminarkp->ket_selesai = $request->file('ket_selesai')->store('surat-selesai-kp');
             }
 
             // $seminarkp->mahasiswa_id    = $request->mahasiswa_id;

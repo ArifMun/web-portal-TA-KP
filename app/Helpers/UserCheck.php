@@ -57,8 +57,8 @@ class UserCheck
             ->flatMap(function ($daftarkp) { //flatMap() untuk menggabungkan semua bimbingankp dari setiap daftarkp menjadi satu koleksi.
                 return $daftarkp->bimbingankp;
             })
-            ->where('stts', '=', 'acc')
-            ->count() >= 1;
+            ->where('stts', '!=', 'proses')
+            ->count() >= 2;
 
         return ($level == 0 && $countBimbingan);
     }
@@ -111,7 +111,7 @@ class UserCheck
             ->flatMap(function ($daftarta) {
                 return $daftarta->bimbinganta_1;
             })
-            ->where('stts', '=', 'acc')
+            ->where('stts', '!=', 'proses')
             ->count() >= 2;
 
         $countBimbingan_2 = Auth::user()->biodata
@@ -122,7 +122,7 @@ class UserCheck
             ->flatMap(function ($daftarta) {
                 return $daftarta->bimbinganta_2;
             })
-            ->where('stts', '=', 'acc')
+            ->where('stts', '!=', 'proses')
             ->count() >= 2;
 
         return (Auth::user()->level == 0 && $countBimbingan_1 && $countBimbingan_2);

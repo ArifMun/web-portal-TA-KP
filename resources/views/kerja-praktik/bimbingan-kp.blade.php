@@ -57,7 +57,7 @@
 
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-6 col-md-3">
+                                {{-- <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
@@ -71,9 +71,9 @@
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </div> --}}
 
-                                <div class="col-sm-6 col-md-3">
+                                {{-- <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
@@ -105,182 +105,179 @@
                                                 Proses : {{ $sttsMhs}}
                                             </p>
                                             @endif
-                                            {{--
-                                        </div> --}}
+
+                                        </div>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
 
-                        </div>
-                        <div class="divider"></div>
-                        <div class="table-responsive">
-                            <table id="bimbingan-kp" class="display table table-striped table-hover">
-                                <thead>
-                                    <tr align="center">
-                                        <th>No</th>
-                                        @if (Auth::user()->level==1)
-                                        <th>NIM</th>
-                                        <th>Nama</th>
+
+                            {{-- <div class="divider"></div> --}}
+                            <div class="table-responsive">
+                                <table id="bimbingan-kp" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr align="center">
+                                            <th>No</th>
+                                            @if (Auth::user()->level==1)
+                                            <th>NIM</th>
+                                            <th>Nama</th>
+                                            @endif
+                                            @if (Auth::user()->level==0)
+                                            <th>Dosen Pembimbing</th>
+                                            @endif
+
+                                            <th>Judul Bimbingan</th>
+                                            <th>Laporan KP</th>
+                                            <th>Status</th>
+                                            <th>Catatan</th>
+                                            <th>Tahun</th>
+                                            <th>Author</th>
+                                            <th>Dibuat</th>
+                                            {{-- <th>Diubah</th> --}}
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    @if (Auth::user()->level==0)
+                                    <tbody>
+                                        @php $no=1; @endphp
+                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarkp->bimbingankp))
+                                        @foreach ($bimbingMhs as $item)
+                                        {{-- {{ $item }} --}}
+
+                                        <tr align="center">
+                                            <td>{{ $no++ }}</td>
+                                            {{-- <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
+                                            <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td> --}}
+                                            <td>{{ $item->daftarkp->dosen->biodata->nama }}</td>
+                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            <td>
+                                                <a href="storage/{{ $item->laporan_kp }}"><i
+                                                        class="fa fa-file-download fa-2x">
+                                                    </i>
+                                                </a>
+                                            </td>
+                                            @if ($item->stts == 'proses')
+                                            <td>
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
+                                                    {{
+                                                    $item->stts }}</span>
+                                            </td>
+                                            @elseif($item->stts == 'acc')
+                                            <td>
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
+                                                    {{
+                                                    $item->stts}}</span>
+                                            </td>
+                                            @else
+                                            <td>
+                                                <span
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
+                                                    {{
+                                                    $item->stts}}</span>
+                                            </td>
+                                            @endif
+                                            {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewCatatan{{ $item->id }}"
+                                                    class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
+                                                    </i> </a>
+                                            </td> --}}
+                                            <td>{{ $item->catatan }}</td>
+                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
+                                            <td>{{ $item->author }}</td>
+                                            <td>{{ $item->created_at }}</td>
+                                            {{-- <td>{{ $item->updated_at }}</td> --}}
+                                            <td>
+                                                <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#EditBimbingan{{ $item->id }}"
+                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
+                                                    </i> </a>
+                                                <a href="bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusBimbingan{{ $item->id }}"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                    </i> </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+
+
                                         @endif
-                                        @if (Auth::user()->level==0)
-                                        <th>Dosen Pembimbing</th>
-                                        @endif
+                                    </tbody>
 
-                                        <th>Judul Bimbingan</th>
-                                        <th>Laporan KP</th>
-                                        <th>Status</th>
-                                        <th>Catatan</th>
-                                        <th>Tahun</th>
-                                        <th>Author</th>
-                                        <th>Dibuat</th>
-                                        {{-- <th>Diubah</th> --}}
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-
-                                @if (Auth::user()->level==0)
-                                <tbody>
-                                    @php $no=1; @endphp
-                                    @if (empty(Auth::user()->biodata->mahasiswa->daftarkp->bimbingankp))
-                                    @foreach ($bimbingMhs as $item)
-                                    {{-- {{ $item }} --}}
-
-                                    <tr align="center">
-                                        <td>{{ $no++ }}</td>
-                                        {{-- <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
-                                        <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td> --}}
-                                        <td>{{ $item->daftarkp->dosen->biodata->nama }}</td>
-                                        <td>{{ $item->judul_bimbingan }}</td>
-                                        <td>
-                                            <a href="storage/{{ $item->laporan_kp }}"><i
-                                                    class="fa fa-file-download fa-2x">
-                                                </i>
-                                            </a>
-                                        </td>
-                                        @if ($item->stts == 'proses')
-                                        <td>
-                                            <span
-                                                class="font-weight-bold text-light text-capitalize badge badge-warning">
-                                                {{
-                                                $item->stts }}</span>
-                                        </td>
-                                        @elseif($item->stts == 'acc')
-                                        <td>
-                                            <span
-                                                class="font-weight-bold text-light text-capitalize badge badge-success">
-                                                {{
-                                                $item->stts}}</span>
-                                        </td>
-                                        @else
-                                        <td>
-                                            <span
-                                                class="font-weight-bold text-light text-capitalize badge badge-danger">
-                                                {{
-                                                $item->stts}}</span>
-                                        </td>
-                                        @endif
-                                        {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
-                                                data-target="#viewCatatan{{ $item->id }}"
-                                                class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
-                                                </i> </a>
-                                        </td> --}}
-                                        <td>{{ $item->catatan }}</td>
-                                        <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
-                                        <td>{{ $item->author }}</td>
-                                        <td>{{ $item->created_at }}</td>
-                                        {{-- <td>{{ $item->updated_at }}</td> --}}
-                                        <td>
-                                            <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
-                                                data-target="#EditBimbingan{{ $item->id }}"
-                                                class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                </i> </a>
-                                            <a href="bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
-                                                data-target="#modalHapusBimbingan{{ $item->id }}"
-                                                class="btn btn-danger btn-xs"><i class="fa fa-trash">
-                                                </i> </a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-
-                                    @else
-                                    <tr>
-                                        <td colspan="13">
-                                            <p align="center"><i>Data Tidak Tersedia</i></p>
-                                        </td>
-                                    </tr>
+                                    {{-- All- --}}
+                                    @elseif(Auth::user()->level == 1)
+                                    <tbody>
+                                        @php $no=1; @endphp
+                                        @foreach ($bimbingDosen as $item)
+                                        {{-- {{ $item }} --}}
+                                        <tr align="center">
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>
+                                            <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
+                                            {{-- <td>{{ $item->daftarkp->dosen->biodata->nama }}</td> --}}
+                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            <td>
+                                                <a href="storage/{{ $item->laporan_kp }}"
+                                                    class="btn btn-success btn-xs"><i class="fas fa-file-download">
+                                                    </i>
+                                                </a>
+                                            </td>
+                                            @if ($item->stts == 'proses')
+                                            <td>
+                                                <a
+                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
+                                                    {{
+                                                    $item->stts }}</a>
+                                            </td>
+                                            @elseif($item->stts == 'acc')
+                                            <td>
+                                                <a
+                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
+                                                    {{
+                                                    $item->stts}}</a>
+                                            </td>
+                                            @else
+                                            <td>
+                                                <a
+                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
+                                                    {{
+                                                    $item->stts}}</a>
+                                            </td>
+                                            @endif
+                                            {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewCatatan{{ $item->id }}"
+                                                    class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
+                                                    </i> </a>
+                                            </td> --}}
+                                            <td>{{ $item->catatan }}</td>
+                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
+                                            <td>{{ $item->author }}</td>
+                                            <td>{{ $item->created_at }}</td>
+                                            {{-- <td>{{ $item->updated_at }}</td> --}}
+                                            <td>
+                                                <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#EditBimbingan{{ $item->id }}"
+                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
+                                                    </i> </a>
+                                                <a href="bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusBimbingan{{ $item->id }}"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                    </i> </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
                                     @endif
-                                </tbody>
-
-                                {{-- All- --}}
-                                @elseif(Auth::user()->level == 1)
-                                <tbody> @php $no=1; @endphp
-                                    @foreach ($bimbingDosen as $item)
-                                    {{-- {{ $item }} --}}
-                                    <tr align="center">
-                                        <td>{{ $no++ }}</td>
-                                        <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>
-                                        <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
-                                        {{-- <td>{{ $item->daftarkp->dosen->biodata->nama }}</td> --}}
-                                        <td>{{ $item->judul_bimbingan }}</td>
-                                        <td>
-                                            <a href="storage/{{ $item->laporan_kp }}" class="btn btn-success btn-xs"><i
-                                                    class="fas fa-file-download">
-                                                </i>
-                                            </a>
-                                        </td>
-                                        @if ($item->stts == 'proses')
-                                        <td>
-                                            <a class="font-weight-bold text-light text-capitalize badge badge-warning">
-                                                {{
-                                                $item->stts }}</a>
-                                        </td>
-                                        @elseif($item->stts == 'acc')
-                                        <td>
-                                            <a class="font-weight-bold text-light text-capitalize badge badge-success">
-                                                {{
-                                                $item->stts}}</a>
-                                        </td>
-                                        @else
-                                        <td>
-                                            <a class="font-weight-bold text-light text-capitalize badge badge-danger">
-                                                {{
-                                                $item->stts}}</a>
-                                        </td>
-                                        @endif
-                                        {{-- <td><a href="bimbingan-kp/view/{{ $item->id }}" data-toggle="modal"
-                                                data-target="#viewCatatan{{ $item->id }}"
-                                                class="btn-round btn-primary btn-xs"><i class="fa fa-eye">
-                                                </i> </a>
-                                        </td> --}}
-                                        <td>{{ $item->catatan }}</td>
-                                        <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
-                                        <td>{{ $item->author }}</td>
-                                        <td>{{ $item->created_at }}</td>
-                                        {{-- <td>{{ $item->updated_at }}</td> --}}
-                                        <td>
-                                            <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
-                                                data-target="#EditBimbingan{{ $item->id }}"
-                                                class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                </i> </a>
-                                            <a href="bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
-                                                data-target="#modalHapusBimbingan{{ $item->id }}"
-                                                class="btn btn-danger btn-xs"><i class="fa fa-trash">
-                                                </i> </a>
-                                        </td>
-                                    </tr>
-                                    @endforeach
-
-                                </tbody>
-                                @endif
-                            </table>
+                                </table>
+                            </div>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-</div>
 </div>
 
 {{-- Tambah --}}
@@ -338,7 +335,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan KP </label>
+                                <label for="file" class="form-label">Laporan KP </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
                                 <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp">
                                 <span class="font-italic text-muted mt-1">ukuran file maksimal <span

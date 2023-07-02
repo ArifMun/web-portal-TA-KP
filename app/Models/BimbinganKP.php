@@ -39,7 +39,7 @@ class BimbinganKP extends Model
     public function sttsDosen()
     {
         return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 2) {
+            if (Auth::user()->level == 1) {
                 $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id)
                     ->where('stts', '=', 'proses');
             }
@@ -62,17 +62,15 @@ class BimbinganKP extends Model
             if (Auth::user()->level == 0) {
                 $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get();
+        })->get()->sortByDesc('id');
     }
 
     public function bimbingDosen()
     {
         return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
-            if (Auth::user()->level == 2) {
-                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
-            } elseif (Auth::user()->level == 3) {
+            if (Auth::user()->level == 1) {
                 $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
             }
-        })->get();
+        })->get()->sortByDesc('id');
     }
 }
