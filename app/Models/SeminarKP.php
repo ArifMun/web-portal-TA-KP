@@ -91,4 +91,20 @@ class SeminarKP extends Model
             }
         })->get()->sortByDesc('id')->count() == 0;
     }
+
+    // public static function SelesaiSeminarKP()
+    // {
+    //     $tahuns = TahunAkademik::all();
+    //     $result = [];
+
+    //     foreach ($tahuns as $tahuna) {
+    //         $result[] = $tahuna->tahun;
+    //         $jumlahSelesai = SeminarKP::where('stts_seminar', 'selesai')
+    //             ->where('thn_akademik_id', $tahuna->id)
+    //             ->count();
+
+    //         $result[$tahuna->nama] = $jumlahSelesai;
+    //     }
+    //     return $result;
+    // }
 }

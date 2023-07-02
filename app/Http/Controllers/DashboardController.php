@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\DaftarKP;
+use App\Models\DaftarTA;
 use App\Models\SeminarKP;
+use App\Models\SidangTA;
 use App\Models\TahunAkademik;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -22,18 +24,61 @@ class DashboardController extends Controller
         $notifWait = DaftarKP::where('stts_pengajuan', '=', 'tertunda')
             ->count();
         $seminar   = SeminarKP::get()->where('stts_seminar', '=', 'selesai')->count();
+        $sidangTa  = new SidangTA();
+        $sidang    = $sidangTa->s_selesai();
 
+        $daftarTa  = new DaftarTA();
+        $TAditerima = $daftarTa->d_diterima()->count();
         $kpditerima = new DaftarKP();
         $datakp = $kpditerima->d_kp_diterima()->count();
 
         $s_kp        = new SeminarKP();
         $dataseminar    = $s_kp->s_Selesai();
 
-        $thn    = TahunAkademik::get();
+        $seminarkp        = new SeminarKP();
 
-        // $user = Auth::user();
+        $tahuns = TahunAkademik::all();
+        $tahunAkademik = [];
+        $dataSeminarKP = [];
+        $dataDaftarKP = [];
+        $dataDaftarTA = [];
+        $dataSidangTA = [];
 
-        return \view('dashboard.dashboard', \compact('notifAcc', 'notifWait', 'seminar', 'datakp', 'thn', 'dataseminar'));
+        foreach ($tahuns as $tahun) {
+            $tahunAkademik[] = $tahun->tahun;
+            $dataSeminarKP[] = $tahun->seminarkp()
+                ->where('thn_akademik_id', $tahun->id)
+                ->where('stts_seminar', 'selesai')
+                ->count();
+            $dataDaftarKP[]  = $tahun->daftarkp()
+                ->where('thn_akademik_id', $tahun->id)
+                ->where('stts_pengajuan', 'diterima')
+                ->count();
+            $dataDaftarTA[]  = $tahun->daftarta()
+                ->where('thn_akademik_id', $tahun->id)
+                ->where('stts_pengajuan', 'diterima')
+                ->count();
+            $dataSidangTA[] = $tahun->sidangta()
+                ->where('thn_akademik_id', $tahun->id)
+                ->where('stts_sidang', 'selesai')
+                ->count();
+        }
+
+        return \view('dashboard.dashboard', \compact(
+            'notifAcc',
+            'notifWait',
+            'seminar',
+            'datakp',
+            'tahunAkademik',
+            'dataseminar',
+            'sidang',
+            'TAditerima',
+            'dataSeminarKP',
+            'dataDaftarKP',
+            'dataDaftarTA',
+            'dataSidangTA'
+
+        ));
         // return \view('layouts.layout');
     }
 

@@ -120,7 +120,6 @@
                                     </div>
                                 </div>
                                 @endif
-
                             </div>
                             <div class="divider"></div>
                             <div class="table-responsive">
