@@ -87,16 +87,15 @@ class SidangTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                // 'mahasiswa_id'      => 'required',
-                'daftar_ta_id'      => 'required',
-                'f_bimbingan_1'     => 'required|image|file|max:1024',
-                'f_bimbingan_2'     => 'required|image|file|max:1024',
-                'slip_pembayaran'   => 'required|image|file|max:1024',
-                'judul'             => 'required',
-                // 'tgl_sidang'        => 'required|date',
-                // 'jam_sidang'        => 'required',
-                'stts_sidang'       => 'required',
-                'thn_akademik_id'   => 'required'
+                'daftar_ta_id'          => 'required',
+                'f_bimbingan_1'         => 'required|image|file|max:1024',
+                'f_bimbingan_2'         => 'required|image|file|max:1024',
+                'slip_pembayaran_sidang'    => 'required|image|file|max:1024',
+                'slip_pembayaran_skripsi'   => 'required|image|file|max:1024',
+                'krs'                   => 'required|image|file|max:1024',
+                'judul'                 => 'required',
+                'stts_sidang'           => 'required',
+                'thn_akademik_id'       => 'required'
                 // 'd_penguji'         => 'required'
             ]
         );
@@ -106,12 +105,13 @@ class SidangTAController extends Controller
         } else {
 
             SidangTA::create([
-                // 'mahasiswa_id'      => $request->mahasiswa_id,
                 'daftar_ta_id'      => $request->daftar_ta_id,
                 'd_penguji'         => $request->d_penguji,
                 'f_bimbingan_1'     => $request->file('f_bimbingan_1')->store('form-b1'),
                 'f_bimbingan_2'     => $request->file('f_bimbingan_2')->store('form-b2'),
-                'slip_pembayaran'   => $request->file('slip_pembayaran')->store('slip-ta'),
+                'slip_pembayaran_sidang'    => $request->file('slip_pembayaran_sidang')->store('slip-sidang'),
+                'slip_pembayaran_skripsi'   => $request->file('slip_pembayaran_skripsi')->store('slip-ta'),
+                'krs'               => $request->file('krs')->store('krs'),
                 'judul'             => $request->judul,
                 'tempat'            => $request->tempat,
                 'thn_akademik_id'   => $request->thn_akademik_id,
@@ -158,15 +158,13 @@ class SidangTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                // 'mahasiswa_id'      => 'required',
                 'daftar_ta_id'      => 'required',
-                // 'd_penguji'         => 'required',
                 'f_bimbingan_1'     => 'image|file|max:1024',
                 'f_bimbingan_2'     => 'image|file|max:1024',
-                'slip_pembayaran'   => 'image|file|max:1024',
+                'slip_pembayaran_sidang'    => 'image|file|max:1024',
+                'slip_pembayaran_skripsi'   => 'image|file|max:1024',
+                'krs'               => 'image|file|max:1024',
                 'judul'             => 'required',
-                // 'tgl_sidang'        => 'required',
-                // 'jam_sidang'        => 'required',
                 'stts_sidang'       => 'required'
             ]
         );
@@ -191,19 +189,31 @@ class SidangTAController extends Controller
                 $sidang_ta->f_bimbingan_2 = $request->file('f_bimbingan_2')->store('form-b2');
             }
 
-            if ($request->file('slip_pembayaran')) {
+            if ($request->file('slip_pembayaran_sidang')) {
                 if ($request->oldImage3) {
                     Storage::delete($request->oldImage3);
                 }
-                $sidang_ta->slip_pembayaran = $request->file('slip_pembayaran')->store('slip-ta');
+                $sidang_ta->slip_pembayaran_sidang = $request->file('slip_pembayaran_sidang')->store('slip-sidang');
             }
 
-            // $sidang_ta->mahasiswa_id    = $request->mahasiswa_id;
+            if ($request->file('slip_pembayaran_skripsi')) {
+                if ($request->oldImage4) {
+                    Storage::delete($request->oldImage4);
+                }
+                $sidang_ta->slip_pembayaran_skripsi = $request->file('slip_pembayaran_skripsi')->store('slip-ta');
+            }
+
+            if ($request->file('krs')) {
+                if ($request->oldImage5) {
+                    Storage::delete($request->oldImage5);
+                }
+                $sidang_ta->krs = $request->file('krs')->store('krs');
+            }
+
             $sidang_ta->daftar_ta_id    = $request->daftar_ta_id;
             $sidang_ta->d_penguji       = $request->d_penguji;
             $sidang_ta->judul           = $request->judul;
             $sidang_ta->tempat           = $request->tempat;
-            // $sidang_ta->catatan         = $request->catatan;
             $sidang_ta->tgl_sidang      = $request->tgl_sidang;
             $sidang_ta->jam_sidang      = $request->jam_sidang;
             $sidang_ta->stts_sidang     = $request->stts_sidang;
@@ -229,8 +239,14 @@ class SidangTAController extends Controller
         if ($sidang_ta->f_bimbingan_2) {
             Storage::delete($sidang_ta->f_bimbingan_2);
         }
-        if ($sidang_ta->slip_pembayaran) {
-            Storage::delete($sidang_ta->slip_pembayaran);
+        if ($sidang_ta->slip_pembayaran_sidang) {
+            Storage::delete($sidang_ta->slip_pembayaran_sidang);
+        }
+        if ($sidang_ta->slip_pembayaran_skripsi) {
+            Storage::delete($sidang_ta->slip_pembayaran_skripsi);
+        }
+        if ($sidang_ta->krs) {
+            Storage::delete($sidang_ta->krs);
         }
 
         $sidang_ta->delete();

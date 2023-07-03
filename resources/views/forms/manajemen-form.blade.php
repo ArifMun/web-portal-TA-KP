@@ -791,7 +791,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            {{ $item->cttn_seminar_kp }}
+                            {!! $item->cttn_seminar_kp !!}
                         </div>
                     </div>
                 </div>
@@ -816,7 +816,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            {{ $item->cttn_bimbingan_kp }}
+                            {!! $item->cttn_bimbingan_kp !!}
                         </div>
                     </div>
                 </div>
@@ -841,7 +841,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            {{ $item->cttn_daftar_ta }}
+                            {!! $item->cttn_daftar_ta !!}
                         </div>
                     </div>
                 </div>
@@ -866,7 +866,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            {{ $item->cttn_sidang_ta }}
+                            {!! $item->cttn_sidang_ta !!}
                         </div>
                     </div>
                 </div>
@@ -891,7 +891,7 @@
                 <div class="form-group">
                     <div class="row">
                         <div class="col">
-                            {{ $item->cttn_bimbingan_ta }}
+                            {!! $item->cttn_bimbingan_ta !!}
                         </div>
                     </div>
                 </div>

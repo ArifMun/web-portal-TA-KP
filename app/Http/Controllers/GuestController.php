@@ -14,4 +14,8 @@ class GuestController extends Controller
         $dosen        = Dosen::all();
         return \view('guest.jadwal-sidang', \compact('jadwalSidang', 'dosen'));
     }
+    public static function login()
+    {
+        return \view('login');
+    }
 }

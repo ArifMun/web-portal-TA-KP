@@ -38,19 +38,8 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card">
+
                         @if (empty($formakses))
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <h4 class="card-title"></h4>
-                                <a href="/tugas-akhir/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarTA">
-                                    <i class="fa fa-plus"></i>
-                                    Daftar
-                                </a>
-                            </div>
-                        </div>
-                        @elseif(Auth::user()->level == 0 && $formakses->akses_ta == 1 ||
-                        Auth::user()->level==1 )
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <div class="">Readme First
@@ -66,7 +55,34 @@
                                     <i class="fa fa-plus"></i>
                                     Melanjutkan
                                 </a>
-                                @elseif($newRegisterTA)
+                                @elseif($newRegisterTA|| UserCheck::levelAdmin())
+                                <a href="/tugas-akhir/daftar" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalDaftarTA">
+                                    <i class="fa fa-plus"></i>
+                                    Daftar
+                                </a>
+                                @endif
+                            </div>
+                        </div>
+
+                        @elseif(Auth::user()->level == 0 && $formakses->akses_ta == 1 ||
+                        UserCheck::levelAdmin() )
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <div class="">Readme First
+                                    <a href="tugas-akhir/view-pengumuman" data-toggle="modal"
+                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                        </i>
+                                    </a>
+                                </div>
+
+                                @if ($existTA)
+                                <a href="/tugas-akhir/melanjutkan" class="btn btn-success btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalMelanjutkan">
+                                    <i class="fa fa-plus"></i>
+                                    Melanjutkan
+                                </a>
+                                @elseif($newRegisterTA|| UserCheck::levelAdmin())
                                 <a href="/tugas-akhir/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarTA">
                                     <i class="fa fa-plus"></i>
@@ -87,6 +103,7 @@
                         @endif
 
                         <div class="card-body">
+                            @if (UserCheck::levelAdmin())
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
@@ -108,8 +125,9 @@
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
-                                                <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="8" class="form-control" id="filter-stts">
+                                                <label class="font-weight-bold h6">Filter Status Pengajuan</label>
+                                                <select data-column="8" class="form-control text-capitalize"
+                                                    id="filter-stts">
                                                     <option value="">-- Pilih Status --</option>
                                                     @foreach ($filterStts as $item)
                                                     <option value="{{ $item->stts_pengajuan }}" class="text-capitalize">
@@ -122,7 +140,6 @@
                                     </div>
                                 </div>
 
-                                @if (Auth::user()->level!=0)
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
@@ -146,11 +163,10 @@
                                         </div>
                                     </div>
                                 </div>
-                                @else
-                                @endif
-
                             </div>
                             <div class="divider"></div>
+                            @else
+                            @endif
                             <div class="table-responsive">
                                 <table id="kerja-praktik" class="display table table-striped table-hover">
                                     <thead>
@@ -169,7 +185,6 @@
                                             <th>Status Pengajuan</th>
                                             <th>Status TA</th>
                                             <th>Judul</th>
-                                            <th>KRS</th>
                                             <th>Tahun Akademik</th>
                                             <th>Konsentrasi</th>
                                             <th>Tanggal Daftar</th>
@@ -182,25 +197,25 @@
                                         @php $no=1; @endphp
                                         @if (!empty(Auth::user()->biodata->mahasiswa->daftarta))
                                         @foreach ($mhsta as $item)
-                                        <tr align="center">
+                                        <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             {{-- <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td> --}}
-                                            <td class="text-capitalize">
+                                            <td>
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td>
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td>
                                                 {{ $item->ganti_pembimbing }}
                                             </td>
                                             <td>
@@ -220,33 +235,28 @@
 
                                             @if ($item->stts_pengajuan=='tertunda')
                                             <td>
-                                                <a
-                                                    class="font-weight-bold badge badge-warning text-light text-capitalize">
+                                                <a class="font-weight-bold badge badge-warning text-light">
                                                     {{
                                                     $item->stts_pengajuan }}</a>
                                             </td>
                                             @elseif($item->stts_pengajuan=='diterima')
                                             <td>
-                                                <a
-                                                    class="font-weight-bold badge badge-success text-light text-capitalize">
+                                                <a class="font-weight-bold badge badge-success text-light">
                                                     {{
                                                     $item->stts_pengajuan }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a
-                                                    class="font-weight-bold badge badge-danger text-light text-capitalize">
+                                                <a class="font-weight-bold badge badge-danger text-light">
                                                     {{
                                                     $item->stts_pengajuan }}</a>
                                             </td>
                                             @endif
 
                                             <td>{{ $item->stts_ta }}</td>
-                                            <td>{{ $item->judul }}</td>
                                             <td>
-                                                <a href="daftar-ta/view-krs/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewKRS{{ $item->id }}"><i
-                                                        class="fa fa-file-image fa-2x">
+                                                <a href="daftar-ta/view-judul/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $item->id }}"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
@@ -284,25 +294,25 @@
                                     @elseif(Auth::user()->level==2)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($daftarta as $row)
-                                        <tr align="center">
+                                        <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->mahasiswa->biodata->no_induk }}</td>
-                                            <td class="text-capitalize">{{ $row->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">
+                                            <td>{{ $row->mahasiswa->biodata->nama }}</td>
+                                            <td>
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td>
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td>
                                                 {{ $row->ganti_pembimbing }}
                                             </td>
                                             <td>
@@ -341,12 +351,10 @@
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @endif
-                                            <td class="text-capitalize">{{ $row->stts_ta }}</td>
-                                            {{-- <td>{{ $row->krs }}</td> --}}
-                                            <td>{{ $row->judul }}</td>
-                                            <td><a href="daftar-ta/view-krs/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewKRS{{ $row->id }}"><i
-                                                        class="fa fa-file-image fa-2x">
+                                            <td>{{ $row->stts_ta }}</td>
+                                            <td>
+                                                <a href="daftar-ta/view-judul/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $row->id }}"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
@@ -535,14 +543,6 @@
                                     <input type="text" class="form-control" name="judul" placeholder="Judul .."
                                         size="1">
                                 </div>
-                                <label for="image" class="form-label control-label">KRS (Tertera Mata Kuliah Skripsi)
-                                </label>
-                                <input type="file" class="form-control picture" id="image1" name="krs"
-                                    onchange="previewImage(1)">
-                                <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
-                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span></span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
@@ -667,14 +667,6 @@
                                     checked="">
                                     <span class="form-radio-sign">Tidak</span>
                                 </label>
-                                {{-- <select class="form-control" name="ganti_pembimbing" id="d_ganti_1" size="1"
-                                    required>
-                                    <option value="" hidden="">-- Ganti --</option>
-                                    <option @php if($item->ganti_pembimbing == 'iya') echo 'selected';
-                                        @endphp value="ya">Ya</option>
-                                    <option @php if($item->ganti_pembimbing == 'tidak') echo 'selected';
-                                        @endphp value="tidak">Tidak</option>
-                                </select> --}}
                             </div>
                         </div>
                     </div>
@@ -744,7 +736,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">Konsentrasi </label>
                                 <select class="form-control konsentrasi_" name="konsentrasi[]"
                                     id="konsentrasi_{{ $item->id }}" multiple required>
@@ -760,23 +752,6 @@
                                     @endforeach
 
                                 </select>
-                            </div>
-                            <div class="col">
-                                <label for="image" class="form-label ">KRS (Tertera Mata Kuliah Skripsi) </label>
-                                <input type="hidden" name="oldImage" value="{{ $item->krs }}">
-                                <input type="file" class="form-control picture" id="image2" name="krs"
-                                    onchange="previewImage(2)">
-
-                                @if ($item->krs)
-                                <img src="{{ asset('storage/' . $item->krs) }}"
-                                    class="img-preview img-fluid mb-3 col-sm-4 mt-1" id="preview2">
-                                @else
-                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="" id="preview2">
-                                @endif
-
-                                <p class="mt-1 font-italic">biarkan kolom kosong
-                                    jika tidak diganti | ukuran file maksimal <span class="text-danger">1024 KB</span>
-                                </p>
                             </div>
                         </div>
                     </div>
@@ -954,22 +929,6 @@
                         </div>
                     </div>
 
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="image" class="form-label control-label">KRS (Tertera Mata Kuliah
-                                    Skripsi)
-                                </label>
-                                <input type="file" class="form-control picture" id="image3" name="krs"
-                                    onchange="previewImage(3)">
-                                <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview3">
-                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span></span>
-                            </div>
-                        </div>
-                    </div>
-
                     <div class="modal-footer required">
                         <div class="col">
                             <label class="control-label font-italic">
@@ -988,16 +947,17 @@
 </div>
 @endif
 
-{{-- view KRS --}}
+{{-- Judul --}}
 @foreach ($daftarta as $item)
-<div class="modal fade" id="viewKRS{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+<div class="modal fade" id="viewJudul{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Kartu Rencana Studi - {{
-                    $item->mahasiswa->biodata->nama
-                    }} | {{ $item->mahasiswa->biodata->no_induk }} </h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Judul Tugas Akhir - {{
+                    $item->mahasiswa->biodata->no_induk }}
+                    | {{ $item->mahasiswa->biodata->nama
+                    }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -1006,16 +966,9 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @if ($item->krs)
                         <div class="col">
-                            <img src="{{ asset('storage/' . $item->krs) }}" alt="" class="rounded mx-auto d-block"
-                                style="width: 30%">
+                            {{ $item->judul }}
                         </div>
-                        @else
-                        <div class="col">
-                            <p class="text-center">Gambar Tidak Ditemukan</p>
-                        </div>
-                        @endif
                     </div>
                 </div>
             </div>

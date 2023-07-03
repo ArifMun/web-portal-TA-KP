@@ -39,6 +39,7 @@ Route::get('/', [AuthController::class, 'index'])->name('login-page');
 Route::post('login-process', [AuthController::class, 'login_process']);
 Route::get('logout', [AuthController::class, 'logout']);
 Route::get('/home/jadwal-sidang', [GuestController::class, 'index']);
+Route::get('/home/login', [GuestController::class, 'login']);
 
 // Route::get('register-page', [UserRegistrasiController::class, 'index'])->name('register-page');
 Route::get('user-registrasi', [UserRegistrasiController::class, 'create'])->name('user-registrasi');

@@ -28,7 +28,7 @@ class KerjaPraktikController extends Controller
     public function index()
     {
         $existKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() != 0;
-        $newRegisterKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() == 0 || Auth::user()->level == 2;
+        $newRegisterKp = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarkp->count() == 0;
 
         $daftar_kp   = new DaftarKP();
         $mhskps      = $daftar_kp->authDaftarKP();
@@ -68,7 +68,7 @@ class KerjaPraktikController extends Controller
             'last_year',
             'newRegisterKp',
             'existKp',
-            'nextkp'
+            'nextkp',
         ));
     }
 

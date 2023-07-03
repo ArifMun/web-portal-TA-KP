@@ -23,7 +23,7 @@ class DaftarTA extends Model
         'pembimbing_lama_2',
         'stts_pengajuan',
         'stts_ta',
-        'krs',
+        // 'krs',
         'thn_akademik_id',
         'konsentrasi'
     ];
@@ -79,7 +79,7 @@ class DaftarTA extends Model
 
     public function d_diterima()
     {
-        return self::where('stts_pengajuan', '=', 'diterima')->get();
+        return self::where('stts_pengajuan', '=', 'diterima')->latest()->get();
     }
 
     public function d_tertunda()

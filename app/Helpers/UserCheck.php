@@ -127,4 +127,9 @@ class UserCheck
 
         return (Auth::user()->level == 0 && $countBimbingan_1 && $countBimbingan_2);
     }
+
+    public static function levelAdmin()
+    {
+        return (Auth::user()->level == 2);
+    }
 }

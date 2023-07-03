@@ -47,10 +47,8 @@ class BimbinganTA1Controller extends Controller
             $request->all(),
             [
                 'daftar_ta_id' => 'required',
-                // 'dosen_id'     => 'required',
-                // 'mahasiswa_id' => 'required',
                 'judul_bimbingan' => 'required',
-                'laporan_ta'   => 'required|file|image|max:1024',
+                // 'laporan_ta'   => 'required|file|image|max:1024',
                 'stts'         => 'required',
             ]
         );
@@ -65,7 +63,7 @@ class BimbinganTA1Controller extends Controller
                 // 'dosen_id'          => $request->dosen_id,
                 // 'mahasiswa_id'      => $request->mahasiswa_id,
                 'judul_bimbingan'   => $request->judul_bimbingan,
-                'laporan_ta'        => $request->file('laporan_ta')->store('dokumen-ta'),
+                'laporan_ta'        => $request->hasFile('laporan_ta') ? $request->file('laporan_ta')->store('dokumen-ta') : null,
                 'stts'              => $request->stts,
                 'catatan'           => $request->catatan,
                 'author'            => $request->author,
@@ -112,7 +110,7 @@ class BimbinganTA1Controller extends Controller
                 'judul_bimbingan' => 'required',
                 'author'          => 'required',
                 'stts'            => 'required',
-                'laporan_ta'      => 'file|max:1024'
+                // 'laporan_ta'      => 'file|max:1024'
             ]
         );
 
@@ -129,8 +127,6 @@ class BimbinganTA1Controller extends Controller
             }
 
             $bimbingan_ta_1->daftar_ta_id       = $request->daftar_ta_id;
-            // $bimbingan_ta_1->dosen_id           = $request->dosen_id;
-            // $bimbingan_ta_1->mahasiswa_id       = $request->mahasiswa_id;
             $bimbingan_ta_1->judul_bimbingan    = $request->judul_bimbingan;
             $bimbingan_ta_1->author             = $request->author;
             $bimbingan_ta_1->stts               = $request->stts;

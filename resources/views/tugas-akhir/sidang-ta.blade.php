@@ -60,13 +60,14 @@
                         </div>
 
                         <div class="card-body">
+                            @if (UserCheck::levelAdmin())
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="9" class="form-control" id="filter-tahun">
+                                                <select data-column="12" class="form-control" id="filter-tahun">
                                                     <option value="">-- Pilih Tahun --</option>
                                                     @foreach ($thnakademik as $k)
                                                     <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
@@ -82,7 +83,7 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Status</label>
-                                                <select data-column="5" class="form-control" id="filter-stts">
+                                                <select data-column="6" class="form-control" id="filter-stts">
                                                     <option value="">-- Pilih Status --</option>
                                                     @foreach ($filterStts as $item)
                                                     <option value="{{ $item->stts_sidang }}" class="text-capitalize">
@@ -94,8 +95,6 @@
                                         </div>
                                     </div>
                                 </div>
-
-                                @if (Auth::user()->level==2)
 
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row">
@@ -118,9 +117,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
                             </div>
                             <div class="divider"></div>
+                            @endif
                             <div class="table-responsive">
                                 <table id="seminar-kp" class="display table table-striped table-hover">
                                     <thead>
@@ -137,7 +136,9 @@
                                             <th>Status Sidang</th>
                                             <th>Form Bimbingan 1</th>
                                             <th>Form Bimbingan 2</th>
-                                            <th>Slip Pembayaran</th>
+                                            <th>Slip Pembayaran Sidang</th>
+                                            <th>Slip Pembayaran Skripsi</th>
+                                            <th>KRS</th>
                                             <th>Tahun</th>
                                             <th>Judul</th>
                                             <th>Tempat</th>
@@ -151,7 +152,7 @@
                                     <tbody>
                                         @if (empty(Auth::user()->biodata->mahasiswa->daftarta->sidangta))
                                         @foreach ($m_list as $item)
-                                        <tr align="center">@php $no=1; @endphp
+                                        <tr align="center" class="text-capitalize">@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
                                             {{-- <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td> --}}
@@ -201,20 +202,36 @@
                                             </td>
                                             @endif
 
-                                            <td><a href="sidang-ta/view-form_1/{{ $item->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="sidang-ta/view-form_1/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewForm_1{{ $item->id }}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="sidang-ta/view-form_2/{{ $item->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="sidang-ta/view-form_2/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewForm_2{{ $item->id }}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="sidang-ta/view-slip/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $item->id }}"><i
+                                            <td>
+                                                <a href="sidang-ta/view-slip-sidang/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewSlipSidang{{ $item->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
+                                                    </i> </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="sidang-ta/view-slip-skripsi/{{ $item->id }}"
+                                                    data-toggle="modal" data-target="#viewSlipSkripsi{{ $item->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
+                                                    </i> </a>
+                                            </td>
+                                            <td>
+                                                <a href="sidang-ta/view-krs/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewKRS{{ $item->id }}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
@@ -257,7 +274,7 @@
                                     @elseif(Auth::user()->level ==2)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($s_list as $row)
-                                        <tr align="center">
+                                        <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarta->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $row->daftarta->mahasiswa->biodata->nama }}</td>
@@ -307,20 +324,36 @@
                                             </td>
                                             @endif
 
-                                            <td><a href="sidang-ta/view-form_1/{{ $row->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="sidang-ta/view-form_1/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewForm_1{{ $row->id }}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="sidang-ta/view-form_2/{{ $row->id }}" data-toggle="modal"
+                                            <td>
+                                                <a href="sidang-ta/view-form_2/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewForm_2{{ $row->id }}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
 
-                                            <td><a href="sidang-ta/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $row->id }}"><i
+                                            <td>
+                                                <a href="sidang-ta/view-slip-sidang/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewSlipSidang{{ $item->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
+                                                    </i> </a>
+                                            </td>
+
+                                            <td>
+                                                <a href="sidang-ta/view-slip-skripsi/{{ $item->id }}"
+                                                    data-toggle="modal" data-target="#viewSlipSkripsi{{ $item->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
+                                                    </i> </a>
+                                            </td>
+                                            <td>
+                                                <a href="sidang-ta/view-krs/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewKRS{{ $item->id }}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
@@ -388,9 +421,9 @@
                                 <select class="form-control" name="daftar_ta_id" id="daftar_ta_id" size="1"
                                     onchange="no_mahasiswa()" required>
 
-                                    <option value="0">-- Pilih --</option>
+                                    <option value="0">-- Pilih Nama--</option>
                                     @foreach ($daftarta as $k)
-                                    <option value="{{ $k->id }}">{{
+                                    <option value="{{ $k->id }}" class="text-capitalize">{{
                                         $k->mahasiswa->biodata->no_induk
                                         }} - {{ $k->mahasiswa->biodata->nama
                                         }} - {{ $k->tahunakademik->tahun
@@ -427,7 +460,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">Judul Tugas Akhir </label>
                                 @if (Auth::user()->level==0)
                                 <input type="text" class="form-control" name="judul" size="1"
@@ -450,50 +483,8 @@
                                 </select>
                                 @endif
                             </div>
-                            {{-- <div class="col">
-                                <label>Catatan</label>
-                                <textarea class="form-control" name="catatan" size="1"></textarea>
-                            </div> --}}
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col-6">
-                                <label for="image" class="form-label control-label">Form Bimbingan 1</label>
-                                <input type="file" class="form-control picture" id="image1" name="f_bimbingan_1"
-                                    onchange="previewImage(1)">
-                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
-                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span> </span>
-                            </div>
-                            <div class="col-6">
-                                <label for="image" class="form-label control-label">Form Bimbingan 2</label>
-                                <input type="file" class="form-control picture" id="image2" name="f_bimbingan_2"
-                                    onchange="previewImage(2)">
-                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview2">
-                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span> </span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-
-                            <div class="col-6">
-                                <label for="image" class="control-label">Slip Pembayaran</label>
-                                <input type="file" class="form-control picture" id="image3" name="slip_pembayaran"
-                                    onchange="previewImage(3)">
-                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview3">
-                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span> </span>
-                            </div>
-                            @if (Auth::user()->level!=0)
-                            <div class="col">
+                            @if (Auth::user()->level==2)
+                            <div class="col-3">
                                 <label for="" class="form-label control-label">Dosen Penguji </label>
                                 <select class="form-control" name="d_penguji" size="1">
                                     <option value="" hidden="">-- Dosen Penguji--</option>
@@ -502,31 +493,81 @@
                                     @endforeach
                                 </select>
                             </div>
-                            @elseif(Auth::user()->level==0)
-                            <div class="col">
-                                <label for="" class="form-label ">Tempat </label>
-                                <input type="text" class="form-control" name="tempat">
-                            </div>
                             @endif
                         </div>
                     </div>
 
-                    @if (Auth::user()->level!=0)
-                    <div class="form-group">
+                    <div class="form-group required">
                         <div class="row">
                             <div class="col-6">
-                                <label for="" class="form-label ">Tempat </label>
+                                <label for="image" class="form-label control-label">Form Bimbingan 1 </label>
+                                <input type="file" class="form-control picture" id="image1" name="f_bimbingan_1"
+                                    onchange="previewImage(1)">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview1">
+                                {{-- <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span> --}}
+                            </div>
+                            <div class="col-6">
+                                <label for="image" class="form-label control-label">Form Bimbingan 2 </label>
+                                <input type="file" class="form-control picture" id="image2" name="f_bimbingan_2"
+                                    onchange="previewImage(2)">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview2">
+                                {{-- <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span> --}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+
+                            <div class="col-6">
+                                <label for="image" class="control-label">Slip Pembayaran Sidang </label>
+                                <input type="file" class="form-control picture" id="image3"
+                                    name="slip_pembayaran_sidang" onchange="previewImage(3)">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview3">
+                                {{-- <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span> --}}
+                            </div>
+                            <div class="col-6">
+                                <label for="image" class="control-label">Slip Pembayaran Skripsi </label>
+                                <input type="file" class="form-control picture" id="image7"
+                                    name="slip_pembayaran_skripsi" onchange="previewImage(7)">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview7">
+                                {{-- <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span> --}}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="image" class="control-label ">KRS (Tertera Mata Kuliah Skripsi) </label>
+                                <input type="file" class="form-control picture" id="image8" name="krs"
+                                    onchange="previewImage(8)">
+                                <img class="img-preview img-fluid mt-2 col-sm-5" id="preview8">
+                                {{-- <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span> --}}
+                            </div>
+                            <div class="col-6">
+                                <label for="" class="form-label ">Tempat Sidang</label>
                                 <input type="text" class="form-control" name="tempat">
                             </div>
                         </div>
                     </div>
-                    @endif
+
                 </div>
 
                 <div class="modal-footer required">
                     <div class="col">
                         <label class="control-label font-italic">
-                            : Kolom Wajib Diisi | Ukuran file maksimal
+                            : Kolom Wajib Diisi | Ukuran file maksimal 1024KB
                         </label>
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
@@ -563,11 +604,6 @@
                                         $item->daftarta->mahasiswa->biodata->no_induk }} - {{
                                         $item->daftarta->mahasiswa->biodata->nama }}" readonly>
                                 <input type="hidden" name="daftar_ta_id" value="{{ $item->daftar_ta_id }}">
-                                {{-- <select class="form-control" name="daftar_ta_id" id="daftar_ta_id">
-                                    <option value="{{ $item->daftar_ta_id }}">{{
-                                        $item->daftarta->mahasiswa->biodata->no_induk }} - {{
-                                        $item->daftarta->mahasiswa->biodata->nama }}</option>
-                                </select> --}}
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik</label>
@@ -598,12 +634,12 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label"> Judul Tugas Akhir </label>
                                 <input type="text" class="form-control" name="judul" value="{{ $item->judul }}">
                             </div>
                             <div class="col">
-                                <label class="control-label"> Status Sidang</label>
+                                <label class="control-label"> Status Sidang </label>
                                 @if (Auth::user()->level==0)
                                 <input type="text" class="form-control text-capitalize" value="{{ $item->stts_sidang }}"
                                     readonly>
@@ -621,6 +657,18 @@
                                     @endif
                                 </select>
                             </div>
+                            @if (Auth::user()->level==2)
+                            <div class="col">
+                                <label for="" class="form-label control-label">Dosen Penguji </label>
+                                <select class="form-control" name="d_penguji" size="1">
+                                    <option value="" hidden="">-- Dosen Penguji--</option>
+                                    @foreach ($dosen as $k)
+                                    <option value="{{ $k->id }}" {{ $k->id == $item->d_penguji ? 'selected':'' }}>{{
+                                        $k->biodata->nama }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @endif
                         </div>
                     </div>
 
@@ -660,50 +708,61 @@
                     </div>
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col-6">
-                                <label for="image" class="form-label control-label">Slip Pembayaran</label>
-                                <input type="hidden" name="oldImage3" value="{{ $item->slip_pembayaran }}">
-                                <input type="file" class="form-control picture" id="image6" name="slip_pembayaran"
-                                    onchange="previewImage(6)">
+                            <div class="col">
+                                <label for="image" class="form-label control-label">Slip Pembayaran Sidang</label>
+                                <input type="hidden" name="oldImage3" value="{{ $item->slip_pembayaran_sidang }}">
+                                <input type="file" class="form-control picture" id="image6"
+                                    name="slip_pembayaran_sidang" onchange="previewImage(6)">
 
-                                @if ($item->slip_pembayaran)
-                                <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
+                                @if ($item->slip_pembayaran_sidang)
+                                <img src="{{ asset('storage/' . $item->slip_pembayaran_sidang) }}"
                                     class="img-preview img-fluid mt-2 col-sm-4" id="preview6">
                                 @else
                                 @endif
                                 <p class="mt-1 font-italic">biarkan kolom kosong
                                     jika tidak diganti</p>
                             </div>
-                            @if (Auth::user()->level!=0)
                             <div class="col">
-                                <label for="" class="form-label control-label">Dosen Penguji </label>
-                                <select class="form-control" name="d_penguji" size="1">
-                                    <option value="" hidden="">-- Dosen Penguji--</option>
-                                    @foreach ($dosen as $k)
-                                    <option value="{{ $k->id }}" {{ $k->id == $item->d_penguji ? 'selected':'' }}>{{
-                                        $k->biodata->nama }}</option>
-                                    @endforeach
-                                </select>
+                                <label for="image" class="form-label control-label">Slip Pembayaran Skripsi</label>
+                                <input type="hidden" name="oldImage3" value="{{ $item->slip_pembayaran_skripsi }}">
+                                <input type="file" class="form-control picture" id="image9"
+                                    name="slip_pembayaran_skripsi" onchange="previewImage(9)">
+
+                                @if ($item->slip_pembayaran_skripsi)
+                                <img src="{{ asset('storage/' . $item->slip_pembayaran_skripsi) }}"
+                                    class="img-preview img-fluid mt-2 col-sm-4" id="preview9">
+                                @else
+                                @endif
+                                <p class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</p>
                             </div>
-                            @elseif(Auth::user()->level==0)
-                            <div class="col">
-                                <label for="" class="form-label">Tempat </label>
-                                <input type="text" name="tempat" class="form-control" value="{{ $item->tempat }}">
-                            </div>
-                            @endif
+
                         </div>
                     </div>
-                    @if (Auth::user()->level!=0)
 
                     <div class="form-group">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col">
+                                <label for="image" class="form-label control-label">KRS (Tertera Mata Kuliah
+                                    Skripsi)</label>
+                                <input type="hidden" name="oldImage3" value="{{ $item->krs }}">
+                                <input type="file" class="form-control picture" id="image10" name="krs"
+                                    onchange="previewImage(10)">
+
+                                @if ($item->krs)
+                                <img src="{{ asset('storage/' . $item->krs) }}"
+                                    class="img-preview img-fluid mt-2 col-sm-4" id="preview10">
+                                @else
+                                @endif
+                                <p class="mt-1 font-italic">biarkan kolom kosong
+                                    jika tidak diganti</p>
+                            </div>
+                            <div class="col">
                                 <label for="" class="form-label">Tempat </label>
                                 <input type="text" name="tempat" class="form-control" value="{{ $item->tempat }}">
                             </div>
                         </div>
                     </div>
-                    @endif
 
                     <div class="modal-footer required">
                         <div class="col">
@@ -731,7 +790,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan 1</h5>
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Form Bimbingan 1 - {{
+                    $item->daftarta->mahasiswa->biodata->nama
+                    }} | {{ $item->daftarta->mahasiswa->biodata->no_induk }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -765,7 +826,9 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Form Bimbingan 2</h5>
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Form Bimbingan 2 - {{
+                    $item->daftarta->mahasiswa->biodata->nama
+                    }} | {{ $item->daftarta->mahasiswa->biodata->no_induk }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -792,14 +855,17 @@
 </div>
 @endforeach
 
-{{-- Slip Pembayaran --}}
+{{-- Slip Pembayaran Sidang--}}
 @foreach ($s_list as $item)
-<div class="modal fade" id="viewSlip{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+<div class="modal fade" id="viewSlipSidang{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran</h5>
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Slip Pembayaran Sidang - {{
+                    $item->daftarta->mahasiswa->biodata->no_induk }}
+                    | {{ $item->daftarta->mahasiswa->biodata->nama
+                    }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -808,10 +874,83 @@
             <div class="modal-body">
                 <div class="form-group">
                     <div class="row">
-                        @if ($item->slip_pembayaran)
+                        @if ($item->slip_pembayaran_sidang)
                         <div class="col">
-                            <img src="{{ asset('storage/' . $item->slip_pembayaran) }}" alt=""
+                            <img src="{{ asset('storage/' . $item->slip_pembayaran_sidang) }}" alt=""
                                 class="rounded mx-auto d-block" style="width: 30%">
+                        </div>
+                        @else
+                        <div class="col">
+                            <p class="text-center">Gambar Tidak Ditemukan</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- Slip Pembayaran Skripsi--}}
+@foreach ($s_list as $item)
+<div class="modal fade" id="viewSlipSkripsi{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Slip Pembayaran Skripsi - {{
+                    $item->daftarta->mahasiswa->biodata->no_induk }}
+                    | {{ $item->daftarta->mahasiswa->biodata->nama
+                    }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        @if ($item->slip_pembayaran_skripsi)
+                        <div class="col">
+                            <img src="{{ asset('storage/' . $item->slip_pembayaran_skripsi) }}" alt=""
+                                class="rounded mx-auto d-block" style="width: 30%">
+                        </div>
+                        @else
+                        <div class="col">
+                            <p class="text-center">Gambar Tidak Ditemukan</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- view KRS --}}
+@foreach ($s_list as $item)
+<div class="modal fade" id="viewKRS{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Kartu Rencana Studi - {{
+                    $item->daftarta->mahasiswa->biodata->nama
+                    }} | {{ $item->daftarta->mahasiswa->biodata->no_induk }} </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        @if ($item->krs)
+                        <div class="col">
+                            <img src="{{ asset('storage/' . $item->krs) }}" alt="" class="rounded mx-auto d-block"
+                                style="width: 30%">
                         </div>
                         @else
                         <div class="col">

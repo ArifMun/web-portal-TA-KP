@@ -22,9 +22,7 @@ class DaftarTAController extends Controller
     public function index()
     {
         $existTA = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarta->count() != 0;
-        $newRegisterTA = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarta->count() == 0
-            || Auth::user()->level != 0;
-
+        $newRegisterTA = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarta->count() == 0;
         $thn         = new TahunAkademik();
         $thnakademik = $thn->latest('id')->limit(5)->get();
         $last_year   = $thn->orderBy('id', 'desc')->first();
@@ -69,7 +67,7 @@ class DaftarTAController extends Controller
             'last_year',
             'existTA',
             'newRegisterTA',
-            'nextTA'
+            'nextTA',
         ));
     }
 
@@ -101,7 +99,7 @@ class DaftarTAController extends Controller
                 'stts_pengajuan'    => 'required',
                 'ganti_pembimbing'  => 'required',
                 'stts_ta'           => 'required',
-                'krs'               => 'required|image|file',
+                // 'krs'               => 'required|image|file',
                 // 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required'
             ]
@@ -124,7 +122,7 @@ class DaftarTAController extends Controller
                 'pembimbing_lama_2' => $request->pembimbing_lama_2,
                 'stts_pengajuan'    => $request->stts_pengajuan,
                 'stts_ta'           => $request->stts_ta,
-                'krs'               => $request->file('krs')->store('file-krs'),
+                // 'krs'               => $request->file('krs')->store('file-krs'),
                 'thn_akademik_id'   => $request->thn_akademik_id,
                 'konsentrasi'       => $string
             ]);
@@ -173,7 +171,7 @@ class DaftarTAController extends Controller
                 'ganti_pembimbing' => 'required',
                 'stts_pengajuan'   => 'required',
                 'stts_ta'          => 'required',
-                'krs'              => 'file|image',
+                // 'krs'              => 'file|image',
                 'thn_akademik_id'  => 'required',
                 'konsentrasi'      => 'required',
             ]
@@ -185,12 +183,12 @@ class DaftarTAController extends Controller
         } else {
 
             $daftarta = DaftarTA::findOrFail($id);
-            if ($request->file('krs')) {
-                if ($request->oldImage) {
-                    Storage::delete($request->oldImage);
-                }
-                $daftarta->krs = $request->file('krs')->store('file-krs');
-            }
+            // if ($request->file('krs')) {
+            //     if ($request->oldImage) {
+            //         Storage::delete($request->oldImage);
+            //     }
+            //     $daftarta->krs = $request->file('krs')->store('file-krs');
+            // }
 
             $input  = $request->input('konsentrasi');
             $string = \implode(',', $input);
@@ -205,7 +203,6 @@ class DaftarTAController extends Controller
             $daftarta->pembimbing_lama_2   = $request->pembimbing_lama_2;
             $daftarta->stts_pengajuan      = $request->stts_pengajuan;
             $daftarta->stts_ta             = $request->stts_ta;
-            // $daftarta->krs                 = $request->krs;
             $daftarta->konsentrasi         = $string;
             $daftarta->update();
 

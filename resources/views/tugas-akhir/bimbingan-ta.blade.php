@@ -438,12 +438,6 @@
                                 <select class="form-control" name="daftar_ta_id" id="daftar_ta_id" required>
                                     <option value="" hidden="">-- Pilih --</option>
 
-                                    {{-- @foreach ($m_bimbing_1 as $item)
-                                    <option value="{{ $item->id}}">{{ $item->mahasiswa->biodata->no_induk }} - {{
-                                        $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun
-                                        }}
-                                    </option>
-                                    @endforeach --}}
                                     @foreach ($d_bimbing_1 as $item)
                                     <option value="{{ $item->id }}">{{
                                         $item->mahasiswa->biodata->no_induk
@@ -476,7 +470,6 @@
                                 @if (Auth::user()->level==0)
                                 <input type="text" size="1" class="form-control" value="Proses" readonly>
                                 <input type="hidden" value="proses" name="stts">
-                                {{-- <option value="proses" @readonly(true)>Proses</option> --}}
                                 @else
                                 <select class="form-control" name="stts" required>
                                     <option value="" hidden="">-- Status TA --</option>
@@ -489,10 +482,10 @@
                         </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan TA </label>
+                                <label for="file" class="form-label ">Laporan TA </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
                                 <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta">
                                 <span class="font-italic text-muted mr-5">ukuran file maksimal <span
@@ -501,7 +494,6 @@
                             </div>
                             <div class="col">
                                 <label>Catatan</label>
-                                {{-- <input type="textarea" class="form-control" name="catatan"> --}}
                                 <textarea class="form-control" name="catatan" id="catatan"></textarea>
 
                             </div>
@@ -588,7 +580,6 @@
                                 @if (Auth::user()->level==0)
                                 <input type="text" class="form-control" value="Proses" readonly>
                                 <input type="hidden" class="form-control" value="proses" name="stts">
-                                {{-- <option value="proses" @readonly(true)>Proses</option> --}}
                                 @else
                                 <select class="form-control" name="stts" required>
                                     <option value="" hidden="">-- Status TA --</option>
@@ -602,10 +593,10 @@
                     </div>
 
 
-                    <div class="form-group required">
+                    <div class="form-group">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan TA </label>
+                                <label for="file" class="form-label">Laporan TA </label>
                                 <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
                                 <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta">
                                 <span class="font-italic text-muted mr-5">ukuran file maksimal <span
@@ -614,7 +605,6 @@
                             </div>
                             <div class="col">
                                 <label>Catatan</label>
-                                {{-- <input type="textarea" class="form-control" name="catatan"> --}}
                                 <textarea class="form-control" name="catatan" id="catatan"></textarea>
 
                             </div>

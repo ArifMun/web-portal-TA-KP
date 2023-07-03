@@ -47,7 +47,7 @@
                                     </a>
                                 </div>
 
-                                @if ($registerSeminar || Auth::user()->level==2)
+                                @if ($registerSeminar || UserCheck::levelAdmin())
                                 <a href="/seminar-kp/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarSeminar">
                                     <i class="fa fa-plus"></i>
@@ -59,6 +59,7 @@
                         </div>
 
                         <div class="card-body">
+                            @if (UserCheck::levelAdmin())
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
@@ -83,7 +84,7 @@
                                                 <label class="font-weight-bold h6">Filter Status</label>
                                                 <select data-column="4" class="form-control text-capitalize"
                                                     id="filter-stts">
-                                                    <option value="">-- Pilih Status --</option>
+                                                    <option value="">-- Pilih Status Seminar --</option>
                                                     @foreach ($filterStts as $item)
                                                     <option value="{{ $item->stts_seminar }}" class="text-capitalize">{{
                                                         $item->stts_seminar }}</option>
@@ -94,8 +95,6 @@
                                     </div>
                                 </div>
 
-                                @if (Auth::user()->level==0)
-                                @else
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
                                         <div class="col col-stats ml-3 ml-sm-0">
@@ -119,9 +118,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
                             </div>
                             <div class="divider"></div>
+                            @endif
                             <div class="table-responsive">
                                 <table id="seminar-kp" class="display table table-striped table-hover">
                                     <thead>

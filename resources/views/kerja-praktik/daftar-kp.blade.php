@@ -61,7 +61,7 @@
                                     <i class="fa fa-plus"></i>
                                     Melanjutkan
                                 </a>
-                                @elseif($newRegisterKp)
+                                @elseif($newRegisterKp||UserCheck::levelAdmin())
                                 <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarKP">
                                     <i class="fa fa-plus"></i>
@@ -72,7 +72,7 @@
                         </div>
 
                         @elseif(Auth::user()->level == 0 && $formakses->akses_kp == 1 ||
-                        Auth::user()->level==2 )
+                        UserCheck::levelAdmin() )
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <div class="">Readme First
@@ -88,7 +88,7 @@
                                     <i class="fa fa-plus"></i>
                                     Melanjutkan
                                 </a>
-                                @elseif($newRegisterKp )
+                                @elseif($newRegisterKp || UserCheck::levelAdmin())
                                 <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalDaftarKP">
                                     <i class="fa fa-plus"></i>
@@ -109,6 +109,7 @@
                         @endif
 
                         <div class="card-body">
+                            @if (UserCheck::levelAdmin())
                             <div class="row">
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row align-items-center">
@@ -145,8 +146,6 @@
                                     </div>
                                 </div>
 
-                                @if (Auth::user()->level !=0)
-
                                 <div class="col-sm-6 col-md-3">
                                     <div class="row">
                                         <div class="col col-stats ml-3 ml-sm-0">
@@ -168,10 +167,9 @@
                                         </div>
                                     </div>
                                 </div>
-                                @endif
-
                             </div>
                             <div class="divider"></div>
+                            @endif
                             <div class="table-responsive">
                                 <table id="kerja-praktik" class="display table table-striped table-hover">
                                     <thead>
@@ -429,14 +427,11 @@
                                 <input type="hidden" name="mahasiswa_id" value="{{ $mhskp->id}}">
                                 <input type="text" class="form-control" value="{{ $mhskp->biodata->no_induk }} - {{
                                         $mhskp->biodata->nama }}" readonly>
-                                {{-- <option value=" {{ $mhskp->id }}">{{ $mhskp->biodata->no_induk }} - {{
-                                    $mhskp->biodata->nama }}
-                                </option> --}}
 
                                 @else
                                 <select class="form-control " name="mahasiswa_id" id="mahasiswa_id" size="1" id=""
                                     required>
-                                    <option value="">-- Pilih --</option>
+                                    <option value="">-- Pilih Nama--</option>
                                     @foreach ($mahasiswa as $k)
                                     <option value="{{ $k->id}}">{{ $k->biodata->no_induk
                                         }} - {{ $k->biodata->nama
@@ -486,8 +481,8 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Semester </label>
-                                <input type="number" class="form-control" name="semester" placeholder="Semester .."
-                                    size="1" required>
+                                <input type="number" class="form-control" name="semester"
+                                    placeholder="Minimal Semester 6.." size="1" required>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status Kerja Praktik </label>
@@ -495,7 +490,7 @@
                                 <input type="text" class="form-control text-capitalize" value="baru" name="stts_kp"
                                     readonly>
 
-                                @elseif(Auth::user()->level !=0)
+                                @elseif(UserCheck::levelAdmin())
                                 {{-- <label class="control-label">Status Kerja Praktik </label> --}}
                                 <select class="form-control" name="stts_kp" size="1" required>
                                     <option value="" hidden="">-- Status KP --</option>
@@ -509,13 +504,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col" id="ganti">
-                                {{-- <label class="control-label">Ganti Dosen Pembimbing </label>
-                                <select class="form-control" name="ganti_pembimbing" id="d_ganti" size="1" required>
-                                    <option value="" hidden="">-- Ganti --</option>
-                                    <option value="ya">Ya</option>
-                                    <option value="tidak">Tidak</option>
-                                </select> --}}
+                            <div class="col" id="d_ganti">
                                 <label class="control-label">Ganti Dosen Pembimbing </label><br>
                                 @if ($newRegisterKp)
                                 <label class="form-radio-label">
@@ -528,7 +517,7 @@
                                         checked="">
                                     <span class="form-radio-sign">Tidak</span>
                                 </label>
-                                @else
+                                @elseif(UserCheck::levelAdmin())
                                 <label class="form-radio-label">
                                     <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="ya">
                                     <span class="form-radio-sign">Ya</span>
@@ -553,7 +542,7 @@
                                 <div class="mb-3 kolom-baru" id="kolomBaru" style="display:none">
                                     <label>Dosen Pembimbing Lama</label>
                                     <select class="form-control" name="pembimbing_lama" size="1">
-                                        <option value="" hidden="">-- Pembimbing Lama --</option>
+                                        <option value="">-- Pembimbing Lama --</option>
                                         @foreach ($dosen as $k)
                                         <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
                                         @endforeach
@@ -1157,24 +1146,7 @@
 
 {{-- edit --}}
 <script>
-    $(document).ready(function() {
-        $('.modalEditKP').on('show.bs.modal', function() {
-            var formId = '#' + $(this).attr('id');
-            toggleKolomBaru_1(formId);
-        
-        $(formId + ' #d_ganti_1').on('change', function() {
-            toggleKolomBaru_1(formId);
-        });
-        
-        function toggleKolomBaru_1(formId) {
-            if ($(formId + ' input[name="ganti_pembimbing"]:checked').val() === 'ya') {
-                $(formId + ' #kolomBaru_1').show();
-            } else {
-            $(formId + ' #kolomBaru_1').hide();
-                }
-            }
-        });
-    });
+
 </script>
 
 {{-- melanjutkan --}}
