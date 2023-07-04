@@ -267,7 +267,7 @@
                                                     data-target="#viewSlip{{ $item->id }}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
-
+                                            </td>
                                             <td>{{ $item->tahunakademik->tahun }} </td>
                                             <td>{{ $item->konsentrasi }}</td>
                                             <td>{{ $item->created_at }}</td>
@@ -366,6 +366,7 @@
                                                     class="btn btn-success btn-xs"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
+                                            </td>
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
                                             <td>{{ $row->created_at }}</td>

@@ -66,7 +66,7 @@
                                         <div class="col col-stats ml-3 ml-sm-0">
                                             <div class="filter tahun">
                                                 <label class="font-weight-bold h6">Filter Tahun</label>
-                                                <select data-column="9" class="form-control" id="filter-tahun">
+                                                <select data-column="10" class="form-control" id="filter-tahun">
                                                     <option value="">-- Pilih Tahun --</option>
                                                     @foreach ($thnakademik as $k)
                                                     <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
@@ -133,9 +133,9 @@
                                             <th>Semester</th>
                                             <th>Form Bimbingan</th>
                                             <th>Slip Pembayaran</th>
+                                            <th>Surat Keterangan Selesai</th>
                                             <th>Judul</th>
                                             <th>Tahun Akademik</th>
-                                            {{-- <th>Catatan</th> --}}
                                             <th>Tanggal Seminar</th>
                                             <th>Jam Seminar</th>
                                             <th>Action</th>
@@ -193,6 +193,12 @@
 
                                             <td><a href="seminar-kp/view-slip/{{ $item->id}}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $item->id}}"><i
+                                                        class="fa fa-file-image fa-2x">
+                                                    </i> </a>
+                                            </td>
+                                            <td><a href="seminar-kp/view-surat-ket-selesai/{{ $item->id}}"
+                                                    data-toggle="modal"
+                                                    data-target="#viewSuratKetSelesai{{ $item->id}}"><i
                                                         class="fa fa-file-image fa-2x">
                                                     </i> </a>
                                             </td>
@@ -285,7 +291,12 @@
                                                     </i>
                                                 </a>
                                             </td>
-
+                                            <td><a href="seminar-kp/view-surat-ket-selesai/{{ $row->id}}"
+                                                    data-toggle="modal"
+                                                    data-target="#viewSuratKetSelesai{{ $row->id}}"><i
+                                                        class="fa fa-file-image fa-2x">
+                                                    </i> </a>
+                                            </td>
                                             <td>
                                                 <a href="seminar-kp/view-judul/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewJudul{{ $row->id }}"><i class="fa fa-eye">
@@ -662,6 +673,44 @@
                         @if ($item->daftarkp->slip_pembayaran)
                         <div class="col">
                             <img src="{{ asset('storage/' . $item->daftarkp->slip_pembayaran) }}" alt=""
+                                class="rounded mx-auto d-block" style="width: 30%">
+                        </div>
+                        @else
+                        <div class="col">
+                            <p class="text-center">Gambar Tidak Ditemukan</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- Surat Keterangan Selesai --}}
+@foreach ($seminarkp as $item)
+<div class="modal fade" id="viewSuratKetSelesai{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">
+                    Surat Keterangan Selesai - {{ $item->daftarkp->mahasiswa->biodata->no_induk }}
+                    | {{ $item->daftarkp->mahasiswa->biodata->nama
+                    }}
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        @if ($item->ket_selesai)
+                        <div class="col">
+                            <img src="{{ asset('storage/' . $item->ket_selesai) }}" alt=""
                                 class="rounded mx-auto d-block" style="width: 30%">
                         </div>
                         @else
