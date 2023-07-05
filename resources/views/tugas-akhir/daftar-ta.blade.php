@@ -404,6 +404,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form method="POST" enctype="multipart/form-data" action="daftar-ta" id="tambah">
                 @csrf
@@ -414,16 +425,16 @@
                     </select>
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col ">
                                 <label class="control-label">NIM - Nama </label>
                                 @if (Auth::user()->level==0 )
-                                <input type="text" class="form-control" value="{{ $mhsAuth->biodata->no_induk }} - {{
+                                <input type="text" class="form-control text-capitalize" value="{{ $mhsAuth->biodata->no_induk }} - {{
                                     $mhsAuth->biodata->nama }}" readonly>
                                 <input type="hidden" name="mahasiswa_id" value="{{ $mhsAuth->id}}">
                                 @else
-                                <select class="form-control" name="mahasiswa_id" onchange="no_biodata()" size="1"
-                                    required>
-
+                                <select class="form-control text-capitalize" name="mahasiswa_id" onchange="no_biodata()"
+                                    size="1" required>
+                                    <option value="">-- Pilih Mahasiswa--</option>
                                     @foreach ($mhs_dDaftar as $item)
                                     <option value="{{ $item->daftarkp->mahasiswa_id}}">{{
                                         $item->daftarkp->mahasiswa->biodata->no_induk
@@ -476,7 +487,7 @@
                                 @if ($newRegisterTA)
                                 <input type="text" class="form-control text-capitalize" name="stts_ta" value="baru"
                                     readonly>
-                                @elseif(Auth::user()->leve!=0)
+                                @elseif(UserCheck::levelAdmin())
                                 <select class="form-control" name="stts_ta" size="1" required>
                                     <option value="" hidden="">-- Status Tugas Akhir --</option>
                                     <option value="baru">Baru</option>
@@ -586,7 +597,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
             <form method="POST" enctype="multipart/form-data" action="daftar-ta/{{ $item->id }}" id="edit">
                 @method('put')
                 @csrf
@@ -788,6 +809,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form method="POST" enctype="multipart/form-data" action="daftar-ta" id="tambah">
                 @csrf

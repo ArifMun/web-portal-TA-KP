@@ -402,6 +402,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form method="POST" enctype="multipart/form-data" action="sidang-ta" id="tambah">
                 @csrf
@@ -421,7 +432,7 @@
                                 <select class="form-control" name="daftar_ta_id" id="daftar_ta_id" size="1"
                                     onchange="no_mahasiswa()" required>
 
-                                    <option value="0">-- Pilih Nama--</option>
+                                    <option value="0">-- Pilih Mahasiswa--</option>
                                     @foreach ($daftarta as $k)
                                     <option value="{{ $k->id }}" class="text-capitalize">{{
                                         $k->mahasiswa->biodata->no_induk
@@ -591,6 +602,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form method="POST" enctype="multipart/form-data" action="sidang-ta/{{ $item->id }}">
                 @method('put')

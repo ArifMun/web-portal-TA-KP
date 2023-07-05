@@ -111,6 +111,9 @@ class KerjaPraktikController extends Controller
                 'slip_pembayaran'   => 'required|image|file|max:1024',
                 // 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required',
+            ],
+            [
+                'mahasiswa_id.unique' => 'The NIM has already been taken'
             ]
         );
 
@@ -191,7 +194,8 @@ class KerjaPraktikController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('kerja-praktik')->with('warning', 'Data Gagal Diperbarui!');
+            return \redirect('kerja-praktik')->with('warning', 'Data Gagal Diperbarui!')
+                ->withErrors($validation);
         } else {
 
             $daftarkp = DaftarKP::findOrFail($id);

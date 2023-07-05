@@ -406,12 +406,22 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Daftar Kerja Praktik</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Daftar Kerja Praktik </h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
             <form method="POST" enctype="multipart/form-data" action="kerja-praktik" id="ganti">
                 @csrf
                 <div class="modal-body">
@@ -432,7 +442,7 @@
                                 @else
                                 <select class="form-control " name="mahasiswa_id" id="mahasiswa_id" size="1" id=""
                                     required>
-                                    <option value="">-- Pilih Nama--</option>
+                                    <option value="">-- Pilih Mahasiswa--</option>
                                     @foreach ($mahasiswa as $k)
                                     <option value="{{ $k->id}}">{{ $k->biodata->no_induk
                                         }} - {{ $k->biodata->nama
@@ -483,7 +493,7 @@
                             <div class="col">
                                 <label class="control-label">Semester </label>
                                 <input type="number" class="form-control" name="semester"
-                                    placeholder="Minimal Semester 6.." size="1" required>
+                                    placeholder="Minimal Semester 6.." size="1" value="{{ old('semester') }}" required>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status Kerja Praktik </label>
@@ -532,7 +542,8 @@
                             </div>
                             <div class="col">
                                 <label>Judul</label>
-                                <input type="text" class="form-control" name="judul" placeholder="Judul .." size="1">
+                                <input type="text" class="form-control" name="judul" placeholder="Judul .." size="1"
+                                    value="{{ old('judul') }}">
                             </div>
                         </div>
                     </div>
@@ -553,7 +564,6 @@
                                 <input type="file" class="form-control picture" id="image1" name="slip_pembayaran"
                                     onchange="previewImage(1)">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
-
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
@@ -591,20 +601,33 @@
 @if (Auth::user()->level!=0 || UserCheck::checkDaftarKP())
 
 @else
+
 <div class="modal fade modalMelanjutkan" id="modalMelanjutkan" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Melanjutkan Kerja Praktik</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Melanjutkan Kerja Praktik</h5><br>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form id="ganti_1" method="POST" enctype="multipart/form-data" action="kerja-praktik">
                 @csrf
                 <div class="modal-body">
+
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
@@ -710,8 +733,8 @@
                                 </div>
                                 <div>
                                     <label class="control-label">Konsentrasi </label>
-                                    <select class="form-control konsentrasi_1" name="konsentrasi[]"
-                                        id="konsentrasi_1{{ $nextkp->id }}" multiple required size="1">
+                                    <select class="form-control konsentrasi_" name="konsentrasi[]"
+                                        id="konsentrasi__{{ $nextkp->id }}" multiple required size="1">
 
                                         @foreach($konsentrasi as $option)
                                         <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
@@ -721,9 +744,7 @@
                                             {{ $option->nama_konsentrasi }}
                                         </option>
                                         @endforeach
-
                                     </select>
-
                                 </div>
                             </div>
                             <div class="col">
@@ -775,7 +796,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
             <form id="ganti_1" method="POST" enctype="multipart/form-data" action="kerja-praktik/{{ $item->id }}">
                 @method('put')
                 @csrf
@@ -788,12 +819,6 @@
                                     value="{{ $item->mahasiswa_id }}">
                                 <input type="text" class="form-control" size="1" readonly
                                     value="{{ $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}">
-                                {{-- <select class="form-control" name="mahasiswa_id" id="mahasiswa_id" size="1"
-                                    readonly required>
-                                    <option value="{{ $item->mahasiswa_id }}">{{
-                                        $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}
-                                    </option>
-                                </select> --}}
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
@@ -1106,10 +1131,19 @@
     </div>
 </div>
 @endforeach
-
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="/assets/js/select2.min.js"></script>
+<script src="/assets/js/native/image.js"></script>
+<script src="/assets/js/native/checkboxkp.js"></script>
+<script src="/assets/js/native/konsentrasi.js"></script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
+</script>
 
 <script>
     $(document).ready(function () {
@@ -1122,79 +1156,7 @@
         });
     });
 </script>
-<script>
-    $(document).ready(function() {
-        $('#konsentrasi').select2({
-            placeholder: '-- Pilih Konsentrasi --',
-        });
-    });
 
-    $(document).ready(function() {
-        $('.konsentrasi_').select2({
-            width: '100%'
-        });
-    });
 
-    $(document).ready(function() {
-        $('.konsentrasi_1').select2({
-            width: '100%'
-        });
-    });
-
-</script>
-
-<script src="/assets/js/native/checkboxkp.js"></script>
-
-{{-- edit --}}
-<script>
-
-</script>
-
-{{-- melanjutkan --}}
-{{-- <script>
-    $(document).ready(function() {
-        $('.modalMelanjutkan').on('show.bs.modal', function() {
-            var formId = '#' + $(this).attr('id');
-            toggleKolomBaru_2(formId);
-        
-        $(formId + ' #d_ganti_2').on('change', function() {
-            toggleKolomBaru_2(formId);
-        });
-        
-        function toggleKolomBaru_2(formId) {
-            if ($(formId + ' input[name="ganti_pembimbing"]:checked').val() === 'ya') {
-                $(formId + ' #kolomBaru_2').show();
-            } else {
-                $(formId + ' #kolomBaru_2').hide();
-                }
-            }
-        });
-    });
-</script> --}}
-
-<script type="text/javascript">
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-    });
-
-</script>
-
-<script>
-    function previewImage(index) {
-        const image = document.querySelector('#image' + index);
-        const imgPreview = document.querySelector('#preview' + index);
-        
-        imgPreview.style.display = 'block';
-        
-        const oFReader = new FileReader();
-        oFReader.readAsDataURL(image.files[0]);
-        
-        oFReader.onload = function (oFREvent) {
-        imgPreview.src = oFREvent.target.result;
-        }
-}
-</script>
 
 @endsection

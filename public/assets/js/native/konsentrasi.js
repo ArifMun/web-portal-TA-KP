@@ -18,3 +18,9 @@ $(document).ready(function () {
         width: "100%",
     });
 });
+$(document).ready(function () {
+    $("#konsentrasi_1").select2({
+        placeholder: "-- Pilih Konsentrasi --",
+        width: "100%",
+    });
+});

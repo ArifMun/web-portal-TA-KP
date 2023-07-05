@@ -147,11 +147,11 @@
                                         @if (empty(Auth::user()->biodata->mahasiswa->daftarkp->seminarkp))
                                         @foreach ($seminarmhs as $item)
                                         {{-- {{ $item }} --}}
-                                        <tr align="center">@php $no=1; @endphp
+                                        <tr align="center" class="text-capitalize">@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">
+                                            <td>
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarkp->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -161,22 +161,19 @@
 
                                             @if ($item->stts_seminar=='proses')
                                             <td>
-                                                <a
-                                                    class="badge badge-warning font-weight-bold text-light text-capitalize">
+                                                <a class="badge badge-warning font-weight-bold text-light ">
                                                     {{
                                                     $item->stts_seminar }}</a>
                                             </td>
                                             @elseif($item->stts_seminar=='selesai')
                                             <td>
-                                                <a
-                                                    class="badge badge-success font-weight-bold text-light text-capitalize">
+                                                <a class="badge badge-success font-weight-bold text-light ">
                                                     {{
                                                     $item->stts_seminar }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a
-                                                    class="badge badge-primary font-weight-bold text-light text-capitalize">
+                                                <a class="badge badge-primary font-weight-bold text-light ">
                                                     {{
                                                     $item->stts_seminar }}</a>
                                             </td>
@@ -240,11 +237,11 @@
                                     @elseif(Auth::user()->level !=0)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($seminarkp as $row)
-                                        <tr align="center">
+                                        <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">
+                                            <td>
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->daftarkp->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -253,22 +250,19 @@
                                             </td>
                                             @if ($row->stts_seminar=='proses')
                                             <td>
-                                                <a
-                                                    class="badge badge-warning font-weight-bold text-light text-capitalize">
+                                                <a class="badge badge-warning font-weight-bold text-light ">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
                                             @elseif($row->stts_seminar=='selesai')
                                             <td>
-                                                <a
-                                                    class="badge badge-success font-weight-bold text-light text-capitalize">
+                                                <a class="badge badge-success font-weight-bold text-light ">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a
-                                                    class="badge badge-primary font-weight-bold text-light text-capitalize">
+                                                <a class="badge badge-primary font-weight-bold text-light ">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
@@ -344,6 +338,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form method="POST" enctype="multipart/form-data" action="seminar-kp">
                 @csrf
@@ -351,7 +356,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">NIM - Nama - Tahun </label>
+                                <label class="control-label">NIM - Nama </label>
                                 @if (Auth::user()->level==0 )
                                 <input type="text" class="form-control" value="{{
                                         $mhskps->mahasiswa->biodata->no_induk
@@ -361,24 +366,15 @@
                                 @else
                                 <select class="form-control text-capitalize" name="daftarkp_id"
                                     onchange="no_mahasiswa()" id="daftarkp_id" required>
-                                    <option value="" hidden="">-- Pilih --</option>
 
-                                    {{-- @foreach ($mhskps as $item)
-                                    <option value="{{ $item->id}}" class="text-capitalize">{{
-                                        $item->mahasiswa->biodata->no_induk
-                                        }} - {{ $item->mahasiswa->biodata->nama
-                                        }} - {{ $item->tahunakademik->tahun }}
-                                    </option>
-                                    @endforeach --}}
-                                    {{-- <input type="hidden" value="{{ Auth::user()->biodata->mahasiswa->id }}"
-                                        name="mahasiswa_id"> --}}
-
+                                    <option value="">-- Pilih Mahasiswa--</option>
                                     @foreach ($daftarkp as $k)
-                                    <option value="{{ $k->id }}" class="text-capitalize">{{
+                                    <option value="{{ $k->id }}" class="text-capitalize">
+                                        {{
                                         $k->mahasiswa->biodata->no_induk
                                         }} - {{ $k->mahasiswa->biodata->nama
-                                        }} - {{ $k->tahunakademik->tahun
-                                        }}</option>
+                                        }}
+                                    </option>
                                     @endforeach
 
                                     @endif
@@ -485,6 +481,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form method="POST" enctype="multipart/form-data" action="seminar-kp/{{ $item->id }}">
                 @method('put')

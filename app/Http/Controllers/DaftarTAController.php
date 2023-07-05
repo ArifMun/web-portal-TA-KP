@@ -102,12 +102,16 @@ class DaftarTAController extends Controller
                 // 'krs'               => 'required|image|file',
                 // 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required'
+            ],
+            [
+                'mahasiswa_id.unique' => 'The Mahasiswa has already been taken'
             ]
         );
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('daftar-ta')->with('warning', 'Data Tidak Tersimpan!');
+            return \redirect('daftar-ta')->with('warning', 'Data Tidak Tersimpan!')
+                ->withErrors($validation);
         } else {
             $input  = $request->input('konsentrasi');
             $string = \implode(',', $input);
@@ -179,7 +183,8 @@ class DaftarTAController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('daftar-ta')->with('warning', 'Data Gagal Diperbarui!');
+            return \redirect('daftar-ta')->with('warning', 'Data Gagal Diperbarui!')
+                ->withErrors($validation);
         } else {
 
             $daftarta = DaftarTA::findOrFail($id);

@@ -298,7 +298,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
 
                                 @if (Auth::user()->level==0 )
@@ -322,12 +322,14 @@
                                     @endif
                                 </select>
                             </div>
+                            @if (UserCheck::levelMhs())
+
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan">
+                                <label>Dosen Pembimbing</label>
+                                <input type="text" class="form-control" value="{{ $mhskps->dosen->biodata->nama }}"
+                                    readonly>
                             </div>
-                            <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" readonly>
-                            <input type="hidden" name="dosen_id" id="dosen_id" readonly>
+                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -335,12 +337,8 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label">Laporan KP </label>
-                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp">
-                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span> </span>
+                                <label class="control-label">Judul Bimbingan </label>
+                                <input type="text" class="form-control" name="judul_bimbingan">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
@@ -362,7 +360,14 @@
 
                     <div class="form-group required">
                         <div class="row">
-
+                            <div class="col">
+                                <label for="file" class="form-label">Laporan KP </label>
+                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
+                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp">
+                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span>
+                            </div>
                             <div class="col">
                                 <label>Catatan</label>
                                 {{-- <input type="textarea" class="form-control" name="catatan"> --}}
@@ -421,6 +426,7 @@
 
                                 </select>
                             </div>
+
                             <div class="col">
                                 <label class="control-label">Judul Bimbingan </label>
                                 <input type="text" class="form-control" name="judul_bimbingan"

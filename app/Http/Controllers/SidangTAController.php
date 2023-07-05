@@ -20,7 +20,7 @@ class SidangTAController extends Controller
      */
     public function index()
     {
-        $s_list      = SidangTA::all();
+        $s_list      = SidangTA::latest()->get();
 
         $list        = new SidangTA();
         $registerSidang = $list->registerSidang();
@@ -87,7 +87,7 @@ class SidangTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'daftar_ta_id'          => 'required',
+                'daftar_ta_id'          => 'required|unique:sidang_ta',
                 'f_bimbingan_1'         => 'required|image|file|max:1024',
                 'f_bimbingan_2'         => 'required|image|file|max:1024',
                 'slip_pembayaran_sidang'    => 'required|image|file|max:1024',
@@ -101,7 +101,8 @@ class SidangTAController extends Controller
         );
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('sidang-ta')->with('warning', 'Data Tidak Tersimpan!');
+            return \redirect('sidang-ta')->with('warning', 'Data Tidak Tersimpan!')
+                ->withErrors($validation);
         } else {
 
             SidangTA::create([
@@ -158,7 +159,7 @@ class SidangTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'daftar_ta_id'      => 'required',
+                'daftar_ta_id'      => 'requiredunique:sidang_ta',
                 'f_bimbingan_1'     => 'image|file|max:1024',
                 'f_bimbingan_2'     => 'image|file|max:1024',
                 'slip_pembayaran_sidang'    => 'image|file|max:1024',
@@ -166,12 +167,16 @@ class SidangTAController extends Controller
                 'krs'               => 'image|file|max:1024',
                 'judul'             => 'required',
                 'stts_sidang'       => 'required'
+            ],
+            [
+                'daftar_ta_id' => 'The Mahasiswa has already been taken'
             ]
         );
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('sidang-ta')->with('warning', 'Data Tidak Tersimpan');
+            return \redirect('sidang-ta')->with('warning', 'Data Tidak Tersimpan')
+                ->withErrors($validation);
         } else {
 
             $sidang_ta = SidangTA::findOrFail($id);

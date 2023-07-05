@@ -132,4 +132,8 @@ class UserCheck
     {
         return (Auth::user()->level == 2);
     }
+    public static function levelMhs()
+    {
+        return (Auth::user()->level == 0);
+    }
 }

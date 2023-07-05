@@ -96,12 +96,16 @@ class SeminarKPController extends Controller
                 'thn_akademik_id'   => 'required',
                 'stts_seminar'      => 'required',
                 'judul'             => 'required'
+            ],
+            [
+                'daftarkp_id.unique' => 'The Mahasiswa has already been taken'
             ]
         );
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('seminar-kp')->with('warning', 'Data Tidak Tersimpan!');
+            return \redirect('seminar-kp')->with('warning', 'Data Tidak Tersimpan!')
+                ->withErrors($validation);
         } else {
 
             SeminarKP::create([
@@ -155,7 +159,7 @@ class SeminarKPController extends Controller
             $request->all(),
             [
                 // 'mahasiswa_id'      => 'required',
-                'daftarkp_id'       => 'required',
+                'daftarkp_id'       => 'required|unique:seminarkp',
                 'form_bimbingan'    => 'image|file|max:1024',
                 'ket_selesai'       => 'image|file|max:1024',
                 // 'tgl_seminar'    => 'required',
@@ -167,7 +171,8 @@ class SeminarKPController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('seminar-kp')->with('warning', 'Data Gagal Diperbarui!');
+            return \redirect('seminar-kp')->with('warning', 'Data Gagal Diperbarui!')
+                ->withErrors($validation);
         } else {
 
             $seminarkp = SeminarKP::findOrFail($id);

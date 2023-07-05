@@ -427,7 +427,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
                                 @if (Auth::user()->level==0 )
                                 <input type="text" class="form-control"
@@ -450,11 +450,18 @@
                                     @endif
                                 </select>
                             </div>
+                            @if (UserCheck::levelMhs())
                             <div class="col">
                                 <label class="control-label">Dosen Pembimbing 1 </label>
                                 <input type="text" class="form-control"
                                     value="{{ $m_bimbing_1->dosen1->biodata->nama }}" readonly>
                             </div>
+                            @else
+                            <div class="col">
+                                <label for=""></label>
+                                <input type="text" class="form-control" value="Mahasiswa Bimbingan 1" readonly>
+                            </div>
+                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -536,7 +543,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
                                 @if (Auth::user()->level==0 )
                                 <input type="text" class="form-control"
@@ -560,11 +567,18 @@
                                     @endif
                                 </select>
                             </div>
+                            @if (UserCheck::levelMhs())
                             <div class="col">
                                 <label class="control-label">Dosen Pembimbing 2 </label>
                                 <input type="text" class="form-control"
                                     value="{{ $m_bimbing_1->dosen2->biodata->nama }}" readonly>
                             </div>
+                            @else
+                            <div class="col">
+                                <label for=""></label>
+                                <input type="text" class="form-control" value="Mahasiswa Bimbingan 2" readonly>
+                            </div>
+                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -649,7 +663,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
+                            <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
                                 <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
                                     id="daftar_ta_id">
@@ -662,11 +676,18 @@
                                     </option>
                                 </select>
                             </div>
+                            @if (UserCheck::levelMhs())
                             <div class="col">
                                 <label class="control-label">Dosen Pembimbing 1 </label>
                                 <input type="text" class="form-control"
                                     value="{{ $item->daftarta->dosen1->biodata->nama }}" readonly>
                             </div>
+                            @else
+                            <div class="col">
+                                <label for=""></label>
+                                <input type="text" class="form-control" value="Mahasiswa Bimbingan 1" readonly>
+                            </div>
+                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -771,11 +792,18 @@
                                     </option>
                                 </select>
                             </div>
+                            @if (UserCheck::levelMhs())
                             <div class="col">
                                 <label class="control-label">Dosen Pembimbing 2 </label>
                                 <input type="text" class="form-control"
                                     value="{{ $item->daftarta->dosen2->biodata->nama }}" readonly>
                             </div>
+                            @else
+                            <div class="col">
+                                <label for=""></label>
+                                <input class="form-control" type="text" value="Mahasiswa Bimbingan 2" readonly>
+                            </div>
+                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>

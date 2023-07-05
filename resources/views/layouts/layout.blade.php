@@ -71,6 +71,7 @@
         <!-- End Sidebar -->
 
         @yield('content')
+
         @include('layouts.footer')
     </div>
 
