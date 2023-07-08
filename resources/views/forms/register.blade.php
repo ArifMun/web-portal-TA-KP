@@ -36,6 +36,17 @@
     <div class="wrapper wrapper-login">
         <div class="container container-signup animated fadeIn">
             <h3 class="text-center">REGISTRASI</h3>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
             <form action="register-proccess" enctype="multipart/form-data" method="POST">
                 @csrf
                 <div class="login-form">

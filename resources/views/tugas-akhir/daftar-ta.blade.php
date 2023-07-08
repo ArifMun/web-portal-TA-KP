@@ -262,7 +262,8 @@
                                             </td>
                                             <td>{{ $item->tahunakademik->tahun }} </td>
                                             <td>{{ $item->konsentrasi }}</td>
-                                            <td>{{ $item->created_at }}</td>
+                                            <td>{{ $item->created_at->locale('id')->translatedformat('l,dFY, H:i') }}
+                                            </td>
                                             <td>
                                                 @if ($item->stts_pengajuan == 'diterima')
 
@@ -360,7 +361,8 @@
                                             </td>
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
-                                            <td>{{ $row->created_at }}</td>
+                                            <td>{{ $row->created_at->locale('id')->translatedformat('l,dFY, H:i') }}
+                                            </td>
                                             <td>
                                                 {{-- <a href="kerja-praktik/view-slip/{{ $row->id }}"
                                                     data-toggle="modal" data-target="#viewDataBarang{{ $row->id }}"

@@ -130,9 +130,9 @@
                                             <th>Nama</th>
                                             @endif
 
-                                            <th>Dosen Penguji</th>
-                                            <th>Dosen Pembimbing 1</th>
-                                            <th>Dosen Pembimbing 2</th>
+                                            <th>Dosen Penguji Utama</th>
+                                            <th>Dosen Penguji 1</th>
+                                            <th>Dosen Penguji 2</th>
                                             <th>Status Sidang</th>
                                             <th>Form Bimbingan 1</th>
                                             <th>Form Bimbingan 2</th>
@@ -151,8 +151,9 @@
                                     @if (Auth::user()->level==0)
                                     <tbody>
                                         @if (empty(Auth::user()->biodata->mahasiswa->daftarta->sidangta))
+                                        @php $no=1; @endphp
                                         @foreach ($m_list as $item)
-                                        <tr align="center" class="text-capitalize">@php $no=1; @endphp
+                                        <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             {{-- <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td> --}}
@@ -239,8 +240,17 @@
                                             <td>{{ $item->thnakademik->tahun }}</td>
                                             <td>{{ $item->judul }}</td>
                                             <td>{{ $item->tempat }}</td>
-                                            <td>{{ $item->tgl_sidang }}</td>
-                                            <td>{{ $item->jam_sidang }}</td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->tgl_sidang)->locale('id')->translatedformat('l,d
+                                                F
+                                                Y')}}
+                                            </td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->jam_mulai_sidang)->locale('id')->format('H:i')}}
+                                                - {{
+                                                Carbon\Carbon::parse($item->jam_akhir_sidang)->locale('id')->format('H:i')
+                                                }} WIB
+                                            </td>
                                             <td>
 
                                                 @if (($item->stts_sidang == 'terjadwal') || ($item->stts_sidang ==
@@ -361,8 +371,17 @@
                                             <td>{{ $row->thnakademik->tahun }}</td>
                                             <td>{{ $row->judul }}</td>
                                             <td>{{ $row->tempat }}</td>
-                                            <td>{{ $row->tgl_sidang }}</td>
-                                            <td>{{ $row->jam_sidang }}</td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($row->tgl_sidang)->locale('id')->translatedformat('l,d
+                                                F
+                                                Y')}}
+                                            </td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($row->jam_mulai_sidang)->locale('id')->format('H:i')}}
+                                                - {{
+                                                Carbon\Carbon::parse($row->jam_akhir_sidang)->locale('id')->format('H:i')
+                                                }}
+                                            </td>
                                             <td>
                                                 <a href="sidang-ta/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditSidang{{ $row->id }}"
@@ -437,7 +456,6 @@
                                     <option value="{{ $k->id }}" class="text-capitalize">{{
                                         $k->mahasiswa->biodata->no_induk
                                         }} - {{ $k->mahasiswa->biodata->nama
-                                        }} - {{ $k->tahunakademik->tahun
                                         }}</option>
                                     @endforeach
 
@@ -460,11 +478,17 @@
                                 <label class="control-label">Tanggal Sidang </label>
                                 <input type="date" class="form-control" name="tgl_sidang" size="1">
                             </div>
-                            <div class="col">
+                            <div class="col-3">
                                 <label class="control-label">
-                                    Jam Sidang
+                                    Jam Mulai Sidang
                                 </label>
-                                <input type="time" class="form-control" name="jam_sidang" size="1">
+                                <input type="time" class="form-control" name="jam_mulai_sidang" size="1">
+                            </div>
+                            <div class="col-3">
+                                <label class="control-label">
+                                    Jam Akhir Sidang
+                                </label>
+                                <input type="time" class="form-control" name="jam_akhir_sidang" size="1">
                             </div>
                         </div>
                     </div>
@@ -646,10 +670,17 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">
-                                    Jam Sidang
+                                    Jam Mulai Sidang
                                 </label>
-                                <input type="time" class="form-control" name="jam_sidang"
-                                    value="{{ $item->jam_sidang }}">
+                                <input type="time" class="form-control" name="jam_mulai_sidang"
+                                    value="{{ $item->jam_mulai_sidang }}">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">
+                                    Jam Akhir Sidang
+                                </label>
+                                <input type="time" class="form-control" name="jam_akhir_sidang"
+                                    value="{{ $item->jam_akhir_sidang }}">
                             </div>
                         </div>
                     </div>

@@ -22,8 +22,17 @@
                     || Request()->is('bimbingan-kp*')|| Request()->is('data-kp*') ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#base">
                         <i class="fas fa-user"></i>
+                        @if (UserCheck::levelMhs())
                         <p>Kerja Praktik</p>
                         <span class="caret"></span>
+                        @else
+                        <p>Kerja Praktik</p>
+                        <span class="caret"></span>
+                        @if (!empty(Notification::CountMenu()))
+                        <span class="badge badge-warning badge-count">{{
+                            Notification::CountMenu() }}</span>
+                        @endif
+                        @endif
                     </a>
                     <div class="collapse {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') 
                     || Request()->is('bimbingan-kp*') || Request()->is('data-kp*') ? 'show' : '' }}" id="base">
@@ -36,6 +45,10 @@
                                     <span class="sub-item">Daftar KP</span>
                                     @else
                                     <span class="sub-item">Pendaftar KP</span>
+                                    @if (!empty(Notification::CountKP()))
+                                    <span class="badge badge-warning badge-count">{{
+                                        Notification::CountKP() }}</span>
+                                    @endif
                                     @endif
                                 </a>
                             </li>
@@ -54,6 +67,10 @@
                             <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
                                 <a href="seminar-kp">
                                     <span class="sub-item">Pendaftar Seminar KP</span>
+                                    @if (!empty(Notification::CountSeminar()))
+                                    <span class="badge badge-warning badge-count">{{
+                                        Notification::CountSeminar() }}</span>
+                                    @endif
                                 </a>
                             </li>
 
@@ -81,8 +98,17 @@
                     Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'active' : '' }}">
                     <a data-toggle="collapse" href="#forms">
                         <i class="fas fa-user-graduate"></i>
+                        @if (UserCheck::levelMhs())
                         <p>Tugas Akhir</p>
                         <span class="caret"></span>
+                        @else
+                        <p>Tugas Akhir</p>
+                        <span class="caret"></span>
+                        @if (!empty(Notification::CountMenuTA()))
+                        <span class="badge badge-warning badge-count">{{
+                            Notification::CountMenuTA() }}</span>
+                        @endif
+                        @endif
                     </a>
                     <div class="collapse {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') ||
                         Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'show' : '' }}" id="forms">
@@ -95,6 +121,10 @@
                                     <span class="sub-item">Daftar TA</span>
                                     @else
                                     <span class="sub-item">Pendaftar TA</span>
+                                    @if (!empty(Notification::CountTA()))
+                                    <span class="badge badge-warning badge-count">{{
+                                        Notification::CountTA() }}</span>
+                                    @endif
                                     @endif
                                 </a>
                             </li>
@@ -113,6 +143,10 @@
                             <li class="nav-item {{ Request()->is('sidang-ta')? 'active' : '' }}">
                                 <a href="sidang-ta">
                                     <span class="sub-item">Pendaftar Sidang TA</span>
+                                    @if (!empty(Notification::CountSidang()))
+                                    <span class="badge badge-warning badge-count">{{
+                                        Notification::CountSidang() }}</span>
+                                    @endif
                                 </a>
                             </li>
                             {{-- belum FIX --}}

@@ -1,7 +1,7 @@
 @extends('guest.layout')
 
 @section('content')
-<div class="container">
+{{-- <div class="container"> --}}
     <div class="content">
         <div class="page-inner">
             <div class="row">
@@ -9,7 +9,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title text-center">JADWAL SIDANG</h4>
+                                <h4 class="card-title text-center">JADWAL SIDANG TUGAS AKHIR</h4>
                             </div>
                         </div>
                         <div class="card-body">
@@ -34,10 +34,10 @@
                                     </thead>
 
                                     <tbody>
+                                        @php $no=1; @endphp
                                         @foreach ($jadwalSidang as $item)
-                                        <tr>
-                                            @php $no=1; @endphp
-                                            <td>{{ $no++; }}</td>
+                                        <tr class="text-capitalize">
+                                            <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama}}</td>
                                             <td>
@@ -86,8 +86,17 @@
                                             </td>
                                             @endif
                                             <td>{{ $item->thnakademik->tahun }}</td>
-                                            <td>{{ $item->tgl_sidang }}</td>
-                                            <td>{{ $item->jam_sidang }}</td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->tgl_sidang)->locale('id')->translatedformat('l,d
+                                                F
+                                                Y')}}
+                                            </td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->jam_mulai_sidang)->locale('id')->format('H:i')}}
+                                                - {{
+                                                Carbon\Carbon::parse($item->jam_akhir_sidang)->locale('id')->format('H:i')
+                                                }} WIB
+                                            </td>
                                         </tr>
 
                                         @endforeach
@@ -101,7 +110,8 @@
             </div>
         </div>
     </div>
-</div>
+    {{--
+</div> --}}
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script>
     $(document).ready(function() {

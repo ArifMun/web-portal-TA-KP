@@ -57,7 +57,7 @@ class UserRegistrasiController extends Controller
             $request->all(),
             [
                 'nama'          => 'required',
-                'no_induk'      => 'required|unique:biodata|numeric',
+                'no_induk'      => 'required|unique:biodata',
                 'jabatan'       => 'required',
                 'tempat_lahir'  => 'required',
                 'tgl_lahir'     => 'required',
@@ -66,6 +66,9 @@ class UserRegistrasiController extends Controller
                 'password'      => 'required|min:5|max:255',
                 // 'level'         => 'required',
                 // 'id_biodata'    => 'required',
+            ],
+            [
+                'no_induk:unique' => 'NIM Sudah Digunakan'
             ]
         );
 

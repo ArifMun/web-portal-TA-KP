@@ -235,6 +235,7 @@ return [
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'Froala' => Froala\WysiwygEditor\Facades\Froala::class,
         'UserCheck' => App\Helpers\UserCheck::class,
+        'Notification' => App\Helpers\Notification::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],

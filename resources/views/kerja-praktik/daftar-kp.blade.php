@@ -197,11 +197,9 @@
 
                                     @if (Auth::user()->level==0)
                                     <tbody>
-                                        {{-- {{ $nextkp }} --}}
                                         @php $no=1; @endphp
                                         @if (!empty(Auth::user()->biodata->mahasiswa->daftarkp))
                                         @foreach ($mhskps as $item)
-                                        {{-- {{ $item }} --}}
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             {{-- <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
@@ -270,7 +268,11 @@
                                             </td>
                                             <td>{{ $item->tahunakademik->tahun }} </td>
                                             <td>{{ $item->konsentrasi }}</td>
-                                            <td>{{ $item->created_at }}</td>
+                                            <td>{{
+                                                $item->created_at->locale('id')->translatedformat('l,d
+                                                F
+                                                Y, H:i')}}
+                                            </td>
                                             <td>
                                                 @if ($item->stts_pengajuan == 'diterima')
 
@@ -299,7 +301,7 @@
                                         @endif
                                     </tbody>
 
-                                    @elseif(Auth::user()->level!=0)
+                                    @elseif(Auth::user()->level==2)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($daftarkp as $row)
                                         {{-- {{ $row->mahasiswa->biodata->no_induk }} --}}
@@ -369,7 +371,11 @@
                                             </td>
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
-                                            <td>{{ $row->created_at }}</td>
+                                            <td>{{
+                                                $row->created_at->locale('id')->translatedformat('l,d
+                                                F
+                                                Y, H:i')}}
+                                            </td>
                                             <td>
                                                 {{-- <a href="kerja-praktik/view-slip/{{ $row->id }}"
                                                     data-toggle="modal" data-target="#viewDataBarang{{ $row->id }}"

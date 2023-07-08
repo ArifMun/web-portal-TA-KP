@@ -144,7 +144,8 @@ class RegistrasiController extends Controller
         // \dd($validation);
 
         if ($validation->fails()) {
-            return \back()->with('warning', 'Data Tidak Tersimpan!');
+            return \back()->with('warning', 'Data Tidak Tersimpan!')
+                ->withErrors($validation);
         } else {
 
             $biodata = Biodata::findOrFail($registrasi->id);

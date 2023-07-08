@@ -24,7 +24,8 @@ class SidangTA extends Model
         'thn_akademik_id',
         'judul',
         'tgl_sidang',
-        'jam_sidang',
+        'jam_mulai_sidang',
+        'jam_akhir_sidang',
         'stts_sidang',
         'tempat'
     ];

@@ -6,6 +6,7 @@
     "license": "MIT",
     "require": {
         "php": "^7.3|^8.0",
+        "dompdf/dompdf": "^2.0",
         "froala/wysiwyg-editor": "^4.0",
         "fruitcake/laravel-cors": "^2.0",
         "guzzlehttp/guzzle": "^7.0.1",
@@ -14,6 +15,7 @@
         "laravel/sanctum": "^2.11",
         "laravel/tinker": "^2.5",
         "maatwebsite/excel": "^3.1",
+        "nesbot/carbon": "^2.68",
         "phpoffice/phpspreadsheet": "^1.12",
         "realrashid/sweet-alert": "^6.0",
         "tinymce/tinymce": "^6.4"

@@ -4,10 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Dosen;
 use App\Models\DaftarTA;
-use App\Models\Pengumuman;
 use App\Models\SidangTA;
+use App\Models\Pengumuman;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -21,7 +22,8 @@ class SidangTAController extends Controller
     public function index()
     {
         $s_list      = SidangTA::latest()->get();
-
+        // $list_sidang =
+        //     Carbon::parse($s_list->tgl_sidang)->locale('id');
         $list        = new SidangTA();
         $registerSidang = $list->registerSidang();
         $m_list      = $list->m_list_sidang();
@@ -97,6 +99,9 @@ class SidangTAController extends Controller
                 'stts_sidang'           => 'required',
                 'thn_akademik_id'       => 'required'
                 // 'd_penguji'         => 'required'
+            ],
+            [
+                'daftar_ta_id' => 'The Mahasiswa has already been taken'
             ]
         );
         // \dd($validation);
@@ -117,7 +122,8 @@ class SidangTAController extends Controller
                 'tempat'            => $request->tempat,
                 'thn_akademik_id'   => $request->thn_akademik_id,
                 'tgl_sidang'        => $request->tgl_sidang,
-                'jam_sidang'        => $request->jam_sidang,
+                'jam_mulai_sidang'        => $request->jam_mulai_sidang,
+                'jam_akhir_sidang'        => $request->jam_akhir_sidang,
                 'stts_sidang'       => $request->stts_sidang,
             ]);
 
@@ -159,7 +165,7 @@ class SidangTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'daftar_ta_id'      => 'requiredunique:sidang_ta',
+                // 'daftar_ta_id'      => 'requiredunique:sidang_ta',
                 'f_bimbingan_1'     => 'image|file|max:1024',
                 'f_bimbingan_2'     => 'image|file|max:1024',
                 'slip_pembayaran_sidang'    => 'image|file|max:1024',
@@ -167,9 +173,6 @@ class SidangTAController extends Controller
                 'krs'               => 'image|file|max:1024',
                 'judul'             => 'required',
                 'stts_sidang'       => 'required'
-            ],
-            [
-                'daftar_ta_id' => 'The Mahasiswa has already been taken'
             ]
         );
 
@@ -218,9 +221,10 @@ class SidangTAController extends Controller
             $sidang_ta->daftar_ta_id    = $request->daftar_ta_id;
             $sidang_ta->d_penguji       = $request->d_penguji;
             $sidang_ta->judul           = $request->judul;
-            $sidang_ta->tempat           = $request->tempat;
+            $sidang_ta->tempat          = $request->tempat;
             $sidang_ta->tgl_sidang      = $request->tgl_sidang;
-            $sidang_ta->jam_sidang      = $request->jam_sidang;
+            $sidang_ta->jam_mulai_sidang = $request->jam_mulai_sidang;
+            $sidang_ta->jam_akhir_sidang = $request->jam_akhir_sidang;
             $sidang_ta->stts_sidang     = $request->stts_sidang;
             $sidang_ta->thn_akademik_id = $request->thn_akademik_id;
             $sidang_ta->update();

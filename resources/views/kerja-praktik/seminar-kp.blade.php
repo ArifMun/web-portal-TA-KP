@@ -208,9 +208,14 @@
                                                 </a>
                                             </td>
                                             <td>{{ $item->thnakademik->tahun }} </td>
-                                            {{-- <td>{{ $item->daftarkp->seminarkp->catatan }}</td> --}}
-                                            <td>{{ $item->tgl_seminar }}</td>
-                                            <td>{{ $item->jam_seminar }}</td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->tgl_seminar)->locale('id')->translatedformat('l,d
+                                                F
+                                                Y')}}
+                                            </td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->jam_seminar)->locale('id')->format('H:i')}}
+                                            </td>
                                             <td>
                                                 @if ($item->stts_seminar=='selesai' || $item->stts_seminar=='terjadwal')
 
@@ -298,9 +303,15 @@
                                                 </a>
                                             </td>
                                             <td>{{ $row->thnakademik->tahun }}</td>
-                                            {{-- <td>{{ $row->catatan }}</td> --}}
-                                            <td>{{ $row->tgl_seminar }}</td>
-                                            <td>{{ $row->jam_seminar }}</td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($row->tgl_seminar)->locale('id')->translatedformat('l,d
+                                                F
+                                                Y')}}
+                                            </td>
+                                            <td>{{
+                                                Carbon\Carbon::parse($row->jam_seminar)->locale('id')->format('H:i')}}
+                                                WIB
+                                            </td>
                                             <td>
                                                 <a href="seminar-kp/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditSeminar{{ $row->id }}"

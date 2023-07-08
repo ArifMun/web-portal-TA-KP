@@ -28,28 +28,6 @@
                             <div class="d-flex align-items-center">
                                 @if(Auth::user()->level!=2)
                                 <h4 class="card-title">Biodata Diri</h4>
-                                {{-- <form method="post" enctype="multipart/form-data" action="import-excel">
-                                    @csrf
-                                    <div class="form-group">
-                                        <table class="table">
-                                            <tr>
-                                                <td width="40%" align="right"><label>Select File for Upload</label></td>
-                                                <td width="30">
-                                                    <input type="file" name="file-import">
-                                                </td>
-                                                <td width="30%" align="left">
-                                                    <input type="submit" name="upload"
-                                                        class="btn btn-primary btn-round ml-auto" value="upload">
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td width="40%" align="right"></td>
-                                                <td width="30"><span class="text-muted">.xls, .xslx</span></td>
-                                                <td width="30%" align="left"></td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                </form> --}}
                                 @elseif (Auth::user()->level==2)
                                 <h4 class="card-title">Tambah Akun</h4>
                                 <a href="/akun/import" class="btn btn-success btn-round ml-auto" data-toggle="modal"
@@ -173,6 +151,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
 
             <form method="POST" enctype="multipart/form-data" action="registrasi">
                 @csrf
@@ -309,7 +298,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-
+            @if (count($errors) > 0)
+            <div class="modal-header">
+                <div class="alert alert-danger ">
+                    @foreach ($errors->all() as $error)
+                    <span class="text-danger">
+                        {{ $error }}
+                    </span>
+                    @endforeach
+                </div>
+            </div>
+            @endif
             <form method="POST" enctype="multipart/form-data" action="registrasi/{{ $d->id }}">
                 @method('put')
                 @csrf
