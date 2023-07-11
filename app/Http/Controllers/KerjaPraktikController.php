@@ -33,20 +33,20 @@ class KerjaPraktikController extends Controller
         $daftar_kp   = new DaftarKP();
         $mhskps      = $daftar_kp->authDaftarKP();
         $nextkp      = $daftar_kp->nextkp();
+        $kpDiterima  = $daftar_kp->where('stts_pengajuan', '=', 'diterima')->get()->count();
+        $kpTertunda  = $daftar_kp->where('stts_pengajuan', '=', 'tertunda')->get()->count();
+        $kpDitolak   = $daftar_kp->where('stts_pengajuan', '=', 'ditolak')->get()->count();
+        $daftarkp    = $daftar_kp->with('mahasiswa', 'tahunakademik')->latest()->get();
+        $filterStts  = $daftar_kp->distinct()->select('stts_pengajuan')->get();
 
         $thn         = new TahunAkademik();
         $last_year   = $thn->orderBy('id', 'desc')->first();
         $thnakademik = $thn->latest('id')->limit(5)->get();
 
-        $daftarkp    = DaftarKP::with('mahasiswa', 'tahunakademik')->latest()->get();
-        $filterStts  = DaftarKP::distinct()->select('stts_pengajuan')->get();
         $dosen       = Dosen::with('biodata')->get();
         $konsentrasi = Konsentrasi::all();
         $mahasiswa   = Mahasiswa::with('biodata')->get();
         $mhskp       = Auth::user()->biodata->mahasiswa;
-        $kpDiterima  = DaftarKP::where('stts_pengajuan', '=', 'diterima')->get()->count();
-        $kpTertunda  = DaftarKP::where('stts_pengajuan', '=', 'tertunda')->get()->count();
-        $kpDitolak   = DaftarKP::where('stts_pengajuan', '=', 'ditolak')->get()->count();
         $pengumuman  = Pengumuman::get()->first();
 
         $formakses = FormAkses::get()->first();

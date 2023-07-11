@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
 use App\Models\DaftarKP;
-use App\Models\SeminarKP;
+use Barryvdh\DomPDF\PDF;
 use App\Models\Pengumuman;
 use App\Models\BimbinganKP;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
 use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -189,5 +189,32 @@ class BimbinganKPController extends Controller
         $bimbingankp->delete();
 
         return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function print()
+    {
+        $kp             = new BimbinganKP();
+        $bimbingankp    = $kp->bimbingMhs();
+        $daftar_kp  = new DaftarKP();
+        $mhskps     = $daftar_kp->mhskps();
+        // $printPDF       = PDF::loadView('kerja-praktik.form-bimbingan-kp', \compact('bimbingankp'));
+        // $printPDF->setPaper('A4', 'potrait');
+        // return $printPDF->stream('form-bimbingan-pdf');
+
+        $dompdf = new Dompdf();
+        // $dompdf->setIsRemoteEnabled(true);
+
+        // Load template view atau HTML yang ingin Anda cetak
+        $html = view('kerja-praktik.form-bimbingan-kp', \compact('bimbingankp', 'mhskps'))->render();
+
+        // Generate PDF
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+
+        // Set nama file PDF yang akan didownload
+        $filename = 'print.pdf';
+
+        // Mengirimkan file PDF untuk didownload
+        return $dompdf->stream($filename, ['Attachment' => false]);
     }
 }

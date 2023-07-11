@@ -47,6 +47,10 @@
                                         </i>
                                     </a>
                                 </div>
+                                <a href="cetak-form" class="btn btn-success btn-round ml-auto">
+                                    <i class="fas fa-print"></i>
+                                    Cetak Form
+                                </a>
                                 <a href="/bimbingan-kp/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan">
                                     <i class="fa fa-plus"></i>

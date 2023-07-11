@@ -23,10 +23,10 @@ class DaftarTAController extends Controller
     {
         $existTA = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarta->count() != 0;
         $newRegisterTA = Auth::user()->level == 0 && Auth::user()->biodata->mahasiswa->daftarta->count() == 0;
+
         $thn         = new TahunAkademik();
         $thnakademik = $thn->latest('id')->limit(5)->get();
         $last_year   = $thn->orderBy('id', 'desc')->first();
-
 
         $s_kp        = new SeminarKP();
         $mhs_dDaftar = $s_kp->daftar_ta();
@@ -46,7 +46,7 @@ class DaftarTAController extends Controller
         $dosen       = Dosen::all();
         $konsentrasi = Konsentrasi::all();
         $pengumuman  = Pengumuman::get()->first();
-        $formakses  = FormAkses::get()->first();
+        $formakses   = FormAkses::get()->first();
 
         return \view('tugas-akhir.daftar-ta', \compact(
             'daftarta',

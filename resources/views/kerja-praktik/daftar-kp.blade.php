@@ -101,7 +101,7 @@
                         @elseif(Auth::user()->level == 0 && $formakses->akses_kp == 0)
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <a href="#" class="btn btn-danger ml-auto">
+                                <a class="badge badge-danger ml-auto">
                                     <h4 class="card-title text-light">Pendaftaran Kerja Praktik Sudah Ditutup</h4>
                                 </a>
                             </div>
