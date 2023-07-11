@@ -47,7 +47,7 @@
                                         </i>
                                     </a>
                                 </div>
-                                <a href="cetak-form" class="btn btn-success btn-round ml-auto">
+                                <a href="cetak-form/bimbingan-kp" class="btn btn-success btn-round ml-auto">
                                     <i class="fas fa-print"></i>
                                     Cetak Form
                                 </a>

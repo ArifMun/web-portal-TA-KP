@@ -77,13 +77,13 @@
             <tr align="left">
                 <td width="200px">NAMA / NIM</td>
                 <td width="2px">:</td>
-                <td style="text-align: left;">{{ $mhskps->mahasiswa->biodata->no_induk}} / {{
-                    $mhskps->mahasiswa->biodata->nama}}</td>
+                <td style="text-align: left;">{{ $mhstas->mahasiswa->biodata->no_induk}} / {{
+                    $mhstas->mahasiswa->biodata->nama}}</td>
             </tr>
             <tr align="left">
                 <td width="200px">JUDUL SKRIPSI</td>
                 <td width="2px">:</td>
-                <td>{{ $mhskps->judul}}</td>
+                <td>{{ $mhstas->judul}}</td>
             </tr>
             <tr align="left">
                 <td width="200px">DOSEN PEMBIMBING I</td>
@@ -105,11 +105,11 @@
         @php
         $no=1;
         @endphp
-        @foreach ($bimbingankp as $row)
+        @foreach ($bimbinganTA as $row)
         <tr align="center">
             <td style="">{{ $no++ }}</td>
             <td>{{
-                $row->created_at->locale('id')->translatedformat('l,d
+                $row->created_at->locale('id')->translatedformat('l, d
                 F
                 Y')}}</td>
             <td>{{ $row->judul_bimbingan }}</td>
@@ -123,7 +123,7 @@
         <table style="width: 300px; margin-right: -60px" align="right">
             <p align="left">Purworejo, </p>
             <p align="left">Dosen Pembimbing I</p><br><br>
-            <p align="left">{{ $mhskps->dosen->biodata->nama }}</p>
+            <p align="left">{{ $mhstas->dosen1->biodata->nama }}</p>
         </table>
     </footer>
 </body>

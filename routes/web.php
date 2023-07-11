@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
     Route::resource('/bimbingan-kp', BimbinganKPController::class)->middleware('CheckLevel:0,1');
     Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);
-    Route::get('cetak-form', [BimbinganKPController::class, 'print']);
+    Route::get('cetak-form/bimbingan-kp', [BimbinganKPController::class, 'print']);
 
     Route::resource('/daftar-ta', DaftarTAController::class)->middleware('CheckLevel:0,2');
     Route::resource('/sidang-ta', SidangTAController::class)->middleware('CheckLevel:0,2');
@@ -63,6 +63,8 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::resource('/bimbingan-ta', BimbinganTAController::class)->middleware('CheckLevel:0,1');
     Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class)->middleware('CheckLevel:0,1');
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
+    Route::get('cetak-form/bimbingan-ta-1', [BimbinganTAController::class, 'print']);
+    Route::get('cetak-form/bimbingan-ta-2', [BimbinganTA1Controller::class, 'print']);
 
     Route::get('dosen', [DosenController::class, 'index'])->name('dosen');
     Route::get('data-kp', [DataKPController::class, 'index'])->name('data-kp');

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
 use App\Models\DaftarTA;
 use App\Models\Pengumuman;
 use App\Models\BimbinganTA1;
@@ -201,5 +202,29 @@ class BimbinganTAController extends Controller
         $bimbingan_ta_1->delete();
 
         return \redirect('bimbingan-ta')->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function print()
+    {
+        $kp             = new BimbinganTA1();
+        $bimbinganTA    = $kp->b_mhs_1();
+        $daftar_ta  = new DaftarTA();
+        $mhstas     = $daftar_ta->inputMhsDiterima();
+        // mhstas = mahasiswa tugas akhir selesai
+        $dompdf = new Dompdf();
+        // $dompdf->setIsRemoteEnabled(true);
+
+        // Load template view atau HTML yang ingin Anda cetak
+        $html = view('tugas-akhir.form-bimbingan-ta-1', \compact('bimbinganTA', 'mhstas'))->render();
+
+        // Generate PDF
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+
+        // Set nama file PDF yang akan didownload
+        $filename = 'print.pdf';
+
+        // Mengirimkan file PDF untuk didownload
+        return $dompdf->stream($filename, ['Attachment' => false]);
     }
 }
