@@ -10,6 +10,8 @@ use App\Models\Pengumuman;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
 use App\Http\Controllers\Controller;
+use App\Models\BimbinganKP;
+
 use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Auth;
 
@@ -41,8 +43,10 @@ class SeminarKPController extends Controller
         $seminarmhs  = $s_kp->m_seminar();
 
         $d_kp        = new DaftarKP();
-        $daftarkp    = $d_kp->d_kp_diterima();
+        $b_kp        = new BimbinganKP();
+        // $daftarkp    = $d_kp->d_kp_diterima();
         $mhskps      = $d_kp->mhskps();
+        $daftarkp      = $d_kp->SyaratSeminar();
 
         $pengumuman  = Pengumuman::get()->first();
 
