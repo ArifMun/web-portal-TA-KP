@@ -52,6 +52,25 @@
                 </div>
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round">
+                        @if (UserCheck::checkSeminarKP())
+                        <a href="daftar-ta" style="text-decoration:none">
+                            <div class="card-body">
+                                <div class="row align-items-center">
+                                    <div class="col-icon">
+                                        <div class="icon-big text-center icon-success bubble-shadow-small">
+                                            <i class="fas fa-users"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col col-stats ml-3 ml-sm-0">
+                                        <div class="numbers">
+                                            <p class="card-category">Tugas Akhir</p>
+                                            <h4 class="card-title">{{ $TAditerima }}</h4>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                        @else
                         <div class="card-body">
                             <div class="row align-items-center">
                                 <div class="col-icon">
@@ -67,24 +86,27 @@
                                 </div>
                             </div>
                         </div>
+                        @endif
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                     <div class="card card-stats card-round">
                         <div class="card-body">
-                            <div class="row align-items-center">
-                                <div class="col-icon">
-                                    <div class="icon-big text-center icon-success bubble-shadow-small">
-                                        <i class="fas fa-chalkboard-teacher"></i>
+                            <a href="sidang-ta" style="text-decoration:none">
+                                <div class="row align-items-center">
+                                    <div class="col-icon">
+                                        <div class="icon-big text-center icon-success bubble-shadow-small">
+                                            <i class="fas fa-chalkboard-teacher"></i>
+                                        </div>
+                                    </div>
+                                    <div class="col col-stats ml-3 ml-sm-0">
+                                        <div class="numbers">
+                                            <p class="card-category">Sidang Tugas Akhir</p>
+                                            <h4 class="card-title">{{ $sidang }}</h4>
+                                        </div>
                                     </div>
                                 </div>
-                                <div class="col col-stats ml-3 ml-sm-0">
-                                    <div class="numbers">
-                                        <p class="card-category">Sidang Tugas Akhir</p>
-                                        <h4 class="card-title">{{ $sidang }}</h4>
-                                    </div>
-                                </div>
-                            </div>
+                            </a>
                         </div>
                     </div>
                 </div>

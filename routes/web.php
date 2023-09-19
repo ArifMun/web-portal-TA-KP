@@ -23,6 +23,8 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KerjaPraktikController;
 use App\Http\Controllers\ManajemenFormController;
 use App\Http\Controllers\UserRegistrasiController;
+use App\Models\DaftarTA;
+use App\Models\SeminarKP;
 
 /*
 |--------------------------------------------------------------------------
@@ -51,17 +53,29 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
 
 
     Route::resource('/kerja-praktik', KerjaPraktikController::class)->middleware('CheckLevel:0,2');
+    Route::put('update-status-kp/{id}', [KerjaPraktikController::class, 'updateStatus']);
+
     Route::resource('/seminar-kp', SeminarKPController::class)->middleware('CheckLevel:0,2');
+    Route::put('update-status-seminar/{id}', [SeminarKPController::class, 'updateStatus']);
     Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
+
     Route::resource('/bimbingan-kp', BimbinganKPController::class)->middleware('CheckLevel:0,1');
     Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);
+    Route::put('update-status-bimbingan/{id}', [BimbinganKPController::class, 'updateStatus']);
     Route::get('cetak-form/bimbingan-kp', [BimbinganKPController::class, 'print']);
 
     Route::resource('/daftar-ta', DaftarTAController::class)->middleware('CheckLevel:0,2');
+    Route::put('update-status-ta/{id}', [DaftarTAController::class, 'updateStatus']);
+
     Route::resource('/sidang-ta', SidangTAController::class)->middleware('CheckLevel:0,2');
     Route::get('sidang-ta/daftar_ta_id/{id}', [SidangTAController::class, 'autofill']);
+    Route::put('update-status-sidang/{id}', [SidangTAController::class, 'updateStatus'])->name('update-status');
+
     Route::resource('/bimbingan-ta', BimbinganTAController::class)->middleware('CheckLevel:0,1');
+    Route::put('update-status-bimbingan-ta/{id}', [BimbinganTAController::class, 'updateStatus']);
+
     Route::resource('/bimbingan-ta-1', BimbinganTA1Controller::class)->middleware('CheckLevel:0,1');
+    Route::put('update-status-bimbingan-ta-1/{id}', [BimbinganTA1Controller::class, 'updateStatus']);
     Route::get('bimbingan-ta/daftar_ta_id/{id}', [BimbinganTAController::class, 'autofill']);
     Route::get('cetak-form/bimbingan-ta-1', [BimbinganTAController::class, 'print']);
     Route::get('cetak-form/bimbingan-ta-2', [BimbinganTA1Controller::class, 'print']);

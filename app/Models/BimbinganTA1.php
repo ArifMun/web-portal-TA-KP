@@ -31,21 +31,16 @@ class BimbinganTA1 extends Model
         return $this->belongsTo(DaftarTA::class, 'daftar_ta_id');
     }
 
-    // public function mahasiswa()
-    // {
-    //     return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
-    // }
-
-    // public function dosen1()
-    // {
-    //     return $this->belongsTo(Dosen::class, 'dosen_id');
-    // }
-    // public function dosen2()
-    // {
-    //     return $this->belongsTo(Dosen::class, 'd_pembimbing_2');
-    // }
-
     public function b_dosen_1()
+    {
+        return self::with('daftarta')->whereHas('daftarta', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
+            }
+        })->distinct()->select('daftar_ta_id')->get()->sortByDesc('id');
+    }
+
+    public function b_dosen_1_detail()
     {
         return self::with('daftarta')->whereHas('daftarta', function ($q) {
             if (Auth::user()->level == 1) {
@@ -60,6 +55,6 @@ class BimbinganTA1 extends Model
             if (Auth::user()->level == 0) {
                 $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get()->sortByDesc('id');
+        })->get();
     }
 }

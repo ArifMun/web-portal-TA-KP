@@ -41,25 +41,14 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <div class="">Readme First
-                                    <a href="bimbingan-kp/view-pengumuman" data-toggle="modal"
-                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
-                                        </i>
-                                    </a>
+                                <div class="">
+                                    <h2>Jumlah bimbingan : {{ $bimbingDosen->count() }}</h2>
                                 </div>
-                                @if (UserCheck::levelMhs())
-
-                                <a href="cetak-form/bimbingan-kp" class="btn btn-success btn-round ml-auto">
-                                    <i class="fas fa-print"></i>
-                                    Cetak Form
-                                </a>
-
                                 <a href="/bimbingan-kp/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#modalTambahBimbingan">
                                     <i class="fa fa-plus"></i>
                                     Tambah
                                 </a>
-                                @endif
                             </div>
                         </div>
 
@@ -73,42 +62,31 @@
                                 <table id="bimbingan-kp" class="display table table-striped table-hover">
                                     <thead>
                                         <tr align="center">
-                                            @if (Auth::user()->level==1)
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
-                                            <th>Jumlah Bimbingan</th>
-                                            <th>Judul Kerja Praktik</th>
-                                            <th>Tahun Akademik</th>
-                                            <th>Detail</th>
-
-                                            @elseif (Auth::user()->level==0)
-                                            <th>No</th>
-                                            <th>Dosen Pembimbing</th>
+                                            {{-- <th>Judul Kerja Praktik</th> --}}
                                             {{-- <th>Judul Bimbingan</th> --}}
                                             <th>Laporan KP</th>
                                             <th>Status</th>
                                             <th>Catatan</th>
-                                            <th>Tahun Akademik</th>
-                                            {{-- <th>Author</th> --}}
-                                            <th>Tgl Bimbingan</th>
+                                            {{-- <th>Tahun Akademik</th> --}}
+                                            <th>Tanggal Bimbingan</th>
                                             <th>Action</th>
-                                            @endif
                                         </tr>
                                     </thead>
 
-                                    @if (Auth::user()->level==0)
+                                    @if(Auth::user()->level == 1)
                                     <tbody>
                                         @php $no=1; @endphp
-                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarkp->bimbingankp))
-                                        @foreach ($bimbingMhs as $item)
-                                        {{-- {{ $item }} --}}
-
+                                        @foreach ($bimbingDosen as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
+                                            <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>
                                             <td class="text-capitalize" align="left">{{
-                                                $item->daftarkp->dosen->biodata->nama }}
+                                                $item->daftarkp->mahasiswa->biodata->nama }}
                                             </td>
+                                            {{-- <td>{{ $item->daftarkp->judul }}</td> --}}
                                             {{-- <td>{{ $item->judul_bimbingan }}</td> --}}
                                             <td>
                                                 @if($item->laporan_kp == NULL)
@@ -120,30 +98,33 @@
                                                 </a>
                                                 @endif
                                             </td>
-                                            @if ($item->stts == 'proses')
+                                            @if ($item->stts=='proses')
                                             <td>
-                                                <span
-                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
+                                                <a href="update-status-bimbingan/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $item->id }}"
+                                                    class="font-weight-bold badge badge-warning text-light text-capitalize">
                                                     {{
-                                                    $item->stts }}</span>
+                                                    $item->stts }}</a>
                                             </td>
-                                            @elseif($item->stts == 'acc')
+                                            @elseif($item->stts=='acc')
                                             <td>
-                                                <span
-                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
+                                                <a href="update-status-bimbingan/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $item->id }}"
+                                                    class="font-weight-bold badge badge-success text-light text-capitalize">
                                                     {{
-                                                    $item->stts}}</span>
+                                                    $item->stts }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <span
-                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
+                                                <a href="update-status-bimbingan/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $item->id }}"
+                                                    class="font-weight-bold badge badge-danger text-light text-capitalize">
                                                     {{
-                                                    $item->stts}}</span>
+                                                    $item->stts }}</a>
                                             </td>
                                             @endif
 
-                                            <td>
+                                            <td align="left">
                                                 @php
                                                 $text = $item->catatan;
                                                 $chunkedText = str_split($text, 40); // Memecah teks menjadi
@@ -154,8 +135,8 @@
                                                 {{ $chunk }}<br>
                                                 @endforeach
                                             </td>
-                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
-                                            {{-- <td>{{ $item->author }}</td> --}}
+
+                                            {{-- <td>{{ $item->daftarkp->tahunakademik->tahun }}</td> --}}
                                             <td>{{ $item->created_at }}</td>
 
                                             <td>
@@ -171,35 +152,6 @@
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                                 @endif
-                                            </td>
-                                        </tr>
-                                        @endforeach
-
-
-                                        @endif
-                                    </tbody>
-
-                                    {{-- All- --}}
-                                    @elseif(Auth::user()->level == 1)
-                                    <tbody>
-                                        @php $no=1; @endphp
-                                        @foreach ($bimbingDosen as $item)
-                                        <tr align="center">
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarkp->mahasiswa->biodata->nama }}
-                                            </td>
-
-                                            <td>{{
-                                                $item->where('daftarkp_id', $item->daftarkp_id)->count() }}</td>
-
-                                            <td>{{ $item->daftarkp->judul }}</td>
-                                            <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
-                                            <td>
-                                                <a href="bimbingan-kp/{{ $item->daftarkp->id }}"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i>
-                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -227,7 +179,7 @@
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="bimbingan-kp">
+            <form method="POST" enctype="multipart/form-data" action="/bimbingan-kp">
                 @csrf
                 <div class="modal-body">
 
@@ -236,35 +188,13 @@
                             <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
 
-                                @if (Auth::user()->level==0 )
-                                <input type="text" class="form-control text-capitalize" value="{{ $mhskps->mahasiswa->biodata->no_induk }} - {{
-                                    $mhskps->mahasiswa->biodata->nama }} - {{ $mhskps->tahunakademik->tahun
+                                @foreach ($mhskpd as $item)
+                                <input type="text" class="form-control text-capitalize" value="{{ $item->mahasiswa->biodata->no_induk }} - {{
+                                    $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun
                                     }}" readonly>
-                                <input type="hidden" value="{{ $mhskps->id }}" name="daftarkp_id">
-
-                                @elseif(Auth::user()->level==1)
-                                <select class="form-control text-capitalize" name="daftarkp_id"
-                                    onchange="no_mahasiswa()" id="daftarkp_id" required>
-                                    <option value="" hidden="">-- Pilih --</option>
-                                    @foreach ($mhskpd as $item)
-                                    <option value="{{ $item->id }}">{{
-                                        $item->mahasiswa->biodata->no_induk
-                                        }} - {{ $item->mahasiswa->biodata->nama
-                                        }} - {{ $item->tahunakademik->tahun
-                                        }}</option>
-                                    @endforeach
-
-                                    @endif
-                                </select>
+                                <input type="hidden" value="{{ $item->id }}" name="daftarkp_id">
+                                @endforeach
                             </div>
-                            @if (UserCheck::levelMhs())
-
-                            <div class="col">
-                                <label>Dosen Pembimbing</label>
-                                <input type="text" class="form-control" value="{{ $mhskps->dosen->biodata->nama }}"
-                                    readonly>
-                            </div>
-                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -430,58 +360,6 @@
 </div>
 @endforeach
 
-{{-- view Catatan --}}
-@foreach ($bimbingkp as $item)
-<div class="modal fade" id="viewCatatan{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Catatan dari {{ $item->author }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-12">
-                            {!!$item->catatan!!}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach
-
-{{-- Pengumuman --}}
-<div class="modal fade" id="viewPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Readme First </h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col">
-                            {!! $pengumuman->cttn_bimbingan_kp !!}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-
 {{-- Hapus --}}
 @foreach ($bimbingkp as $item)
 <div class="modal fade" id="modalHapusBimbingan{{ $item->id }}" tabindex="-1" role="dialog"
@@ -503,8 +381,8 @@
                     <input type="hidden" value="{{ $item->id }}" name="id" required>
 
                     <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data bimbingan</h3>
-                        dengan Judul <span class="text-danger">{{ $item->judul_bimbingan }}</span> ?
+                        <h3>Apakah anda ingin menghapus data bimbingan
+                            dengan Judul <span class="text-danger">{{ $item->judul_bimbingan }}</span> ?</h3>
                     </div>
 
                 </div>
@@ -564,6 +442,7 @@
     </div>
 </div>
 @endforeach
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script type="text/javascript">
     $.ajaxSetup({

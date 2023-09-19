@@ -24,7 +24,7 @@ class SeminarKP extends Model
         'jam_seminar',
         'stts_seminar',
         'judul',
-        // 'catatan',
+        'tempat',
         'thn_akademik_id',
         'ket_selesai'
     ];
@@ -80,7 +80,7 @@ class SeminarKP extends Model
 
     public function daftar_ta()
     {
-        return self::where('stts_seminar', '=', 'selesai')->get();
+        return self::where('stts_seminar', '=', 'selesai')->get()->sortByDesc('id');
     }
 
     public static function registerSeminar()

@@ -23,6 +23,7 @@ class User extends Authenticatable
     public $timestamps = false;
     protected $table = 'users';
     protected $fillable = [
+        'biodata_id',
         'username',
         'password',
         'level',

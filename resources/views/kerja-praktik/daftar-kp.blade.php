@@ -63,7 +63,7 @@
                                 </a>
                                 @elseif($newRegisterKp||UserCheck::levelAdmin())
                                 <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarKP">
+                                    data-toggle="modal" data-target="#modalDaftarKP" data-modal-type="tambah">
                                     <i class="fa fa-plus"></i>
                                     Daftar
                                 </a>
@@ -90,7 +90,7 @@
                                 </a>
                                 @elseif($newRegisterKp || UserCheck::levelAdmin())
                                 <a href="/kerja-praktik/daftar" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalDaftarKP">
+                                    data-toggle="modal" data-target="#modalDaftarKP" data-modal-type="tambah">
                                     <i class="fa fa-plus"></i>
                                     Daftar
                                 </a>
@@ -256,7 +256,8 @@
                                             <td>{{ $item->semester }}</td>
                                             <td>
                                                 <a href="kerja-praktik/view-judul/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $item->id }}"><i class="fa fa-eye">
+                                                    data-target="#viewJudul{{ $item->id }}"
+                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
@@ -279,7 +280,8 @@
                                                 @else
                                                 <a href="kerja-praktik/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalEditKP{{ $item->id }}"
-                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
+                                                    class="btn btn-warning btn-xs" data-modal-type="edit"><i
+                                                        class="fa fa-edit">
                                                     </i>
                                                 </a>
                                                 <a href="kerja-praktik/hapus/{{ $item->id }}" data-toggle="modal"
@@ -335,21 +337,24 @@
                                             </td>
                                             @if ($row->stts_pengajuan=='tertunda')
                                             <td>
-                                                <a
+                                                <a href="update-status-kp/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @elseif($row->stts_pengajuan=='diterima')
                                             <td>
-                                                <a
+                                                <a href="update-status-kp/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a
+                                                <a href="update-status-kp/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-danger">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
@@ -359,13 +364,13 @@
                                             <td>{{ $row->semester }}</td>
                                             <td><a href="kerja-praktik/view-judul/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewJudul{{ $row->id }}"
-                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
                                             <td><a href="kerja-praktik/view-slip/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewSlip{{ $row->id }}"
-                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    data-target="#viewSlip{{ $row->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
@@ -383,7 +388,8 @@
                                                     </i> </a> --}}
                                                 <a href="kerja-praktik/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditKP{{ $row->id }}"
-                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
+                                                    class="btn btn-warning btn-xs" data-modal-type="edit"><i
+                                                        class="fa fa-edit">
                                                     </i> </a>
                                                 <a href="kerja-praktik/hapus/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalHapusKP{{ $row->id }}"
@@ -408,7 +414,7 @@
 
 {{-- Tambah --}}
 <div class="modal fade" id="modalDaftarKP" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
+    aria-hidden="true" data-modal-type="tambah">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -428,6 +434,7 @@
                 </div>
             </div>
             @endif
+
             <form method="POST" enctype="multipart/form-data" action="kerja-praktik" id="ganti">
                 @csrf
                 <div class="modal-body">
@@ -450,14 +457,21 @@
                                     required>
                                     <option value="">-- Pilih Mahasiswa--</option>
                                     @foreach ($mahasiswa as $k)
+
+                                    @if (old('mahasiswa_id') == $k->id)
+                                    <option value="{{ $k->id}}" selected>{{ $k->biodata->no_induk
+                                        }} - {{ $k->biodata->nama
+                                        }}</option>
+                                    @else
                                     <option value="{{ $k->id}}">{{ $k->biodata->no_induk
                                         }} - {{ $k->biodata->nama
                                         }}</option>
+                                    @endif
 
                                     @endforeach
 
-                                    @endif
                                 </select>
+                                @endif
 
                             </div>
                             <div class="col">
@@ -476,7 +490,13 @@
                                 <select class="form-control" name="d_pembimbing_1" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-1 --</option>
                                     @foreach ($dosen as $k)
+
+                                    @if (old('d_pembimbing_1') == $k->id)
+                                    <option value="{{ $k->id }}" selected>{{ $k->biodata->nama }}</option>
+                                    @else
                                     <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
+                                    @endif
+
                                     @endforeach
                                 </select>
                             </div>
@@ -487,6 +507,9 @@
                                 <select class="form-control" name="d_pembimbing_2" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-2 --</option>
                                     @foreach ($dosen as $k)
+                                    @if (old('d_pembimbing_2') == $k->id)
+                                    <option value="{{ $k->id }}" selected>{{ $k->biodata->nama }}</option>
+                                    @endif
                                     <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
                                     @endforeach
                                 </select>
@@ -499,7 +522,8 @@
                             <div class="col">
                                 <label class="control-label">Semester </label>
                                 <input type="number" class="form-control" name="semester"
-                                    placeholder="Minimal Semester 6.." size="1" value="{{ old('semester') }}" required>
+                                    placeholder="Minimal Semester 6.." size="1" value="{{ old('semester') }}" min="6"
+                                    max="13" required>
                             </div>
                             <div class="col">
                                 <label class="control-label">Status Kerja Praktik </label>
@@ -568,8 +592,10 @@
                                 </div>
                                 <label for="image" class="form-label control-label">Slip pembayaran </label>
                                 <input type="file" class="form-control picture" id="image1" name="slip_pembayaran"
-                                    onchange="previewImage(1)">
+                                    onchange="previewImage(1)" required maxlength="1024">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
+                                <span class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </span>
                             </div>
                             <div class="col">
                                 <label class="control-label">Konsentrasi </label>
@@ -577,8 +603,15 @@
                                     style="width: 100%; " multiple="true" required>
                                     {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
                                     @foreach ($konsentrasi as $item)
+                                    @if (is_array(old('konsentrasi')) && in_array($item->nama_konsentrasi,
+                                    old('konsentrasi')))
+                                    <option value="{{ $item->nama_konsentrasi }}" selected>{{ $item->nama_konsentrasi }}
+                                    </option>
+                                    @else
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}
                                     </option>
+                                    @endif
+
                                     @endforeach
                                 </select>
                             </div>
@@ -594,7 +627,7 @@
                     </div>
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
                         </i> Kembali</button>
-                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i>
+                    <button type="submit" class="btn btn-primary" onclick="submitForm()"><i class="fa fa-save"> </i>
                         Simpan</button>
                 </div>
             </form>
@@ -762,7 +795,7 @@
                                 <div>
                                     <label for="image" class="form-label control-label">Slip pembayaran </label>
                                     <input type="file" class="form-control picture" id="image3" name="slip_pembayaran"
-                                        onchange="previewImage(3)">
+                                        onchange="previewImage(3)" required>
                                     <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview3">
                                     <span class="font-italic text-muted mt-1">ukuran file maksimal <span
                                             class="text-danger">1024
@@ -793,7 +826,7 @@
 {{-- Edit --}}
 @foreach ($daftarkp as $item)
 <div class="modal fade modalEditKP" id="modalEditKP{{ $item->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    aria-labelledby="myLargeModalLabel" aria-hidden="true" data-modal-type="edit">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
@@ -1137,7 +1170,55 @@
     </div>
 </div>
 @endforeach
+
+{{-- update status pengajuan --}}
+@foreach ($daftarkp as $kp)
+<div class="modal fade" id="modalUpdateStatus{{ $kp->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Perbarui Status Pengajuan | {{
+                    $kp->mahasiswa->biodata->nama }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/update-status-kp/{{ $kp->id }}">
+                @method('put')
+                @csrf
+                <div class="modal-body">
+
+                    <input type="hidden" value="{{ $kp->id }}" name="id" required>
+
+                    <div class="form-group">
+                        <select class="form-control" name="stts_pengajuan" size="1" required>
+                            <option value="" hidden="">-- Status Pengajuan --</option>
+                            <option @php if($kp->stts_pengajuan == 'tertunda') echo 'selected';
+                                @endphp value="tertunda">Tertunda</option>
+                            <option @php if($kp->stts_pengajuan == 'diterima') echo 'selected';
+                                @endphp value="diterima">Diterima</option>
+                            <option @php if($kp->stts_pengajuan == 'ditolak') echo 'selected';
+                                @endphp value="ditolak">Ditolak</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Perbarui</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script src="/assets/js/plugin/bootstrap-notify/bootstrap-notify.min.js"></script>
 <script src="/assets/js/select2.min.js"></script>
 <script src="/assets/js/native/image.js"></script>
 <script src="/assets/js/native/checkboxkp.js"></script>
@@ -1163,6 +1244,34 @@
     });
 </script>
 
+{{-- @if (count($errors) > 0)
+@foreach ($errors->all() as $error)
 
+<script>
+    $(document).ready(function () {
+                    $('#modalMelanjutkan').modal('show');
+                });
+</script>
+@endforeach
+@endif
+
+@if (count($errors) > 0)
+@foreach ($errors->all() as $error)
+
+<script>
+    $(document).ready(function () {
+                    $('#modalDaftarKP').modal('show');
+                });
+</script>
+@endforeach
+@endif
+
+@if ($errors->any() && session('showModalEdit'))
+<script>
+    $(document).ready(function () {
+            $('#modalEditKP').modal('show');
+        });
+</script>
+@endif --}}
 
 @endsection

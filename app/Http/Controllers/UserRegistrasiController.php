@@ -103,7 +103,7 @@ class UserRegistrasiController extends Controller
                     // 'nama'       => $biodata->nama
                 ]);
             }
-            return \redirect('login-page')->with('success', 'Akun Berhasil Dibuat !');
+            return \view('forms.login')->with('success', 'Akun Berhasil Dibuat !');
         }
     }
 

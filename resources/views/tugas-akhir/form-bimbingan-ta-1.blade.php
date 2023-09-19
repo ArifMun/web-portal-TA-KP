@@ -7,10 +7,11 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     {{--
     <link rel="stylesheet" href="/assets/css/bootstrap.min.css"> --}}
-    <title>Cetak Laporan</title>
+    <title>Form Bimbingan TA 1</title>
 </head>
 <style>
     body {
+        padding: 5px;
         display: flex;
         justify-content: center;
         /* margin-top: 100px; */
@@ -18,7 +19,8 @@
     }
 
     img {
-        margin-top: 30px;
+        margin-top: 15px;
+        margin-bottom: 5px;
     }
 
     .kop-judul p {
@@ -36,17 +38,19 @@
 
     .content {
         margin-top: 90px;
+
     }
 </style>
 {{-- onload="window.print();" --}}
 
 <body style="background-color: white;">
-    <header style="position: fixed">
+    <header>
         <table style="width: 100%;border:none;">
             <tr>
                 <td>
                     <span class="kop-logo">
-                        <img src="assets/img/logo.jpeg" width="70px">
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents('assets/img/logo.jpeg')) }}"
+                            width="70px">
                     </span>
                 </td>
                 <td>
@@ -64,9 +68,9 @@
                 </td>
             </tr>
         </table>
-        <hr style="border: 1px solid black;margin-top: -22px;width: 722px">
-    </header>
-    <div class="content">
+        <hr style="border: 1px solid black;margin-top: -22px;width: 713px">
+
+        <!--<div class="content">-->
         <table style="width: 700px;margin-left: 7px;  border-collapse: collapse; margin-bottom:15px;text-align: left;">
             <tr style=" text-align: center;">
                 <td colspan="3" style="padding-bottom: 10px"> <u><span style="font-size: 15px;font-style: bold;">KARTU
@@ -88,13 +92,13 @@
             <tr align="left">
                 <td width="200px">DOSEN PEMBIMBING I</td>
                 <td width="2px">:</td>
-                <td></td>
+                <td>{{ $mhstas->dosen1->biodata->nama }}</td>
             </tr>
         </table>
 
-    </div>
-
-    <table style="width: 700px; margin:auto; border-collapse: collapse; border:1px solid black" border="1">
+        <!--</div>-->
+    </header>
+    <table style="width: 700px;  border-collapse: collapse;margin:auto; border:1px solid black;" border="1">
         <thead style="font-weight: bold;">
             <td align="center">NO</td>
             <td align="center">Hari / Tgl</td>
@@ -113,19 +117,28 @@
                 F
                 Y')}}</td>
             <td>{{ $row->judul_bimbingan }}</td>
-            <td>{{ $row->catatan }}</td>
+            <td>
+                @php
+                $text = $row->catatan;
+                $chunkedText = str_split($text, 30); // Memecah teks menjadi bagian-bagian dengan panjang 60 karakter
+                @endphp
+
+                @foreach ($chunkedText as $chunk)
+                {{ $chunk }}<br>
+                @endforeach
+            </td>
             <td></td>
 
         </tr>
         @endforeach
     </table>
-    <footer>
-        <table style="width: 300px; margin-right: -60px" align="right">
-            <p align="left">Purworejo, </p>
-            <p align="left">Dosen Pembimbing I</p><br><br>
-            <p align="left">{{ $mhstas->dosen1->biodata->nama }}</p>
-        </table>
-    </footer>
+
+    <table style="width: 300px; margin-right: -60px;" align="right">
+        <p align="left">Purworejo, </p>
+        <p align="left">Dosen Pembimbing I</p><br><br>
+        <p align="left">{{ $mhstas->dosen1->biodata->nama }}</p>
+    </table>
+
 </body>
 
 </html>

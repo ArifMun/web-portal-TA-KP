@@ -125,11 +125,10 @@ class DaftarKP extends Model
     {
         return self::whereHas('bimbingankp', function ($query) {
             $query->groupBy('daftarkp_id')
-                ->havingRaw('COUNT(*) >= 2');
+                ->havingRaw('COUNT(*) >=2');
         })->whereHas('bimbingankp', function ($query) {
             $query->where('stts', '!=', 'proses');
-        })
-            ->with('bimbingankp')
-            ->get();
+        })->with('bimbingankp')
+            ->get()->sortByDesc('id');
     }
 }

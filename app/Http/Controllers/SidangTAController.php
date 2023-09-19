@@ -40,7 +40,7 @@ class SidangTAController extends Controller
 
         $d_ta     = new DaftarTA();
         $d_mhs_ta = $d_ta->m_ta_diterima();
-        $daftarta = $d_ta->d_diterima();
+        $daftarta = $d_ta->SyaratSidang();
         $inputMhsDiterima = $d_ta->inputMhsDiterima();
 
         $pengumuman  = Pengumuman::get()->first();
@@ -107,7 +107,8 @@ class SidangTAController extends Controller
         // \dd($validation);
         if ($validation->fails()) {
             return \redirect('sidang-ta')->with('warning', 'Data Tidak Tersimpan!')
-                ->withErrors($validation);
+                ->withErrors($validation)
+                ->withInput();
         } else {
 
             SidangTA::create([
@@ -179,7 +180,8 @@ class SidangTAController extends Controller
         // \dd($validation);
         if ($validation->fails()) {
             return \redirect('sidang-ta')->with('warning', 'Data Tidak Tersimpan')
-                ->withErrors($validation);
+                ->withErrors($validation)
+                ->withInput();
         } else {
 
             $sidang_ta = SidangTA::findOrFail($id);
@@ -260,5 +262,13 @@ class SidangTAController extends Controller
 
         $sidang_ta->delete();
         return \redirect('sidang-ta')->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $sidangta = SidangTA::findOrFail($id);
+        $sidangta->stts_sidang   = $request->stts_sidang;
+        $sidangta->update();
+        return \redirect('sidang-ta')->with('success', 'Status Sidang Berhasil Diperbarui!');
     }
 }

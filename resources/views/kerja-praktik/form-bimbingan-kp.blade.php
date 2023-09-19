@@ -5,9 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {{--
-    <link rel="stylesheet" href="/assets/css/bootstrap.min.css"> --}}
-    <title>Cetak Laporan</title>
+
+    <title>Form Bimbingan KP</title>
 </head>
 <style>
     body {
@@ -18,7 +17,8 @@
     }
 
     img {
-        margin-top: 30px;
+        margin-top: 15px;
+        margin-bottom: 5px;
     }
 
     .kop-judul p {
@@ -41,12 +41,13 @@
 {{-- onload="window.print();" --}}
 
 <body style="background-color: white;">
-    <header style="position: fixed">
+    <header>
         <table style="width: 100%;border:none;">
             <tr>
                 <td>
                     <span class="kop-logo">
-                        <img src="assets/img/logo.jpeg" width="70px">
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents('assets/img/logo.jpeg')) }}"
+                            width="70px">
                     </span>
                 </td>
                 <td>
@@ -69,40 +70,40 @@
         </table>
         <hr style="border: 1px solid black;margin-top: -22px;width: 722px">
     </header>
-    <div class="content">
-        <table style="width: 700px;margin-left: 7px;  border-collapse: collapse; margin-bottom:15px;text-align: left;">
-            <tr style=" text-align: center;">
-                <td colspan="3" style="padding-bottom: 10px"> <u><span style="font-size: 15px;font-style: bold;">KARTU
-                            BIMBINGAN
-                            KERJA
-                            PRAKTIK</span></u>
-                </td>
-            </tr>
-            <tr align="left">
-                <td width="200px">NAMA / NIM</td>
-                <td width="2px">:</td>
-                <td style="text-align: left;">{{
-                    $mhskps->mahasiswa->biodata->nama}} / {{ $mhskps->mahasiswa->biodata->no_induk}}</td>
-            </tr>
-            <tr align="left">
-                <td width="200px">JUDUL KERJA PRAKTIK</td>
-                <td width="2px">:</td>
-                <td>{{ $mhskps->judul}}</td>
-            </tr>
-            <tr align="left">
-                <td width="200px">TEMPAT KERJA PRAKTIK</td>
-                <td width="2px">:</td>
-                <td></td>
-            </tr>
-        </table>
+    <!--<div class="content">-->
+    <table style="width: 700px;margin-left: 7px;  border-collapse: collapse; margin-bottom:15px;text-align: left;">
+        <tr style=" text-align: center;">
+            <td colspan="3" style="padding-bottom: 10px"> <u><span style="font-size: 15px;font-style: bold;">KARTU
+                        BIMBINGAN
+                        KERJA
+                        PRAKTIK</span></u>
+            </td>
+        </tr>
+        <tr align="left">
+            <td width="200px">NAMA / NIM</td>
+            <td width="2px">:</td>
+            <td style="text-align: left;">{{
+                $mhskps->mahasiswa->biodata->nama}} / {{ $mhskps->mahasiswa->biodata->no_induk}}</td>
+        </tr>
+        <tr align="left">
+            <td width="200px">JUDUL KERJA PRAKTIK</td>
+            <td width="2px">:</td>
+            <td>{{ $mhskps->judul}}</td>
+        </tr>
+        <tr align="left">
+            <td width="200px">TEMPAT KERJA PRAKTIK</td>
+            <td width="2px">:</td>
+            <td></td>
+        </tr>
+    </table>
 
-    </div>
+    <!--</div>-->
 
     <table style="width: 700px; margin:auto; border-collapse: collapse; border:1px solid black" border="1">
         <thead style="font-weight: bold;">
             <td align="center">NO</td>
             <td align="center">Hari / Tgl</td>
-            <td align="center">Judul Bimbingan</td>
+            {{-- <td align="center">Judul Bimbingan</td> --}}
             <td align="center">Uraian Bimbingan</td>
             <td align="center">Ttd Pembimbing</td>
         </thead>
@@ -116,8 +117,17 @@
                 $row->created_at->locale('id')->translatedformat('l,d
                 F
                 Y')}}</td>
-            <td>{{ $row->judul_bimbingan }}</td>
-            <td>{{ $row->catatan }}</td>
+            {{-- <td>{{ $row->judul_bimbingan }}</td> --}}
+            <td>
+                @php
+                $text = $row->catatan;
+                $chunkedText = str_split($text, 40); // Memecah teks menjadi bagian-bagian dengan panjang 60 karakter
+                @endphp
+
+                @foreach ($chunkedText as $chunk)
+                {{ $chunk }}<br>
+                @endforeach
+            </td>
             <td></td>
 
         </tr>

@@ -139,7 +139,7 @@
                                             <th>Slip Pembayaran Sidang</th>
                                             <th>Slip Pembayaran Skripsi</th>
                                             <th>KRS</th>
-                                            <th>Tahun</th>
+                                            <th>Tahun Akademik</th>
                                             <th>Judul</th>
                                             <th>Tempat</th>
                                             <th>Tanggal Sidang</th>
@@ -167,14 +167,14 @@
                                             </td>
                                             <td>
                                                 @foreach ($dosen as $k)
-                                                {{ $k->id == $item->daftarta->d_pembimbing_1 ?
+                                                {{ $k->id == $item->daftarta->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($dosen as $k)
-                                                {{ $k->id == $item->daftarta->d_pembimbing_2 ?
+                                                {{ $k->id == $item->daftarta->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
@@ -238,7 +238,13 @@
                                             </td>
 
                                             <td>{{ $item->thnakademik->tahun }}</td>
-                                            <td>{{ $item->judul }}</td>
+                                            <td>
+                                                <a href="sidang-ta/view-judul/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $item->id }}"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
+                                            {{-- <td>{{ $item->judul }}</td> --}}
                                             <td>{{ $item->tempat }}</td>
                                             <td>{{
                                                 Carbon\Carbon::parse($item->tgl_sidang)->locale('id')->translatedformat('l,d
@@ -291,19 +297,11 @@
 
                                             <td>
                                                 @foreach ($dosen as $k)
-                                                {{ $k->id == $item->d_penguji ?
+                                                {{ $k->id == $row->d_penguji ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
-                                                @foreach ($dosen as $d)
-                                                {{ $d->id == $row->daftarta->d_pembimbing_1 ?
-                                                $d->biodata->nama :''
-                                                }}
-                                                @endforeach
-                                            </td>
-
                                             <td>
                                                 @foreach ($dosen as $d)
                                                 {{ $d->id == $row->daftarta->d_pembimbing_2 ?
@@ -311,23 +309,34 @@
                                                 }}
                                                 @endforeach
                                             </td>
+
+                                            <td>
+                                                @foreach ($dosen as $d)
+                                                {{ $d->id == $row->daftarta->d_pembimbing_1 ?
+                                                $d->biodata->nama :''
+                                                }}
+                                                @endforeach
+                                            </td>
                                             @if ($row->stts_sidang=='proses')
                                             <td>
-                                                <a
+                                                <a href="update-status-sidang/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
                                                     $row->stts_sidang }}</a>
                                             </td>
                                             @elseif($row->stts_sidang=='selesai')
                                             <td>
-                                                <a
+                                                <a href="update-status-sidang/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
                                                     $row->stts_sidang }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a
+                                                <a href="update-status-sidang/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-primary">
                                                     {{
                                                     $row->stts_sidang }}</a>
@@ -369,7 +378,14 @@
                                             </td>
 
                                             <td>{{ $row->thnakademik->tahun }}</td>
-                                            <td>{{ $row->judul }}</td>
+                                            <td>
+                                                <a href="sidang-ta/view-judul/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#viewJudul{{ $row->id }}"
+                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
+                                            {{-- <td>{{ $row->judul }}</td> --}}
                                             <td>{{ $row->tempat }}</td>
                                             <td>{{
                                                 Carbon\Carbon::parse($row->tgl_sidang)->locale('id')->translatedformat('l,d
@@ -453,14 +469,22 @@
 
                                     <option value="0">-- Pilih Mahasiswa--</option>
                                     @foreach ($daftarta as $k)
+                                    @if (old('daftar_ta_id')==$k->id)
+
+                                    <option value="{{ $k->id }}" class="text-capitalize" selected>{{
+                                        $k->mahasiswa->biodata->no_induk
+                                        }} - {{ $k->mahasiswa->biodata->nama
+                                        }}</option>
+                                    @else
                                     <option value="{{ $k->id }}" class="text-capitalize">{{
                                         $k->mahasiswa->biodata->no_induk
                                         }} - {{ $k->mahasiswa->biodata->nama
                                         }}</option>
+                                    @endif
                                     @endforeach
 
-                                    @endif
                                 </select>
+                                @endif
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
@@ -476,19 +500,22 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Tanggal Sidang </label>
-                                <input type="date" class="form-control" name="tgl_sidang" size="1">
+                                <input type="date" class="form-control" name="tgl_sidang" size="1"
+                                    value="{{ old('tgl_sidang') }}">
                             </div>
                             <div class="col-3">
                                 <label class="control-label">
                                     Jam Mulai Sidang
                                 </label>
-                                <input type="time" class="form-control" name="jam_mulai_sidang" size="1">
+                                <input type="time" class="form-control" name="jam_mulai_sidang" size="1"
+                                    value="{{ old('jam_mulai_sidang') }}">
                             </div>
                             <div class="col-3">
                                 <label class="control-label">
                                     Jam Akhir Sidang
                                 </label>
-                                <input type="time" class="form-control" name="jam_akhir_sidang" size="1">
+                                <input type="time" class="form-control" name="jam_akhir_sidang" size="1"
+                                    value="{{ old('jam_akhir_sidang') }}">
                             </div>
                         </div>
                     </div>
@@ -499,9 +526,10 @@
                                 <label class="control-label">Judul Tugas Akhir </label>
                                 @if (Auth::user()->level==0)
                                 <input type="text" class="form-control" name="judul" size="1"
-                                    value="{{ $inputMhsDiterima->judul }}">
+                                    value="{{ old('judul',$inputMhsDiterima->judul) }}">
                                 @else
-                                <input type="text" class="form-control" id="judul" name="judul" size="1">
+                                <input type="text" class="form-control" id="judul" name="judul" size="1"
+                                    value="{{ old('judul') }}">
                                 @endif
                             </div>
                             <div class="col">
@@ -524,7 +552,12 @@
                                 <select class="form-control" name="d_penguji" size="1">
                                     <option value="" hidden="">-- Dosen Penguji--</option>
                                     @foreach ($dosen as $k)
+                                    @if (old('d_penguji')==$k->id)
+
+                                    <option value="{{ $k->id }}" selected>{{ $k->biodata->nama }}</option>
+                                    @else
                                     <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -592,7 +625,7 @@
                             </div>
                             <div class="col-6">
                                 <label for="" class="form-label ">Tempat Sidang</label>
-                                <input type="text" class="form-control" name="tempat">
+                                <input type="text" class="form-control" name="tempat" value="{{ old('tempat') }}">
                             </div>
                         </div>
                     </div>
@@ -1084,6 +1117,81 @@
                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> hapus</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- update status pengajuan --}}
+@foreach ($s_list as $ta)
+<div class="modal fade" id="modalUpdateStatus{{ $ta->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Perbarui Status Seminar | {{
+                    $ta->daftarta->mahasiswa->biodata->nama }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/update-status-sidang/{{ $ta->id }}">
+                @method('put')
+                @csrf
+                <div class="modal-body">
+
+                    <input type="hidden" value="{{ $ta->id }}" name="id" required>
+
+                    <div class="form-group">
+                        <select class="form-control" name="stts_sidang" required>
+                            <option value="" hidden="">-- Status Seminar --</option>
+                            <option @php if($ta->stts_sidang == 'proses') echo 'selected';
+                                @endphp value="proses">Proses</option>
+                            <option @php if($ta->stts_sidang == 'terjadwal') echo 'selected';
+                                @endphp value="terjadwal">Terjadwal</option>
+                            <option @php if($ta->stts_sidang == 'selesai') echo 'selected';
+                                @endphp value="selesai">Selesai</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Perbarui</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+@foreach ($s_list as $item)
+<div class="modal fade" id="viewJudul{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Judul TA - {{
+                    $item->daftarta->mahasiswa->biodata->no_induk }}
+                    | {{ $item->daftarta->mahasiswa->biodata->nama
+                    }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {{ $item->judul }}
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>

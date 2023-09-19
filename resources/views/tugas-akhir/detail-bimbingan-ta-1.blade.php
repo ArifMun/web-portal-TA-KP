@@ -29,60 +29,36 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <ul class="nav nav-pills">
-                    <li class="nav-item text-bold">
-                        <a class="nav-link " href="#bimbingan-1">Mahasiswa Bimbingan
-                            1</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#bimbingan-2">Mahasiswa Bimbingan 2</a>
-                    </li>
-                </ul>
+                @if(Auth::user()->level== 1)
+                <h4 class="page-title">Mahasiswa Bimbingan 1 </h4>
+                @endif
             </div>
 
-            <div class="row" id="bimbingan-1">
+            <div class="row">
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                @if (Auth::user()->level==0)
-                                <h4 class="card-title">Dosen Pembimbing 1</h4>
-                                <a href="cetak-form/bimbingan-ta-1" class="btn btn-success btn-round ml-auto"
-                                    target="_blank">
-                                    <i class="fas fa-print"></i>
-                                    Cetak Form
-                                </a>
-                                @elseif(Auth::user()->level==1)
-                                <h4 class="card-title">Mahasiswa Bimbingan 1</h4>
+
+                                @if(Auth::user()->level==1)
+                                <h4 class="card-title">Jumlah Bimbingan : {{ $b_dosen_1->count() }}</h4>
                                 @endif
+                                <a href="/bimbingan-ta/tambah" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalTambahBimbingan">
+                                    <i class="fa fa-plus"></i>
+                                    Tambah
+                                </a>
                             </div>
                         </div>
 
                         <div class="card-body">
-                            <div class="d-flex align-items-center">Readme First
-                                <a href="bimbingan-ta/view-pengumuman" data-toggle="modal"
-                                    data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
-                                    </i>
-                                </a>
-                            </div>
-                            <div class="divider"></div>
                             <div class="table-responsive">
                                 <table id="bimbingan-ta" class="display table table-striped table-hover">
                                     <thead>
                                         <tr align="center">
-                                            @if (Auth::user()->level==1)
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
-                                            <th>Jumlah Bimbingan</th>
-                                            <th>Judul Tugas Akhir</th>
-                                            <th>Tahun Akademik</th>
-                                            <th>Detail</th>
-                                            @endif
-
-                                            @if (Auth::user()->level==0)
-                                            <th>No</th>
-                                            <th>Dosen Pembimbing 1</th>
                                             <th>Judul Bimbingan</th>
                                             <th>Laporan TA</th>
                                             <th>Status</th>
@@ -91,200 +67,51 @@
                                             <th>Author</th>
                                             <th>Dibuat</th>
                                             <th>Action</th>
-                                            @endif
 
                                         </tr>
                                     </thead>
 
-                                    @if (Auth::user()->level==0)
+                                    @if(Auth::user()->level == 1)
                                     <tbody>
                                         @php $no=1; @endphp
-                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarta->bimbinganta1))
-                                        @foreach ($b_mhs_1 as $item)
-                                        <tr align="center">
-                                            <td>{{ $no++ }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarta->dosen1->biodata->nama }}
-                                            </td>
-                                            <td>{{ $item->judul_bimbingan }}</td>
-                                            <td>
-                                                @if ($item->laporan_ta==NULL)
-                                                @else
-                                                <a href="storage/{{ $item->laporan_ta }}"><i
-                                                        class="fas fa-file-download fa-2x">
-                                                    </i>
-                                                </a>
-                                                @endif
-                                            </td>
-                                            @if ($item->stts == 'proses')
-                                            <td>
-                                                <a
-                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
-                                                    {{
-                                                    $item->stts }}</a>
-                                            </td>
-                                            @elseif($item->stts == 'acc')
-                                            <td>
-                                                <a
-                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
-                                                    {{
-                                                    $item->stts}}</a>
-                                            </td>
-                                            @else
-                                            <td>
-                                                <a
-                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
-                                                    {{
-                                                    $item->stts}}</a>
-                                            </td>
-                                            @endif
-                                            <td>{{ $item->catatan }}</td>
-                                            <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
-                                            <td>{{ $item->author }}</td>
-                                            <td>{{ $item->created_at }}</td>
-                                            <td>
-                                                <a href="bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#EditBimbingan{{ $item->id }}"
-                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
-                                                    </i> </a>
-                                                <a href="bimbingan-ta/hapus/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#modalHapusBimbingan{{ $item->id }}"
-                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
-                                                    </i> </a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-
-                                        @else
-                                        <tr>
-                                            <td colspan="13">
-                                                <p align="center"><i>Data Tidak Tersedia</i></p>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-
-                                    @elseif(Auth::user()->level == 1)
-                                    <tbody> @php $no=1; @endphp
                                         @foreach ($b_dosen_1 as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
-                                            <td>{{ $item->where('daftar_ta_id', $item->daftar_ta_id)->count() }}</td>
-                                            <td>{{ $item->daftarta->judul }}</td>
-                                            <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
-                                            <td>
-                                                <a href="/bimbingan-ta/{{ $item->daftarta->id }}"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i>
-                                                </a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-
-                                    </tbody>
-                                    @endif
-                                </table>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-            </div>
-
-            {{-- ============================================================= --}}
-
-            {{-- pembimbing 2 --}}
-            <div class="row" id="bimbingan-2">
-                <div class="col-md-12">
-                    <div class="card">
-                        <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                @if (Auth::user()->level==0)
-                                <h4 class="card-title">Dosen Pembimbing 2</h4>
-                                <a href="cetak-form/bimbingan-ta-2" class="btn btn-success btn-round ml-auto"
-                                    target="_blank">
-                                    <i class="fas fa-print"></i>
-                                    Cetak Form
-                                </a>
-                                @elseif(Auth::user()->level==1)
-                                <h4 class="card-title">Mahasiswa Bimbingan 2</h4>
-                                @endif
-                            </div>
-                        </div>
-
-                        <div class="card-body">
-
-                            <div class="divider"></div>
-                            <div class="table-responsive">
-                                <table id="bimbingan-ta-1" class="display table table-striped table-hover">
-                                    <thead>
-                                        <tr align="center">
-                                            @if (Auth::user()->level==1)
-                                            <th>No</th>
-                                            <th>NIM</th>
-                                            <th>Nama</th>
-                                            <th>Jumlah Bimbingan</th>
-                                            <th>Judul Tugas Akhir</th>
-                                            <th>Tahun Akademik</th>
-                                            <th>Detail</th>
-                                            @endif
-
-                                            @if (Auth::user()->level==0)
-                                            <th>No</th>
-                                            <th>Dosen Pembimbing 2</th>
-                                            <th>Judul Bimbingan</th>
-                                            <th>Laporan TA</th>
-                                            <th>Status</th>
-                                            <th>Catatan</th>
-                                            <th>Tahun Akademik</th>
-                                            <th>Author</th>
-                                            <th>Dibuat</th>
-                                            <th>Action</th>
-                                            @endif
-
-                                        </tr>
-                                    </thead>
-
-                                    @if (Auth::user()->level==0)
-                                    <tbody>
-                                        @php $no=1; @endphp
-                                        @if (empty(Auth::user()->biodata->mahasiswa->daftarta->bimbinganta2))
-                                        @foreach ($b_mhs_2 as $item)
-                                        <tr align="center">
-                                            <td>{{ $no++ }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarta->dosen2->biodata->nama }}
-                                            </td>
                                             <td>{{ $item->judul_bimbingan }}</td>
                                             <td>
-                                                @if ($item->laporan_ta == NULL)
+                                                @if ($item->laporan_ta==NULL)
                                                 @else
-                                                <a href="storage/{{ $item->laporan_ta }}"><i
+                                                <a href="/storage/{{ $item->laporan_ta }}"><i
                                                         class="fas fa-file-download fa-2x">
                                                     </i>
                                                 </a>
                                                 @endif
                                             </td>
-                                            @if ($item->stts == 'proses')
+                                            @if ($item->stts=='proses')
                                             <td>
-                                                <a
-                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
+                                                <a href="update-status-bimbingan/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $item->id }}"
+                                                    class="font-weight-bold badge badge-warning text-white text-uppercase">
                                                     {{
                                                     $item->stts }}</a>
                                             </td>
-                                            @elseif($item->stts == 'acc')
+                                            @elseif($item->stts=='acc')
                                             <td>
-                                                <a
-                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
+                                                <a href="update-status-bimbingan/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $item->id }}"
+                                                    class="font-weight-bold badge badge-success text-white text-uppercase">
                                                     {{
-                                                    $item->stts}}</a>
+                                                    $item->stts }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a
-                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
+                                                <a href="update-status-bimbingan/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $item->id }}"
+                                                    class="font-weight-bold badge badge-danger text-white text-uppercase">
                                                     {{
-                                                    $item->stts}}</a>
+                                                    $item->stts }}</a>
                                             </td>
                                             @endif
                                             <td> {{ \Illuminate\Support\Str::limit($item->catatan, 60) }}
@@ -297,42 +124,14 @@
                                             <td>{{ $item->author }}</td>
                                             <td>{{ $item->created_at }}</td>
                                             <td>
-                                                <a href="bimbingan-ta-1/edit/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#EditBimbingan1{{ $item->id }}"
+                                                <a href="/bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#EditBimbingan{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="bimbingan-ta-1/hapus/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#modalHapusBimbingan1{{ $item->id }}"
+                                                <a href="/bimbingan-ta/hapus/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusBimbingan{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
-                                            </td>
-                                        </tr>
-                                        @endforeach
-
-                                        @else
-                                        <tr>
-                                            <td colspan="13">
-                                                <p align="center"><i>Data Tidak Tersedia</i></p>
-                                            </td>
-                                        </tr>
-                                        @endif
-                                    </tbody>
-
-                                    @elseif(Auth::user()->level == 1)
-                                    <tbody> @php $no=1; @endphp
-                                        @foreach ($b_dosen_2 as $item)
-                                        <tr align="center">
-                                            <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
-                                            <td>{{ $item->where('daftar_ta_id', $item->daftar_ta_id)->count() }}</td>
-                                            <td>{{ $item->daftarta->judul }}</td>
-                                            <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
-                                            <td>
-                                                <a href="bimbingan-ta-1/{{ $item->daftarta->id }}"
-                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
-                                                    </i>
-                                                </a>
                                             </td>
                                         </tr>
                                         @endforeach
@@ -362,7 +161,7 @@
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="bimbingan-ta">
+            <form method="POST" enctype="multipart/form-data" action="/bimbingan-ta">
                 @csrf
                 <div class="modal-body">
 
@@ -370,39 +169,19 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                @if (Auth::user()->level==0 )
+                                @foreach ($d_bimbing_1 as $item)
+
                                 <input type="text" class="form-control"
-                                    value="{{ $m_bimbing_1->mahasiswa->biodata->no_induk }} - {{ $m_bimbing_1->mahasiswa->biodata->nama }} - {{ $m_bimbing_1->tahunakademik->tahun }}"
+                                    value="{{ $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun }}"
                                     readonly>
-                                <input type="hidden" name="daftar_ta_id" value="{{ $m_bimbing_1->id }}">
-                                @else
-                                <select class="form-control" name="daftar_ta_id" id="daftar_ta_id" required>
-                                    <option value="" hidden="">-- Pilih --</option>
-
-                                    @foreach ($d_bimbing_1 as $item)
-                                    <option value="{{ $item->id }}">{{
-                                        $item->mahasiswa->biodata->no_induk
-                                        }} - {{ $item->mahasiswa->biodata->nama
-                                        }} - {{ $item->tahunakademik->tahun
-                                        }}
-                                    </option>
-                                    @endforeach
-
-                                    @endif
-                                </select>
+                                <input type="hidden" name="daftar_ta_id" value="{{ $item->id }}">
+                                @endforeach
                             </div>
-                            @if (UserCheck::levelMhs())
-                            <div class="col">
-                                <label class="control-label">Dosen Pembimbing 1 </label>
-                                <input type="text" class="form-control"
-                                    value="{{ $m_bimbing_1->dosen1->biodata->nama }}" readonly>
-                            </div>
-                            @else
+
                             <div class="col">
                                 <label for=""></label>
                                 <input type="text" class="form-control" value="Mahasiswa Bimbingan 1" readonly>
                             </div>
-                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -597,7 +376,7 @@
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="bimbingan-ta/{{ $item->id }}">
+            <form method="POST" enctype="multipart/form-data" action="/bimbingan-ta/{{ $item->id }}">
                 @method('put')
                 @csrf
                 <div class="modal-body">

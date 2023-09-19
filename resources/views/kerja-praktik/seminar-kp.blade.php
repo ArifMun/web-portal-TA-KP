@@ -203,7 +203,8 @@
                                             {{-- <td>{{ $item->daftarkp->seminarkp->judul }}</td> --}}
                                             <td>
                                                 <a href="seminar-kp/view-judul/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $item->id }}"><i class="fa fa-eye ">
+                                                    data-target="#viewJudul{{ $item->id }}"
+                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye ">
                                                     </i>
                                                 </a>
                                             </td>
@@ -255,19 +256,25 @@
                                             </td>
                                             @if ($row->stts_seminar=='proses')
                                             <td>
-                                                <a class="badge badge-warning font-weight-bold text-light ">
+                                                <a href="update-status-seminar/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
+                                                    class="badge badge-warning font-weight-bold text-light ">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
                                             @elseif($row->stts_seminar=='selesai')
                                             <td>
-                                                <a class="badge badge-success font-weight-bold text-light ">
+                                                <a href="update-status-seminar/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
+                                                    class="badge badge-success font-weight-bold text-light ">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a class="badge badge-primary font-weight-bold text-light ">
+                                                <a href="update-status-seminar/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
+                                                    class="badge badge-primary font-weight-bold text-light ">
                                                     {{
                                                     $row->stts_seminar }}</a>
                                             </td>
@@ -298,7 +305,8 @@
                                             </td>
                                             <td>
                                                 <a href="seminar-kp/view-judul/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $row->id }}"><i class="fa fa-eye">
+                                                    data-target="#viewJudul{{ $row->id }}"
+                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
@@ -380,16 +388,26 @@
 
                                     <option value="">-- Pilih Mahasiswa--</option>
                                     @foreach ($daftarkp as $k)
+                                    @if (old('daftarkp_id')== $k->id)
+                                    <option value="{{ $k->id }}" class="text-capitalize" selected>
+                                        {{
+                                        $k->mahasiswa->biodata->no_induk
+                                        }} - {{ $k->mahasiswa->biodata->nama
+                                        }}
+                                    </option>
+                                    @else
+
                                     <option value="{{ $k->id }}" class="text-capitalize">
                                         {{
                                         $k->mahasiswa->biodata->no_induk
                                         }} - {{ $k->mahasiswa->biodata->nama
                                         }}
                                     </option>
+                                    @endif
                                     @endforeach
 
-                                    @endif
                                 </select>
+                                @endif
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
@@ -404,13 +422,15 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Tanggal Seminar </label>
-                                <input type="date" class="form-control" name="tgl_seminar">
+                                <input type="date" class="form-control" name="tgl_seminar"
+                                    value="{{ old('tgl_seminar') }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">
                                     Jam Seminar
                                 </label>
-                                <input type="time" class="form-control" name="jam_seminar">
+                                <input type="time" class="form-control" name="jam_seminar"
+                                    value="{{ old('jam_seminar') }}">
                             </div>
                         </div>
                     </div>
@@ -422,7 +442,8 @@
                                 @if (Auth::user()->level==0)
                                 <input type="text" class="form-control" name="judul" value="{{ $mhskps->judul }}">
                                 @else
-                                <input type="text" class="form-control" name="judul" id="judul">
+                                <input type="text" class="form-control" name="judul" id="judul"
+                                    value="{{ old('judul') }}">
                                 @endif
                             </div>
                             <div class="col">
@@ -464,6 +485,11 @@
                         </div>
                     </div>
 
+                    <div class="form-group ">
+                        <label class="control-label">Tempat Kerja Praktik </label>
+                        <input type="text" class="form-control" name="tempat" value="{{ old('tempat') }}">
+                    </div>
+
                     <div class="modal-footer required">
                         <div class="col">
                             <label class="control-label font-italic">
@@ -487,7 +513,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Edit Data KP</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle">Edit Data Seminar KP</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -612,7 +638,10 @@
                             </div>
                         </div>
                     </div>
-
+                    <div class="form-group required">
+                        <label class="control-label">Tempat Kerja Praktik </label>
+                        <input type="text" class="form-control" name="tempat" value="{{ $item->tempat }}">
+                    </div>
                     <div class="modal-footer required">
                         <div class="col">
                             <label class="control-label font-italic">
@@ -845,6 +874,52 @@
 </div>
 @endforeach
 
+{{-- update status pengajuan --}}
+@foreach ($seminarkp as $kp)
+<div class="modal fade" id="modalUpdateStatus{{ $kp->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Perbarui Status Seminar | {{
+                    $kp->daftarkp->mahasiswa->biodata->nama }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/update-status-seminar/{{ $kp->id }}">
+                @method('put')
+                @csrf
+                <div class="modal-body">
+
+                    <input type="hidden" value="{{ $kp->id }}" name="id" required>
+
+                    <div class="form-group">
+                        <select class="form-control" name="stts_seminar" required>
+                            <option value="" hidden="">-- Status Seminar --</option>
+                            <option @php if($kp->stts_seminar == 'proses') echo 'selected';
+                                @endphp value="proses">Proses</option>
+                            <option @php if($kp->stts_seminar == 'terjadwal') echo 'selected';
+                                @endphp value="terjadwal">Terjadwal</option>
+                            <option @php if($kp->stts_seminar == 'selesai') echo 'selected';
+                                @endphp value="selesai">Selesai</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Perbarui</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 
 <script>
@@ -898,4 +973,14 @@
     });
 
 </script>
+
+{{-- @if (count($errors) > 0)
+@foreach ($errors->all() as $error)
+<script>
+    $(document).ready(function () {
+            $('#modalDaftarSeminar').modal('show');
+            })
+</script>
+@endforeach
+@endif --}}
 @endsection

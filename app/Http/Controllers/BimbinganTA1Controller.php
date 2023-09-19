@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Dompdf\Dompdf;
 use App\Models\DaftarTA;
+use App\Models\Pengumuman;
+use App\Models\BimbinganTA1;
 use App\Models\BimbinganTA2;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -19,7 +21,7 @@ class BimbinganTA1Controller extends Controller
     public function print()
     {
         $kp             = new BimbinganTA2();
-        $bimbinganTA    = $kp->b_mhs_2();
+        $bimbinganTA    = $kp->b_mhs_2()->where('stts', '!=', 'proses');
         $daftar_ta  = new DaftarTA();
         $mhstas     = $daftar_ta->inputMhsDiterima();
         // mhstas = mahasiswa tugas akhir selesai
@@ -74,7 +76,7 @@ class BimbinganTA1Controller extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('bimbingan-ta')->with('warning', 'Data Tidak Tersimpan!');
+            return \back()->with('warning', 'Data Tidak Tersimpan!');
         } else {
 
             BimbinganTA2::create([
@@ -88,7 +90,7 @@ class BimbinganTA1Controller extends Controller
                 'author'            => $request->author,
             ]);
 
-            return \redirect('bimbingan-ta')->with('success', 'Data Berhasil Disimpan!');
+            return \back()->with('success', 'Data Berhasil Disimpan!');
         }
     }
 
@@ -100,27 +102,50 @@ class BimbinganTA1Controller extends Controller
      */
     public function show($id)
     {
-        //
+        $d_ta        = new DaftarTA();
+        $l_ta        = $d_ta->all();
+
+        // select pada form tambah bimbingan 1
+        $m_bimbing_1 = $d_ta->m_bimbing_1(); //select untuk mhs pada form bimbing 1 dan 2
+        $d_bimbing_1 = $d_ta->d_bimbing_1()->where('id', '=', $id);
+
+        // data pembimbing 1
+        $bimbing   = new BimbinganTA1();
+        $e_bimbing = $bimbing->all();
+
+        // data yang tampil pada tabel pembimbing 1
+        $b_dosen_1  = $bimbing->b_dosen_1_detail()->where('daftar_ta_id', '=', $id);
+        $b_mhs_1 = $bimbing->b_mhs_1()->sortByDesc('id');
+
+        // =======================================================
+
+        // data pembimbing 2
+        $bimbing_2   = new BimbinganTA2();
+        $e_bimbing_2 = $bimbing_2->all();
+
+        // data yang tampil pada tabel pembimbing 2
+        $b_dosen_2  = $bimbing_2->b_dosen_2_detail()->where('daftar_ta_id', '=', $id);
+        $b_mhs_2 = $bimbing_2->b_mhs_2()->sortByDesc('id');
+
+        // select pada form tambah bimbingan 1
+        // $m_bimbing_2 = $d_ta->m_bimbing_2();
+        $d_bimbing_2 = $d_ta->d_bimbing_2();
+        $pengumuman  = Pengumuman::get()->first();
+        return \view('tugas-akhir.detail-bimbingan-ta-2', \compact(
+            'e_bimbing',
+            'e_bimbing_2',
+            'm_bimbing_1',
+            'd_bimbing_1',
+            'd_bimbing_2',
+            'l_ta',
+            'b_dosen_1',
+            'b_mhs_1',
+            'b_dosen_2',
+            'b_mhs_2',
+            'pengumuman'
+        ));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, $id)
     {
         $validation = Validator::make(
@@ -135,7 +160,7 @@ class BimbinganTA1Controller extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('bimbingan-ta')->with('warning', 'Data Gagal Diperbarui');
+            return \back()->with('warning', 'Data Gagal Diperbarui');
         } else {
             $bimbingan_ta_1 = BimbinganTA2::findOrFail($id);
             if ($request->file('laporan_ta')) {
@@ -152,7 +177,7 @@ class BimbinganTA1Controller extends Controller
             $bimbingan_ta_1->catatan            = $request->catatan;
             $bimbingan_ta_1->update();
 
-            return \redirect('bimbingan-ta')->with('success', 'Data Berhasil Diperbarui!');
+            return \back()->with('success', 'Data Berhasil Diperbarui!');
         }
     }
 
@@ -170,6 +195,14 @@ class BimbinganTA1Controller extends Controller
         }
         $bimbingan_ta_2->delete();
 
-        return \redirect('bimbingan-ta')->with('success', 'Data Berhasil Dihapus!');
+        return \back()->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $daftarkp = BimbinganTA2::findOrFail($id);
+        $daftarkp->stts   = $request->stts;
+        $daftarkp->update();
+        return \back()->with('success', 'Status Pengajuan Berhasil Diperbarui!');
     }
 }

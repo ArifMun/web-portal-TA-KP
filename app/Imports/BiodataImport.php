@@ -9,10 +9,11 @@ use App\Models\Mahasiswa;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 use Maatwebsite\Excel\Concerns\Importable;
+use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\SkipsFailures;
 use Maatwebsite\Excel\Concerns\SkipsOnFailure;
-use Maatwebsite\Excel\Concerns\ToCollection;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
 use Maatwebsite\Excel\Concerns\WithValidation;
 
@@ -23,12 +24,14 @@ class BiodataImport implements ToCollection, WithHeadingRow, WithValidation, Ski
     public function collection(Collection $collection)
     {
 
+
         foreach ($collection as $col) {
             $jabatan = $col['jabatan'];
             if (!in_array($jabatan, Biodata::JABATAN_OPTIONS)) {
 
                 continue;
             }
+
             $biodata = Biodata::create([
                 'nama' => $col['nama'],
                 'no_induk' => $col['no_induk'],
@@ -36,7 +39,7 @@ class BiodataImport implements ToCollection, WithHeadingRow, WithValidation, Ski
                 'email' => $col['email'],
                 'jabatan' => $jabatan,
                 'tempat_lahir' => $col['tempat_lahir'],
-                'tgl_lahir' => $col['tgl_lahir'],
+                'tgl_lahir' => Date::excelToDateTimeObject($col['tgl_lahir']),
                 'no_telp' => $col['no_telp'],
                 'alamat' => $col['alamat'],
             ]);
@@ -71,8 +74,11 @@ class BiodataImport implements ToCollection, WithHeadingRow, WithValidation, Ski
 
     public function rules(): array
     {
+
         return [
             'no_induk' => Rule::unique('biodata'),
+            'email'    => 'required',
+            'no_telp'  => 'max:12'
             // Definisikan aturan validasi lainnya sesuai kebutuhan Anda
         ];
     }

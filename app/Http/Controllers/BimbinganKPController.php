@@ -12,6 +12,9 @@ use App\Models\TahunAkademik;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
+use PhpOffice\PhpSpreadsheet\Writer\Pdf\Mpdf as PdfMpdf;
 
 class BimbinganKPController extends Controller
 {
@@ -35,7 +38,7 @@ class BimbinganKPController extends Controller
         $bimbing_kp     = new BimbinganKP();
         $sttsDosen      = $bimbing_kp->sttsDosen();
         $sttsMhs        = $bimbing_kp->sttsMhs();
-        $bimbingMhs     = $bimbing_kp->bimbingMhs();
+        $bimbingMhs     = $bimbing_kp->bimbingMhs()->sortByDesc('id');
         $bimbingDosen   = $bimbing_kp->bimbingDosen();
         $pengumuman     = Pengumuman::get()->first();
 
@@ -102,7 +105,7 @@ class BimbinganKPController extends Controller
                 'laporan_kp'        => $request->hasFile('laporan_kp') ? $request->file('laporan_kp')->store('dokumen-kp') : null
             ]);
 
-            return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Disimpan!');
+            return \back()->with('success', 'Data Berhasil Disimpan!');
         }
     }
 
@@ -114,7 +117,34 @@ class BimbinganKPController extends Controller
      */
     public function show($id)
     {
-        //
+
+        $daftarkp    = DaftarKP::all();
+        $filterStts  = BimbinganKP::distinct()->select('stts')->get();
+        $thnakademik = TahunAkademik::all();
+        $bimbingkp   = BimbinganKP::all();
+
+        $daftar_kp  = new DaftarKP();
+        $mhskps     = $daftar_kp->mhskps();
+        $mhskpd     = $daftar_kp->mhskpd()->where('id', '=', $id);
+        $bimbing_kp     = new BimbinganKP();
+
+        $sttsDosen      = $bimbing_kp->sttsDosen();
+        $sttsMhs        = $bimbing_kp->sttsMhs();
+        $bimbingMhs     = $bimbing_kp->bimbingDosen();
+        $bimbingDosen   = $bimbing_kp->bimbinganDetail()->where('daftarkp_id', '=', $id);
+
+        return \view('kerja-praktik.detail-bimbingan-kp', \compact(
+            'thnakademik',
+            'daftarkp',
+            'bimbingMhs',
+            'bimbingDosen',
+            'mhskps',
+            'bimbingkp',
+            'mhskpd',
+            'filterStts',
+            'sttsDosen',
+            'sttsMhs',
+        ));
     }
 
     /**
@@ -170,7 +200,7 @@ class BimbinganKPController extends Controller
             // $bimbingankp->laporan_kp      = $request->laporan_kp;
             $bimbingankp->update();
 
-            return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Diperbarui!');
+            return \back()->with('success', 'Data Berhasil Diperbarui!');
         }
     }
 
@@ -188,13 +218,13 @@ class BimbinganKPController extends Controller
         }
         $bimbingankp->delete();
 
-        return \redirect('bimbingan-kp')->with('success', 'Data Berhasil Dihapus!');
+        return \back()->with('success', 'Data Berhasil Dihapus!');
     }
 
     public function print()
     {
         $kp             = new BimbinganKP();
-        $bimbingankp    = $kp->bimbingMhs();
+        $bimbingankp    = $kp->bimbingMhs()->where('stts', '!=', 'proses');
         $daftar_kp  = new DaftarKP();
         $mhskps     = $daftar_kp->mhskps();
         // $printPDF       = PDF::loadView('kerja-praktik.form-bimbingan-kp', \compact('bimbingankp'));
@@ -216,5 +246,13 @@ class BimbinganKPController extends Controller
 
         // Mengirimkan file PDF untuk didownload
         return $dompdf->stream($filename, ['Attachment' => false]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $daftarkp = BimbinganKP::findOrFail($id);
+        $daftarkp->stts   = $request->stts;
+        $daftarkp->update();
+        return \back()->with('success', 'Status Bimbingan Berhasil Diperbarui!');
     }
 }

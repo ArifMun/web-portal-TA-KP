@@ -49,14 +49,14 @@
                                             </td>
                                             <td>
                                                 @foreach ($dosen as $k)
-                                                {{ $k->id == $item->daftarta->d_pembimbing_1 ?
+                                                {{ $k->id == $item->daftarta->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
                                             <td>
                                                 @foreach ($dosen as $k)
-                                                {{ $k->id == $item->daftarta->d_pembimbing_2 ?
+                                                {{ $k->id == $item->daftarta->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach

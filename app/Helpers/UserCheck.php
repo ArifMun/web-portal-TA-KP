@@ -58,6 +58,8 @@ class UserCheck
                 return $daftarkp->bimbingankp;
             })
             ->where('stts', '!=', 'proses')
+            // ->where('stts', '=', 'acc')
+            // ->last()
             ->count() >= 2;
 
         return ($level == 0 && $countBimbingan);

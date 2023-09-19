@@ -62,10 +62,19 @@ class BimbinganKP extends Model
             if (Auth::user()->level == 0) {
                 $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get()->sortByDesc('id');
+        })->get();
     }
 
     public function bimbingDosen()
+    {
+        return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('d_pembimbing_1', '=', Auth::user()->biodata->dosen->id);
+            }
+        })->distinct()->select('daftarkp_id')->get()->sortByDesc('id');
+    }
+
+    public function bimbinganDetail()
     {
         return self::with('daftarkp')->whereHas('daftarkp', function ($q) {
             if (Auth::user()->level == 1) {

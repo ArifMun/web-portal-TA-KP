@@ -111,7 +111,8 @@ class DaftarTAController extends Controller
         // \dd($validation);
         if ($validation->fails()) {
             return \redirect('daftar-ta')->with('warning', 'Data Tidak Tersimpan!')
-                ->withErrors($validation);
+                ->withErrors($validation)
+                ->withInput();
         } else {
             $input  = $request->input('konsentrasi');
             $string = \implode(',', $input);
@@ -184,7 +185,8 @@ class DaftarTAController extends Controller
         // \dd($validation);
         if ($validation->fails()) {
             return \redirect('daftar-ta')->with('warning', 'Data Gagal Diperbarui!')
-                ->withErrors($validation);
+                ->withErrors($validation)
+                ->withInput();
         } else {
 
             $daftarta = DaftarTA::findOrFail($id);
@@ -230,5 +232,13 @@ class DaftarTAController extends Controller
 
         $daftarta->delete();
         return \redirect('daftar-ta')->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $daftarkp = DaftarTA::findOrFail($id);
+        $daftarkp->stts_pengajuan   = $request->stts_pengajuan;
+        $daftarkp->update();
+        return \redirect('daftar-ta')->with('success', 'Status Pengajuan Berhasil Diperbarui!');
     }
 }

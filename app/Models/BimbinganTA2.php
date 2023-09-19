@@ -43,6 +43,15 @@ class BimbinganTA2 extends Model
             if (Auth::user()->level == 1) {
                 $q->where('d_pembimbing_2', '=', Auth::user()->biodata->dosen->id);
             }
+        })->distinct()->select('daftar_ta_id')->get()->sortByDesc('id');
+    }
+
+    public function b_dosen_2_detail()
+    {
+        return self::with('daftarta')->whereHas('daftarta', function ($q) {
+            if (Auth::user()->level == 1) {
+                $q->where('d_pembimbing_2', '=', Auth::user()->biodata->dosen->id);
+            }
         })->get()->sortByDesc('id');
     }
 
@@ -52,6 +61,6 @@ class BimbinganTA2 extends Model
             if (Auth::user()->level == 0) {
                 $q->where('mahasiswa_id', '=', Auth::user()->biodata->mahasiswa->id);
             }
-        })->get()->sortByDesc('id');
+        })->get();
     }
 }

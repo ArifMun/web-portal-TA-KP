@@ -106,8 +106,8 @@
                                                 <a href="#editDataKonsentrasi/{{ $row->id }}" data-toggle="modal"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="#hapusDataKonsentrasi/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="" class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                <a href="#HapusDataKonsentrasi/{{ $row->id }}" data-toggle="modal"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
                                             </td>
                                         </tr>
@@ -709,7 +709,7 @@
 
 {{-- Hapus konsentrasi--}}
 @foreach ($konsentrasi as $d)
-<div class="modal fade" id="hapusDataKonsentrasi{{ $d->id }}" tabindex="-1" role="dialog"
+<div class="modal fade" id="HapusDataKonsentrasi/{{ $d->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-open">
         <div class="modal-content">
@@ -927,23 +927,23 @@
 <script>
     // checkbox toggle tanpa harus refresh halaman
     $(function() {
-    $('.toggle-class-1').change(function() {
-    let akses_ta = $(this).prop('checked') == true ? 1 : 0;
-    let id = $(this).data('id');
+        $('.toggle-class-1').change(function() {
+        let akses_ta = $(this).prop('checked') == true ? 1 : 0;
+        let id = $(this).data('id');
 
-    $.ajax({
-        type: "POST",
-        headers: {
-        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        },
-        dataType: "json",
-        url: '{{ route('toggle.update-ta') }}',
-        data: {'akses_ta': akses_ta, 'id': id},
-        success: function(data){
-                console.log(data.success)
-                }   
-            });
-        })
+        $.ajax({
+            type: "POST",
+            headers: {
+            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+            },
+            dataType: "json",
+            url: '{{ route('toggle.update-ta') }}',
+            data: {'akses_ta': akses_ta, 'id': id},
+            success: function(data){
+                    console.log(data.success)
+                    }   
+                });
+            })
     });
 </script>
 

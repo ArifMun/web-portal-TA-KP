@@ -120,7 +120,8 @@ class KerjaPraktikController extends Controller
         // dd($validation);
         if ($validation->fails()) {
             return \redirect('kerja-praktik')->with('warning', 'Data Tidak Tersimpan!')
-                ->withErrors($validation);
+                ->withErrors($validation)
+                ->withInput();
         } else {
 
             $input = $request->input('konsentrasi');
@@ -194,8 +195,11 @@ class KerjaPraktikController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
+            $dataToBeUpdated = DaftarKP::findOrFail($id);
             return \redirect('kerja-praktik')->with('warning', 'Data Gagal Diperbarui!')
-                ->withErrors($validation);
+                ->with('showModalEdit', true)
+                ->withErrors($validation)
+                ->withInput();
         } else {
 
             $daftarkp = DaftarKP::findOrFail($id);
@@ -240,5 +244,13 @@ class KerjaPraktikController extends Controller
         }
         $daftarkp->delete();
         return \redirect('kerja-praktik')->with('success', 'Data Berhasil Dihapus!');
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $daftarkp = DaftarKP::findOrFail($id);
+        $daftarkp->stts_pengajuan   = $request->stts_pengajuan;
+        $daftarkp->update();
+        return \redirect('kerja-praktik')->with('success', 'Status Pengajuan Berhasil Diperbarui!');
     }
 }

@@ -40,10 +40,10 @@
                                     <i class="fa fa-plus"></i>
                                     Tambah Akun
                                 </a>
-                                @if ($errors->any())
+                                @if ($errors->any() )
                                 @foreach ($errors->all() as $item)
                                 @php
-                                alert()->warning('Terdapat Data Yang Duplikat')
+                                alert()->warning($item)
                                 @endphp
                                 @endforeach
                                 @endif
@@ -171,12 +171,13 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Nama </label>
-                                <input type="text" class="form-control" name="nama" id="nama" required>
+                                <input type="text" class="form-control" name="nama" id="nama" value="{{ old('nama') }}"
+                                    required>
                             </div>
                             <div class="col">
                                 <label class="control-label">No Induk </label>
-                                <input type="number" class="form-control" name="no_induk" placeholder="No Induk .."
-                                    required>
+                                <input type="number" class="form-control" name="no_induk" value="{{ old('no_induk') }}"
+                                    placeholder="No Induk .." required>
                             </div>
                         </div>
                     </div>
@@ -185,11 +186,13 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Email </label>
-                                <input type="text" class="form-control" name="email" placeholder="Email ..">
+                                <input type="text" class="form-control" name="email" value="{{ old('email') }}"
+                                    placeholder="Email .." required>
                             </div>
                             <div class="col">
-                                <label class="control-label">No WA </label>
-                                <input type="text" class="form-control" name="no_telp" placeholder="No WA .." required>
+                                <label class="">No WA </label>
+                                <input type="text" class="form-control" name="no_telp" value="{{ old('no_telp') }}"
+                                    placeholder="No WA ..">
                             </div>
                         </div>
                     </div>
@@ -199,11 +202,12 @@
                             <div class="col">
                                 <label>Tempat Lahir</label>
                                 <input type="text" class="form-control" name="tempat_lahir"
-                                    placeholder="Tempat Lahir . .">
+                                    value="{{ old('tempat_lahir') }}" placeholder="Tempat Lahir . .">
                             </div>
                             <div class="col">
                                 <label>Tanggal Lahir</label>
-                                <input type="date" class="form-control" name="tgl_lahir" placeholder="Tanggal Lahir ..">
+                                <input type="date" class="form-control" name="tgl_lahir" value="{{ old('tgl_lahir') }}"
+                                    placeholder="Tanggal Lahir ..">
                             </div>
                         </div>
                     </div>
@@ -212,7 +216,8 @@
                         <div class="row">
                             <div class="col">
                                 <label>Alamat</label>
-                                <input type="text" class="form-control" name="alamat" placeholder="Alamat ..">
+                                <input type="text" class="form-control" name="alamat" value="{{ old('alamat') }}"
+                                    placeholder="Alamat ..">
                             </div>
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
@@ -235,12 +240,14 @@
                             <div class="col-6">
                                 <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
-                                    <option value="" hidden="">-- Pilih Level --</option>
+                                    <option value="" hidden>-- Pilih Level --</option>
                                     @php
-                                    $levels= array(0,1,2,3);
+                                    $levels = [0, 1, 2];
+                                    $oldLevel = old('level'); // Mendapatkan nilai lama dari input "level"
                                     @endphp
-                                    @foreach ($levels as $k=>$level)
-                                    <option value="{{ $level }}">{{ $level }}</option>
+                                    @foreach ($levels as $level)
+                                    <option value="{{ $level }}" {{ $level==$oldLevel ? 'selected' : '' }}>{{ $level }}
+                                    </option>
                                     @endforeach
                                 </select>
                                 <label class="control-label mt-3">Password </label>
@@ -422,8 +429,6 @@
                                         value="1">1</option>
                                     <option <?php if($d->users->level == 2) echo "selected"; ?>
                                         value="2">2</option>
-                                    <option <?php if($d->users->level == 3) echo "selected"; ?>
-                                        value="3">3</option>
                                 </select>
                                 <label class="control-label mt-3">Password </label>
                                 <input type="password" class="form-control" name="password" placeholder="Password ..">

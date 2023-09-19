@@ -162,4 +162,18 @@ class DaftarTA extends Model
             }
         })->get()->sortByDesc('id')->first();
     }
+
+    public function SyaratSidang()
+    {
+        return self::whereHas('bimbinganta_1', function ($query) {
+            $query->groupBy('daftar_ta_id')
+                ->havingRaw('COUNT(*) >=1')
+                ->where('stts', '!=', 'proses');
+        })->whereHas('bimbinganta_2', function ($query) {
+            $query->groupBy('daftar_ta_id')
+                ->havingRaw('COUNT(*) >=2')
+                ->where('stts', '!=', 'proses');
+        })->with('bimbinganta_1', 'bimbinganta_2')
+            ->get()->sortByDesc('id');
+    }
 }

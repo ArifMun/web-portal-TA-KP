@@ -34,7 +34,7 @@ class BimbinganTAController extends Controller
 
         // data yang tampil pada tabel pembimbing 1
         $b_dosen_1  = $bimbing->b_dosen_1();
-        $b_mhs_1 = $bimbing->b_mhs_1();
+        $b_mhs_1 = $bimbing->b_mhs_1()->sortByDesc('id');
 
         // =======================================================
 
@@ -44,7 +44,7 @@ class BimbinganTAController extends Controller
 
         // data yang tampil pada tabel pembimbing 2
         $b_dosen_2  = $bimbing_2->b_dosen_2();
-        $b_mhs_2 = $bimbing_2->b_mhs_2();
+        $b_mhs_2 = $bimbing_2->b_mhs_2()->sortByDesc('id');
 
         // select pada form tambah bimbingan 1
         // $m_bimbing_2 = $d_ta->m_bimbing_2();
@@ -105,7 +105,7 @@ class BimbinganTAController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('bimbingan-ta')->with('warning', 'Data Tidak Tersimpan!');
+            return \back()->with('warning', 'Data Tidak Tersimpan!');
         } else {
 
             BimbinganTA1::create([
@@ -119,7 +119,7 @@ class BimbinganTAController extends Controller
                 'author'            => $request->author,
             ]);
 
-            return \redirect('bimbingan-ta')->with('success', 'Data Berhasil Disimpan!');
+            return \back()->with('success', 'Data Berhasil Disimpan!');
         }
     }
 
@@ -131,7 +131,48 @@ class BimbinganTAController extends Controller
      */
     public function show($id)
     {
-        //
+        $d_ta        = new DaftarTA();
+        $l_ta        = $d_ta->all();
+
+        // select pada form tambah bimbingan 1
+        $m_bimbing_1 = $d_ta->m_bimbing_1(); //select untuk mhs pada form bimbing 1 dan 2
+        $d_bimbing_1 = $d_ta->d_bimbing_1()->where('id', '=', $id);
+
+        // data pembimbing 1
+        $bimbing   = new BimbinganTA1();
+        $e_bimbing = $bimbing->all();
+
+        // data yang tampil pada tabel pembimbing 1
+        $b_dosen_1  = $bimbing->b_dosen_1_detail()->where('daftar_ta_id', '=', $id);
+        $b_mhs_1 = $bimbing->b_mhs_1()->sortByDesc('id');
+
+        // =======================================================
+
+        // data pembimbing 2
+        $bimbing_2   = new BimbinganTA2();
+        $e_bimbing_2 = $bimbing_2->all();
+
+        // data yang tampil pada tabel pembimbing 2
+        $b_dosen_2  = $bimbing_2->b_dosen_2();
+        $b_mhs_2 = $bimbing_2->b_mhs_2()->sortByDesc('id');
+
+        // select pada form tambah bimbingan 1
+        // $m_bimbing_2 = $d_ta->m_bimbing_2();
+        $d_bimbing_2 = $d_ta->d_bimbing_2();
+        $pengumuman  = Pengumuman::get()->first();
+        return \view('tugas-akhir.detail-bimbingan-ta-1', \compact(
+            'e_bimbing',
+            'e_bimbing_2',
+            'm_bimbing_1',
+            'd_bimbing_1',
+            'd_bimbing_2',
+            'l_ta',
+            'b_dosen_1',
+            'b_mhs_1',
+            'b_dosen_2',
+            'b_mhs_2',
+            'pengumuman'
+        ));
     }
 
     /**
@@ -166,7 +207,7 @@ class BimbinganTAController extends Controller
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('bimbingan-ta')->with('warning', 'Data Gagal Diperbarui');
+            return \back()->with('warning', 'Data Gagal Diperbarui');
         } else {
             $bimbingan_ta_1 = BimbinganTA1::findOrFail($id);
             if ($request->file('laporan_ta')) {
@@ -183,7 +224,7 @@ class BimbinganTAController extends Controller
             $bimbingan_ta_1->catatan            = $request->catatan;
             $bimbingan_ta_1->update();
 
-            return \redirect('bimbingan-ta')->with('success', 'Data Berhasil Diperbarui!');
+            return \back()->with('success', 'Data Berhasil Diperbarui!');
         }
     }
 
@@ -207,7 +248,7 @@ class BimbinganTAController extends Controller
     public function print()
     {
         $kp             = new BimbinganTA1();
-        $bimbinganTA    = $kp->b_mhs_1();
+        $bimbinganTA    = $kp->b_mhs_1()->where('stts', '!=', 'proses');
         $daftar_ta  = new DaftarTA();
         $mhstas     = $daftar_ta->inputMhsDiterima();
         // mhstas = mahasiswa tugas akhir selesai
@@ -226,5 +267,13 @@ class BimbinganTAController extends Controller
 
         // Mengirimkan file PDF untuk didownload
         return $dompdf->stream($filename, ['Attachment' => false]);
+    }
+
+    public function updateStatus(Request $request, $id)
+    {
+        $daftarkp = BimbinganTA1::findOrFail($id);
+        $daftarkp->stts   = $request->stts;
+        $daftarkp->update();
+        return \back()->with('success', 'Status Pengajuan Berhasil Diperbarui!');
     }
 }

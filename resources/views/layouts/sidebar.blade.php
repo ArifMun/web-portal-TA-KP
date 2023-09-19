@@ -28,7 +28,7 @@
                         @else
                         <p>Kerja Praktik</p>
                         <span class="caret"></span>
-                        @if (!empty(Notification::CountMenu()))
+                        @if (UserCheck::levelAdmin()&&!empty(Notification::CountMenu()))
                         <span class="badge badge-warning badge-count">{{
                             Notification::CountMenu() }}</span>
                         @endif
@@ -45,7 +45,7 @@
                                     <span class="sub-item">Daftar KP</span>
                                     @else
                                     <span class="sub-item">Pendaftar KP</span>
-                                    @if (!empty(Notification::CountKP()))
+                                    @if (UserCheck::levelAdmin() && !empty(Notification::CountKP()))
                                     <span class="badge badge-warning badge-count">{{
                                         Notification::CountKP() }}</span>
                                     @endif
@@ -55,8 +55,8 @@
                             @endif
 
                             @if (UserCheck::authBimbinganKP())
-                            <li class="nav-item {{ Request()->is('bimbingan-kp')? 'active' : '' }}">
-                                <a href="bimbingan-kp">
+                            <li class="nav-item {{ Request()->is('bimbingan-kp*')? 'active' : '' }}">
+                                <a href="/bimbingan-kp">
                                     <span class="sub-item">Bimbingan KP</span>
                                 </a>
                             </li>
@@ -84,7 +84,7 @@
 
                             @endif
                             <li class="nav-item {{ Request()->is('data-kp')? 'active' : '' }}">
-                                <a href="data-kp">
+                                <a href="/data-kp">
                                     <span class="sub-item">Data KP</span>
                                 </a>
                             </li>
@@ -104,7 +104,7 @@
                         @else
                         <p>Tugas Akhir</p>
                         <span class="caret"></span>
-                        @if (!empty(Notification::CountMenuTA()))
+                        @if (UserCheck::levelAdmin() &&!empty(Notification::CountMenuTA()))
                         <span class="badge badge-warning badge-count">{{
                             Notification::CountMenuTA() }}</span>
                         @endif
@@ -116,7 +116,7 @@
 
                             @if (UserCheck::userExceptDosen())
                             <li class="nav-item {{ Request()->is('daftar-ta')? 'active' : '' }}">
-                                <a href="daftar-ta">
+                                <a href="/daftar-ta">
                                     @if (Auth::user()->level==0)
                                     <span class="sub-item">Daftar TA</span>
                                     @else
@@ -131,8 +131,8 @@
                             @endif
 
                             @if (UserCheck::authBimbinganTA())
-                            <li class="nav-item {{ Request()->is('bimbingan-ta')? 'active' : '' }}">
-                                <a href="bimbingan-ta">
+                            <li class="nav-item {{ Request()->is('bimbingan-ta*')? 'active' : '' }}">
+                                <a href="/bimbingan-ta">
                                     <span class="sub-item">Bimbingan TA</span>
                                 </a>
                             </li>
@@ -141,7 +141,7 @@
                             @if (UserCheck::userExceptDosen())
                             @if (Auth::user()->level!=0)
                             <li class="nav-item {{ Request()->is('sidang-ta')? 'active' : '' }}">
-                                <a href="sidang-ta">
+                                <a href="/sidang-ta">
                                     <span class="sub-item">Pendaftar Sidang TA</span>
                                     @if (!empty(Notification::CountSidang()))
                                     <span class="badge badge-warning badge-count">{{
@@ -161,7 +161,7 @@
                             @endif
 
                             <li class="nav-item {{ Request()->is('data-ta')? 'active' : '' }}">
-                                <a href="data-ta">
+                                <a href="/data-ta">
                                     <span class="sub-item">Data TA</span>
                                 </a>
                             </li>

@@ -256,7 +256,8 @@
                                             <td>{{ $item->stts_ta }}</td>
                                             <td>
                                                 <a href="daftar-ta/view-judul/{{ $item->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $item->id }}"><i class="fa fa-eye">
+                                                    data-target="#viewJudul{{ $item->id }}"
+                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
@@ -332,21 +333,24 @@
                                             </td>
                                             @if ($row->stts_pengajuan=='tertunda')
                                             <td>
-                                                <a
+                                                <a href="update-status-ta/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold badge badge-warning text-light text-capitalize">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @elseif($row->stts_pengajuan=='diterima')
                                             <td>
-                                                <a
+                                                <a href="update-status-ta/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold badge badge-success text-light text-capitalize">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @else
                                             <td>
-                                                <a
+                                                <a href="update-status-ta/{{ $row->id }}" data-toggle="modal"
+                                                    data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold badge badge-danger text-light text-capitalize">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
@@ -355,7 +359,8 @@
                                             <td>{{ $row->stts_ta }}</td>
                                             <td>
                                                 <a href="daftar-ta/view-judul/{{ $row->id }}" data-toggle="modal"
-                                                    data-target="#viewJudul{{ $row->id }}"><i class="fa fa-eye">
+                                                    data-target="#viewJudul{{ $row->id }}"
+                                                    class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i>
                                                 </a>
                                             </td>
@@ -438,14 +443,22 @@
                                     size="1" required>
                                     <option value="">-- Pilih Mahasiswa--</option>
                                     @foreach ($mhs_dDaftar as $item)
+
+                                    @if (old('mahasiswa_id')== $item->daftarkp->mahasiswa->id)
+                                    <option value="{{ $item->daftarkp->mahasiswa_id}}" selected>{{
+                                        $item->daftarkp->mahasiswa->biodata->no_induk
+                                        }} - {{ $item->daftarkp->mahasiswa->biodata->nama}}
+                                    </option>
+                                    @else
                                     <option value="{{ $item->daftarkp->mahasiswa_id}}">{{
                                         $item->daftarkp->mahasiswa->biodata->no_induk
                                         }} - {{ $item->daftarkp->mahasiswa->biodata->nama}}
                                     </option>
+                                    @endif
                                     @endforeach
 
-                                    @endif
                                 </select>
+                                @endif
 
                             </div>
                             <div class="col">
@@ -464,7 +477,12 @@
                                 <select class="form-control" name="d_pembimbing_1" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-1 --</option>
                                     @foreach ($dosen as $k)
+
+                                    @if (old('d_pembimbing_1')== $k->id)
+                                    <option value="{{ $k->id }}" selected>{{ $k->biodata->nama }}</option>
+                                    @else
                                     <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -475,7 +493,11 @@
                                 <select class="form-control" name="d_pembimbing_2" size="1" required>
                                     <option value="" hidden="">-- Pilihan Ke-2 --</option>
                                     @foreach ($dosen as $k)
+                                    @if (old('d_pembimbing_2')== $k->id)
+                                    <option value="{{ $k->id }}" selected>{{ $k->biodata->nama }}</option>
+                                    @else
                                     <option value="{{ $k->id }}">{{ $k->biodata->nama }}</option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -554,7 +576,7 @@
                                 <div class="mb-3">
                                     <label>Judul</label>
                                     <input type="text" class="form-control" name="judul" placeholder="Judul .."
-                                        size="1">
+                                        value="{{old('judul')}}" size="1">
                                 </div>
                             </div>
                             <div class="col">
@@ -563,7 +585,14 @@
                                     multiple>
                                     {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
                                     @foreach ($konsentrasi as $item)
-                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
+                                    @if (is_array(old('konsentrasi')) && in_array($item->nama_konsentrasi,
+                                    old('konsentrasi')))
+                                    <option value="{{ $item->nama_konsentrasi }}" selected>{{ $item->nama_konsentrasi }}
+                                    </option>
+                                    @else
+                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}
+                                    </option>
+                                    @endif
                                     @endforeach
                                 </select>
                             </div>
@@ -946,7 +975,7 @@
                                 <div class="mb-3">
                                     <label>Judul</label>
                                     <input type="text" class="form-control" name="judul" placeholder="Judul .." size="1"
-                                        value="{{ $nextTA->judul }}">
+                                        value="{{ old('judul'.$nextTA->judul) }}">
                                 </div>
 
                             </div>
@@ -1074,6 +1103,52 @@
                     <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
                         Close</button>
                     <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
+
+{{-- update status pengajuan --}}
+@foreach ($daftarta as $ta)
+<div class="modal fade" id="modalUpdateStatus{{ $ta->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Perbarui Status Pengajuan | {{
+                    $ta->mahasiswa->biodata->nama }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/update-status-ta/{{ $ta->id }}">
+                @method('put')
+                @csrf
+                <div class="modal-body">
+
+                    <input type="hidden" value="{{ $ta->id }}" name="id" required>
+
+                    <div class="form-group">
+                        <select class="form-control" name="stts_pengajuan" size="1" required>
+                            <option value="" hidden="">-- Status Pengajuan --</option>
+                            <option @php if($ta->stts_pengajuan == 'tertunda') echo 'selected';
+                                @endphp value="tertunda">Tertunda</option>
+                            <option @php if($ta->stts_pengajuan == 'diterima') echo 'selected';
+                                @endphp value="diterima">Diterima</option>
+                            <option @php if($ta->stts_pengajuan == 'ditolak') echo 'selected';
+                                @endphp value="ditolak">Ditolak</option>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Perbarui</button>
                 </div>
             </form>
         </div>

@@ -55,18 +55,19 @@ class RegistrasiController extends Controller
             [
                 'nama'          => 'required',
                 'email'         => 'required',
-                'no_induk'      => 'required|unique:biodata|numeric',
+                'no_induk'      => 'required|unique:biodata|max:11',
                 'jabatan'       => 'required',
                 // 'tempat_lahir'  => 'required',
                 // 'tgl_lahir'     => 'required',
-                'no_telp'       => 'required',
+                'no_telp'       => 'max:12',
                 'password'      => 'required|min:5|max:255',
             ]
         );
 
         // \dd($validation);
         if ($validation->fails()) {
-            return \redirect('registrasi')->with('warning', 'Data Tidak Tersimpan !')
+            return \back()->with('warning', 'Data Tidak Tersimpan !')
+                ->withInput()
                 ->withErrors($validation);
         } else {
 
@@ -107,17 +108,17 @@ class RegistrasiController extends Controller
         }
     }
 
-    public function edit(Biodata $registrasi)
-    {
-        $biodata = Biodata::findOrFail($registrasi->id);
-        $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
-            ->select('users.*', 'biodata.id')
-            ->get()
-            ->sortDesc();
-        // $biodatas = Biodata::all();
+    // public function edit(Biodata $registrasi)
+    // {
+    //     $biodata = Biodata::findOrFail($registrasi->id);
+    //     $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
+    //         ->select('users.*', 'biodata.id')
+    //         ->get()
+    //         ->sortDesc();
+    //     // $biodatas = Biodata::all();
 
-        return \view('akun.edit-akun', \compact('biodata', 'users'));
-    }
+    //     return \view('akun.edit-akun', \compact('biodata', 'users'));
+    // }
 
     /**
      * Update the specified resource in storage.
@@ -132,16 +133,16 @@ class RegistrasiController extends Controller
             $request->all(),
             [
                 'nama'          => 'required',
-                'email'         => 'required|email',
-                'no_induk'      => 'numeric',
+                'email'         => 'email',
+                'no_induk'      => 'required|max:11',
                 // 'jabatan'       => 'required',
                 // 'tempat_lahir'  => 'required',
                 // 'tgl_lahir'     => 'required',
-                // 'no_telp'       => 'required',
+                'no_telp'       => 'max:12',
                 'password'      => 'min:5|max:255',
             ]
         );
-        // \dd($validation);
+        // dd($validation);
 
         if ($validation->fails()) {
             return \back()->with('warning', 'Data Tidak Tersimpan!')
@@ -149,7 +150,7 @@ class RegistrasiController extends Controller
         } else {
 
             $biodata = Biodata::findOrFail($registrasi->id);
-            $users = User::findOrFail($registrasi->id);
+            // $users = User::findOrFail($registrasi->id);
 
             if ($request->keahlian == null) {
             } else {
@@ -168,12 +169,12 @@ class RegistrasiController extends Controller
             $biodata->jabatan       = $request->jabatan;
             $biodata->update();
 
-            $users->password =
+            $biodata->users->password =
                 Hash::make($request->password);
-            $users->level = $request->level;
-            $users->update();
+            $biodata->users->level = $request->level;
+            $biodata->users->update();
 
-            return \redirect('registrasi')->with('success', 'Data Berhasil Diubah');
+            return \redirect('/registrasi')->with('success', 'Data Berhasil Diubah');
         }
     }
 
@@ -189,6 +190,6 @@ class RegistrasiController extends Controller
         // \dd($biodata);
         $biodata->delete();
 
-        return redirect('/registrasi')->with('success', 'Data Berhasil Dihapus');
+        return \back()->with('success', 'Data Berhasil Dihapus');
     }
 }

@@ -11,6 +11,11 @@
     <link rel="stylesheet" href="/assets/css/mandatory.css">
     <link rel="stylesheet" href="/assets/css/select2.min.css">
     {{--
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/dataTables.bootstrap5.min.css" />
+    --}}
+    <link href="//cdnjs.cloudflare.com/ajax/libs/x-editable/1.5.0/jquery-editable/css/jquery-editable.css"
+        rel="stylesheet" />
+    {{--
     <link rel="stylesheet" href="/assets/css/layout.scss"> --}}
     <link rel="stylesheet" href="/assets/css/select2-bootstrap.min.css">
 
@@ -43,7 +48,7 @@
             <!-- Logo Header -->
             <div class="logo-header">
 
-                <a href="index.html" class="logo">
+                <a href="dashboard" class="logo">
                     <img src="/assets/img/psti-logo.png" alt="navbar brand" class="navbar-brand" width="170px">
                 </a>
                 <button class="navbar-toggler sidenav-toggler ml-auto" type="button" data-toggle="collapse"
