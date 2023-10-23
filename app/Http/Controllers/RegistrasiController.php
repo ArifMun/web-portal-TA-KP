@@ -23,7 +23,7 @@ class RegistrasiController extends Controller
     public function index()
     {
         $konsentrasi = Konsentrasi::all();
-        $biodata     = Biodata::all();
+        $biodata     = Biodata::get()->sortByDesc('id');
         $users       = User::with('biodata')->latest('id')->get();
 
         $User    = new User();
@@ -61,6 +61,9 @@ class RegistrasiController extends Controller
                 // 'tgl_lahir'     => 'required',
                 'no_telp'       => 'max:12',
                 'password'      => 'required|min:5|max:255',
+            ],
+            [
+                'password.required' => 'Password harus lebih dari 5 karakter '
             ]
         );
 
@@ -82,7 +85,14 @@ class RegistrasiController extends Controller
                 'tgl_lahir'     => $request->tgl_lahir,
                 'no_telp'       => $request->no_telp,
                 'alamat'        => $request->alamat,
+                'alamat_kec'    => $request->alamat_kec,
+                'alamat_kab'    => $request->alamat_kab,
                 'keahlian'      => $string,
+                'nama_ayah'     => $request->nama_ayah,
+                'nama_ibu'      => $request->nama_ibu,
+                'alamat_ortu'   => $request->alamat_ortu,
+                'pekerjaan_ortu' => $request->pekerjaan_ortu,
+                'no_hp_ortu'    => $request->no_hp_ortu
             ]);
 
 
@@ -108,25 +118,6 @@ class RegistrasiController extends Controller
         }
     }
 
-    // public function edit(Biodata $registrasi)
-    // {
-    //     $biodata = Biodata::findOrFail($registrasi->id);
-    //     $users = User::join('biodata', 'biodata.id', '=', 'users.biodata_id')
-    //         ->select('users.*', 'biodata.id')
-    //         ->get()
-    //         ->sortDesc();
-    //     // $biodatas = Biodata::all();
-
-    //     return \view('akun.edit-akun', \compact('biodata', 'users'));
-    // }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Registrasi  $registrasi
-     * @return \Illuminate\Http\Response
-     */
     public function update(Request $request, Biodata $registrasi)
     {
         $validation = Validator::make(
@@ -146,6 +137,7 @@ class RegistrasiController extends Controller
 
         if ($validation->fails()) {
             return \back()->with('warning', 'Data Tidak Tersimpan!')
+                ->withInput()
                 ->withErrors($validation);
         } else {
 

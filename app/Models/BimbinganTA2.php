@@ -27,16 +27,6 @@ class BimbinganTA2 extends Model
         return $this->belongsTo(DaftarTA::class, 'daftar_ta_id');
     }
 
-    // public function mahasiswa()
-    // {
-    //     return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
-    // }
-
-    // public function dosen2()
-    // {
-    //     return $this->belongsTo(Dosen::class, 'dosen_id');
-    // }
-
     public function b_dosen_2()
     {
         return self::with('daftarta')->whereHas('daftarta', function ($q) {

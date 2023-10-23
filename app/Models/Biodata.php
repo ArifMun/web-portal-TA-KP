@@ -22,7 +22,14 @@ class Biodata extends Model
         'tempat_lahir',
         'tgl_lahir',
         'no_telp',
-        'alamat'
+        'alamat',
+        'nama_ayah',
+        'nama_ibu',
+        'alamat_ortu',
+        'no_hp_ortu',
+        'pekerjaan_ortu',
+        'alamat_kec',
+        'alamat_kab',
     ];
 
     public function users()

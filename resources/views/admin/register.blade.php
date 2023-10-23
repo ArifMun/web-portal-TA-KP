@@ -29,7 +29,6 @@
                                 @if(Auth::user()->level!=2)
                                 <h4 class="card-title">Biodata Diri</h4>
                                 @elseif (Auth::user()->level==2)
-                                <h4 class="card-title">Tambah Akun</h4>
                                 <a href="/akun/import" class="btn btn-success btn-round ml-auto" data-toggle="modal"
                                     data-target="#importFile">
                                     <i class="fas fa-file-import"></i>
@@ -59,12 +58,12 @@
                                             <th>NIM/Username</th>
                                             <th>Nama</th>
                                             <th>Email</th>
-                                            <th>Keahlian</th>
                                             <th>Jabatan</th>
                                             <th>Tempat Lahir</th>
                                             <th>Tanggal Lahir</th>
-                                            <th>No Wa</th>
+                                            <th>No Telpon</th>
                                             <th>Alamat</th>
+                                            <th>Keahlian</th>
                                             <th>Level</th>
                                             <th>Action</th>
                                         </tr>
@@ -81,12 +80,12 @@
                                             <td>{{ $authUser->biodata->no_induk }}</td>
                                             <td class="text-capitalize">{{ $authUser->biodata->nama }}</td>
                                             <td>{{ $authUser->biodata->email }}</td>
-                                            <td>{{ $authUser->biodata->keahlian }}</td>
                                             <td class="text-capitalize">{{ $authUser->biodata->jabatan }}</td>
                                             <td>{{ $authUser->biodata->tempat_lahir }}</td>
                                             <td>{{ $authUser->biodata->tgl_lahir }}</td>
                                             <td>{{ $authUser->biodata->no_telp }}</td>
                                             <td>{{ $authUser->biodata->alamat }}</td>
+                                            <td>{{ $authUser->biodata->keahlian }}</td>
                                             <td>{{ $authUser->level }}</td>
                                             <td>
                                                 <a href="#editDataAkun{{ $authUser->biodata->id }}" data-toggle="modal"
@@ -108,12 +107,12 @@
                                             <td>{{ $row->no_induk }}</td>
                                             <td class="text-capitalize">{{ $row->nama }}</td>
                                             <td>{{ $row->email }}</td>
-                                            <td>{{ $row->keahlian }}</td>
                                             <td class="text-capitalize">{{ $row->jabatan }}</td>
                                             <td>{{ $row->tempat_lahir }}</td>
                                             <td>{{ $row->tgl_lahir }}</td>
                                             <td>{{ $row->no_telp }}</td>
                                             <td>{{ $row->alamat }}</td>
+                                            <td>{{ $row->keahlian }}</td>
                                             <td>{{ $row->users->level }}</td>
                                             <td>
                                                 {{-- <a href="#viewDataBarang{{ $row->id }}" data-toggle="modal"
@@ -172,7 +171,7 @@
                             <div class="col">
                                 <label class="control-label">Nama </label>
                                 <input type="text" class="form-control" name="nama" id="nama" value="{{ old('nama') }}"
-                                    required>
+                                    placeholder="Nama" required>
                             </div>
                             <div class="col">
                                 <label class="control-label">No Induk </label>
@@ -182,7 +181,7 @@
                         </div>
                     </div>
 
-                    <div class="form-group required">
+                    <div class="form-group">
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">Email </label>
@@ -190,9 +189,9 @@
                                     placeholder="Email .." required>
                             </div>
                             <div class="col">
-                                <label class="">No WA </label>
+                                <label class="">No WhatsApp </label>
                                 <input type="text" class="form-control" name="no_telp" value="{{ old('no_telp') }}"
-                                    placeholder="No WA ..">
+                                    placeholder="No WhatsApp ..">
                             </div>
                         </div>
                     </div>
@@ -217,27 +216,53 @@
                             <div class="col">
                                 <label>Alamat</label>
                                 <input type="text" class="form-control" name="alamat" value="{{ old('alamat') }}"
-                                    placeholder="Alamat ..">
+                                    placeholder="contoh: Desa Kemiri Kidul RT/RW 02/06 ..">
                             </div>
+                            <div class="col">
+                                <label>Kecamatan</label>
+                                <input type="text" class="form-control" name="alamat_kec"
+                                    value="{{ old('alamat_kec') }}" placeholder="Kecamatan ..">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
                                 <select class="form-control" name="jabatan" id="jabatan" required>
                                     <option value="" hidden="">-- Pilih Jabatan --</option>
                                     @php
-                                    $position = array('dosen'=>'Dosen','TU'=>'Tata
-                                    Usaha','mahasiswa'=>'Mahasiswa','kaprodi'=>'Kaprodi');
+                                    $position = array('mahasiswa'=>'Mahasiswa','dosen'=>'Dosen','TU'=>'Tata
+                                    Usaha','kaprodi'=>'Kaprodi');
                                     @endphp
                                     @foreach ($position as $k=>$jabatan)
                                     <option value="{{ $k }}">{{ $jabatan }}</option>
                                     @endforeach
                                 </select>
                             </div>
-
+                            <div class="col">
+                                <label>Kabupaten</label>
+                                <input type="text" class="form-control" name="alamat_kab"
+                                    value="{{ old('alamat_kab') }}" placeholder="Kabupaten ..">
+                            </div>
                         </div>
                     </div>
+
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col" id="kolomBaru_1">
+                                <label>Konsentrasi </label>
+                                <select class="form-control konsentrasi" id="keahlian" name="keahlian[]" multiple>
+                                    @foreach ($konsentrasi as $item)
+                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
+                                    @endforeach
+                                </select>
+
+                                {{-- <input type="hidden" name="keahlian[]" class="form-control" name="keahlian"
+                                    placeholder="Keahlian .."> --}}
+                            </div>
+                            <div class="col">
                                 <label class="control-label">Level </label>
                                 <select class="form-control" name="level" required>
                                     <option value="" hidden>-- Pilih Level --</option>
@@ -250,21 +275,6 @@
                                     </option>
                                     @endforeach
                                 </select>
-                                <label class="control-label mt-3">Password </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password .."
-                                    required>
-                            </div>
-                            <div class="col" id="kolomBaru_1" style="display: none">
-                                <label>Konsentrasi </label>
-                                <select class="form-control konsentrasi" name="keahlian[]" multiple>
-                                    {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
-                                    @foreach ($konsentrasi as $item)
-                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
-                                    @endforeach
-                                </select>
-
-                                <input type="hidden" name="keahlian[]" class="form-control" name="keahlian"
-                                    placeholder="Keahlian ..">
                             </div>
                         </div>
                     </div>
@@ -272,7 +282,44 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
+                                <label>Nama Ayah</label>
+                                <input type="text" class="form-control" id="nama_ayah" name="nama_ayah"
+                                    value="{{ old('nama_ayah') }}" placeholder="Nama Ayah ..">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Password </label>
+                                <input type="password" class="form-control" name="password" placeholder="Password .."
+                                    required>
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="form-group ">
+                        <div class="row">
+                            <div class="col">
+                                <label>Nama Ibu</label>
+                                <input type="text" class="form-control" id="nama_ibu" name="nama_ibu"
+                                    value="{{ old('nama_ibu') }}" placeholder="Nama Ibu ..">
+                            </div>
+                            <div class="col">
+                                <label>Alamat Orang Tua</label>
+                                <input type="text" class="form-control" id="alamat_ortu" name="alamat_ortu"
+                                    value="{{ old('alamat_ortu') }}" placeholder="Alamat Orang Tua ..">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="row">
+                            <div class="col">
+                                <label>No HP Orang Tua</label>
+                                <input type="text" class="form-control" id="no_hp_ortu" name="no_hp_ortu"
+                                    value="{{ old('no_hp_ortu') }}" placeholder="Nomor Handphone Orang Tua ..">
+                            </div>
+                            <div class="col">
+                                <label>Pekerjaan Orang Tua</label>
+                                <input type="text" class="form-control" id="pekerjaan_ortu" name="pekerjaan_ortu"
+                                    value="{{ old('pekerjaan_ortu') }}" placeholder="Pekerjaan Orang Tua ..">
                             </div>
                         </div>
                     </div>
@@ -340,12 +387,12 @@
                             <div class="col">
                                 <label class="control-label">Email </label>
                                 <input type="text" class="form-control" name="email" placeholder="No WA .."
-                                    value="{{ $d->email }}" required>
+                                    value="{{ old('email', $d->email) }}" required>
                             </div>
                             <div class="col">
                                 <label class="control-label">No WA </label>
                                 <input type="text" class="form-control" name="no_telp" placeholder="No WA .."
-                                    value="{{ $d->no_telp }}" required>
+                                    value="{{ old('no_telp', $d->no_telp) }}" required>
                             </div>
 
                         </div>
@@ -356,35 +403,54 @@
                             <div class="col">
                                 <label>Tempat Lahir</label>
                                 <input type="text" class="form-control" name="tempat_lahir"
-                                    placeholder="Tempat Lahir . ." value="{{ $d->tempat_lahir }}">
+                                    placeholder="Tempat Lahir . ." value="{{ old('tempat_lahir',$d->tempat_lahir) }}">
                             </div>
                             <div class="col">
                                 <label>Tanggal Lahir</label>
                                 <input type="date" class="form-control" name="tgl_lahir" placeholder="Tanggal Lahir .."
-                                    value="{{ $d->tgl_lahir }}">
+                                    value="{{ old('tgl_lahir',$d->tgl_lahir)}}">
                             </div>
 
                         </div>
                     </div>
 
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label>Alamat</label>
+                                <input type="text" class="form-control" name="alamat"
+                                    value="{{ old('alamat', $d->alamat)}}"
+                                    placeholder="contoh: Desa Kemiri Kidul RT/RW 02/06 ..">
+                            </div>
+                            <div class="col">
+                                <label>Kecamatan</label>
+                                <input type="text" class="form-control" name="alamat_kec"
+                                    value="{{ old('alamat_kec', $d->alamat_kec) }}" placeholder="Kecamatan ..">
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col-6">
-                                <label>Alamat</label>
-                                <input type="text" class="form-control" name="alamat" placeholder="Alamat ..">
-                            </div>
-                            @if (Auth::user()->level==2)
+                            {{-- @if (Auth::user()->level==2) --}}
                             <div class="col">
                                 <label class="control-label">Jabatan </label>
 
                                 @if ($d->jabatan=='mahasiswa' || $d->jabatan=='TU')
-                                <input type="text" class="form-control" value="{{ $d->jabatan }}" id="jabatan_1"
-                                    name="jabatan_1" readonly>
+                                <select class="form-control text-capitalize" name="jabatan" id="jabatan_1" disabled
+                                    required>
+                                    <option value="" hidden="">-- Pilih Jabatan --</option>
+
+                                    <option <?php if($d->jabatan == 'mahasiswa') echo "selected"; ?>
+                                        value="mahasiswa">Mahasiswa
+                                    <option <?php if($d->jabatan == 'TU') echo "selected"; ?>
+                                        value="TU">Tata Usaha
+                                    </option>
+                                </select>
                                 <input type="hidden" name="jabatan" value="{{ $d->jabatan }}">
                                 @else
 
-                                <select class="form-control" name="jabatan" id="jabatan_1" required>
+                                <select class="form-control text-capitalize" name="jabatan" id="jabatan_1" required>
                                     <option value="" hidden="">-- Pilih Jabatan --</option>
 
                                     <option <?php if($d->jabatan == 'kaprodi') echo "selected"; ?>
@@ -395,33 +461,55 @@
                                 </select>
                                 @endif
                             </div>
-                            @else
                             <div class="col">
-                                <label class="control-label">Password </label>
-                                <input type="password" class="form-control" name="password" placeholder="Password ..">
+                                <label>Kabupaten</label>
+                                <input type="text" class="form-control" name="alamat_kab"
+                                    value="{{ old('alamat_kab') }}" placeholder="Kabupaten ..">
                             </div>
-                            @endif
+
                         </div>
                     </div>
 
-                    @if (Auth::user()->level==2)
+                    @if (UserCheck::levelAdmin())
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col" id="kolomBaru_2" style="display: none">
+                            {{-- <div class="col">
                                 <label>Konsentrasi</label>
-                                <select class="form-control konsentrasi_" name="keahlian[]" id="keahlian_{{ $d->id }}"
-                                    multiple>
+                                <select class="form-control konsentrasi_" name="keahlian[]"
+                                    id="konsentrasi_{{ $d->id }}" multiple required size="1">
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}" {{ in_array($item->
                                         nama_konsentrasi,
-                                        explode(',', $d->keahlian)) ? 'selected' : '' }}>
+                                        explode(',',
+                                        $d->keahlian)) ? 'selected' : '' }}>
                                         {{ $item->nama_konsentrasi }}
                                     </option>
                                     @endforeach
                                 </select>
+                            </div> --}}
+                            <div class="col">
+                                <label>Keahlian </label>
+                                <select class="form-control keahlian_" name="keahlian[]" id="keahlian_" multiple
+                                    size="1">
+                                    {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
+
+                                    @foreach($konsentrasi as $option)
+                                    <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
+                                        nama_konsentrasi,
+                                        explode(',',
+                                        $d->keahlian)) ? 'selected' : '' }}>
+                                        {{ $option->nama_konsentrasi }}
+                                    </option>
+                                    @endforeach
+                                </select>
                             </div>
-                            <div class="col-6">
+                            <div class="col">
                                 <label class="control-label">Level </label>
+                                @if ($d->users->level == 0)
+                                <input type="text" class="form-control" name="level" value="{{ $d->users->level }}"
+                                    readonly>
+                                <input type="hidden" name="level" value="{{ $d->users->level }}">
+                                @else
                                 <select class="form-control" name="level" required>
                                     <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
                                     </option>
@@ -430,12 +518,55 @@
                                     <option <?php if($d->users->level == 2) echo "selected"; ?>
                                         value="2">2</option>
                                 </select>
-                                <label class="control-label mt-3">Password </label>
+                                @endif
+                            </div>
+
+                        </div>
+                    </div>
+                    @endif
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label>Nama Ayah</label>
+                                <input type="text" class="form-control" id="nama_ayah_" name="nama_ayah"
+                                    value="{{ old('nama_ayah') }}" placeholder="Nama Ayah ..">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Password </label>
                                 <input type="password" class="form-control" name="password" placeholder="Password ..">
                             </div>
                         </div>
                     </div>
-                    @endif
+
+                    <div class="form-group ">
+                        <div class="row">
+                            <div class="col">
+                                <label>Nama Ibu</label>
+                                <input type="text" class="form-control" id="nama_ibu_" name="nama_ibu"
+                                    value="{{ old('nama_ibu') }}" placeholder="Nama Ibu ..">
+                            </div>
+                            <div class="col">
+                                <label>Alamat Orang Tua</label>
+                                <input type="text" class="form-control" id="alamat_ortu_" name="alamat_ortu"
+                                    value="{{ old('alamat_ortu') }}" placeholder="Alamat Orang Tua ..">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <div class="row">
+                            <div class="col">
+                                <label>No HP Orang Tua</label>
+                                <input type="text" class="form-control" id="no_hp_ortu_" name="no_hp_ortu"
+                                    value="{{ old('no_hp_ortu') }}" placeholder="Nomor Handphone Orang Tua ..">
+                            </div>
+                            <div class="col">
+                                <label>Pekerjaan Orang Tua</label>
+                                <input type="text" class="form-control" id="pekerjaan_ortu_" name="pekerjaan_ortu"
+                                    value="{{ old('pekerjaan_ortu') }}" placeholder="Pekerjaan Orang Tua ..">
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="modal-footer required">
                         <div class="col">
@@ -532,8 +663,16 @@
 
 <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
 <script src="/assets/js/select2.min.js"></script>
+<script src="/assets/js/native/konsentrasi.js"></script>
+<script type="text/javascript">
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
 
-<script>
+</script>
+{{-- <script>
     $(document).ready(function() {
         $('.konsentrasi').select2({
             width: '100%',
@@ -545,33 +684,9 @@
             width: '100%'
         });
     });
-</script>
+</script> --}}
 
 <script>
-    $(document).ready(function() {
-        $('.modalTambahAkun').on('show.bs.modal', function() {
-            var formId = '#' + $(this).attr('id');
-            toggleKolomBaru_1(formId);
-        
-        $(formId + ' #jabatan').on('change', function() {
-            toggleKolomBaru_1(formId);
-        });
-        
-        function toggleKolomBaru_1(formId) {
-                if ($(formId + ' select[name="jabatan"]').val() === 'dosen') {
-                    $(formId + ' #kolomBaru_1').show();
-
-                }
-                else if ($(formId + ' select[name="jabatan"]').val() === 'kaprodi') {
-                    $(formId + ' #kolomBaru_1').show();
-                    
-                } else {
-                    $(formId + ' #kolomBaru_1').hide();
-                }
-            }
-        });
-    });
-
     // edit
     $(document).ready(function() {
         $('.modalEditAkun').on('show.bs.modal', function() {
@@ -584,11 +699,9 @@
         
         function toggleKolomBaru_2(formId) {
                 if ($(formId + ' select[name="jabatan"]').val() === 'dosen') {
-                    $(formId + ' #kolomBaru_2').show();
-                }else if ($(formId + ' select[name="jabatan"]').val() === 'kaprodi') {
-                    $(formId + ' #kolomBaru_1').show();
+                    $("#keahlian_").prop("disabled", false);
                 }else {
-                    $(formId + ' #kolomBaru_2').hide();
+                    $("#keahlian_").prop("disabled", true);
                 }
             }
         });

@@ -109,6 +109,7 @@ class KerjaPraktikController extends Controller
                 'ganti_pembimbing'  => 'required',
                 'semester'          => 'required|numeric|min:6|max:14',
                 'slip_pembayaran'   => 'required|image|file|max:1024',
+                'sertifikat_makrab' => 'required|image|file|max:1024',
                 // 'thn_akademik_id'   => 'required',
                 'konsentrasi'       => 'required',
             ],
@@ -134,11 +135,13 @@ class KerjaPraktikController extends Controller
                 'd_pembimbing_2'    => $request->d_pembimbing_2,
                 'pembimbing_lama'   => $request->pembimbing_lama,
                 'judul'             => $request->judul,
+                'tempat_kp'         => $request->tempat_kp,
                 'stts_pengajuan'    => $request->stts_pengajuan,
                 'stts_kp'           => $request->stts_kp,
                 'ganti_pembimbing'  => $request->ganti_pembimbing,
                 'semester'          => $request->semester,
                 'slip_pembayaran'   => $request->file('slip_pembayaran')->store('post-images'),
+                'sertifikat_makrab' => $request->file('sertifikat_makrab')->store('post-images'),
                 'thn_akademik_id'   => $request->thn_akademik_id,
                 'konsentrasi'       => $string,
             ]);
@@ -209,6 +212,13 @@ class KerjaPraktikController extends Controller
                 }
                 $daftarkp->slip_pembayaran  = $request->file('slip_pembayaran')->store('post-images');
             }
+
+            if ($request->file('sertifikat_makrab')) {
+                if ($request->oldImage1) {
+                    Storage::delete($request->oldImage1);
+                }
+                $daftarkp->sertifikat_makrab  = $request->file('sertifikat_makrab')->store('post-images');
+            }
             $input = $request->input('konsentrasi');
             $string = \implode(',', $input);
 
@@ -220,6 +230,7 @@ class KerjaPraktikController extends Controller
             $daftarkp->stts_kp          = $request->stts_kp;
             $daftarkp->ganti_pembimbing = $request->ganti_pembimbing;
             $daftarkp->judul            = $request->judul;
+            $daftarkp->tempat_kp        = $request->tempat_kp;
             $daftarkp->semester         = $request->semester;
             $daftarkp->thn_akademik_id  = $request->thn_akademik_id;
             $daftarkp->konsentrasi      = $string;
@@ -241,6 +252,10 @@ class KerjaPraktikController extends Controller
         $daftarkp = DaftarKP::find($id);
         if ($daftarkp->slip_pembayaran) {
             Storage::delete($daftarkp->slip_pembayaran);
+        }
+
+        if ($daftarkp->sertifikat_makrab) {
+            Storage::delete($daftarkp->sertifikat_makrab);
         }
         $daftarkp->delete();
         return \redirect('kerja-praktik')->with('success', 'Data Berhasil Dihapus!');

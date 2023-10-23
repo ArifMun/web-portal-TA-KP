@@ -187,6 +187,7 @@
                                             <th>Status KP</th>
                                             <th>Semester</th>
                                             <th>Judul</th>
+                                            <th>Sertifikat Makrab</th>
                                             <th>Slip Pembayaran</th>
                                             <th>Tahun Akademik</th>
                                             <th>Konsentrasi</th>
@@ -262,6 +263,13 @@
                                                 </a>
                                             </td>
                                             <td>
+                                                <a href="kerja-praktik/view-sertifikat-makrab/{{ $item->id }}"
+                                                    data-toggle="modal"
+                                                    data-target="#viewSertifikatMakrab{{ $item->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
+                                                    </i> </a>
+                                            </td>
+                                            <td>
                                                 <a href="kerja-praktik/view-slip/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#viewSlip{{ $item->id }}"><i
                                                         class="fa fa-file-image fa-2x">
@@ -310,7 +318,7 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $row->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-capitalize">{{ $row->mahasiswa->biodata->nama }}</td>
                                             <td class="text-capitalize">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_1 ?
@@ -365,6 +373,13 @@
                                             <td><a href="kerja-praktik/view-judul/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewJudul{{ $row->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
+                                            <td><a href="kerja-praktik/view-sertifikat-makrab/{{ $row->id }}"
+                                                    data-toggle="modal"
+                                                    data-target="#viewSertifikatMakrab{{ $row->id }}"><i
+                                                        class="fa fa-file-image fa-2x">
                                                     </i>
                                                 </a>
                                             </td>
@@ -545,6 +560,34 @@
 
                     <div class="form-group required">
                         <div class="row">
+                            <div class="col">
+                                <label class="control-label">Tempat Kerja Praktik</label>
+                                <input type="text" class="form-control" name="tempat_kp" placeholder="Tempat KP"
+                                    value="{{ old('tempat_kp') }}">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Konsentrasi </label>
+                                <select class="form-control select2" name="konsentrasi[]" id="konsentrasi"
+                                    style="width: 100%; " multiple="true" required>
+                                    {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
+                                    @foreach ($konsentrasi as $item)
+                                    @if (is_array(old('konsentrasi')) && in_array($item->nama_konsentrasi,
+                                    old('konsentrasi')))
+                                    <option value="{{ $item->nama_konsentrasi }}" selected>{{ $item->nama_konsentrasi }}
+                                    </option>
+                                    @else
+                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}
+                                    </option>
+                                    @endif
+
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group required">
+                        <div class="row">
                             <div class="col" id="d_ganti">
                                 <label class="control-label">Ganti Dosen Pembimbing </label><br>
                                 @if ($newRegisterKp)
@@ -581,7 +624,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <div class="mb-3 kolom-baru" id="kolomBaru" style="display:none">
+                                <div class="kolom-baru mb-3" id="kolomBaru" style="display:none">
                                     <label>Dosen Pembimbing Lama</label>
                                     <select class="form-control" name="pembimbing_lama" size="1">
                                         <option value="">-- Pembimbing Lama --</option>
@@ -590,30 +633,23 @@
                                         @endforeach
                                     </select>
                                 </div>
+                                <div class="">
+                                    <label for="image" class="form-label control-label">Sertifikat MAKRAB </label>
+                                    <input type="file" class="form-control picture" id="image4" name="sertifikat_makrab"
+                                        onchange="previewImage(4)" required maxlength="1024">
+                                    <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview4">
+                                    <span class="font-italic text-muted">ukuran file maksimal <span
+                                            class="text-danger">1024
+                                            KB</span> </span>
+                                </div>
+                            </div>
+                            <div class="col">
                                 <label for="image" class="form-label control-label">Slip pembayaran </label>
                                 <input type="file" class="form-control picture" id="image1" name="slip_pembayaran"
                                     onchange="previewImage(1)" required maxlength="1024">
                                 <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview1">
                                 <span class="font-italic text-muted">ukuran file maksimal <span class="text-danger">1024
                                         KB</span> </span>
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Konsentrasi </label>
-                                <select class="form-control select2" name="konsentrasi[]" id="konsentrasi"
-                                    style="width: 100%; " multiple="true" required>
-                                    {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
-                                    @foreach ($konsentrasi as $item)
-                                    @if (is_array(old('konsentrasi')) && in_array($item->nama_konsentrasi,
-                                    old('konsentrasi')))
-                                    <option value="{{ $item->nama_konsentrasi }}" selected>{{ $item->nama_konsentrasi }}
-                                    </option>
-                                    @else
-                                    <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}
-                                    </option>
-                                    @endif
-
-                                    @endforeach
-                                </select>
                             </div>
                         </div>
                     </div>
@@ -732,6 +768,31 @@
                         </div>
                     </div>
 
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Tempat Kerja Praktik</label>
+                                <input type="text" class="form-control" name="tempat_kp" placeholder="Tempat KP"
+                                    value="{{ $nextkp->tempat_kp }}">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Konsentrasi </label>
+                                <select class="form-control konsentrasi_" name="konsentrasi[]"
+                                    id="konsentrasi__{{ $nextkp->id }}" multiple required size="1">
+
+                                    @foreach($konsentrasi as $option)
+                                    <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
+                                        nama_konsentrasi,
+                                        explode(',',
+                                        $nextkp->konsentrasi)) ? 'selected' : '' }}>
+                                        {{ $option->nama_konsentrasi }}
+                                    </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="form-group required ">
                         <div class="row">
                             <div class="col d_ganti_2" id="d_ganti_2">
@@ -770,28 +831,18 @@
                                         @endforeach
                                     </select>
                                 </div>
-                                <div>
-                                    <label class="control-label">Konsentrasi </label>
-                                    <select class="form-control konsentrasi_" name="konsentrasi[]"
-                                        id="konsentrasi__{{ $nextkp->id }}" multiple required size="1">
-
-                                        @foreach($konsentrasi as $option)
-                                        <option value="{{ $option->nama_konsentrasi }}" {{ in_array($option->
-                                            nama_konsentrasi,
-                                            explode(',',
-                                            $nextkp->konsentrasi)) ? 'selected' : '' }}>
-                                            {{ $option->nama_konsentrasi }}
-                                        </option>
-                                        @endforeach
-                                    </select>
+                                <div class="">
+                                    <label for="image" class="form-label control-label">Sertifikat MAKRAB </label>
+                                    <input type="file" class="form-control picture" id="image6" name="sertifikat_makrab"
+                                        onchange="previewImage(6)" required maxlength="1024">
+                                    <img class="img-preview img-fluid mb-3 col-sm-4 mt-2" id="preview6">
+                                    <span class="font-italic text-muted">ukuran file maksimal <span
+                                            class="text-danger">1024
+                                            KB</span> </span>
                                 </div>
                             </div>
                             <div class="col">
-                                <div class="mb-3">
-                                    <label class="control-label">Status Pengajuan </label>
-                                    <input type="text" class="form-control text-capitalize" value="tertunda" readonly>
-                                    <input type="hidden" name="stts_pengajuan" value="tertunda">
-                                </div>
+                                <input type="hidden" name="stts_pengajuan" value="tertunda">
                                 <div>
                                     <label for="image" class="form-label control-label">Slip pembayaran </label>
                                     <input type="file" class="form-control picture" id="image3" name="slip_pembayaran"
@@ -856,7 +907,7 @@
                                 <label class="control-label">NIM </label>
                                 <input type="hidden" name="mahasiswa_id" id="mahasiswa_id"
                                     value="{{ $item->mahasiswa_id }}">
-                                <input type="text" class="form-control" size="1" readonly
+                                <input type="text" class="form-control text-capitalize" size="1" readonly
                                     value="{{ $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }}">
                             </div>
                             <div class="col">
@@ -900,11 +951,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
-                                <label class="control-label">Semester </label>
-                                <input type="number" class="form-control" name="semester" value="{{ $item->semester }}"
-                                    placeholder="Semester .." size="1" required>
-                            </div>
+
                             <div class="col">
                                 <label class="control-label">Status Kerja Praktik </label>
                                 <select class="form-control" name="stts_kp" size="1" required>
@@ -915,14 +962,50 @@
                                         @endphp value="melanjutkan">Melanjutkan</option>
                                 </select>
                             </div>
-
+                            <div class="col">
+                                <label class="control-label">Status Pengajuan </label>
+                                @if (Auth::user()->level==0)
+                                <input type="text" class="form-control text-capitalize"
+                                    value="{{ $item->stts_pengajuan }}" readonly>
+                                <input type="hidden" name="stts_pengajuan" value="tertunda">
+                                @else
+                                <select class="form-control" name="stts_pengajuan" size="1" required>
+                                    <option value="" hidden="">-- Status Pengajuan --</option>
+                                    <option @php if($item->stts_pengajuan == 'tertunda') echo 'selected';
+                                        @endphp value="tertunda">Tertunda</option>
+                                    <option @php if($item->stts_pengajuan == 'diterima') echo 'selected';
+                                        @endphp value="diterima">Diterima</option>
+                                    <option @php if($item->stts_pengajuan == 'ditolak') echo 'selected';
+                                        @endphp value="ditolak">Ditolak</option>
+                                </select>
+                                @endif
+                            </div>
                         </div>
                     </div>
 
                     <div class="form-group required ">
                         <div class="row">
-                            <div class="col d_ganti_1" id="d_ganti_1">
+                            <div class="col">
+                                <label class="">Tempat Kerja Praktik</label>
+                                <input type="text" class="form-control" name="tempat_kp" placeholder="Tempat KP"
+                                    value="{{ old('tempat_kp') }}">
+                            </div>
+                            <div class="col">
+                                <label>Judul</label>
+                                <input type="text" id="judul" class="form-control" name="judul" size="1"
+                                    placeholder="Judul .." value="{{ $item->judul }}">
+                            </div>
+                        </div>
+                    </div>
 
+                    <div class="form-group required ">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Semester </label>
+                                <input type="number" class="form-control" name="semester" value="{{ $item->semester }}"
+                                    placeholder="Semester .." size="1" required>
+                            </div>
+                            <div class="col d_ganti_1" id="d_ganti_1">
                                 <label class="control-label">Ganti Dosen Pembimbing </label><br>
                                 <label class="form-radio-label">
                                     <input class="form-radio-input" type="radio" name="ganti_pembimbing" value="ya" {{
@@ -936,16 +1019,30 @@
                                     <span class="form-radio-sign">Tidak</span>
                                 </label>
                             </div>
-                            <div class="col">
-                                <label>Judul</label>
-                                <input type="text" id="judul" class="form-control" name="judul" size="1"
-                                    placeholder="Judul .." value="{{ $item->judul }}">
-                            </div>
                         </div>
                     </div>
 
                     <div class="form-group required">
                         <div class="row">
+                            <div class="col">
+                                <div>
+                                    <label for="image" class="form-label">Slip pembayaran </label>
+                                    <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
+                                    <input type="file" class="form-control picture" id="image2" name="slip_pembayaran"
+                                        onchange="previewImage(2)">
+
+                                    @if ($item->slip_pembayaran)
+                                    <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
+                                        class="img-preview img-fluid mb-3 col-sm-5" id="preview2">
+                                    @else
+                                    <img class="img-preview img-fluid mb-3 col-sm-5" id="preview2">
+                                    @endif
+
+                                    <p class="mt-1 font-italic text-muted">biarkan kolom kosong
+                                        jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
+                                            KB</span> </p>
+                                </div>
+                            </div>
                             <div class="col">
                                 <div class="mb-3" name="pembimbing_lama" style="display: none" id="kolomBaru_1">
                                     <label>Dosen Pembimbing Lama</label>
@@ -972,47 +1069,30 @@
                                             {{ $option->nama_konsentrasi }}
                                         </option>
                                         @endforeach
-
                                     </select>
-
                                 </div>
                             </div>
-                            <div class="col">
-                                <div class="mb-3">
-                                    <label class="control-label">Status Pengajuan </label>
-                                    @if (Auth::user()->level==0)
-                                    <input type="text" class="form-control text-capitalize"
-                                        value="{{ $item->stts_pengajuan }}" readonly>
-                                    <input type="hidden" name="stts_pengajuan" value="tertunda">
-                                    @else
-                                    <select class="form-control" name="stts_pengajuan" size="1" required>
-                                        <option value="" hidden="">-- Status Pengajuan --</option>
-                                        <option @php if($item->stts_pengajuan == 'tertunda') echo 'selected';
-                                            @endphp value="tertunda">Tertunda</option>
-                                        <option @php if($item->stts_pengajuan == 'diterima') echo 'selected';
-                                            @endphp value="diterima">Diterima</option>
-                                        <option @php if($item->stts_pengajuan == 'ditolak') echo 'selected';
-                                            @endphp value="ditolak">Ditolak</option>
-                                    </select>
-                                    @endif
-                                </div>
-                                <div>
-                                    <label for="image" class="form-label">Slip pembayaran </label>
-                                    <input type="hidden" name="oldImage" value="{{ $item->slip_pembayaran }}">
-                                    <input type="file" class="form-control picture" id="image2" name="slip_pembayaran"
-                                        onchange="previewImage(2)">
+                        </div>
+                    </div>
 
-                                    @if ($item->slip_pembayaran)
-                                    <img src="{{ asset('storage/' . $item->slip_pembayaran) }}"
-                                        class="img-preview img-fluid mb-3 col-sm-5" id="preview2">
-                                    @else
-                                    <img class="img-preview img-fluid mb-3 col-sm-5" id="preview2">
-                                    @endif
+                    <div class="form-group required">
+                        <div class="row">
+                            <div class="col-6">
+                                <label for="image" class="form-label">Sertifikat MAKRAB </label>
+                                <input type="hidden" name="oldImage1" value="{{ $item->sertifikat_makrab }}">
+                                <input type="file" class="form-control picture" id="image5" name="sertifikat_makrab"
+                                    onchange="previewImage(5)">
 
-                                    <p class="mt-1 font-italic text-muted">biarkan kolom kosong
-                                        jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
-                                            KB</span> </p>
-                                </div>
+                                @if ($item->sertifikat_makrab)
+                                <img src="{{ asset('storage/' . $item->sertifikat_makrab) }}"
+                                    class="img-preview img-fluid mb-3 col-sm-5" id="preview5">
+                                @else
+                                <img class="img-preview img-fluid mb-3 col-sm-5" id="preview5">
+                                @endif
+
+                                <p class="mt-1 font-italic text-muted">biarkan kolom kosong
+                                    jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </p>
                             </div>
                         </div>
                     </div>
@@ -1042,7 +1122,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Slip Pembayaran - {{
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Slip Pembayaran - {{
                     $item->mahasiswa->biodata->no_induk }}
                     | {{ $item->mahasiswa->biodata->nama
                     }}</h5>
@@ -1072,6 +1152,43 @@
 </div>
 @endforeach
 
+{{-- view Sertifikat Makrab --}}
+@foreach ($daftarkp as $item)
+<div class="modal fade" id="viewSertifikatMakrab{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Sertifikat MAKRAB - {{
+                    $item->mahasiswa->biodata->no_induk }}
+                    | {{ $item->mahasiswa->biodata->nama
+                    }}</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        @if ($item->sertifikat_makrab)
+                        <div class="col">
+                            <img src="{{ asset('storage/' . $item->sertifikat_makrab) }}" alt=""
+                                class="rounded mx-auto d-block" style="width: 30%">
+                        </div>
+                        @else
+                        <div class="col">
+                            <p class="text-center">Gambar Tidak Ditemukan</p>
+                        </div>
+                        @endif
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
+
 {{-- Judul --}}
 @foreach ($daftarkp as $item)
 <div class="modal fade" id="viewJudul{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -1079,7 +1196,8 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Judul KP - {{ $item->mahasiswa->biodata->no_induk }}
+                <h5 class="modal-title text-capitalize" id="exampleModalLongTitle">Judul KP - {{
+                    $item->mahasiswa->biodata->no_induk }}
                     | {{ $item->mahasiswa->biodata->nama
                     }}</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -1244,34 +1362,5 @@
     });
 </script>
 
-{{-- @if (count($errors) > 0)
-@foreach ($errors->all() as $error)
-
-<script>
-    $(document).ready(function () {
-                    $('#modalMelanjutkan').modal('show');
-                });
-</script>
-@endforeach
-@endif
-
-@if (count($errors) > 0)
-@foreach ($errors->all() as $error)
-
-<script>
-    $(document).ready(function () {
-                    $('#modalDaftarKP').modal('show');
-                });
-</script>
-@endforeach
-@endif
-
-@if ($errors->any() && session('showModalEdit'))
-<script>
-    $(document).ready(function () {
-            $('#modalEditKP').modal('show');
-        });
-</script>
-@endif --}}
 
 @endsection

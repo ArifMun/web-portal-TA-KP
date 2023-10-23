@@ -30,6 +30,8 @@
         <div class="page-inner">
             <div class="page-header">
                 <ul class="nav nav-pills">
+                    {{-- @if (Auth::user()->level==1)
+
                     <li class="nav-item text-bold">
                         <a class="nav-link " href="#bimbingan-1">Mahasiswa Bimbingan
                             1</a>
@@ -37,6 +39,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="#bimbingan-2">Mahasiswa Bimbingan 2</a>
                     </li>
+                    @else
+                    <h4 class="page-title">Bimbingan Tugas Akhir [Mahasiswa]</h4>
+                    @endif --}}
+                    <h4 class="page-title">Bimbingan Tugas Akhir [Dosen]</h4>
                 </ul>
             </div>
 
@@ -51,6 +57,11 @@
                                     target="_blank">
                                     <i class="fas fa-print"></i>
                                     Cetak Form
+                                </a>
+                                <a href="/bimbingan-ta/tambah" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalTambahBimbingan">
+                                    <i class="fa fa-plus"></i>
+                                    Tambah
                                 </a>
                                 @elseif(Auth::user()->level==1)
                                 <h4 class="card-title">Mahasiswa Bimbingan 1</h4>
@@ -207,9 +218,15 @@
                                     <i class="fas fa-print"></i>
                                     Cetak Form
                                 </a>
+                                <a href="/bimbingan-ta-1/tambah" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#modalTambahBimbingan1">
+                                    <i class="fa fa-plus"></i>
+                                    Tambah
+                                </a>
                                 @elseif(Auth::user()->level==1)
                                 <h4 class="card-title">Mahasiswa Bimbingan 2</h4>
                                 @endif
+
                             </div>
                         </div>
 

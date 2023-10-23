@@ -28,10 +28,12 @@ class DaftarKP extends Model
         'stts_kp',
         'ganti_pembimbing',
         'semester',
+        'sertifikat_makrab',
         'slip_pembayaran',
         'thn_akademik_id',
         'konsentrasi',
-        'judul'
+        'judul',
+        'tempat_kp'
 
     ];
 

@@ -170,6 +170,7 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
+
                                 @foreach ($d_bimbing_2 as $item)
                                 <input type="text" class="form-control"
                                     value="{{ $item->mahasiswa->biodata->no_induk }} - {{ $item->mahasiswa->biodata->nama }} - {{ $item->tahunakademik->tahun }}"

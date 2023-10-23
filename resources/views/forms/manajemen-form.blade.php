@@ -26,7 +26,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Tambah Tahun</h4>
+                                <h4 class="card-title">Tahun Akademik</h4>
                                 <a href="/akun/tambah" class="btn btn-primary btn-round ml-auto" data-toggle="modal"
                                     data-target="#tambahTahun">
                                     <i class="fa fa-plus"></i>
@@ -40,7 +40,7 @@
                                     <thead>
                                         <tr>
                                             <th>No</th>
-                                            <th>Tahun</th>
+                                            <th>Tahun Akademik</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
@@ -73,7 +73,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Tambah Konsentrasi</h4>
+                                <h4 class="card-title">Konsentrasi</h4>
                                 <a href="/konsentrasi/tambah" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#tambahKonsentrasi">
                                     <i class="fa fa-plus"></i>
@@ -124,7 +124,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Tambah Akses Form </h4>
+                                <h4 class="card-title">Akses Form </h4>
                                 <a href="/akses/tambah" class="btn btn-primary btn-round ml-auto" data-toggle="modal"
                                     data-target="#tambahAkses">
                                     <i class="fa fa-plus"></i>
@@ -179,7 +179,7 @@
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
-                                <h4 class="card-title">Tambah Pengumuman</h4>
+                                <h4 class="card-title">Pengumuman</h4>
                                 <a href="/manajemen-form/tambah-pengumuman" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#tambahPengumuman">
                                     <i class="fa fa-plus"></i>
@@ -289,7 +289,8 @@
                         <div class="row">
                             <div class="col">
                                 <label>Tahun</label>
-                                <input type="text" class="form-control" name="tahun" id="tahun" required>
+                                <input type="text" class="form-control" name="tahun" id="tahun"
+                                    placeholder="contoh : 2021/2022-1" required>
                             </div>
 
                         </div>
