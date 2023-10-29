@@ -68,7 +68,7 @@ class BimbinganTA1Controller extends Controller
             $request->all(),
             [
                 'daftar_ta_id' => 'required',
-                'judul_bimbingan' => 'required',
+                // 'judul_bimbingan' => 'required',
                 // 'laporan_ta'   => 'required|file|image|max:1024',
                 'stts'         => 'required',
             ]
@@ -81,12 +81,11 @@ class BimbinganTA1Controller extends Controller
 
             BimbinganTA2::create([
                 'daftar_ta_id'      => $request->daftar_ta_id,
-                // 'dosen_id'          => $request->dosen_id,
-                // 'mahasiswa_id'      => $request->mahasiswa_id,
-                'judul_bimbingan'   => $request->judul_bimbingan,
+                // 'judul_bimbingan'   => $request->judul_bimbingan,
                 'laporan_ta'        => $request->hasFile('laporan_ta') ? $request->file('laporan_ta')->store('dokumen-ta') : null,
                 'stts'              => $request->stts,
                 'catatan'           => $request->catatan,
+                'tgl_bimbingan'     => $request->tgl_bimbingan,
                 'author'            => $request->author,
             ]);
 
@@ -151,7 +150,7 @@ class BimbinganTA1Controller extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'judul_bimbingan' => 'required',
+                // 'judul_bimbingan' => 'required',
                 'author'          => 'required',
                 'stts'            => 'required',
                 // 'laporan_ta'      => 'file|max:1024'
@@ -175,6 +174,7 @@ class BimbinganTA1Controller extends Controller
             $bimbingan_ta_1->author             = $request->author;
             $bimbingan_ta_1->stts               = $request->stts;
             $bimbingan_ta_1->catatan            = $request->catatan;
+            $bimbingan_ta_1->tgl_bimbingan      = $request->tgl_bimbingan;
             $bimbingan_ta_1->update();
 
             return \back()->with('success', 'Data Berhasil Diperbarui!');

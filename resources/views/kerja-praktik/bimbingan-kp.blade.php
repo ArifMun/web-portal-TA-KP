@@ -88,7 +88,7 @@
                                             {{-- <th>Judul Bimbingan</th> --}}
                                             <th>Laporan KP</th>
                                             <th>Status</th>
-                                            <th>Catatan</th>
+                                            <th>Uraian Bimbingan</th>
                                             <th>Tahun Akademik</th>
                                             {{-- <th>Author</th> --}}
                                             <th>Tgl Bimbingan</th>
@@ -156,17 +156,21 @@
                                             </td>
                                             <td>{{ $item->daftarkp->tahunakademik->tahun }}</td>
                                             {{-- <td>{{ $item->author }}</td> --}}
-                                            <td>{{ $item->created_at }}</td>
-
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->tgl_bimbingan)->locale('id')->translatedformat('l,
+                                                d
+                                                F
+                                                Y')}}
+                                            </td>
                                             <td>
                                                 @if($item->stts != 'proses')
 
                                                 @else
-                                                <a href="bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
+                                                <a href="/bimbingan-kp/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
+                                                <a href="/bimbingan-kp/hapus/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalHapusBimbingan{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
@@ -187,7 +191,8 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarkp->mahasiswa->biodata->nama }}
+                                            <td class="text-capitalize text-left">{{
+                                                $item->daftarkp->mahasiswa->biodata->nama }}
                                             </td>
 
                                             <td>{{
@@ -271,9 +276,14 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
+                            {{-- <div class="col">
+                                <label class="form-label">Judul Bimbingan </label>
                                 <input type="text" class="form-control" name="judul_bimbingan">
+                            </div> --}}
+                            <div class="col">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan') }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
@@ -304,7 +314,7 @@
                                         KB</span> </span>
                             </div>
                             <div class="col">
-                                <label>Catatan</label>
+                                <label>Uraian Bimbingan</label>
                                 {{-- <input type="textarea" class="form-control" name="catatan"> --}}
                                 <textarea class="form-control" name="catatan" id="catatan"></textarea>
 
@@ -350,7 +360,12 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
+                                <input type="text" class="form-control" value="{{
+                                        $item->daftarkp->mahasiswa->biodata->no_induk}} - {{
+                                        $item->daftarkp->mahasiswa->biodata->nama}} - {{
+                                        $item->daftarkp->tahunakademik->tahun }}" readonly>
+                                <input type="hidden" name="daftarkp_id" value="{{ $item->daftarkp_id }}">
+                                {{-- <select class="form-control" name="daftarkp_id" onchange="no_mahasiswa()"
                                     id="daftarkp_id" required>
                                     <option value="{{ $item->daftarkp_id }}">{{
                                         $item->daftarkp->mahasiswa->biodata->no_induk }} -
@@ -359,13 +374,13 @@
                                         $item->daftarkp->tahunakademik->tahun }}
                                     </option>
 
-                                </select>
+                                </select> --}}
                             </div>
 
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan"
-                                    value="{{ $item->judul_bimbingan }}">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan',$item->tgl_bimbingan) }}">
                             </div>
                             <input type="hidden" name="mahasiswa_id" id="mahasiswa_id" value="{{ $item->mahasiswa_id }}"
                                 readonly>
@@ -387,18 +402,9 @@
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
-                                <select class="form-control" name="stts" required>
-                                    @if (Auth::user()->level==0)
-                                    <option value="proses" @readonly(true)>Proses</option>
-                                    @else
-                                    <option @php if($item->stts == 'proses') echo 'selected';
-                                        @endphp value="proses">Proses</option>
-                                    <option @php if($item->stts == 'acc') echo 'selected';
-                                        @endphp value="acc">ACC</option>
-                                    <option @php if($item->stts == 'revisi') echo 'selected';
-                                        @endphp value="revisi">Revisi</option>
-                                    @endif
-                                </select>
+                                <input type="text" class="form-control text-capitalize" name="stts"
+                                    value="{{ $item->stts }}" readonly>
+                                <input type="hidden" name="stts" value="{{ $item->stts }}">
                             </div>
                         </div>
                     </div>
@@ -406,7 +412,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label>Catatan</label>
+                                <label>Uraian Bimbingan</label>
                                 <textarea class="form-control" name="catatan"
                                     id="catatan">{!! $item->catatan !!}</textarea>
                             </div>

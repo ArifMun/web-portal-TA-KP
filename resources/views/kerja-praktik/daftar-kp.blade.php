@@ -345,7 +345,7 @@
                                             </td>
                                             @if ($row->stts_pengajuan=='tertunda')
                                             <td>
-                                                <a href="update-status-kp/{{ $row->id }}" data-toggle="modal"
+                                                <a href="/update-status-kp/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-warning">
                                                     {{
@@ -353,7 +353,7 @@
                                             </td>
                                             @elseif($row->stts_pengajuan=='diterima')
                                             <td>
-                                                <a href="update-status-kp/{{ $row->id }}" data-toggle="modal"
+                                                <a href="/update-status-kp/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalUpdateStatus{{ $row->id }}"
                                                     class="font-weight-bold text-light text-capitalize badge badge-success">
                                                     {{
@@ -401,12 +401,12 @@
                                                     data-toggle="modal" data-target="#viewDataBarang{{ $row->id }}"
                                                     class="btn btn-primary btn-xs"><i class="fa fa-eye">
                                                     </i> </a> --}}
-                                                <a href="kerja-praktik/edit/{{ $row->id }}" data-toggle="modal"
+                                                <a href="/kerja-praktik/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditKP{{ $row->id }}"
                                                     class="btn btn-warning btn-xs" data-modal-type="edit"><i
                                                         class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="kerja-praktik/hapus/{{ $row->id }}" data-toggle="modal"
+                                                <a href="/kerja-praktik/hapus/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalHapusKP{{ $row->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>

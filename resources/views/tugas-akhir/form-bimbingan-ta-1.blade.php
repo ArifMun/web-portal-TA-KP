@@ -102,7 +102,7 @@
         <thead style="font-weight: bold;">
             <td align="center">NO</td>
             <td align="center">Hari / Tgl</td>
-            <td align="center">Judul Bimbingan</td>
+            {{-- <td align="center">Judul Bimbingan</td> --}}
             <td align="center">Uraian Bimbingan</td>
             <td align="center">Ttd Pembimbing</td>
         </thead>
@@ -116,7 +116,7 @@
                 $row->created_at->locale('id')->translatedformat('l, d
                 F
                 Y')}}</td>
-            <td>{{ $row->judul_bimbingan }}</td>
+            {{-- <td>{{ $row->judul_bimbingan }}</td> --}}
             <td>
                 @php
                 $text = $row->catatan;

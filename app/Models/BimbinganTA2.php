@@ -19,6 +19,7 @@ class BimbinganTA2 extends Model
         'laporan_ta',
         'stts',
         'catatan',
+        'tgl_bimbingan',
         'author'
     ];
 

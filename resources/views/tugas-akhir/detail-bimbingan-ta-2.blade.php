@@ -30,7 +30,7 @@
         <div class="page-inner">
             <div class="page-header">
                 @if(Auth::user()->level== 1)
-                <h4 class="page-title">Mahasiswa Bimbingan 2 </h4>
+                <h4 class="page-title">Mahasiswa Bimbingan || </h4>
                 @endif
             </div>
 
@@ -59,13 +59,13 @@
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
-                                            <th>Judul Bimbingan</th>
+                                            {{-- <th>Judul Bimbingan</th> --}}
                                             <th>Laporan TA</th>
                                             <th>Status</th>
-                                            <th>Catatan</th>
+                                            <th>Uraian Bimbingan</th>
                                             <th>Tahun Akademik</th>
-                                            <th>Author</th>
-                                            <th>Dibuat</th>
+                                            {{-- <th>Author</th> --}}
+                                            <th>Tgl Bimbingan</th>
                                             <th>Action</th>
 
                                         </tr>
@@ -78,8 +78,8 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
-                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            <td class="text-capitalize text-left">{{
+                                                $item->daftarta->mahasiswa->biodata->nama }}</td>
                                             <td>
                                                 @if ($item->laporan_ta==NULL)
                                                 @else
@@ -121,8 +121,13 @@
                                                 @endif
                                             </td>
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
-                                            <td>{{ $item->author }}</td>
-                                            <td>{{ $item->created_at }}</td>
+                                            {{-- <td>{{ $item->author }}</td> --}}
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->tgl_bimbingan)->locale('id')->translatedformat('l,
+                                                d
+                                                F
+                                                Y')}}
+                                            </td>
                                             <td>
                                                 <a href="/bimbingan-ta-1/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan1{{ $item->id }}"
@@ -168,7 +173,7 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
 
                                 @foreach ($d_bimbing_2 as $item)
@@ -178,18 +183,10 @@
                                 <input type="hidden" name="daftar_ta_id" value="{{ $item->id }}">
                                 @endforeach
                             </div>
-                            @if (UserCheck::levelMhs())
                             <div class="col">
-                                <label class="control-label">Dosen Pembimbing 2 </label>
-                                <input type="text" class="form-control"
-                                    value="{{ $m_bimbing_1->dosen2->biodata->nama }}" readonly>
+                                <label for="">Sebagai</label>
+                                <input type="text" class="form-control" value="Mahasiswa Bimbingan II" readonly>
                             </div>
-                            @else
-                            <div class="col">
-                                <label for=""></label>
-                                <input type="text" class="form-control" value="Mahasiswa Bimbingan 2" readonly>
-                            </div>
-                            @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
                     </div>
@@ -197,8 +194,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan') }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status TA</label>
@@ -216,7 +214,6 @@
                             </div>
                         </div>
                     </div>
-
 
                     <div class="form-group">
                         <div class="row">
@@ -275,27 +272,22 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
-                                    id="daftar_ta_id_1">
-                                    <option value="{{ $item->daftar_ta_id }}">{{
-                                        $item->daftarta->mahasiswa->biodata->no_induk }}
-                                        -
-                                        {{
-                                        $item->daftarta->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarta->tahunakademik->tahun }}
-                                    </option>
-                                </select>
+                                <input type="text" class="form-control" value="{{
+                                    $item->daftarta->mahasiswa->biodata->no_induk }} - {{
+                                    $item->daftarta->mahasiswa->biodata->nama }} - {{
+                                    $item->daftarta->tahunakademik->tahun }}" readonly>
+                                <input type="hidden" name="daftar_ta_id" value="{{ $item->daftar_ta_id }}">
                             </div>
                             @if (UserCheck::levelMhs())
                             <div class="col">
-                                <label class="control-label">Dosen Pembimbing 2 </label>
+                                <label class="control-label">Dosen Pembimbing II </label>
                                 <input type="text" class="form-control"
                                     value="{{ $item->daftarta->dosen2->biodata->nama }}" readonly>
                             </div>
                             @else
                             <div class="col">
-                                <label for=""></label>
-                                <input class="form-control" type="text" value="Mahasiswa Bimbingan 2" readonly>
+                                <label for="">Sebagai</label>
+                                <input class="form-control" type="text" value="Mahasiswa Bimbingan II" readonly>
                             </div>
                             @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
@@ -305,9 +297,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan"
-                                    value="{{ $item->judul_bimbingan }}">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan',$item->tgl_bimbingan) }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>

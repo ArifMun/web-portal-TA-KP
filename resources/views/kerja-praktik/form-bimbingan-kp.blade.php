@@ -118,7 +118,7 @@
                 F
                 Y')}}</td>
             {{-- <td>{{ $row->judul_bimbingan }}</td> --}}
-            <td>
+            <td class="text-left">
                 @php
                 $text = $row->catatan;
                 $chunkedText = str_split($text, 40); // Memecah teks menjadi bagian-bagian dengan panjang 60 karakter

@@ -23,6 +23,7 @@ class BimbinganTA1 extends Model
         'laporan_ta',
         'stts',
         'catatan',
+        'tgl_bimbingan',
         'author'
     ];
 

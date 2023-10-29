@@ -96,7 +96,7 @@ class BimbinganTAController extends Controller
                 'daftar_ta_id'    => 'required',
                 // 'dosen_id'     => 'required',
                 // 'mahasiswa_id' => 'required',
-                'judul_bimbingan' => 'required',
+                // 'judul_bimbingan' => 'required',
                 // 'laporan_ta'      => 'required|file|image|max:1024',
                 'stts'            => 'required',
                 // 'catatan'      => 'required'
@@ -116,6 +116,7 @@ class BimbinganTAController extends Controller
                 'laporan_ta'        => $request->hasFile('laporan_ta') ? $request->file('laporan_ta')->store('dokumen-ta') : null,
                 'stts'              => $request->stts,
                 'catatan'           => $request->catatan,
+                'tgl_bimbingan'     => $request->tgl_bimbingan,
                 'author'            => $request->author,
             ]);
 
@@ -198,8 +199,8 @@ class BimbinganTAController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'judul_bimbingan' => 'required',
-                'author'          => 'required',
+                // 'judul_bimbingan' => 'required',
+                // 'author'          => 'required',
                 'stts'            => 'required',
                 // 'laporan_ta'      => 'file|max:1024'
             ]
@@ -222,6 +223,7 @@ class BimbinganTAController extends Controller
             $bimbingan_ta_1->author             = $request->author;
             $bimbingan_ta_1->stts               = $request->stts;
             $bimbingan_ta_1->catatan            = $request->catatan;
+            $bimbingan_ta_1->tgl_bimbingan      = $request->tgl_bimbingan;
             $bimbingan_ta_1->update();
 
             return \back()->with('success', 'Data Berhasil Diperbarui!');

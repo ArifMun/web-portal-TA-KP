@@ -58,6 +58,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::resource('/seminar-kp', SeminarKPController::class)->middleware('CheckLevel:0,2');
     Route::put('update-status-seminar/{id}', [SeminarKPController::class, 'updateStatus']);
     Route::get('seminar-kp/mahasiswa_id/{id}', [SeminarKPController::class, 'autofill']);
+    Route::get('seminar-kp/cetak-form/{id}', [SeminarKPController::class, 'printFormSeminar']);
 
     Route::resource('/bimbingan-kp', BimbinganKPController::class)->middleware('CheckLevel:0,1');
     Route::get('bimbingan-kp/daftarkp_id/{id}', [BimbinganKPController::class, 'autofill']);

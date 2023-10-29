@@ -321,6 +321,10 @@
                                                 WIB
                                             </td>
                                             <td>
+                                                <a href="seminar-kp/cetak-form/{{ $row->id }}"
+                                                    class="btn btn-success btn-xs">
+                                                    <i class="fas fa-print"></i>
+                                                </a>
                                                 <a href="seminar-kp/edit/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalEditSeminar{{ $row->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">

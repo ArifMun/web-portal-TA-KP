@@ -17,6 +17,7 @@ class BimbinganKP extends Model
         'judul_bimbingan',
         'laporan_kp',
         'catatan',
+        'tgl_bimbingan',
         'stts',
         'author'
     ];

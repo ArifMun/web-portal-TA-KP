@@ -82,14 +82,15 @@ class BimbinganKPController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'judul_bimbingan'   => 'required',
+                // 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
+                // 'tgl_bimbingan'     => 'required'
                 // 'laporan_kp'        => 'required|file|max:1024',
                 // 'catatan'           => 'required',
             ]
         );
-
+        // \dd($validation);
         if ($validation->fails()) {
             return \redirect('bimbingan-kp')->with('warning', 'Data Tidak Tersimpan!');
         } else {
@@ -100,6 +101,7 @@ class BimbinganKPController extends Controller
                 // 'mahasiswa_id'      => $request->mahasiswa_id,
                 'judul_bimbingan'   => $request->judul_bimbingan,
                 'catatan'           => $request->catatan,
+                'tgl_bimbingan'     => $request->tgl_bimbingan,
                 'stts'              => $request->stts,
                 'author'            => $request->author,
                 'laporan_kp'        => $request->hasFile('laporan_kp') ? $request->file('laporan_kp')->store('dokumen-kp') : null
@@ -170,7 +172,7 @@ class BimbinganKPController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                'judul_bimbingan'   => 'required',
+                // 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
                 // 'laporan_kp'        => 'file|max:1024',
@@ -197,7 +199,7 @@ class BimbinganKPController extends Controller
             $bimbingankp->author          = $request->author;
             $bimbingankp->stts            = $request->stts;
             $bimbingankp->catatan         = $request->catatan;
-            // $bimbingankp->laporan_kp      = $request->laporan_kp;
+            $bimbingankp->tgl_bimbingan   = $request->tgl_bimbingan;
             $bimbingankp->update();
 
             return \back()->with('success', 'Data Berhasil Diperbarui!');

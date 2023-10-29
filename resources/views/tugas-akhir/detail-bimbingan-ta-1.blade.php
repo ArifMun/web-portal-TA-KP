@@ -30,7 +30,7 @@
         <div class="page-inner">
             <div class="page-header">
                 @if(Auth::user()->level== 1)
-                <h4 class="page-title">Mahasiswa Bimbingan 1 </h4>
+                <h4 class="page-title">Mahasiswa Bimbingan I </h4>
                 @endif
             </div>
 
@@ -59,13 +59,13 @@
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
-                                            <th>Judul Bimbingan</th>
+                                            {{-- <th>Judul Bimbingan</th> --}}
                                             <th>Laporan TA</th>
                                             <th>Status</th>
-                                            <th>Catatan</th>
+                                            <th>Uraian Bimbingan</th>
                                             <th>Tahun Akademik</th>
-                                            <th>Author</th>
-                                            <th>Dibuat</th>
+                                            {{-- <th>Author</th> --}}
+                                            <th>Tgl Bimbingan</th>
                                             <th>Action</th>
 
                                         </tr>
@@ -78,8 +78,10 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
-                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            <td class="text-capitalize text-left">{{
+                                                $item->daftarta->mahasiswa->biodata->nama }}
+                                            </td>
+                                            {{-- <td>{{ $item->judul_bimbingan }}</td> --}}
                                             <td>
                                                 @if ($item->laporan_ta==NULL)
                                                 @else
@@ -121,8 +123,14 @@
                                                 @endif
                                             </td>
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
-                                            <td>{{ $item->author }}</td>
-                                            <td>{{ $item->created_at }}</td>
+                                            {{-- <td>{{ $item->author }}</td> --}}
+                                            <td>
+                                                {{
+                                                Carbon\Carbon::parse($item->tgl_bimbingan)->locale('id')->translatedformat('l,
+                                                d
+                                                F
+                                                Y')}}
+                                            </td>
                                             <td>
                                                 <a href="/bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
@@ -179,8 +187,8 @@
                             </div>
 
                             <div class="col">
-                                <label for=""></label>
-                                <input type="text" class="form-control" value="Mahasiswa Bimbingan 1" readonly>
+                                <label for="">Sebagai</label>
+                                <input type="text" class="form-control" value="Mahasiswa Bimbingan I" readonly>
                             </div>
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                         </div>
@@ -189,8 +197,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan') }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status TA </label>
@@ -243,124 +252,6 @@
     </div>
 </div>
 
-{{-- ========================================================================================================== --}}
-
-{{-- Tambah Pembimbing 2--}}
-<div class="modal fade" id="modalTambahBimbingan1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Tambah Bimbingan TA</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <form method="POST" enctype="multipart/form-data" action="bimbingan-ta-1">
-                @csrf
-                <div class="modal-body">
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col-6">
-                                <label class="control-label">NIM - Nama - Tahun </label>
-                                @if (Auth::user()->level==0 )
-                                <input type="text" class="form-control"
-                                    value="{{ $m_bimbing_1->mahasiswa->biodata->no_induk }} - {{ $m_bimbing_1->mahasiswa->biodata->nama }} - {{ $m_bimbing_1->tahunakademik->tahun }}"
-                                    readonly>
-                                <input type="hidden" name="daftar_ta_id" value="{{ $m_bimbing_1->id }}">
-                                @else
-
-                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa_1()"
-                                    id="daftar_ta_id_1" required>
-                                    <option value="" hidden="">-- Pilih --</option>
-                                    @foreach ($d_bimbing_2 as $item)
-                                    <option value="{{ $item->id }}">{{
-                                        $item->mahasiswa->biodata->no_induk
-                                        }} - {{ $item->mahasiswa->biodata->nama
-                                        }} - {{ $item->tahunakademik->tahun
-                                        }}
-                                    </option>
-                                    @endforeach
-
-                                    @endif
-                                </select>
-                            </div>
-                            @if (UserCheck::levelMhs())
-                            <div class="col">
-                                <label class="control-label">Dosen Pembimbing 2 </label>
-                                <input type="text" class="form-control"
-                                    value="{{ $m_bimbing_1->dosen2->biodata->nama }}" readonly>
-                            </div>
-                            @else
-                            <div class="col">
-                                <label for=""></label>
-                                <input type="text" class="form-control" value="Mahasiswa Bimbingan 2" readonly>
-                            </div>
-                            @endif
-                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan">
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Status TA</label>
-                                @if (Auth::user()->level==0)
-                                <input type="text" class="form-control" value="Proses" readonly>
-                                <input type="hidden" class="form-control" value="proses" name="stts">
-                                @else
-                                <select class="form-control" name="stts" required>
-                                    <option value="" hidden="">-- Status TA --</option>
-                                    <option value="proses">Proses</option>
-                                    <option value="acc">ACC</option>
-                                    <option value="revisi">Revisi</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div class="form-group">
-                        <div class="row">
-                            <div class="col">
-                                <label for="file" class="form-label">Laporan TA </label>
-                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
-                                <input type="file" class="form-control picture" id="laporan_ta" name="laporan_ta">
-                                <span class="font-italic text-muted mr-5">ukuran file maksimal <span
-                                        class="text-danger">1024
-                                        KB</span></span>
-                            </div>
-                            <div class="col">
-                                <label>Catatan</label>
-                                <textarea class="form-control" name="catatan" id="catatan"></textarea>
-
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer required">
-                        <div class="col">
-                            <label class="control-label font-italic">
-                                : Kolom Wajib Diisi
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
-                            </i> Kembali</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-
 {{-- ================================================================================= --}}
 
 {{-- Edit Bimbingan 1--}}
@@ -383,29 +274,24 @@
 
                     <div class="form-group required">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
-                                    id="daftar_ta_id">
-                                    <option value="{{ $item->daftar_ta_id }}">{{
-                                        $item->daftarta->mahasiswa->biodata->no_induk }}
-                                        -
-                                        {{
-                                        $item->daftarta->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarta->tahunakademik->tahun }}
-                                    </option>
-                                </select>
+                                <input type="text" class="form-control" value="{{
+                                    $item->daftarta->mahasiswa->biodata->no_induk }} - {{
+                                    $item->daftarta->mahasiswa->biodata->nama }} - {{
+                                    $item->daftarta->tahunakademik->tahun }}" readonly>
+                                <input type="hidden" name="daftar_ta_id" value="{{ $item->daftar_ta_id }}">
                             </div>
                             @if (UserCheck::levelMhs())
                             <div class="col">
-                                <label class="control-label">Dosen Pembimbing 1 </label>
+                                <label class="control-label">Dosen Pembimbing I </label>
                                 <input type="text" class="form-control"
                                     value="{{ $item->daftarta->dosen1->biodata->nama }}" readonly>
                             </div>
                             @else
                             <div class="col">
-                                <label for=""></label>
-                                <input type="text" class="form-control" value="Mahasiswa Bimbingan 1" readonly>
+                                <label for="">Sebagai </label>
+                                <input type="text" class="form-control" value="Mahasiswa Bimbingan I" readonly>
                             </div>
                             @endif
                             <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
@@ -415,9 +301,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan"
-                                    value="{{ $item->judul_bimbingan }}">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan',$item->tgl_bimbingan) }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
@@ -479,119 +365,6 @@
 @endforeach
 
 
-{{-- Edit Bimbingan 2--}}
-@foreach ($e_bimbing_2 as $item)
-<div class="modal fade" id="EditBimbingan1{{ $item->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLongTitle">Ubah Data Bimbingan TA</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <form method="POST" enctype="multipart/form-data" action="bimbingan-ta-1/{{ $item->id }}">
-                @method('put')
-                @csrf
-                <div class="modal-body">
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
-                                    id="daftar_ta_id_1">
-                                    <option value="{{ $item->daftar_ta_id }}">{{
-                                        $item->daftarta->mahasiswa->biodata->no_induk }}
-                                        -
-                                        {{
-                                        $item->daftarta->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarta->tahunakademik->tahun }}
-                                    </option>
-                                </select>
-                            </div>
-                            @if (UserCheck::levelMhs())
-                            <div class="col">
-                                <label class="control-label">Dosen Pembimbing 2 </label>
-                                <input type="text" class="form-control"
-                                    value="{{ $item->daftarta->dosen2->biodata->nama }}" readonly>
-                            </div>
-                            @else
-                            <div class="col">
-                                <label for=""></label>
-                                <input class="form-control" type="text" value="Mahasiswa Bimbingan 2" readonly>
-                            </div>
-                            @endif
-                            <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan"
-                                    value="{{ $item->judul_bimbingan }}">
-                            </div>
-                            <div class="col">
-                                <label class="control-label">Status </label>
-                                @if (Auth::user()->level==0)
-                                <input type="text" class="form-control text-capitalize" value="{{ $item->stts }}"
-                                    readonly>
-                                <input type="hidden" class="form-control" value="{{ $item->stts }}" name="stts">
-                                {{-- <option value="{{ $item->stts }}" @readonly(true)>{{ $item->stts }}</option> --}}
-                                @else
-                                <select class="form-control text-capitalize" name="stts" required>
-                                    <option @php if($item->stts == 'proses') echo 'selected';
-                                        @endphp value="proses">Proses</option>
-                                    <option @php if($item->stts == 'acc') echo 'selected';
-                                        @endphp value="acc">ACC</option>
-                                    <option @php if($item->stts == 'revisi') echo 'selected';
-                                        @endphp value="revisi">Revisi</option>
-                                    @endif
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group required">
-                        <div class="row">
-                            <div class="col">
-                                <label for="file" class="form-label control-label">Laporan TA </label>
-                                <input type="hidden" name="oldFile" value="{{ $item->laporan_ta }}">
-                                <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
-                                    value="{{ $item->laporan_ta }}">
-                                <span class="mt-1 font-italic">biarkan kolom kosong
-                                    jika tidak diganti | ukuran file maksimal
-                                    <span class="text-danger">1024
-                                        KB</span></span>
-                            </div>
-                            <div class="col">
-                                <label>Catatan</label>
-                                <textarea class="form-control" name="catatan"
-                                    id="catatan">{!! $item->catatan !!}</textarea>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer required">
-                        <div class="col">
-                            <label class="control-label font-italic">
-                                : Kolom Wajib Diisi
-                            </label>
-                        </div>
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
-                            </i> Kembali</button>
-                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
-                    </div>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endforeach
 
 {{-- Pengumuman --}}
 <div class="modal fade" id="viewPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -618,32 +391,6 @@
     </div>
 </div>
 
-{{-- view Catatan --}}
-{{-- @foreach ($bimbingkp as $item)
-<div class="modal fade" id="viewCatatan{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
-    aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Catatan dari {{ $item->author }}</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <div class="modal-body">
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col-12">
-                            {!!$item->catatan!!}
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-@endforeach --}}
 
 {{-- Hapus bimbingan 1--}}
 @foreach ($e_bimbing as $item)
@@ -688,46 +435,6 @@
 
 {{-- =============================================================================== --}}
 
-{{-- Hapus bimbingan 2--}}
-@foreach ($e_bimbing_2 as $item)
-<div class="modal fade" id="modalHapusBimbingan1{{ $item->id }}" tabindex="-1" role="dialog"
-    aria-labelledby="myLargeModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-open">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Data Bimbingan</h3>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-
-            <form method="POST" enctype="multipart/form-data" action="/bimbingan-ta-1/{{ $item->id }}">
-                @method('delete')
-                @csrf
-                <div class="modal-body">
-
-                    <input type="hidden" value="{{ $item->id }}" name="id" required>
-
-                    <div class=" form-group">
-                        <h3>Apakah anda ingin menghapus data bimbingan <span class="text-danger text-capitalize">{{
-                                $item->daftarta->mahasiswa->biodata->nama }}</span> dengan
-                            Judul <span class="text-danger text-capitalize">{{
-                                $item->judul_bimbingan
-                                }} </span> ?</h3>
-                    </div>
-
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
-                        Close</button>
-                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> hapus</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
-@endforeach
 
 {{-- update status bimbingan 1 --}}
 @foreach ($e_bimbing as $item)

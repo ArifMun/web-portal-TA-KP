@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use Dompdf\Dompdf;
 use App\Models\Dosen;
 use App\Models\Biodata;
 use App\Models\DaftarKP;
 use App\Models\SeminarKP;
 use App\Models\Pengumuman;
+use App\Models\BimbinganKP;
 use Illuminate\Http\Request;
 use App\Models\TahunAkademik;
 use App\Http\Controllers\Controller;
+
 use function GuzzleHttp\Promise\all;
 use Illuminate\Support\Facades\Auth;
-
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 
@@ -230,5 +232,27 @@ class SeminarKPController extends Controller
         $daftarkp->stts_seminar   = $request->stts_seminar;
         $daftarkp->update();
         return \redirect('seminar-kp')->with('success', 'Status Seminar Berhasil Diperbarui!');
+    }
+
+    public function printFormSeminar(Request $request, $id)
+    {
+        // $kp             = new DaftarKP();
+        $seminarkp = SeminarKP::findOrFail($id);
+
+        $dompdf = new Dompdf();
+        // $dompdf->setIsRemoteEnabled(true);
+
+        // Load template view atau HTML yang ingin Anda cetak
+        $html = view('kerja-praktik.form-seminar', \compact('seminarkp'))->render();
+
+        // Generate PDF
+        $dompdf->loadHtml($html);
+        $dompdf->render();
+
+        // Set nama file PDF yang akan didownload
+        $filename = 'form-seminar.pdf';
+
+        // Mengirimkan file PDF untuk didownload
+        return $dompdf->stream($filename, ['Attachment' => false]);
     }
 }

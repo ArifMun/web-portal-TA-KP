@@ -28,22 +28,36 @@
 <div class="main-panel">
     <div class="content">
         <div class="page-inner">
-            <div class="page-header">
-                <ul class="nav nav-pills">
-                    {{-- @if (Auth::user()->level==1)
-
-                    <li class="nav-item text-bold">
-                        <a class="nav-link " href="#bimbingan-1">Mahasiswa Bimbingan
-                            1</a>
+            <div class="page-header d-flex justify-content-between">
+                @if (Auth::user()->level==1)
+                <h4 class="page-title ">Bimbingan Tugas Akhir [Dosen]</h4>
+                <div class="nav ">
+                    <li class="nav-item">
+                        <h4>
+                            <a class="nav-link page-title active mr-1" href="#bimbingan-1">Mahasiswa Bimbingan I</a>
+                        </h4>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#bimbingan-2">Mahasiswa Bimbingan 2</a>
+                        <h4>
+                            <a class="nav-link page-title active" href="#bimbingan-2">Mahasiswa Bimbingan II</a>
+                        </h4>
                     </li>
-                    @else
-                    <h4 class="page-title">Bimbingan Tugas Akhir [Mahasiswa]</h4>
-                    @endif --}}
-                    <h4 class="page-title">Bimbingan Tugas Akhir [Dosen]</h4>
-                </ul>
+                </div>
+                @else
+                <h4 class="page-title">Bimbingan Tugas Akhir [Mahasiswa]</h4>
+                <div class="nav ">
+                    <li class="nav-item">
+                        <h4>
+                            <a class="nav-link page-title active mr-1" href="#bimbingan-1">Dosen Pembimbing I</a>
+                        </h4>
+                    </li>
+                    <li class="nav-item">
+                        <h4>
+                            <a class="nav-link page-title active" href="#bimbingan-2">Dosen Pembimbing II</a>
+                        </h4>
+                    </li>
+                </div>
+                @endif
             </div>
 
             <div class="row" id="bimbingan-1">
@@ -52,7 +66,7 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 @if (Auth::user()->level==0)
-                                <h4 class="card-title">Dosen Pembimbing 1</h4>
+                                <h4 class="card-title">Dosen Pembimbing I</h4>
                                 <a href="cetak-form/bimbingan-ta-1" class="btn btn-success btn-round ml-auto"
                                     target="_blank">
                                     <i class="fas fa-print"></i>
@@ -64,7 +78,7 @@
                                     Tambah
                                 </a>
                                 @elseif(Auth::user()->level==1)
-                                <h4 class="card-title">Mahasiswa Bimbingan 1</h4>
+                                <h4 class="card-title">Mahasiswa Bimbingan I</h4>
                                 @endif
                             </div>
                         </div>
@@ -94,13 +108,13 @@
                                             @if (Auth::user()->level==0)
                                             <th>No</th>
                                             <th>Dosen Pembimbing 1</th>
-                                            <th>Judul Bimbingan</th>
+                                            {{-- <th>Judul Bimbingan</th> --}}
                                             <th>Laporan TA</th>
                                             <th>Status</th>
-                                            <th>Catatan</th>
+                                            <th>Uraian Bimbingan</th>
                                             <th>Tahun Akademik</th>
-                                            <th>Author</th>
-                                            <th>Dibuat</th>
+                                            {{-- <th>Author</th> --}}
+                                            <th>Tgl Bimbingan</th>
                                             <th>Action</th>
                                             @endif
 
@@ -114,9 +128,11 @@
                                         @foreach ($b_mhs_1 as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarta->dosen1->biodata->nama }}
+                                            <td class="text-capitalize text-left">{{
+                                                $item->daftarta->dosen1->biodata->nama
+                                                }}
                                             </td>
-                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            {{-- <td>{{ $item->judul_bimbingan }}</td> --}}
                                             <td>
                                                 @if ($item->laporan_ta==NULL)
                                                 @else
@@ -150,14 +166,19 @@
                                             @endif
                                             <td>{{ $item->catatan }}</td>
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
-                                            <td>{{ $item->author }}</td>
-                                            <td>{{ $item->created_at }}</td>
+                                            {{-- <td>{{ $item->author }}</td> --}}
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->tgl_bimbingan)->locale('id')->translatedformat('l,
+                                                d
+                                                F
+                                                Y')}}
+                                            </td>
                                             <td>
-                                                <a href="bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
+                                                <a href="/bimbingan-ta/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="bimbingan-ta/hapus/{{ $item->id }}" data-toggle="modal"
+                                                <a href="/bimbingan-ta/hapus/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalHapusBimbingan{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
@@ -180,7 +201,7 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-left">{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
                                             <td>{{ $item->where('daftar_ta_id', $item->daftar_ta_id)->count() }}</td>
                                             <td>{{ $item->daftarta->judul }}</td>
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
@@ -212,7 +233,7 @@
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 @if (Auth::user()->level==0)
-                                <h4 class="card-title">Dosen Pembimbing 2</h4>
+                                <h4 class="card-title">Dosen Pembimbing II</h4>
                                 <a href="cetak-form/bimbingan-ta-2" class="btn btn-success btn-round ml-auto"
                                     target="_blank">
                                     <i class="fas fa-print"></i>
@@ -224,7 +245,7 @@
                                     Tambah
                                 </a>
                                 @elseif(Auth::user()->level==1)
-                                <h4 class="card-title">Mahasiswa Bimbingan 2</h4>
+                                <h4 class="card-title">Mahasiswa Bimbingan II</h4>
                                 @endif
 
                             </div>
@@ -250,13 +271,13 @@
                                             @if (Auth::user()->level==0)
                                             <th>No</th>
                                             <th>Dosen Pembimbing 2</th>
-                                            <th>Judul Bimbingan</th>
+                                            {{-- <th>Judul Bimbingan</th> --}}
                                             <th>Laporan TA</th>
                                             <th>Status</th>
-                                            <th>Catatan</th>
+                                            <th>Uraian Bimbingan</th>
                                             <th>Tahun Akademik</th>
-                                            <th>Author</th>
-                                            <th>Dibuat</th>
+                                            {{-- <th>Author</th> --}}
+                                            <th>Tgl Bimbingan</th>
                                             <th>Action</th>
                                             @endif
 
@@ -270,9 +291,11 @@
                                         @foreach ($b_mhs_2 as $item)
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
-                                            <td class="text-capitalize">{{ $item->daftarta->dosen2->biodata->nama }}
+                                            <td class="text-capitalize text-left">{{
+                                                $item->daftarta->dosen2->biodata->nama
+                                                }}
                                             </td>
-                                            <td>{{ $item->judul_bimbingan }}</td>
+                                            {{-- <td>{{ $item->judul_bimbingan }}</td> --}}
                                             <td>
                                                 @if ($item->laporan_ta == NULL)
                                                 @else
@@ -311,14 +334,19 @@
                                                 @endif
                                             </td>
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
-                                            <td>{{ $item->author }}</td>
-                                            <td>{{ $item->created_at }}</td>
+                                            {{-- <td>{{ $item->author }}</td> --}}
+                                            <td>{{
+                                                Carbon\Carbon::parse($item->tgl_bimbingan)->locale('id')->translatedformat('l,
+                                                d
+                                                F
+                                                Y')}}
+                                            </td>
                                             <td>
-                                                <a href="bimbingan-ta-1/edit/{{ $item->id }}" data-toggle="modal"
+                                                <a href="/bimbingan-ta-1/edit/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#EditBimbingan1{{ $item->id }}"
                                                     class="btn btn-warning btn-xs"><i class="fa fa-edit">
                                                     </i> </a>
-                                                <a href="bimbingan-ta-1/hapus/{{ $item->id }}" data-toggle="modal"
+                                                <a href="/bimbingan-ta-1/hapus/{{ $item->id }}" data-toggle="modal"
                                                     data-target="#modalHapusBimbingan1{{ $item->id }}"
                                                     class="btn btn-danger btn-xs"><i class="fa fa-trash">
                                                     </i> </a>
@@ -341,7 +369,7 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-left">{{ $item->daftarta->mahasiswa->biodata->nama }}</td>
                                             <td>{{ $item->where('daftar_ta_id', $item->daftar_ta_id)->count() }}</td>
                                             <td>{{ $item->daftarta->judul }}</td>
                                             <td>{{ $item->daftarta->tahunakademik->tahun }}</td>
@@ -427,8 +455,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan') }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status TA </label>
@@ -458,7 +487,7 @@
                                         KB</span></span>
                             </div>
                             <div class="col">
-                                <label>Catatan</label>
+                                <label>Uraian Bimbingan</label>
                                 <textarea class="form-control" name="catatan" id="catatan"></textarea>
 
                             </div>
@@ -544,8 +573,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan') }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status TA</label>
@@ -576,7 +606,7 @@
                                         KB</span></span>
                             </div>
                             <div class="col">
-                                <label>Catatan</label>
+                                <label>Uraian Bimbingan</label>
                                 <textarea class="form-control" name="catatan" id="catatan"></textarea>
 
                             </div>
@@ -614,7 +644,7 @@
                 </button>
             </div>
 
-            <form method="POST" enctype="multipart/form-data" action="bimbingan-ta/{{ $item->id }}">
+            <form method="POST" enctype="multipart/form-data" action="/bimbingan-ta/{{ $item->id }}">
                 @method('put')
                 @csrf
                 <div class="modal-body">
@@ -623,16 +653,12 @@
                         <div class="row">
                             <div class="col-6">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
-                                    id="daftar_ta_id">
-                                    <option value="{{ $item->daftar_ta_id }}">{{
-                                        $item->daftarta->mahasiswa->biodata->no_induk }}
-                                        -
-                                        {{
+                                <input type="text" class="form-control" value="{{
+                                        $item->daftarta->mahasiswa->biodata->no_induk }} - {{
                                         $item->daftarta->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarta->tahunakademik->tahun }}
-                                    </option>
-                                </select>
+                                        $item->daftarta->tahunakademik->tahun }}" readonly>
+                                <input type="hidden" name="daftar_ta_id" value="{{ $item->daftar_ta_id }}">
+                                <input type="hidden" name="author" value="{{ Auth::user()->biodata->nama }}" readonly>
                             </div>
                             @if (UserCheck::levelMhs())
                             <div class="col">
@@ -653,9 +679,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan"
-                                    value="{{ $item->judul_bimbingan }}">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan',$item->tgl_bimbingan) }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
@@ -673,8 +699,8 @@
                                         @endphp value="acc">ACC</option>
                                     <option @php if($item->stts == 'revisi') echo 'selected';
                                         @endphp value="revisi">Revisi</option>
-                                    @endif
                                 </select>
+                                @endif
                             </div>
                         </div>
                     </div>
@@ -682,7 +708,7 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label for="file" class="form-label control-label">Laporan TA </label>
+                                <label for="file" class="form-label ">Laporan TA </label>
                                 <input type="hidden" name="oldFile" value="{{ $item->laporan_ta }}">
                                 <input type="file" class="form-control picture" id="laporan_kp" name="laporan_kp"
                                     value="{{ $item->laporan_ta }}">
@@ -739,16 +765,11 @@
                         <div class="row">
                             <div class="col">
                                 <label class="control-label">NIM - Nama - Tahun </label>
-                                <select class="form-control" name="daftar_ta_id" onchange="no_mahasiswa()"
-                                    id="daftar_ta_id_1">
-                                    <option value="{{ $item->daftar_ta_id }}">{{
-                                        $item->daftarta->mahasiswa->biodata->no_induk }}
-                                        -
-                                        {{
-                                        $item->daftarta->mahasiswa->biodata->nama }} - {{
-                                        $item->daftarta->tahunakademik->tahun }}
-                                    </option>
-                                </select>
+                                <input type="text" class="form-control" value="{{
+                                    $item->daftarta->mahasiswa->biodata->no_induk }} - {{
+                                    $item->daftarta->mahasiswa->biodata->nama }} - {{
+                                    $item->daftarta->tahunakademik->tahun }}" readonly>
+                                <input type="hidden" name="daftar_ta_id" value="{{ $item->daftar_ta_id }}">
                             </div>
                             @if (UserCheck::levelMhs())
                             <div class="col">
@@ -769,9 +790,9 @@
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
-                                <label class="control-label">Judul Bimbingan </label>
-                                <input type="text" class="form-control" name="judul_bimbingan"
-                                    value="{{ $item->judul_bimbingan }}">
+                                <label class="control-label">Tanggal Bimbingan </label>
+                                <input type="date" class="form-control" name="tgl_bimbingan"
+                                    value="{{ old('tgl_bimbingan',$item->tgl_bimbingan) }}">
                             </div>
                             <div class="col">
                                 <label class="control-label">Status </label>
