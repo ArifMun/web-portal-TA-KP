@@ -101,11 +101,11 @@
 
     <table style="width: 700px; margin:auto; border-collapse: collapse; border:1px solid black" border="1">
         <thead style="font-weight: bold;">
-            <td align="center">NO</td>
-            <td align="center">Hari / Tgl</td>
-            {{-- <td align="center">Judul Bimbingan</td> --}}
-            <td align="center">Uraian Bimbingan</td>
-            <td align="center">Ttd Pembimbing</td>
+            <th align="center">NO</th>
+            <th align="center">Hari / Tgl</th>
+            {{-- <th align="center">Judul Bimbingan</th> --}}
+            <th align="center">Uraian Bimbingan</th>
+            <th align="center">Ttd Pembimbing</th>
         </thead>
         @php
         $no=1;

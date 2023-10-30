@@ -238,12 +238,12 @@ class SeminarKPController extends Controller
     {
         // $kp             = new DaftarKP();
         $seminarkp = SeminarKP::findOrFail($id);
-
+        $biodata   = Biodata::all();
         $dompdf = new Dompdf();
         // $dompdf->setIsRemoteEnabled(true);
 
         // Load template view atau HTML yang ingin Anda cetak
-        $html = view('kerja-praktik.form-seminar', \compact('seminarkp'))->render();
+        $html = view('kerja-praktik.form-seminar', \compact('seminarkp', 'biodata'))->render();
 
         // Generate PDF
         $dompdf->loadHtml($html);
