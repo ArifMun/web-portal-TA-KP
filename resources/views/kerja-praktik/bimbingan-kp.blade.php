@@ -65,8 +65,23 @@
 
                         <div class="card-body">
                             <div class="row">
+                                <div class="col-sm-6 col-md-3">
+                                    <div class="row align-items-center">
+                                        <div class="col col-stats ml-3 ml-sm-0">
+                                            <div class="filter tahun">
+                                                <label class="font-weight-bold h6">Filter Tahun</label>
+                                                <select data-column="5" class="form-control" id="filter-tahun">
+                                                    <option value="">-- Pilih Tahun --</option>
+                                                    @foreach ($thnakademik as $k)
+                                                    <option value="{{ $k->tahun }}">{{ $k->tahun }}</option>
+                                                    @endforeach
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-
+                            <div class="divider"></div>
 
                             {{-- <div class="divider"></div> --}}
                             <div class="table-responsive">

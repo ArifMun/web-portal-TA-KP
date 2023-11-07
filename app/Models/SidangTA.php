@@ -30,10 +30,11 @@ class SidangTA extends Model
         'tempat'
     ];
 
-    // public function mahasiswa()
-    // {
-    //     return $this->belongsTo(Mahasiswa::class, 'mahasiswa_id');
-    // }
+    public function penguji_utama()
+    {
+        return $this->belongsTo(Dosen::class, 'd_penguji');
+    }
+
     public function thnakademik()
     {
         return $this->belongsTo(TahunAkademik::class, 'thn_akademik_id');

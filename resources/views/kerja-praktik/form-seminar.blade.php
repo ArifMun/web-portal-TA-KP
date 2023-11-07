@@ -45,10 +45,10 @@
         text-align: center;
     }
 
-    .footer {
-        position: fixed;
+    footer {
+        position: absolute;
         /* left: 0px; */
-        right: 0px;
+        right: 10px;
         height: 150px;
         bottom: 200px;
         margin-bottom: -150px;
@@ -73,14 +73,14 @@
 </style>
 
 {{-- onload="window.print();" --}}
-<script>
+{{-- <script>
     window.onload = function() {
             var footer3 = document.getElementById("footer3");
             var footer4 = document.getElementById("footer4");
             footer3.style.position = "static"; // Mengubah properti position menjadi "static" pada footer ketiga
             footer4.style.position = "static"; // Mengubah properti position menjadi "static" pada footer ketiga
         };
-</script>
+</script> --}}
 
 <body style="background-color: white;">
     <header style="align:center;">
@@ -122,7 +122,6 @@
                 seminar KP
                 mahasiswa:<br>
             </td>
-
         </tr>
 
         <tr align="left" style="line-height: 2;">
@@ -368,7 +367,7 @@
 
 {{-- form ceklist --}}
 
-<body style="background-color: white; border:1px solid black" class="hide-on-print">
+<body style="background-color: white; border:5px double black" class="hide-on-print">
     <header style="align:center;">
         <table style="width: 100%;margin-top: -15px">
             <tr>
@@ -391,7 +390,7 @@
                 </td>
             </tr>
         </table><br>
-        <hr style="border: 1px solid black;margin-top: -32px;width: 722px">
+        <hr style="border: 1px solid black;margin-top: -32px;width: 716px">
     </header>
     <!--<div class="content">-->
     <table style="width: 700px;margin-left: 7px;margin-top:-20px; border-collapse: collapse;text-align: left;">
@@ -434,54 +433,54 @@
             <th style="padding: 3px">TIDAK</th>
             <th>KETERANGAN</th>
         </tr>
-        <tr style="padding: 13px">
+        <tr>
             <td align="center">1</td>
-            <td>Surat keterangan selesai KP</td>
+            <td style="padding-left: 3px">Surat keterangan selesai KP</td>
             <td></td>
             <td></td>
-            <td>Asli dilampirkan laporan KP</td>
+            <td style="padding-left: 3px">Asli dilampirkan laporan KP</td>
         </tr>
         <tr>
             <td align="center">2</td>
-            <td>Kartu Bimbingan KP</td>
+            <td style="padding-left: 3px">Kartu Bimbingan KP</td>
             <td></td>
             <td></td>
-            <td>Asli diserahkan dan di arsip TU, FC, lampiran di laporan KP</td>
+            <td style="padding-left: 3px">Asli diserahkan dan di arsip TU, FC, lampiran di laporan KP</td>
         </tr>
         <tr>
             <td align="center">3</td>
-            <td>Kartu seminar KP</td>
+            <td style="padding-left: 3px">Kartu seminar KP</td>
             <td></td>
             <td></td>
-            <td>Asli diserahkan dan di arsip TU</td>
+            <td style="padding-left: 3px">Asli diserahkan dan di arsip TU</td>
         </tr>
         <tr>
             <td align="center">4</td>
-            <td>Berita Acara seminar KP</td>
+            <td style="padding-left: 3px">Berita Acara seminar KP</td>
             <td></td>
             <td></td>
-            <td>Serahkan ke pembimbing setelah seminar hasil</td>
+            <td style="padding-left: 3px">Serahkan ke pembimbing setelah seminar hasil</td>
         </tr>
         <tr>
             <td align="center">5</td>
-            <td>Daftar hadir peserta seminar KP</td>
+            <td style="padding-left: 3px">Daftar hadir peserta seminar KP</td>
             <td></td>
             <td></td>
-            <td>Dibawa mahasiswa yang bersangkutan</td>
+            <td style="padding-left: 3px">Dibawa mahasiswa yang bersangkutan</td>
         </tr>
         <tr>
             <td align="center">6</td>
-            <td>Laporan KP</td>
+            <td style="padding-left: 3px">Laporan KP</td>
             <td></td>
             <td></td>
-            <td>Rangkap 1 belum dijilid (di klip)</td>
+            <td style="padding-left: 3px">Rangkap 1 belum dijilid (di klip)</td>
         </tr>
         <tr>
             <td align="center">7</td>
-            <td>Materi seminar KP</td>
+            <td style="padding-left: 3px">Materi seminar KP</td>
             <td></td>
             <td></td>
-            <td>Digandakan 10 rangkap / sesuai jumlah peserta</td>
+            <td style="padding-left: 3px">Digandakan 10 rangkap / sesuai jumlah peserta</td>
         </tr>
     </table>
 
@@ -507,8 +506,8 @@
         </table>
     </footer>
 
-    <footer id="footer4" style="margin-top: 70px">
-        <table width="100%" style="text-align: center">
+    <footer style="justify-content: center;width: 100%">
+        <table width="100%" style="text-align: center;margin-top: 40px">
             <tr>
                 <td>Tata Usaha Program Studi</td>
             </tr>

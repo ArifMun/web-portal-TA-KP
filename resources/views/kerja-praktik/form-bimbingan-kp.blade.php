@@ -34,8 +34,19 @@
         font-weight: bold;
     }
 
+    footer {
+        position: static;
+        margin-left: 450px;
+        margin-top: -30px;
+
+    }
+
     .content {
         margin-top: 90px;
+    }
+
+    header {
+        position: static;
     }
 </style>
 {{-- onload="window.print();" --}}
@@ -69,33 +80,33 @@
             </tr>
         </table>
         <hr style="border: 1px solid black;margin-top: -22px;width: 722px">
+        <table style="width: 700px;margin-left: 7px;  border-collapse: collapse; margin-bottom:15px;text-align: left;">
+            <tr style=" text-align: center;">
+                <td colspan="3" style="padding-bottom: 10px"> <u><span style="font-size: 15px;font-style: bold;">KARTU
+                            BIMBINGAN
+                            KERJA
+                            PRAKTIK</span></u>
+                </td>
+            </tr>
+            <tr align="left">
+                <td width="200px">NAMA / NIM</td>
+                <td width="2px">:</td>
+                <td style="text-align: left;">{{
+                    $mhskps->mahasiswa->biodata->nama}} / {{ $mhskps->mahasiswa->biodata->no_induk}}</td>
+            </tr>
+            <tr align="left">
+                <td width="200px" align="left" valign="top">JUDUL KERJA PRAKTIK</td>
+                <td width="2px" align="left" valign="top">:</td>
+                <td style="overflow: auto;">{{ $mhskps->judul}}</td>
+            </tr>
+            <tr align="left">
+                <td width="200px">TEMPAT KERJA PRAKTIK</td>
+                <td width="2px">:</td>
+                <td></td>
+            </tr>
+        </table>
     </header>
     <!--<div class="content">-->
-    <table style="width: 700px;margin-left: 7px;  border-collapse: collapse; margin-bottom:15px;text-align: left;">
-        <tr style=" text-align: center;">
-            <td colspan="3" style="padding-bottom: 10px"> <u><span style="font-size: 15px;font-style: bold;">KARTU
-                        BIMBINGAN
-                        KERJA
-                        PRAKTIK</span></u>
-            </td>
-        </tr>
-        <tr align="left">
-            <td width="200px">NAMA / NIM</td>
-            <td width="2px">:</td>
-            <td style="text-align: left;">{{
-                $mhskps->mahasiswa->biodata->nama}} / {{ $mhskps->mahasiswa->biodata->no_induk}}</td>
-        </tr>
-        <tr align="left">
-            <td width="200px">JUDUL KERJA PRAKTIK</td>
-            <td width="2px">:</td>
-            <td>{{ $mhskps->judul}}</td>
-        </tr>
-        <tr align="left">
-            <td width="200px">TEMPAT KERJA PRAKTIK</td>
-            <td width="2px">:</td>
-            <td></td>
-        </tr>
-    </table>
 
     <!--</div>-->
 
@@ -134,7 +145,7 @@
         @endforeach
     </table>
     <footer>
-        <table style="width: 300px; margin-right: -60px" align="right">
+        <table style="width: 300px;">
             <p align="left">Purworejo, </p>
             <p align="left">Dosen Pembimbing Kerja Praktik</p><br><br>
             <p align="left">{{ $mhskps->dosen->biodata->nama }}</p>

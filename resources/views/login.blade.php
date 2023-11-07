@@ -59,11 +59,11 @@
                         </button>
                     </div>
 
-                    <div class="text-center p-t-12">
+                    {{-- <div class="text-center p-t-12">
                         <a class="txt2" href="#">
                             Registrasi
                         </a>
-                    </div>
+                    </div> --}}
 
                     <div class="text-center p-t-50">
                         <a class="txt2" href="#">

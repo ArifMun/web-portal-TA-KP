@@ -71,6 +71,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::resource('/sidang-ta', SidangTAController::class)->middleware('CheckLevel:0,2');
     Route::get('sidang-ta/daftar_ta_id/{id}', [SidangTAController::class, 'autofill']);
     Route::put('update-status-sidang/{id}', [SidangTAController::class, 'updateStatus'])->name('update-status');
+    Route::get('sidang-ta/cetak-form/{id}', [SidangTAController::class, 'printFormSidang']);
 
     Route::resource('/bimbingan-ta', BimbinganTAController::class)->middleware('CheckLevel:0,1');
     Route::put('update-status-bimbingan-ta/{id}', [BimbinganTAController::class, 'updateStatus']);

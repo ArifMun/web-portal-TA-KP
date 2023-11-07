@@ -44,6 +44,10 @@ class Dosen extends Model
     // }
 
     // dengan dua dosen pembimbing
+    public function penguji_utama()
+    {
+        return $this->hasMany(SidangTA::class, 'd_penguji');
+    }
     public function bimbinganta1()
     {
         return $this->hasMany(BimbinganTA1::class, 'd_pembimbing_1');

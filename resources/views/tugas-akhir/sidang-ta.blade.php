@@ -399,7 +399,8 @@
                                                 }}
                                             </td>
                                             <td>
-                                                <a href="cetak-form/bimbingan-kp" class="btn btn-success btn-xs">
+                                                <a href="sidang-ta/cetak-form/{{ $row->id }}"
+                                                    class="btn btn-success btn-xs">
                                                     <i class="fas fa-print"></i>
                                                 </a>
                                                 <a href="sidang-ta/edit/{{ $row->id }}" data-toggle="modal"
