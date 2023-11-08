@@ -290,7 +290,7 @@ class SidangTAController extends Controller
         $dompdf->render();
 
         // Set nama file PDF yang akan didownload
-        $filename = 'form-seminar.pdf';
+        $filename = 'form-sidang.pdf';
 
         // Mengirimkan file PDF untuk didownload
         return $dompdf->stream($filename, ['Attachment' => false]);

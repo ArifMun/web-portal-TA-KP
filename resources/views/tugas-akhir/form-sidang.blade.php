@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-    <title>Form Bimbingan KP</title>
+    <title>Form Sidang Skripsi</title>
 </head>
 <style>
     body {
@@ -16,7 +16,7 @@
         /* left: 150px;
         /* margin-top: 100px; */
         /* border: 1px solid black; */
-        font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        font-family: 'Gill Sans', 'Gill Sans MT', 'Calibri', 'Trebuchet MS', sans-serif;
     }
 
     /* img {
@@ -65,7 +65,7 @@
         line-height: 0.2;
         /* margin-right: 100px; */
         margin-left: 20px;
-        font-family: 'Times New Roman', Times, serif;
+        /* font-family: 'Times New Roman', Times, serif; */
     }
 
     .logo {
@@ -73,6 +73,143 @@
     }
 </style>
 
+{{-- form ceklist --}}
+
+<body style="background-color: white; border:5px double black" class="hide-on-print">
+    <header style="align:center;">
+        <table style="width: 100%; ">
+            <tr>
+                <td class="logo" width="60px">
+                    {{-- <span class=" kop-logo"> --}}
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents('assets/img/logo.jpeg')) }}"
+                            width="70px">
+                        {{-- </span> --}}
+                </td>
+                <td style="padding-left: 5px">
+                    <span class="form-ceklist" style="line-height: 0.6">
+                        <p style="font-size: 12px;font-style: bold">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
+                        <p style="font-size: 11PX;">FAKULTAS TEKNIK</p>
+                        <p style="font-size: 11px;">UNIVERSITAS MUHAMMADIYAH PURWOREJO</p>
+                    </span>
+                </td>
+                <td width="200px" style="text-align: right">
+                    <p style="font-size: 16px;font-style: bold">FORM SO09-PSTI</p>
+                    <p style="font-size: 12px;margin-top: -10px">REV: 18 JANUARI 2021</p>
+                </td>
+            </tr>
+        </table><br>
+        <hr style="border: 1px solid black;margin-top: -20px;width: 675px">
+    </header>
+    <!--<div class="content">-->
+    <table
+        style="width: 700px;margin-left: 7px;margin-top:-20px; border-collapse: collapse;text-align: left;margin-bottom: 10px">
+        <tr style="text-align: center;">
+            <td style="padding-bottom: 10px"><span style="font-size: 19px;font-style: bold;">
+                    <b><u>LEMBAR CEKLIST PENDAFTARAN SIDANG SKRIPSI</u></b></span>
+            </td>
+        </tr>
+    </table>
+    <table style="margin-left: 20px;margin-bottom: 15px;line-height: 1.5">
+        <tr>
+            <td width="150px">NIM / Nama Mhs</td>
+            <td>:</td>
+            <td>{{
+                $sidangta->daftarta->mahasiswa->biodata->no_induk}} / {{
+                $sidangta->daftarta->mahasiswa->biodata->nama}}</td>
+        </tr>
+        <tr>
+            <td>Email / Hp Aktif</td>
+            <td>:</td>
+            <td>{{
+                $sidangta->daftarta->mahasiswa->biodata->email}} / {{
+                $sidangta->daftarta->mahasiswa->biodata->no_telp}}</td>
+        </tr>
+        <tr>
+            <td align="left" valign="top">Alamat Tinggal</td>
+            <td align="left" valign="top">:</td>
+            <td align="left" valign="top">{{
+                $sidangta->daftarta->mahasiswa->biodata->alamat}} Kec. {{
+                $sidangta->daftarta->mahasiswa->biodata->alamat_kec}} Kab / Kota {{
+                $sidangta->daftarta->mahasiswa->biodata->alamat_kab}}</td>
+        </tr>
+    </table>
+
+    <table style="width: 655px; border-collapse: collapse;line-height: 20px;margin:10px 13px 0 13px " border="1">
+        <tr bgcolor="#f2f2f2">
+            <th style="padding: 3px">NO</th>
+            <th width="260px">DOKUMEN YANG DIPERLUKAN</th>
+            <th style="padding: 3px">ADA</th>
+            <th style="padding: 3px">TIDAK</th>
+            <th>KETERANGAN</th>
+        </tr>
+        <tr>
+            <td align="center">1</td>
+            <td style="padding-left: 3px">FORM S04-PSTI</td>
+            <td></td>
+            <td></td>
+            <td style="padding-left: 3px">Diisi oleh mahasiswa dan din disetor ke TU</td>
+        </tr>
+        <tr>
+            <td align="center">2</td>
+            <td style="padding-left: 3px">Kartu Bimbingan kedua pembimbing</td>
+            <td></td>
+            <td></td>
+            <td style="padding-left: 3px">Asli semua disetor dan di arsip oleh TU</td>
+        </tr>
+        <tr>
+            <td align="center">3</td>
+            <td style="padding-left: 3px">Slip setoran / bukti transfer BRI</td>
+            <td></td>
+            <td></td>
+            <td style="padding-left: 3px">Asli disetor dan di arsip TU</td>
+        </tr>
+        <tr>
+            <td align="center">4</td>
+            <td style="padding-left: 3px">FORM S05-PSTI dan FORM S06-PSTI</td>
+            <td></td>
+            <td></td>
+            <td style="padding-left: 3px">Usul tim penguji. Disisipkan TU dan disampaikan ke ketua program studi</td>
+        </tr>
+        <tr>
+            <td align="center">5</td>
+            <td style="padding-left: 3px">Fotokopi KRS</td>
+            <td></td>
+            <td></td>
+            <td style="padding-left: 3px">Dilampirkan</td>
+        </tr>
+        <tr>
+            <td align="center">6</td>
+            <td style="padding-left: 3px">Naskah skripsi rangkap 3</td>
+            <td></td>
+            <td></td>
+            <td style="padding-left: 3px">Disetor ke TU untuk didistribusikan ke tim penguji</td>
+        </tr>
+    </table>
+
+    <footer style="margin-bottom: 220px;margin-left: 440px">
+        <table>
+            <tr>
+                <td>Purworejo,........................</td>
+            </tr>
+            <tr>
+                <td>Tata Usaha Program Studi,</td>
+            </tr>
+            <tr>
+                <td style="height: 60px;"> </td>
+            </tr>
+            <tr>
+                @foreach ($biodata as $user)
+                @if ($user->jabatan=="TU")
+
+                <td>{{ $user->nama}}
+                </td>
+                @endif
+                @endforeach
+            </tr>
+        </table>
+    </footer>
+
+</body>
 {{-- onload="window.print();" --}}
 {{-- <script>
     window.onload = function() {
@@ -96,7 +233,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -220,7 +357,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -343,7 +480,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -466,7 +603,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -616,7 +753,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -766,7 +903,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -918,7 +1055,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -1056,7 +1193,7 @@
                 </td>
                 <td>
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PUREWOREJO
+                        <p style="font-size: 15px;color: #002060">UNIVERSITAS MUHAMMADIYAH PURWOREJO
                         </p>
                         <p style="font-size: 15px;font-style: bold;color: #002060">FAKULTAS TEKNIK</p>
                         <p style="font-size: 20px;font-style: bold;color: #002060">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
@@ -1155,5 +1292,6 @@
     </footer>
 
 </body>
+
 
 </html>

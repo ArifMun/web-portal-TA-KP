@@ -94,7 +94,7 @@
                 </td>
                 <td>
                     <span class="kop-judul">
-                        <p style="font-size: 13px">UNIVERSITAS MUHAMMADIYAH PUREWOREJO</p>
+                        <p style="font-size: 13px">UNIVERSITAS MUHAMMADIYAH PURWOREJO</p>
                         <P style="font-size: 13px">FAKULTAS TEKNIK</P>
                         <p style="font-size: 16px"><b> PROGRAM STUDI TEKNOLOGI INFORMASI</b></p>
                         <p style="font-size: 13px">Jl. KH. Ahmad Dahlan 3 Purworejo - 54111</p>
@@ -228,7 +228,7 @@
                 </td>
                 <td>
                     <span class="kop-judul">
-                        <p style="font-size: 13px">UNIVERSITAS MUHAMMADIYAH PUREWOREJO</p>
+                        <p style="font-size: 13px">UNIVERSITAS MUHAMMADIYAH PURWOREJO</p>
                         <P style="font-size: 13px">FAKULTAS TEKNIK</P>
                         <p style="font-size: 16px"><b> PROGRAM STUDI TEKNOLOGI INFORMASI</b></p>
                         <p style="font-size: 13px">Jl. KH. Ahmad Dahlan 3 Purworejo - 54111</p>
@@ -379,9 +379,9 @@
                 </td>
                 <td style="padding-top: 20px">
                     <span class="form-ceklist">
-                        <p style="font-size: 15px;font-style: bold">PROGRAM STUDI TEKNOLOGI INFFORMASI</p>
+                        <p style="font-size: 15px;font-style: bold">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
                         <p style="font-size: 14px;">FAKULTAS TEKNIK</p>
-                        <p style="font-size: 14px;">UNIVERSITAS MUHAMMADIYAH PUREWOREJO</p>
+                        <p style="font-size: 14px;">UNIVERSITAS MUHAMMADIYAH PURWOREJO</p>
                     </span>
                 </td>
                 <td width="200px">
