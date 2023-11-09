@@ -73,6 +73,436 @@
     }
 </style>
 
+{{-- FORM PENDAFTARAN--}}
+
+<body style="background-color: white; border:5px double black" class="hide-on-print">
+    <header style="align:center;">
+        <table style="width: 100%; ">
+            <tr>
+                <td class="logo" width="60px">
+                    {{-- <span class=" kop-logo"> --}}
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents('assets/img/logo.jpeg')) }}"
+                            width="70px">
+                        {{-- </span> --}}
+                </td>
+                <td style="padding-left: 5px">
+                    <span class="form-ceklist" style="line-height: 0.6">
+                        <p style="font-size: 12px;font-style: bold">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
+                        <p style="font-size: 11PX;">FAKULTAS TEKNIK</p>
+                        <p style="font-size: 11px;">UNIVERSITAS MUHAMMADIYAH PURWOREJO</p>
+                    </span>
+                </td>
+                <td width="200px" style="text-align: right">
+                    <p style="font-size: 16px;font-style: bold">FORM S04-PSTI</p>
+                    <p style="font-size: 12px;margin-top: -10px">REV: 12 JANUARI 2021</p>
+                </td>
+            </tr>
+        </table><br>
+        <hr style="border: 1px solid black;margin-top: -20px;width: 675px">
+    </header>
+
+    <table style="width: 700px;margin-top:-20px; border-collapse: collapse;margin-bottom: 10px">
+        <tr style="text-align: center;">
+            <td colspan="4" style="padding-bottom: 10px"><span style="font-size: 19px;font-style: bold;">
+                    <b><u>FORMULIR PENDAFTARAN UJIAN SKRIPSI</u></b></span>
+            </td>
+        </tr>
+    </table>
+
+    <table style="width: 660px;margin-left: 20px;margin-bottom: 15px;line-height: 1.3">
+        <tr>
+            <td colspan="4"><b>Data Mahasiswa</b></td>
+        </tr>
+        <tr>
+            <td width="150px">Nomor Induk Mhs</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->no_induk}}
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Lengkap</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->nama}}
+            </td>
+        </tr>
+        <tr>
+            <td>Email Aktif</td>
+            <td colspan="3">: {{ $sidangta->daftarta->mahasiswa->biodata->email }}</td>
+        </tr>
+        <tr>
+            <td>Nomor HP Aktif</td>
+            <td colspan="3">: {{ $sidangta->daftarta->mahasiswa->biodata->no_telp }}</td>
+        </tr>
+        <tr>
+            <td>Program</td>
+            <td colspan="3">: Reguler / Transfer / Karyawan*</td>
+        </tr>
+        <tr>
+            <td>Jml SKS diperoleh</td>
+            <td colspan="3">: ........ SKS dengan IPK: ........</td>
+        </tr>
+        <tr align="left">
+            <td width="100px" align="left" valign="top">Judul Skripsi</td>
+            {{-- <td width="2px" align="left" valign="top">:</td> --}}
+            <td colspan="3" style="overflow: auto;">: {{ $sidangta->judul}}</td>
+        </tr>
+        <tr>
+            <td>Pembimbing I</td>
+            <td colspan="3">: {{ $sidangta->daftarta->dosen1->biodata->nama }}</td>
+        </tr>
+        <tr>
+            <td>Pembimbing II</td>
+            <td colspan="3">: {{ $sidangta->daftarta->dosen2->biodata->nama }}</td>
+        </tr>
+        <tr>
+            <td>Dosen PA</td>
+            <td colspan="3">:</td>
+        </tr>
+    </table>
+
+    <table style="width: 660px;margin-left: 20px;margin-bottom: 15px;line-height: 1.3">
+        <tr>
+            <td colspan="4"><b>Data Orangtua/Wali</b></td>
+        </tr>
+        <tr>
+            <td width="150px">Nama Ayah/Wali</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->nama_ayah}}
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Ibu/Wali</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->nama_ibu}}
+            </td>
+        </tr>
+        <tr>
+            <td align="left" valign="top">Alamat Rumah</td>
+            <td>: {{
+                $sidangta->daftarta->mahasiswa->biodata->alamat_ortu}}
+            </td>
+        </tr>
+        <tr>
+            <td>No Kontak Hp</td>
+            <td>: {{ $sidangta->daftarta->mahasiswa->biodata->no_hp_ortu }}</td>
+        </tr>
+        <tr>
+            <td>Pekerjaan</td>
+            <td>: {{ $sidangta->daftarta->mahasiswa->biodata->pekerjaan_ortu }}</td>
+        </tr>
+    </table>
+
+    <footer style="margin-bottom: 70px;float: left;margin-left: 20px">
+        <table>
+            <tr>
+                <td>Orangtua / Wali</td>
+            </tr>
+            <tr>
+                <td style="height: 60px;"> </td>
+            </tr>
+            <tr>
+                <td>..................................
+                </td>
+            </tr>
+        </table>
+    </footer>
+
+    <footer style="margin-bottom: 70px;float:right;margin-right: 20px">
+        <table>
+            <tr>
+                <td>Purworejo,........................</td>
+            </tr>
+            <tr>
+                <td>Pemohon,</td>
+            </tr>
+            <tr>
+                <td style="height: 60px;"> </td>
+            </tr>
+            <tr>
+                <td>{{ $sidangta->daftarta->mahasiswa->biodata->nama }}
+                </td>
+            </tr>
+        </table>
+    </footer>
+
+</body>
+
+{{-- form usulan tim penguji--}}
+
+<body style="background-color: white; border:5px double black" class="hide-on-print">
+    <header style="align:center;">
+        <table style="width: 100%; ">
+            <tr>
+                <td class="logo" width="60px">
+                    {{-- <span class=" kop-logo"> --}}
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents('assets/img/logo.jpeg')) }}"
+                            width="70px">
+                        {{-- </span> --}}
+                </td>
+                <td style="padding-left: 5px">
+                    <span class="form-ceklist" style="line-height: 0.6">
+                        <p style="font-size: 12px;font-style: bold">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
+                        <p style="font-size: 11PX;">FAKULTAS TEKNIK</p>
+                        <p style="font-size: 11px;">UNIVERSITAS MUHAMMADIYAH PURWOREJO</p>
+                    </span>
+                </td>
+                <td width="200px" style="text-align: right">
+                    <p style="font-size: 16px;font-style: bold">FORM S05-PSTI</p>
+                    <p style="font-size: 12px;margin-top: -10px">REV: 18 JANUARI 2021</p>
+                </td>
+            </tr>
+        </table><br>
+        <hr style="border: 1px solid black;margin-top: -20px;width: 675px">
+    </header>
+    <!--<div class="content">-->
+
+    <table style="width: 700px;margin-top:-20px; border-collapse: collapse;margin-bottom: 10px">
+        <tr style="text-align: center;">
+            <td colspan="4" style="padding-bottom: 10px"><span style="font-size: 19px;font-style: bold;">
+                    <b><u>FORMULIR USULAN TIM PENGUJI</u></b></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding-top: 10px;padding-left: 23px;line-height: 1.5 ">
+                Berdasarkan dokumen FORM S04-PSTI untuk skripsi atas nama mahasiswa:
+
+            </td>
+        </tr>
+    </table>
+    <table style="width: 660px;margin-left: 20px;margin-bottom: 15px;line-height: 1.2">
+        <tr>
+            <td width="150px">Nomor Induk Mhs</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->no_induk}}
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Lengkap</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->nama}}
+            </td>
+        </tr>
+        <tr>
+            <td>Program</td>
+            <td colspan="3">: Reguler / Transfer / Karyawan*</td>
+        </tr>
+        <tr align="left">
+            <td width="100px" style=" " align="left" valign="top">Judul Skripsi</td>
+            {{-- <td width="2px" align="left" valign="top">:</td> --}}
+            <td colspan="3" style="overflow: auto;">: {{ $sidangta->judul}}</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding:10px 15px 10px 0;text-align: justify">
+                Bahwa berkas skripsi yang
+                diajukan oleh
+                mahasiswa tersebut telah memenuhi persyaratan untuk menempuh ujian / sidang skripsi. Bersama ini pula
+                kami usulkan nama para tim penguji yang dipandang menguasai atau pakar dalam bidang yang diteliti oleh
+                mahasiswa tersebut diatas.
+        </tr>
+    </table>
+
+    <table border="1" style="width: 650px; border-collapse: collapse;line-height: 20px;margin:10px 13px 0 13px ">
+        <tr bgcolor="#f2f2f2">
+            <th style="padding: 3px">NO</th>
+            <th width="260px">Nama Lengkap</th>
+            <th style="padding: 3px">Tandatangan Persetujuan</th>
+            <th style="padding: 3px">Kedudukan Dalam Sidang</th>
+        </tr>
+        <tr>
+            <td align="center">1</td>
+            <td style="padding-left: 3px">{{ $sidangta->penguji_utama->biodata->nama }}</td>
+            <td></td>
+            <td style="padding-left: 3px">Penguji Utama</td>
+        </tr>
+        <tr>
+            <td align="center">2</td>
+            <td style="padding-left: 3px">{{ $sidangta->daftarta->dosen2->biodata->nama }}</td>
+            <td></td>
+            <td style="padding-left: 3px">Penguji I <br> (Pembimbing II)</td>
+        </tr>
+        <tr>
+            <td align="center">3</td>
+            <td style="padding-left: 3px">{{ $sidangta->daftarta->dosen1->biodata->nama }}</td>
+            <td></td>
+            <td style="padding-left: 3px">Ketua Sidang / Penguji II (Pembimbing I)</td>
+        </tr>
+    </table>
+    <p style="margin-left: 25px"><b>Catatan:</b> Bila tidak bersedia diisi tanda -</p>
+
+    <footer style="margin-bottom: 70px;margin-left: 440px">
+        <table>
+            <tr>
+                <td>Purworejo,........................</td>
+            </tr>
+            <tr>
+                <td>Ketua Program Studi,</td>
+            </tr>
+            <tr>
+                <td style="height: 60px;"> </td>
+            </tr>
+            <tr>
+                @foreach ($biodata as $user)
+                @if ($user->jabatan=="kaprodi")
+
+                <td>{{ $user->nama}}
+                </td>
+                @endif
+                @endforeach
+            </tr>
+        </table>
+    </footer>
+
+</body>
+
+{{-- form persetujuan--}}
+
+<body style="background-color: white; border:5px double black" class="hide-on-print">
+    <header style="align:center;">
+        <table style="width: 100%; ">
+            <tr>
+                <td class="logo" width="60px">
+                    {{-- <span class=" kop-logo"> --}}
+                        <img src="data:image/png;base64,{{ base64_encode(file_get_contents('assets/img/logo.jpeg')) }}"
+                            width="70px">
+                        {{-- </span> --}}
+                </td>
+                <td style="padding-left: 5px">
+                    <span class="form-ceklist" style="line-height: 0.6">
+                        <p style="font-size: 12px;font-style: bold">PROGRAM STUDI TEKNOLOGI INFORMASI</p>
+                        <p style="font-size: 11PX;">FAKULTAS TEKNIK</p>
+                        <p style="font-size: 11px;">UNIVERSITAS MUHAMMADIYAH PURWOREJO</p>
+                    </span>
+                </td>
+                <td width="200px" style="text-align: right">
+                    <p style="font-size: 16px;font-style: bold">FORM S06-PSTI</p>
+                    <p style="font-size: 12px;margin-top: -10px">REV: 18 JANUARI 2021</p>
+                </td>
+            </tr>
+        </table><br>
+        <hr style="border: 1px solid black;margin-top: -20px;width: 675px">
+    </header>
+    <!--<div class="content">-->
+
+    <table style="width: 700px;margin-top:-20px; border-collapse: collapse;margin-bottom: 10px">
+        <tr style="text-align: center;">
+            <td colspan="4" style="padding-bottom: 10px"><span style="font-size: 19px;font-style: bold;">
+                    <b><u>FORMULIR PERSETUJUAN UJIAN SKRIPSI</u></b></span>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding:10px 35px 0px 23px;line-height: 1.5;text-align: justify ">
+                Berdasarkan dokumen FORM S04-PSTI dan FORM S05-PSTI pada hari dan tanggal
+                ................................... yang ditandatangani oleh para tim penguji atas
+                nama mahasiswa:
+
+            </td>
+        </tr>
+    </table>
+    <table style="width: 660px;margin-left: 20px;margin-bottom: 15px;line-height: 1.2">
+        <tr>
+            <td width="150px">Nomor Induk Mhs</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->no_induk}}
+            </td>
+        </tr>
+        <tr>
+            <td>Nama Lengkap</td>
+            <td colspan="3">: {{
+                $sidangta->daftarta->mahasiswa->biodata->nama}}
+            </td>
+        </tr>
+        <tr>
+            <td>Program</td>
+            <td colspan="3">: Reguler / Transfer / Karyawan*</td>
+        </tr>
+        <tr align="left">
+            <td width="100px" style=" " align="left" valign="top">Judul Skripsi</td>
+            {{-- <td width="2px" align="left" valign="top">:</td> --}}
+            <td colspan="3" style="overflow: auto;">: {{ $sidangta->judul}}</td>
+        </tr>
+        <tr>
+            <td colspan="4" style="padding-top: 10px;padding-bottom: 10px">Maka mahasiswa tersebut diatas disetujui
+                untuk menempuh ujian
+                skripsi dan para tim penguji
+                wajib hadir
+                yang diselenggarakan pada:
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="width:5em">Hari / Tgl</td>
+            <td colspan="2">: {{
+                Carbon\Carbon::parse($sidangta->tgl_sidang)->locale('id')->translatedformat('l,d
+                F
+                Y')}}
+            </td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="width:5em">Ruang</td>
+            <td colspan="2">: {{ $sidangta->tempat }}</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td style="width:5em">Pukul</td>
+            <td colspan="2">: {{ $sidangta->jam_mulai_sidang }} WIB</td>
+        </tr>
+    </table>
+
+    <p style="margin-left: 25px">Dengan susunan tim penguji sebagai berikut:</p>
+    <table border="1" style="width: 650px; border-collapse: collapse;line-height: 20px;margin:10px 13px 0 13px ">
+        <tr bgcolor="#f2f2f2">
+            <th style="padding: 3px">NO</th>
+            <th width="260px">Nama Lengkap</th>
+            <th style="padding: 3px">Tandatangan Persetujuan</th>
+            <th style="padding: 3px">Kedudukan Dalam Sidang</th>
+        </tr>
+        <tr>
+            <td align="center">1</td>
+            <td style="padding-left: 3px">{{ $sidangta->penguji_utama->biodata->nama }}</td>
+            <td></td>
+            <td style="padding-left: 3px">Penguji Utama</td>
+        </tr>
+        <tr>
+            <td align="center">2</td>
+            <td style="padding-left: 3px">{{ $sidangta->daftarta->dosen2->biodata->nama }}</td>
+            <td></td>
+            <td style="padding-left: 3px">Penguji I <br> (Pembimbing II)</td>
+        </tr>
+        <tr>
+            <td align="center">3</td>
+            <td style="padding-left: 3px">{{ $sidangta->daftarta->dosen1->biodata->nama }}</td>
+            <td></td>
+            <td style="padding-left: 3px">Ketua Sidang / Penguji II (Pembimbing I)</td>
+        </tr>
+    </table>
+    <p style="margin-left: 25px"><b>Catatan:</b> Tim penguji dapat berkordinasi melalui WA sebelum mengisi</p>
+
+    <footer style="margin-bottom: 40px;margin-left: 440px">
+        <table>
+            <tr>
+                <td>Purworejo,........................</td>
+            </tr>
+            <tr>
+                <td>Tata Usaha Program Studi,</td>
+            </tr>
+            <tr>
+                <td style="height: 60px;"> </td>
+            </tr>
+            <tr>
+                @foreach ($biodata as $user)
+                @if ($user->jabatan=="TU")
+
+                <td>{{ $user->nama}}
+                </td>
+                @endif
+                @endforeach
+            </tr>
+        </table>
+    </footer>
+
+</body>
+
 {{-- form ceklist --}}
 
 <body style="background-color: white; border:5px double black" class="hide-on-print">
@@ -210,15 +640,6 @@
     </footer>
 
 </body>
-{{-- onload="window.print();" --}}
-{{-- <script>
-    window.onload = function() {
-            var footer3 = document.getElementById("footer3");
-            var footer4 = document.getElementById("footer4");
-            footer3.style.position = "static"; // Mengubah properti position menjadi "static" pada footer ketiga
-            footer4.style.position = "static"; // Mengubah properti position menjadi "static" pada footer ketiga
-        };
-</script> --}}
 
 
 <body style="background-color: white; " class="hide-on-print">
@@ -262,12 +683,11 @@
             </td>
         </tr>
         <tr align="left">
-            <td width="100px" style="" align="left" valign="top">Nama / NIM</td>
-            <td width="2px" align="left" valign="top">:</td>
-            <td colspan="2" style="text-align: left;">{{
+            <td width="100px" style="padding-top: 10px" align="left" valign="top">Nama / NIM</td>
+            <td width="2px" align="left" valign="top" style="padding-top: 10px">:</td>
+            <td colspan="2" style="text-align: left;padding-top: 10px">{{
                 $sidangta->daftarta->mahasiswa->biodata->nama}} / {{
                 $sidangta->daftarta->mahasiswa->biodata->no_induk}}</td>
-
         </tr>
         <tr align="left">
             <td width="100px" style=" " align="left" valign="top">Judul Skripsi</td>
@@ -276,7 +696,7 @@
         </tr>
 
         <tr>
-            <td colspan="4">Catatan setelah sidang Skripsi : </td>
+            <td colspan="4" style="padding-top: 10px">Catatan setelah sidang Skripsi : </td>
 
         </tr>
         <tr>
@@ -344,6 +764,7 @@
 
 </body>
 
+{{-- BERITA ACARA SIDANG --}}
 
 <body style="background-color: white; " class="hide-on-print">
     <header style="align:center;">
@@ -386,9 +807,9 @@
             </td>
         </tr>
         <tr align="left">
-            <td width=" 100px" style="" align="left" valign="top">Nama / NIM</td>
-            <td width="2px" align="left" valign="top">:</td>
-            <td colspan="2" style="text-align: left;">{{
+            <td width=" 100px" style="padding-top: 10px" align="left" valign="top">Nama / NIM</td>
+            <td width="2px" style="padding-top: 10px" align="left" valign="top">:</td>
+            <td colspan="2" style="text-align: left;padding-top: 10px">{{
                 $sidangta->daftarta->mahasiswa->biodata->nama}} / {{
                 $sidangta->daftarta->mahasiswa->biodata->no_induk}}</td>
 
@@ -400,7 +821,7 @@
         </tr>
 
         <tr>
-            <td colspan="4">Catatan setelah sidang Skripsi : </td>
+            <td colspan="4" style="padding-top: 10px">Catatan setelah sidang Skripsi : </td>
 
         </tr>
         <tr>
@@ -468,6 +889,8 @@
 
 </body>
 
+{{-- BERITA ACARA SIDANG --}}
+
 <body style="background-color: white; " class="hide-on-print">
     <header style="align:center;">
         <table style="width: 100%;margin-top: -15px">
@@ -509,9 +932,9 @@
             </td>
         </tr>
         <tr align="left">
-            <td width=" 100px" style="" align="left" valign="top">Nama / NIM</td>
-            <td width="2px" align="left" valign="top">:</td>
-            <td colspan="2" style="text-align: left;">{{
+            <td width=" 100px" style="padding-top: 10px" align="left" valign="top">Nama / NIM</td>
+            <td width="2px" style="padding-top: 10px" align="left" valign="top">:</td>
+            <td colspan="2" style="text-align: left;padding-top: 10px">{{
                 $sidangta->daftarta->mahasiswa->biodata->nama}} / {{
                 $sidangta->daftarta->mahasiswa->biodata->no_induk}}</td>
 
@@ -523,7 +946,7 @@
         </tr>
 
         <tr>
-            <td colspan="4">Catatan setelah sidang Skripsi : </td>
+            <td colspan="4" style="padding-top: 10px">Catatan setelah sidang Skripsi : </td>
 
         </tr>
         <tr>
@@ -591,6 +1014,8 @@
 
 </body>
 
+{{-- FORM PENILAIAN SIDANG --}}
+
 <body style="background-color: white; " class="hide-on-print">
     <header style="align:center;">
         <table style="width: 100%;margin-top: -15px">
@@ -741,6 +1166,8 @@
 
 </body>
 
+{{-- FPRM PENILAIAN SIDANG --}}
+
 <body style="background-color: white; " class="hide-on-print">
     <header style="align:center;">
         <table style="width: 100%;margin-top: -15px">
@@ -890,6 +1317,8 @@
     </footer>
 
 </body>
+
+{{-- FPRM PENILAIAN SIDANG --}}
 
 <body style="background-color: white; " class="hide-on-print">
     <header style="align:center;">
@@ -1292,6 +1721,5 @@
     </footer>
 
 </body>
-
 
 </html>

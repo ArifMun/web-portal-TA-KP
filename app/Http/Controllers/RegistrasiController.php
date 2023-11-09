@@ -158,7 +158,13 @@ class RegistrasiController extends Controller
             $biodata->tgl_lahir     = $request->tgl_lahir;
             $biodata->no_telp       = $request->no_telp;
             $biodata->alamat        = $request->alamat;
-            $biodata->jabatan       = $request->jabatan;
+            $biodata->alamat_kec    = $request->alamat_kec;
+            $biodata->alamat_kab    = $request->alamat_kab;
+            $biodata->nama_ayah     = $request->nama_ayah;
+            $biodata->nama_ibu      = $request->nama_ibu;
+            $biodata->alamat_ortu   = $request->alamat_ortu;
+            $biodata->no_hp_ortu    = $request->no_hp_ortu;
+            $biodata->pekerjaan_ortu = $request->no_hp_ortu;
             $biodata->update();
 
             $biodata->users->password =

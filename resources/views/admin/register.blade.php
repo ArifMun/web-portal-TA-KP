@@ -367,6 +367,13 @@
                 @method('put')
                 @csrf
                 <div class="modal-body">
+
+                    @if ($d->users->level == 0)
+                    {{-- <input type="text" class="form-control" name="level" value="{{ $d->users->level }}" readonly>
+                    --}}
+                    <input type="hidden" name="level" value="0">
+                    @endif
+
                     <div class="form-group required">
                         <div class="row">
                             <div class="col">
@@ -464,7 +471,7 @@
                             <div class="col">
                                 <label>Kabupaten</label>
                                 <input type="text" class="form-control" name="alamat_kab"
-                                    value="{{ old('alamat_kab') }}" placeholder="Kabupaten ..">
+                                    value="{{ old('alamat_kab', $d->alamat_kab) }}" placeholder="Kabupaten ..">
                             </div>
 
                         </div>
@@ -508,7 +515,7 @@
                                 @if ($d->users->level == 0)
                                 <input type="text" class="form-control" name="level" value="{{ $d->users->level }}"
                                     readonly>
-                                <input type="hidden" name="level" value="{{ $d->users->level }}">
+                                <input type="hidden" name="level" value="0">
                                 @else
                                 <select class="form-control" name="level" required>
                                     <option <?php if($d->users->level == 0) echo "selected"; ?> value="0">0
@@ -529,7 +536,7 @@
                             <div class="col">
                                 <label>Nama Ayah</label>
                                 <input type="text" class="form-control" id="nama_ayah_" name="nama_ayah"
-                                    value="{{ old('nama_ayah') }}" placeholder="Nama Ayah ..">
+                                    value="{{ old('nama_ayah', $d->nama_ayah) }}" placeholder="Nama Ayah ..">
                             </div>
                             <div class="col">
                                 <label class="control-label">Password </label>
@@ -543,12 +550,12 @@
                             <div class="col">
                                 <label>Nama Ibu</label>
                                 <input type="text" class="form-control" id="nama_ibu_" name="nama_ibu"
-                                    value="{{ old('nama_ibu') }}" placeholder="Nama Ibu ..">
+                                    value="{{ old('nama_ibu',$d->nama_ibu) }}" placeholder="Nama Ibu ..">
                             </div>
                             <div class="col">
                                 <label>Alamat Orang Tua</label>
                                 <input type="text" class="form-control" id="alamat_ortu_" name="alamat_ortu"
-                                    value="{{ old('alamat_ortu') }}" placeholder="Alamat Orang Tua ..">
+                                    value="{{ old('alamat_ortu',$d->alamat_ortu) }}" placeholder="Alamat Orang Tua ..">
                             </div>
                         </div>
                     </div>
@@ -558,12 +565,14 @@
                             <div class="col">
                                 <label>No HP Orang Tua</label>
                                 <input type="text" class="form-control" id="no_hp_ortu_" name="no_hp_ortu"
-                                    value="{{ old('no_hp_ortu') }}" placeholder="Nomor Handphone Orang Tua ..">
+                                    value="{{ old('no_hp_ortu',$d->no_hp_ortu) }}"
+                                    placeholder="Nomor Handphone Orang Tua ..">
                             </div>
                             <div class="col">
                                 <label>Pekerjaan Orang Tua</label>
                                 <input type="text" class="form-control" id="pekerjaan_ortu_" name="pekerjaan_ortu"
-                                    value="{{ old('pekerjaan_ortu') }}" placeholder="Pekerjaan Orang Tua ..">
+                                    value="{{ old('pekerjaan_ortu',$d->pekerjaan_ortu) }}"
+                                    placeholder="Pekerjaan Orang Tua ..">
                             </div>
                         </div>
                     </div>
