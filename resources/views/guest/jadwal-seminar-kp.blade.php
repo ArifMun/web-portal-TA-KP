@@ -79,6 +79,7 @@
                                             <th>Dosen Pembimbing</th>
                                             <th>Tanggal Seminar</th>
                                             <th>Jam Seminar</th>
+                                            <th>Tempat Seminar</th>
                                             <th>Status</th>
                                             <th>Tahun Akademik</th>
                                         </tr>
@@ -87,12 +88,13 @@
                                     <tbody>
                                         @php $no=1; @endphp
                                         @foreach ($seminarkp as $item)
-                                        <tr class="text-capitalize">
+                                        <tr class="text-capitalize text-center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->nama}}</td>
+                                            <td class="text-left">{{ $item->daftarkp->mahasiswa->biodata->no_induk}}
+                                            </td>
+                                            <td class="text-left">{{ $item->daftarkp->mahasiswa->biodata->nama}}</td>
                                             <td>{{ $item->judul}}</td>
-                                            <td class="text-capitalize">
+                                            <td class="text-capitalize text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarkp->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -109,6 +111,7 @@
                                                 Carbon\Carbon::parse($item->jam_seminar)->locale('id')->format('H:i')}}
                                                 WIB
                                             </td>
+                                            <td>{{ $item->tempat_seminar }}</td>
                                             @if ($item->stts_seminar=='proses')
                                             <td>
                                                 <a

@@ -82,12 +82,8 @@ class BimbinganKPController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                // 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
-                // 'tgl_bimbingan'     => 'required'
-                // 'laporan_kp'        => 'required|file|max:1024',
-                // 'catatan'           => 'required',
             ]
         );
         // \dd($validation);
@@ -172,11 +168,8 @@ class BimbinganKPController extends Controller
         $validation = Validator::make(
             $request->all(),
             [
-                // 'judul_bimbingan'   => 'required',
                 'author'            => 'required',
                 'stts'              => 'required',
-                // 'laporan_kp'        => 'file|max:1024',
-                // 'catatan'           => 'required',
             ]
         );
 

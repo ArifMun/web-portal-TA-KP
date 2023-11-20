@@ -6,8 +6,16 @@
         width: 100%;
         height: 2px;
         background: #BBB;
-        margin: 1rem 0;
+        /* margin: 1rem 0; */
         margin-top: -5px;
+    }
+
+    a:hover {
+        /* Atur properti CSS sesuai kebutuhan */
+        color: #808080;
+        /* Contoh: warna teks saat dihover */
+        font-weight: normal;
+        /* Contoh: gaya teks saat dihover */
     }
 </style>
 <div class="sidebar">
@@ -15,6 +23,7 @@
     <div class="sidebar-wrapper scrollbar-inner">
         <div class="sidebar-content">
             <ul class="nav">
+
                 @if (empty($pengumuman->cttn_utama))
                 <li class="nav-item mr-2">
                     <a>
@@ -29,8 +38,16 @@
                     <a>
                         <span class="divider"></span>
                     </a>
+                    <a href="{{asset('storage/' . $dokumen->file_dokumen)}}" target="_blank">
+                        <span style="margin: -30px 10 0 0">{{ $dokumen->nama_dokumen }} </span><i
+                            class="fas fa-file-pdf fa-2x">
+                        </i>
+                    </a>
+                    <a class="text-decoration-none">
+                        <span class="divider mt-1"></span>
+                    </a>
                     <a href="">
-                        <span style="margin: -20px 0 0 0px">{!! $pengumuman->cttn_utama !!}</span>
+                        <span style="margin: -10px 0 0 0px">{!! $pengumuman->cttn_utama !!}</span>
                     </a>
                 </li>
                 @endif

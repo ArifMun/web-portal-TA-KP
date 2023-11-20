@@ -143,6 +143,7 @@
                                                         class="fas fa-file-download fa-2x">
                                                     </i>
                                                 </a>
+
                                                 @endif
                                             </td>
                                             @if ($item->stts == 'proses')

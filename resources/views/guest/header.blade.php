@@ -6,13 +6,13 @@
                 <li class="nav-link dropdown hidden-caret">
                     <a href="/" class="dropdown-toggle text-white" style="text-decoration:none" data-toggle=""
                         aria-expanded="false">
-                        <b>Home</b>
+                        <b>HOME</b>
                     </a>
                 </li>
                 <li class="nav-link dropdown hidden-caret">
                     <a class="dropdown-toggle text-white" style="text-decoration:none" data-toggle="dropdown"
                         href="kerja-praktik/" aria-expanded="false">
-                        <b>Kerja Praktik</b>
+                        <b>KERJA PRAKTIK</b>
                     </a>
                     <ul class="dropdown-menu dropdown-user animated fadeIn">
                         <li>
@@ -25,7 +25,7 @@
                 <li class="nav-link dropdown hidden-caret">
                     <a class="dropdown-toggle text-white" style="text-decoration:none" data-toggle="dropdown"
                         href="/tugas-akhir/" aria-expanded="false">
-                        <b>Tugas Akhir</b>
+                        <b>TUGAS AKHIR</b>
                     </a>
                     <ul class="dropdown-menu dropdown-user animated fadeIn">
                         <li>
@@ -37,7 +37,7 @@
                 <li class="nav-link dropdown hidden-caret">
                     <a class="text-white" style="text-decoration:none" data-toggle="" href="/login"
                         aria-expanded="false"><i class="fa fa-arrow-circle-right"></i>
-                        <b>Login</b>
+                        <b>LOGIN</b>
                     </a>
                 </li>
 

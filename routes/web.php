@@ -4,14 +4,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\DataKPController;
 use App\Http\Controllers\DataTAController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\DaftarTAController;
 use App\Http\Controllers\SidangTAController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormAksesController;
 use App\Http\Controllers\SeminarKPController;
+use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\BimbinganKPController;
@@ -19,7 +22,6 @@ use App\Http\Controllers\BimbinganTAController;
 use App\Http\Controllers\KonsentrasiController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\BimbinganTA1Controller;
-use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KerjaPraktikController;
 use App\Http\Controllers\ManajemenFormController;
 use App\Http\Controllers\UserRegistrasiController;
@@ -90,7 +92,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
 
     // ADMINISTRATOR
     Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:2,1,0');
-    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:2');
+    Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware('CheckLevel:2');
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
 
@@ -101,6 +103,10 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::post('pengumuman/tambah', [PengumumanController::class, 'store']);
     Route::post('pengumuman/{id}/update', [PengumumanController::class, 'update']);
     Route::post('pengumuman/{id}/destroy', [PengumumanController::class, 'destroy']);
+
+    Route::post('dokumen/tambah', [DokumenController::class, 'store']);
+    Route::post('dokumen/{id}/update', [DokumenController::class, 'update']);
+    Route::post('dokumen/{id}/destroy', [DokumenController::class, 'destroy']);
 
     Route::get('akses/update', [FormAksesController::class, 'update']);
     Route::post('akses/tambah', [FormAksesController::class, 'store']);

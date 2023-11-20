@@ -60,16 +60,19 @@
             </button>
           </div>
 
-          <div class="text-center p-t-12">
+          {{-- <div class="text-center p-t-12">
             <a class="txt2" href="user-registrasi">
               Registrasi
             </a>
-          </div>
+          </div> --}}
 
           <div class="text-center p-t-50">
-            <a class="txt2" href="/">
-              Home
-              <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+            <a class="txt1" href="/">
+              <h5>
+                Home
+
+                <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+              </h5>
             </a>
           </div>
         </form>

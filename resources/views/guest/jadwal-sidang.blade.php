@@ -47,7 +47,7 @@
                             <div class="table-responsive">
                                 <table id="jadwal-sidang" class="display table table-striped table-hover">
                                     <thead>
-                                        <tr align="center">
+                                        <tr class="text-center">
                                             <th>No</th>
                                             <th>NIM</th>
                                             <th>Nama</th>
@@ -66,25 +66,26 @@
                                     <tbody>
                                         @php $no=1; @endphp
                                         @foreach ($jadwalSidang as $item)
-                                        <tr class="text-capitalize">
+                                        <tr class="text-capitalize text-center">
                                             <td>{{ $no++ }}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->daftarta->mahasiswa->biodata->nama}}</td>
-                                            <td>
+                                            <td class="text-left">{{ $item->daftarta->mahasiswa->biodata->no_induk}}
+                                            </td>
+                                            <td class="text-left">{{ $item->daftarta->mahasiswa->biodata->nama}}</td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_penguji ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarta->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarta->d_pembimbing_1 ?
                                                 $k->biodata->nama :''

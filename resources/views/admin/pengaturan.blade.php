@@ -174,13 +174,76 @@
                     </div>
                 </div>
             </div>
+
+            {{-- new row --}}
             <div class="row">
-                <div class="col">
+                <div class="col-4">
+                    <div class="card">
+                        <div class="card-header">
+                            <div class="d-flex align-items-center">
+                                <h4 class="card-title">Panduan</h4>
+                                <a href="/pengaturan/tambah-dokumen" class="btn btn-primary btn-round ml-auto"
+                                    data-toggle="modal" data-target="#tambahDokumen">
+                                    <i class="fa fa-plus"></i>
+                                    Tambah
+                                </a>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table id="tabel-dokumen" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Dokumen</th>
+                                            <th>Dokumen</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                        $no=1;
+                                        @endphp
+                                        @foreach ($dokumen as $item)
+                                        <tr class="text-center">
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $item->nama_dokumen }}</td>
+                                            <td>
+                                                @if($item->file_dokumen == NULL)
+
+                                                @else
+                                                <a href=" {{asset('storage/' . $item->file_dokumen)}}"
+                                                    target="_blank"><i class="fas fa-file-pdf fa-2x">
+                                                    </i>
+                                                </a>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <a href="dokumen/update/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalEditDokumen{{ $item->id }}"
+                                                    class="btn btn-warning btn-xs"><i class="fa fa-edit">
+                                                    </i> </a>
+                                                <a href="dokumen/destroy/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#modalHapusDokumen{{ $item->id }}"
+                                                    class="btn btn-danger btn-xs"><i class="fa fa-trash">
+                                                    </i> </a>
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {{-- pengumuman --}}
+                <div class="col-8">
                     <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-items-center">
                                 <h4 class="card-title">Pengumuman</h4>
-                                <a href="/manajemen-form/tambah-pengumuman" class="btn btn-primary btn-round ml-auto"
+                                <a href="/pengaturan/tambah-pengumuman" class="btn btn-primary btn-round ml-auto"
                                     data-toggle="modal" data-target="#tambahPengumuman">
                                     <i class="fa fa-plus"></i>
                                     Tambah
@@ -315,6 +378,104 @@
         </div>
     </div>
 </div>
+
+{{-- Tambah Dokumen--}}
+<div class="modal fade" id="tambahDokumen" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-open">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Tambah Panduan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="dokumen/tambah">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label>Nama Dokumen</label>
+                                <input type="text" class="form-control" name="nama_dokumen" id="nama_dokumen" required>
+                            </div>
+                            <div class="col">
+                                <label for="file" class="form-label">File Dokumen </label>
+                                <img class="img-preview img-fluid mb-3 col-sm-5" alt="">
+                                <input type="file" class="form-control picture" id="file_dokumen" name="file_dokumen">
+                                <span class="font-italic text-muted mt-1">ukuran file maksimal <span
+                                        class="text-danger">1024
+                                        KB</span> </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                            </i> Kembali</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{{-- Edit Dokumen--}}
+@foreach ($dokumen as $item)
+<div class="modal fade" id="modalEditDokumen{{ $item->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-open">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Perbarui Panduan</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="dokumen/{{ $item->id }}/update">
+                @csrf
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col">
+                                <label>Nama Dokumen</label>
+                                <input type="text" class="form-control" name="nama_dokumen" id="nama_dokumen"
+                                    value="{{ $item->nama_dokumen }}" required>
+                            </div>
+                            <div class="col">
+                                <label for="file" class="form-label">File Dokumen </label>
+                                <input type="hidden" name="oldFile" value="{{ $item->file_dokumen }}">
+                                <input type="file" class="form-control picture" id="file_dokumen" name="file_dokumen"
+                                    value="{{ $item->file_dokumen }}">
+                                <iframe src="{{asset('storage/' . $item->file_dokumen)}}" width="160"
+                                    height="140"></iframe>
+                                <span class="mt-1 font-italic text-muted">biarkan kolom kosong
+                                    jika tidak diganti | ukuran file maksimal <span class="text-danger">1024
+                                        KB</span> </span>
+                            </div>
+
+                        </div>
+                    </div>
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo">
+                            </i> Kembali</button>
+                        <button type="submit" class="btn btn-primary"><i class="fa fa-save"> </i> Simpan</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
 
 {{-- Tambah Pengumuman--}}
 <div class="modal fade" id="tambahPengumuman" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
@@ -768,6 +929,42 @@
 </div>
 @endforeach
 
+{{-- Hapus Panduan--}}
+@foreach ($dokumen as $d)
+<div class="modal fade" id="modalHapusDokumen{{ $d->id }}" tabindex="-1" role="dialog"
+    aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-open">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="exampleModalLongTitle">Hapus Data Dokumen</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <form method="POST" enctype="multipart/form-data" action="/dokumen/{{ $d->id }}/destroy">
+                @csrf
+                <div class="modal-body">
+
+                    <input type="hidden" value="{{ $d->id }}" name="id" required>
+
+                    <div class=" form-group">
+                        <h3>Apakah anda yakin menghapus data <span class="text-danger"> {{ $d->nama_dokumen }}
+                            </span>?</h3>
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-undo"></i>
+                        Close</button>
+                    <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> hapus</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+@endforeach
 
 
 {{-- VIEW pengumuman--}}
@@ -897,6 +1094,7 @@
     </div>
 </div>
 @endforeach
+
 @foreach ($pengumuman as $item)
 <div class="modal fade" id="viewSidangTA{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">
@@ -922,6 +1120,7 @@
     </div>
 </div>
 @endforeach
+
 @foreach ($pengumuman as $item)
 <div class="modal fade" id="viewBimbinganTA{{ $item->id }}" tabindex="-1" role="dialog"
     aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -1000,6 +1199,7 @@
     $(document).ready(function () { var table = $("#tabel-konsentrasi").DataTable({}); });
     $(document).ready(function () { var table = $("#tabel-akses").DataTable({}); });
     $(document).ready(function () { var table = $("#tabel-pengumuman").DataTable({}); });
+    $(document).ready(function () { var table = $("#tabel-dokumen").DataTable({}); });
     
 </script>
 

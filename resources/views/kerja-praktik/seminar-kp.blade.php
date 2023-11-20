@@ -321,7 +321,7 @@
                                                 WIB
                                             </td>
                                             <td>
-                                                <a href="seminar-kp/cetak-form/{{ $row->id }}"
+                                                <a href="seminar-kp/cetak-form/{{ $row->id }}" target="_blank"
                                                     class="btn btn-success btn-xs">
                                                     <i class="fas fa-print"></i>
                                                 </a>

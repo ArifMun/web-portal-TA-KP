@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Dokumen extends Model
 {
     use HasFactory;
+    public $timestamps = false;
     protected $table = "dokumen";
     protected $fillable = [
-        'nama_dokumen'
+        'nama_dokumen',
+        'file_dokumen'
     ];
 }

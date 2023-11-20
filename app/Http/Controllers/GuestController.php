@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Dosen;
+use App\Models\Dokumen;
 use App\Models\DaftarKP;
 use App\Models\DaftarTA;
 use App\Models\SidangTA;
@@ -38,6 +39,9 @@ class GuestController extends Controller
         $dataDaftarTA = [];
         $dataSidangTA = [];
 
+        $dokumen = Dokumen::get()->first();
+        // $panduan = $dokumen->
+
         foreach ($tahuns as $tahun) {
             $tahunAkademik[] = $tahun->tahun;
             $dataSeminarKP[] = $tahun->seminarkp()
@@ -72,7 +76,8 @@ class GuestController extends Controller
             'dataDaftarKP',
             'dataDaftarTA',
             'dataSidangTA',
-            'pengumuman'
+            'pengumuman',
+            'dokumen'
 
         ));
     }

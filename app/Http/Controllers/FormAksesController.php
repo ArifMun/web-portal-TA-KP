@@ -16,9 +16,9 @@ class FormAksesController extends Controller
 
         $existingData = FormAkses::first();
         if ($existingData) {
-            return \redirect('manajemen-form')->with('warning', 'Hanya Dapat Menampung Satu Data!');
+            return \redirect('pengaturan')->with('warning', 'Hanya Dapat Menampung Satu Data!');
         }
-        
+
         $validation = Validator::make(
             $request->all(),
             [
@@ -29,7 +29,7 @@ class FormAksesController extends Controller
         );
 
         if ($validation->fails()) {
-            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan!');
+            return \redirect('pengaturan')->with('warning', 'Data Tidak Tersimpan!');
         } else {
             $formakses = FormAkses::create([
                 'akses_kp' => $request->akses_kp,
@@ -37,7 +37,7 @@ class FormAksesController extends Controller
                 // 'tgl_tutup' => $request->tgl_tutup,
             ]);
 
-            return \redirect('manajemen-form')->with('success', 'Akses Daftar KP Berhasil Di buat');
+            return \redirect('pengaturan')->with('success', 'Akses Daftar KP Berhasil Di buat');
         }
     }
 
@@ -62,6 +62,6 @@ class FormAksesController extends Controller
 
         $formakses = FormAkses::find($id);
         $formakses->delete();
-        return \redirect('manajemen-form')->with('success', 'Akses Berhasil Dihapus!');
+        return \redirect('pengaturan')->with('success', 'Akses Berhasil Dihapus!');
     }
 }
