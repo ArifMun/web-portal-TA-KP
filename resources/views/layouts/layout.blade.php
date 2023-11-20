@@ -77,7 +77,7 @@
 
         @yield('content')
 
-        @include('layouts.footer')
+        {{-- @include('layouts.footer') --}}
     </div>
 
     <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
@@ -109,50 +109,6 @@
     
     </script>
 
-    {{-- <script>
-        var multipleLineChart = document.getElementById('multipleLineChart').getContext('2d');
-        // var total = {{ Js::from($datakp) }};
-        var myMultipleLineChart = new Chart(multipleLineChart, {
-			type: 'line',
-			data: {
-				labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-				datasets: [{
-					label: "2021",
-					borderColor: "#1d7af3",
-					pointBorderColor: "#FFF",
-					pointBackgroundColor: "#1d7af3",
-					pointBorderWidth: 2,
-					pointHoverRadius: 4,
-					pointHoverBorderWidth: 1,
-					pointRadius: 4,
-					backgroundColor: 'transparent',
-					fill: true,
-					borderWidth: 2,
-					data: [{{ $datakp}}]
-				}]
-			},
-			options : {
-				responsive: true, 
-				maintainAspectRatio: false,
-				legend: {
-					position: 'top',
-				},
-				tooltips: {
-					bodySpacing: 4,
-					mode:"nearest",
-					intersect: 0,
-					position:"nearest",
-					xPadding:10,
-					yPadding:10,
-					caretPadding:10
-				},
-				layout:{
-					padding:{left:15,right:15,top:15,bottom:15}
-				}
-			}
-		});
-
-    </script> --}}
 </body>
 
 </html>

@@ -72,17 +72,6 @@ class KerjaPraktikController extends Controller
         ));
     }
 
-    // public function autofill($id)
-    // {
-    //     $data = Mahasiswa::with('biodata')->where('id', $id)->first();
-    //     return \response()->json($data);
-    // }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //

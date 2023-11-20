@@ -25,6 +25,7 @@ class SeminarKP extends Model
         'stts_seminar',
         'judul',
         'tempat',
+        'tempat_seminar',
         'thn_akademik_id',
         'ket_selesai'
     ];

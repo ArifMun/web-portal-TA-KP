@@ -205,14 +205,14 @@
                                             <td>{{ $no++ }}</td>
                                             {{-- <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td> --}}
-                                            <td class="text-capitalize">
+                                            <td class="text-capitalize text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td class="text-capitalize text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
@@ -222,7 +222,7 @@
                                             <td class="text-capitalize">
                                                 {{ $item->ganti_pembimbing }}
                                             </td>
-                                            <td>
+                                            <td class="text-capitalize text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->pembimbing_lama ?
                                                 $k->biodata->nama :''
@@ -318,15 +318,16 @@
                                         <tr align="center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->mahasiswa->biodata->no_induk }}</td>
-                                            <td class="text-capitalize">{{ $row->mahasiswa->biodata->nama }}</td>
-                                            <td class="text-capitalize">
+                                            <td class="text-capitalize text-left">{{ $row->mahasiswa->biodata->nama }}
+                                            </td>
+                                            <td class="text-capitalize text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td class="text-capitalize text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
@@ -336,7 +337,7 @@
                                             <td class="text-capitalize">
                                                 {{ $row->ganti_pembimbing }}
                                             </td>
-                                            <td>
+                                            <td class="text-capitalize text-left">
                                                 @foreach ($dosen as $kp)
                                                 {{ $kp->id == $row->pembimbing_lama ?
                                                 $kp->biodata->nama :''

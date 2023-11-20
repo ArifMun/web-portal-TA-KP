@@ -12,8 +12,10 @@
     body {
         display: flex;
         justify-content: center;
-        /* margin-top: 100px; */
         border: 1px solid black;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
     }
 
     img {
@@ -23,7 +25,6 @@
 
     .kop-judul p {
         line-height: 1.5;
-        /* font-weight: bold; */
         margin-top: -10px;
         font-size: 12px;
         margin-right: 100px
@@ -34,19 +35,13 @@
         font-weight: bold;
     }
 
-    footer {
-        position: static;
-        margin-left: 450px;
-        margin-top: -30px;
-
-    }
 
     .content {
         margin-top: 90px;
     }
 
     header {
-        position: static;
+        position: relative;
     }
 </style>
 {{-- onload="window.print();" --}}
@@ -110,7 +105,10 @@
 
     <!--</div>-->
 
-    <table style="width: 700px; margin:auto; border-collapse: collapse; border:1px solid black" border="1">
+
+
+    <table style="width: 700px;position: relative; margin:auto; border-collapse: collapse; border:1px solid black;"
+        border="1">
         <thead style="font-weight: bold;">
             <th align="center">NO</th>
             <th align="center">Hari / Tgl</th>
@@ -132,7 +130,8 @@
             <td class="text-left">
                 @php
                 $text = $row->catatan;
-                $chunkedText = str_split($text, 40); // Memecah teks menjadi bagian-bagian dengan panjang 60 karakter
+                $chunkedText = str_split($text, 40); // Memecah teks menjadi bagian-bagian dengan panjang 60
+
                 @endphp
 
                 @foreach ($chunkedText as $chunk)
@@ -144,7 +143,8 @@
         </tr>
         @endforeach
     </table>
-    <footer>
+
+    <footer style="margin-left: 450px;">
         <table style="width: 300px;">
             <p align="left">Purworejo, </p>
             <p align="left">Dosen Pembimbing Kerja Praktik</p><br><br>

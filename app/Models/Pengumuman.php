@@ -13,6 +13,7 @@ class Pengumuman extends Model
     protected $table = 'pengumuman';
 
     protected $fillable = [
+        'cttn_utama',
         'cttn_daftar_kp',
         'cttn_bimbingan_kp',
         'cttn_seminar_kp',

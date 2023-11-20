@@ -192,18 +192,26 @@
                                 <table id="tabel-pengumuman" class="display table table-striped table-hover">
                                     <thead>
                                         <tr>
-                                            <th>Menu Daftar KP</th>
-                                            <th>Menu Seminar KP</th>
-                                            <th>Menu Bimbingan KP</th>
-                                            <th>Menu Daftar TA</th>
-                                            <th>Menu Sidang TA</th>
-                                            <th>Menu Bimbingan TA</th>
+                                            <th>Pengumuman Halaman Home</th>
+                                            <th>Pengumuman Daftar KP</th>
+                                            <th>Pengumuman Seminar KP</th>
+                                            <th>Pengumuman Bimbingan KP</th>
+                                            <th>Pengumuman Daftar TA</th>
+                                            <th>Pengumuman Sidang TA</th>
+                                            <th>Pengumuman Bimbingan TA</th>
                                             <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($pengumuman as $item)
                                         <tr align="center">
+                                            <td>
+                                                <a href="manajemen-form/view-home/{{ $item->id }}" data-toggle="modal"
+                                                    data-target="#viewHome{{ $item->id }}"
+                                                    class="btn btn-success btn-xs"><i class="fa fa-eye">
+                                                    </i>
+                                                </a>
+                                            </td>
                                             <td>
                                                 <a href="manajemen-form/view-daftarkp/{{ $item->id }}"
                                                     data-toggle="modal" data-target="#viewDaftarKP{{ $item->id }}"
@@ -327,39 +335,45 @@
                     <div class="form-group">
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Daftar KP</label>
+                                <label>Pengumuman Halaman Home</label>
+                                <textarea name="cttn_utama" class="form-control ckeditor" id="ckedtor"></textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Pengumuman Daftar KP</label>
                                 <textarea name="cttn_daftar_kp" class="form-control ckeditor" id="ckedtor"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Seminar KP</label>
+                                <label>Pengumuman Seminar KP</label>
                                 <textarea name="cttn_seminar_kp" class="form-control ckeditor" id="ckedtor"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Bimbingan KP</label>
+                                <label>Pengumuman Bimbingan KP</label>
                                 <textarea name="cttn_bimbingan_kp" class="form-control ckeditor"
                                     id="ckedtor"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Daftar TA</label>
+                                <label>Pengumuman Daftar TA</label>
                                 <textarea name="cttn_daftar_ta" class="form-control ckeditor" id="ckedtor"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Bimbingan TA</label>
+                                <label>Pengumuman Bimbingan TA</label>
                                 <textarea name="cttn_bimbingan_ta" class="form-control ckeditor"
                                     id="ckedtor"></textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Sidang TA</label>
+                                <label>Pengumuman Sidang TA</label>
                                 <textarea name="cttn_sidang_ta" class="form-control ckeditor" id="ckedtor"></textarea>
                             </div>
 
@@ -398,42 +412,49 @@
                     <div class="form-group">
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Daftar KP</label>
+                                <label>Pengumuman Halaman Home</label>
+                                <textarea name="cttn_utama" class="form-control ckeditor"
+                                    id="ckedtor">{!! $item->cttn_utama !!}</textarea>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label>Pengumuman Daftar KP</label>
                                 <textarea name="cttn_daftar_kp" class="form-control ckeditor"
                                     id="ckedtor">{!! $item->cttn_daftar_kp !!}</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Seminar KP</label>
+                                <label>Pengumuman Seminar KP</label>
                                 <textarea name="cttn_seminar_kp" class="form-control ckeditor"
                                     id="ckedtor">{!! $item->cttn_seminar_kp !!}</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Bimbingan KP</label>
+                                <label>Pengumuman Bimbingan KP</label>
                                 <textarea name="cttn_bimbingan_kp" class="form-control ckeditor"
                                     id="ckedtor">{!! $item->cttn_bimbingan_kp !!}</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Daftar TA</label>
+                                <label>Pengumuman Daftar TA</label>
                                 <textarea name="cttn_daftar_ta" class="form-control ckeditor"
                                     id="ckedtor">{!! $item->cttn_daftar_ta !!}</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Bimbingan TA</label>
+                                <label>Pengumuman Bimbingan TA</label>
                                 <textarea name="cttn_bimbingan_ta" class="form-control ckeditor"
                                     id="ckedtor">{!! $item->cttn_bimbingan_ta !!}</textarea>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col">
-                                <label>Form Sidang TA</label>
+                                <label>Pengumuman Sidang TA</label>
                                 <textarea name="cttn_sidang_ta" class="form-control ckeditor"
                                     id="ckedtor">{!! $item->cttn_sidang_ta !!}</textarea>
                             </div>
@@ -750,6 +771,31 @@
 
 
 {{-- VIEW pengumuman--}}
+@foreach ($pengumuman as $item)
+<div class="modal fade" id="viewHome{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLongTitle">Pengumuman Halaman Home</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col">
+                            {!! $item->cttn_utama !!}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@endforeach
 @foreach ($pengumuman as $item)
 <div class="modal fade" id="viewDaftarKP{{ $item->id }}" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"
     aria-hidden="true">

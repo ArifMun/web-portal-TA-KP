@@ -201,14 +201,14 @@
                                             <td>{{ $no++ }}</td>
                                             {{-- <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td> --}}
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
@@ -218,14 +218,14 @@
                                             <td>
                                                 {{ $item->ganti_pembimbing }}
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $kp)
                                                 {{ $kp->id == $item->pembimbing_lama_1 ?
                                                 $kp->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $kp)
                                                 {{ $kp->id == $item->pembimbing_lama_2 ?
                                                 $kp->biodata->nama :''
@@ -263,7 +263,7 @@
                                             </td>
                                             <td>{{ $item->tahunakademik->tahun }} </td>
                                             <td>{{ $item->konsentrasi }}</td>
-                                            <td>{{ $item->created_at->locale('id')->translatedformat('l,dFY, H:i') }}
+                                            <td>{{ $item->created_at->locale('id')->translatedformat('l, d F Y, H:i') }}
                                             </td>
                                             <td>
                                                 @if ($item->stts_pengajuan == 'diterima')
@@ -293,21 +293,22 @@
                                         @endif
                                     </tbody>
 
+                                    {{-- User level 2 --}}
                                     @elseif(Auth::user()->level==2)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($daftarta as $row)
                                         <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $row->mahasiswa->biodata->nama }}</td>
-                                            <td>
+                                            <td class="text-left">{{ $row->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
@@ -317,14 +318,14 @@
                                             <td>
                                                 {{ $row->ganti_pembimbing }}
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $kp)
                                                 {{ $kp->id == $row->pembimbing_lama_1 ?
                                                 $kp->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $kp)
                                                 {{ $kp->id == $row->pembimbing_lama_2 ?
                                                 $kp->biodata->nama :''
@@ -366,7 +367,7 @@
                                             </td>
                                             <td>{{ $row->tahunakademik->tahun }}</td>
                                             <td>{{ $row->konsentrasi }}</td>
-                                            <td>{{ $row->created_at->locale('id')->translatedformat('l,dFY, H:i') }}
+                                            <td>{{ $row->created_at->locale('id')->translatedformat('l, d F Y, H:i') }}
                                             </td>
                                             <td>
                                                 {{-- <a href="kerja-praktik/view-slip/{{ $row->id }}"

@@ -148,6 +148,7 @@
                                         </tr>
                                     </thead>
 
+                                    {{-- User Level 0 --}}
                                     @if (Auth::user()->level==0)
                                     <tbody>
                                         @if (empty(Auth::user()->biodata->mahasiswa->daftarta->sidangta))
@@ -158,21 +159,21 @@
                                             {{-- <td>{{ $item->daftarta->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->daftarta->mahasiswa->biodata->nama }}</td> --}}
 
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_penguji ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarta->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarta->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -247,7 +248,8 @@
                                             {{-- <td>{{ $item->judul }}</td> --}}
                                             <td>{{ $item->tempat }}</td>
                                             <td>{{
-                                                Carbon\Carbon::parse($item->tgl_sidang)->locale('id')->translatedformat('l,d
+                                                Carbon\Carbon::parse($item->tgl_sidang)->locale('id')->translatedformat('l,
+                                                d
                                                 F
                                                 Y')}}
                                             </td>
@@ -286,23 +288,23 @@
                                         @endif
                                     </tbody>
 
-                                    {{-- All- --}}
+                                    {{-- User level 2 --}}
                                     @elseif(Auth::user()->level ==2)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($s_list as $row)
                                         <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarta->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $row->daftarta->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-left">{{ $row->daftarta->mahasiswa->biodata->nama }}</td>
 
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_penguji ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $d)
                                                 {{ $d->id == $row->daftarta->d_pembimbing_2 ?
                                                 $d->biodata->nama :''
@@ -310,7 +312,7 @@
                                                 @endforeach
                                             </td>
 
-                                            <td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $d)
                                                 {{ $d->id == $row->daftarta->d_pembimbing_1 ?
                                                 $d->biodata->nama :''
@@ -388,7 +390,8 @@
                                             {{-- <td>{{ $row->judul }}</td> --}}
                                             <td>{{ $row->tempat }}</td>
                                             <td>{{
-                                                Carbon\Carbon::parse($row->tgl_sidang)->locale('id')->translatedformat('l,d
+                                                Carbon\Carbon::parse($row->tgl_sidang)->locale('id')->translatedformat('l,
+                                                d
                                                 F
                                                 Y')}}
                                             </td>

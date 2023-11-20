@@ -150,8 +150,8 @@
                                         <tr align="center" class="text-capitalize">@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
-                                            <td>{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td>
+                                            <td class="text-left">{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->daftarkp->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -246,8 +246,8 @@
                                         <tr align="center" class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->no_induk }}</td>
-                                            <td>{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>
-                                            <td>
+                                            <td class="text-left">{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>
+                                            <td class="text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->daftarkp->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
@@ -490,8 +490,17 @@
                     </div>
 
                     <div class="form-group ">
-                        <label class="control-label">Tempat Kerja Praktik </label>
-                        <input type="text" class="form-control" name="tempat" value="{{ old('tempat') }}">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Tempat Kerja Praktik </label>
+                                <input type="text" class="form-control" name="tempat" value="{{ old('tempat') }}">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Tempat Seminar </label>
+                                <input type="text" class="form-control" name="tempat_seminar"
+                                    value="{{ old('tempat_seminar') }}">
+                            </div>
+                        </div>
                     </div>
 
                     <div class="modal-footer required">
@@ -545,11 +554,6 @@
                                 <input type="text" class="form-control" size="1" name="daftarkp_id" value="{{ $item->daftarkp->mahasiswa->biodata->no_induk }} - {{
                                     $item->daftarkp->mahasiswa->biodata->nama }}" readonly>
                                 <input type="hidden" size="1" name="daftarkp_id" value="{{ $item->daftarkp_id }}">
-                                {{-- <select class="form-control" name="daftarkp_id" id="daftarkp_id">
-                                    <option value="{{ $item->daftarkp_id }}">{{
-                                        $item->daftarkp->mahasiswa->biodata->no_induk }} - {{
-                                        $item->daftarkp->mahasiswa->biodata->nama }}</option>
-                                </select> --}}
                             </div>
                             <div class="col">
                                 <label class="control-label">Tahun Akademik </label>
@@ -642,9 +646,19 @@
                             </div>
                         </div>
                     </div>
+
                     <div class="form-group required">
-                        <label class="control-label">Tempat Kerja Praktik </label>
-                        <input type="text" class="form-control" name="tempat" value="{{ $item->tempat }}">
+                        <div class="row">
+                            <div class="col">
+                                <label class="control-label">Tempat Kerja Praktik </label>
+                                <input type="text" class="form-control" name="tempat" value="{{ $item->tempat }}">
+                            </div>
+                            <div class="col">
+                                <label class="control-label">Tempat Seminar </label>
+                                <input type="text" class="form-control" name="tempat_seminar"
+                                    value="{{ $item->tempat_seminar }}">
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer required">
                         <div class="col">

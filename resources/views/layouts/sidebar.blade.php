@@ -201,15 +201,27 @@
                     </a>
                 </li>
                 @endif
-                <li class="nav-item mt-5 ml-2 mr-2">
-                    {{-- <div class="divider"></div> --}}
-                    <h4 class="text-dark text-center font-weight-bold">Teknologi Informasi Universitas Muhammadiyah
-                        Purworejo</h4>
-                    {{-- <p class="text-dark text-center font-weight-normal">NSPN : Terakreditasi Baik</p> --}}
-                    <div class="divider "></div>
-                    <h6 class="text-dark font-weight-normal">
-                        Jl. Taman Siswa II, Plaosan, Purworejo, Kec. Purworejo, Kabupaten Purworejo, Jawa Tengah 54151
-                    </h6>
+                <li class="nav-item mt-3">
+                    <a>
+                        <p class="text-center text-dark">Teknologi Informasi <br> Universitas Muhammadiyah <br>
+                            Purworejo</p>
+                    </a>
+
+                </li>
+                <li class="nav-item">
+                    <a>
+                        <div class="divider "></div>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a>
+                        <p class="text-dark">
+                            Jl. Taman Siswa II, Plaosan, <br>Purworejo,Kec. Purworejo,<br> Kabupaten Purworejo, <br>Jawa
+                            Tengah
+                            54151
+                        </p>
+                    </a>
+
                 </li>
             </ul>
         </div>

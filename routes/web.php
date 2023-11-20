@@ -23,8 +23,6 @@ use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KerjaPraktikController;
 use App\Http\Controllers\ManajemenFormController;
 use App\Http\Controllers\UserRegistrasiController;
-use App\Models\DaftarTA;
-use App\Models\SeminarKP;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +35,15 @@ use App\Models\SeminarKP;
 |
 */
 
-Route::get('/', [AuthController::class, 'index'])->name('login-page');
+Route::get('/login', [AuthController::class, 'index'])->name('login-page');
 Route::post('login-process', [AuthController::class, 'login_process']);
-Route::get('logout', [AuthController::class, 'logout']);
-Route::get('/home/jadwal-sidang', [GuestController::class, 'index']);
-Route::get('/home/login', [GuestController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/', [GuestController::class, 'index']);
+Route::get('/kerja-praktik/dosen-pembimbing', [GuestController::class, 'daftar_pembimbing_kp']);
+Route::get('/kerja-praktik/jadwal-seminar', [GuestController::class, 'jadwal_seminar_kp']);
+// Route::get('/home/login', [GuestController::class, 'login']);
+Route::get('/tugas-akhir/dosen-pembimbing', [GuestController::class, 'daftar_pembimbing_ta']);
+Route::get('/tugas-akhir/jadwal-sidang', [GuestController::class, 'jadwal_sidang']);
 
 // Route::get('register-page', [UserRegistrasiController::class, 'index'])->name('register-page');
 Route::get('user-registrasi', [UserRegistrasiController::class, 'create'])->name('user-registrasi');
