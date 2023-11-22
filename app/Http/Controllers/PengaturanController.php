@@ -20,7 +20,7 @@ class PengaturanController extends Controller
         $formAkses   = FormAkses::all()->sortDesc();
         $toggle      = FormAkses::find(1);
         $pengumuman  = Pengumuman::all();
-        $dokumen     = Dokumen::all();
+        $dokumen     = Dokumen::all()->sortDesc();
         // $aktifValue = $toggle->akses == 1 ? true : false;
 
         return \view(

@@ -201,28 +201,28 @@
                                         @php $no=1; @endphp
                                         @if (!empty(Auth::user()->biodata->mahasiswa->daftarkp))
                                         @foreach ($mhskps as $item)
-                                        <tr align="center">
+                                        <tr class="text-capitalize text-center">
                                             <td>{{ $no++ }}</td>
                                             {{-- <td>{{ $item->mahasiswa->biodata->no_induk}}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td> --}}
-                                            <td class="text-capitalize text-left">
+                                            <td class=" text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize text-left">
+                                            <td class=" text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td class="">
                                                 {{ $item->ganti_pembimbing }}
                                             </td>
-                                            <td class="text-capitalize text-left">
+                                            <td class=" text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $item->pembimbing_lama ?
                                                 $k->biodata->nama :''
@@ -232,28 +232,25 @@
 
                                             @if ($item->stts_pengajuan=='tertunda')
                                             <td>
-                                                <span
-                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
+                                                <span class="font-weight-bold text-light  badge badge-warning">
                                                     {{
                                                     $item->stts_pengajuan }}</span>
                                             </td>
                                             @elseif($item->stts_pengajuan=='diterima')
                                             <td>
-                                                <span
-                                                    class="font-weight-bold text-light text-capitalize badge badge-success ">
+                                                <span class="font-weight-bold text-light  badge badge-success ">
                                                     {{
                                                     $item->stts_pengajuan }}</span>
                                             </td>
                                             @else
                                             <td>
-                                                <span
-                                                    class="badge badge-danger text-light font-weight-bold text-capitalize">
+                                                <span class="badge badge-danger text-light font-weight-bold ">
                                                     {{
                                                     $item->stts_pengajuan }}</span>
                                             </td>
                                             @endif
 
-                                            <td class="text-capitalize">{{ $item->stts_kp }}</td>
+                                            <td class="">{{ $item->stts_kp }}</td>
                                             <td>{{ $item->semester }}</td>
                                             <td>
                                                 <a href="kerja-praktik/view-judul/{{ $item->id }}" data-toggle="modal"
@@ -315,29 +312,29 @@
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($daftarkp as $row)
                                         {{-- {{ $row->mahasiswa->biodata->no_induk }} --}}
-                                        <tr align="center">
+                                        <tr class="text-capitalize text-center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->mahasiswa->biodata->no_induk }}</td>
-                                            <td class="text-capitalize text-left">{{ $row->mahasiswa->biodata->nama }}
+                                            <td class=" text-left">{{ $row->mahasiswa->biodata->nama }}
                                             </td>
-                                            <td class="text-capitalize text-left">
+                                            <td class=" text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_1 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize text-left">
+                                            <td class=" text-left">
                                                 @foreach ($dosen as $k)
                                                 {{ $k->id == $row->d_pembimbing_2 ?
                                                 $k->biodata->nama :''
                                                 }}
                                                 @endforeach
                                             </td>
-                                            <td class="text-capitalize">
+                                            <td class="">
                                                 {{ $row->ganti_pembimbing }}
                                             </td>
-                                            <td class="text-capitalize text-left">
+                                            <td class=" text-left">
                                                 @foreach ($dosen as $kp)
                                                 {{ $kp->id == $row->pembimbing_lama ?
                                                 $kp->biodata->nama :''
@@ -348,7 +345,7 @@
                                             <td>
                                                 <a href="/update-status-kp/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalUpdateStatus{{ $row->id }}"
-                                                    class="font-weight-bold text-light text-capitalize badge badge-warning">
+                                                    class="font-weight-bold text-light  badge badge-warning">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
@@ -356,7 +353,7 @@
                                             <td>
                                                 <a href="/update-status-kp/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalUpdateStatus{{ $row->id }}"
-                                                    class="font-weight-bold text-light text-capitalize badge badge-success">
+                                                    class="font-weight-bold text-light  badge badge-success">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
@@ -364,12 +361,12 @@
                                             <td>
                                                 <a href="update-status-kp/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#modalUpdateStatus{{ $row->id }}"
-                                                    class="font-weight-bold text-light text-capitalize badge badge-danger">
+                                                    class="font-weight-bold text-light  badge badge-danger">
                                                     {{
                                                     $row->stts_pengajuan }}</a>
                                             </td>
                                             @endif
-                                            <td class="text-capitalize">{{ $row->stts_kp }}</td>
+                                            <td class="">{{ $row->stts_kp }}</td>
                                             <td>{{ $row->semester }}</td>
                                             <td><a href="kerja-praktik/view-judul/{{ $row->id }}" data-toggle="modal"
                                                     data-target="#viewJudul{{ $row->id }}"
