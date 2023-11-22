@@ -147,7 +147,7 @@
                                         @if (empty(Auth::user()->biodata->mahasiswa->daftarkp->seminarkp))
                                         @foreach ($seminarmhs as $item)
                                         {{-- {{ $item }} --}}
-                                        <tr align="center" class="text-capitalize">@php $no=1; @endphp
+                                        <tr class="text-capitalize text-center">@php $no=1; @endphp
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->daftarkp->mahasiswa->biodata->no_induk}}</td>
                                             <td class="text-left">{{ $item->daftarkp->mahasiswa->biodata->nama }}</td>
@@ -240,10 +240,10 @@
                                     </tbody>
 
                                     {{-- All- --}}
-                                    @elseif(Auth::user()->level !=0)
+                                    @elseif(Auth::user()->level !=2)
                                     <tbody> @php $no=1; @endphp
                                         @foreach ($seminarkp as $row)
-                                        <tr align="center" class="text-capitalize">
+                                        <tr class="text-capitalize text-center">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $row->daftarkp->mahasiswa->biodata->no_induk }}</td>
                                             <td class="text-left">{{ $row->daftarkp->mahasiswa->biodata->nama }}</td>

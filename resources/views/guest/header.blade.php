@@ -9,6 +9,12 @@
                         <b>HOME</b>
                     </a>
                 </li>
+                {{-- <li class="nav-link dropdown hidden-caret">
+                    <a href="download-panduan" class="dropdown-toggle text-white" style="text-decoration:none"
+                        data-toggle="" aria-expanded="false">
+                        <b>DOWNLOAD PANDUAN</b>
+                    </a>
+                </li> --}}
                 <li class="nav-link dropdown hidden-caret">
                     <a class="dropdown-toggle text-white" style="text-decoration:none" data-toggle="dropdown"
                         href="kerja-praktik/" aria-expanded="false">

@@ -39,7 +39,7 @@ class GuestController extends Controller
         $dataDaftarTA = [];
         $dataSidangTA = [];
 
-        $dokumen = Dokumen::get()->first();
+        $dokumen = Dokumen::all();
         // $panduan = $dokumen->
 
         foreach ($tahuns as $tahun) {

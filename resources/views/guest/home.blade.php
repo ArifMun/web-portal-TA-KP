@@ -38,14 +38,6 @@
                     <a>
                         <span class="divider"></span>
                     </a>
-                    <a href="{{asset('storage/' . $dokumen->file_dokumen)}}" target="_blank">
-                        <span style="margin: -30px 10 0 0">{{ $dokumen->nama_dokumen }} </span><i
-                            class="fas fa-file-pdf fa-2x">
-                        </i>
-                    </a>
-                    <a class="text-decoration-none">
-                        <span class="divider mt-1"></span>
-                    </a>
                     <a href="">
                         <span style="margin: -10px 0 0 0px">{!! $pengumuman->cttn_utama !!}</span>
                     </a>
@@ -144,11 +136,37 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Kerja Praktik</div>
+                            <ul class="nav nav-pills nav-secondary" id="pills-tab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="pills-home-tab" data-toggle="pill"
+                                        href="#kerja-praktik" role="tab" aria-controls="pills-home"
+                                        aria-selected="true">KERJA PRAKTIK</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="pills-profile-tab" data-toggle="pill" href="#tugas-akhir"
+                                        role="tab" aria-controls="pills-profile" aria-selected="false">TUGAS AKHIR</a>
+                                </li>
+                            </ul>
                         </div>
-                        <div class="card-body">
-                            <div class="chart-container">
-                                <canvas id="multipleLineChart"></canvas>
+                        {{-- <div class="card-header">
+                            <div class="card-title">Kerja Praktik</div>
+                        </div> --}}
+                        <div class="tab-content mt-2 mb-3" id="pills-tabContent">
+                            <div class="tab-pane fade show active" id="kerja-praktik" role="tabpanel"
+                                aria-labelledby="pills-home-tab">
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="multipleLineChart"></canvas>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade show " id="tugas-akhir" role="tabpanel"
+                                aria-labelledby="pills-home-tab">
+                                <div class="card-body">
+                                    <div class="chart-container">
+                                        <canvas id="multipleLineChartTA"></canvas>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -156,12 +174,46 @@
                 <div class="col-md-6">
                     <div class="card">
                         <div class="card-header">
-                            <div class="card-title">Tugas Akhir</div>
+                            <div class="card-title">Buku Panduan</div>
                         </div>
                         <div class="card-body">
-                            <div class="chart-container">
-                                <canvas id="multipleLineChartTA"></canvas>
+                            <div class="table-responsive">
+                                <table id="tabel-dokumen" class="display table table-striped table-hover">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>Nama Dokumen</th>
+                                            <th>Dokumen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @php
+                                        $no=1;
+                                        @endphp
+                                        @foreach ($dokumen as $item)
+                                        <tr class="text-center">
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $item->nama_dokumen }}</td>
+                                            <td>
+                                                @if($item->file_dokumen == NULL)
+
+                                                @else
+                                                <a href=" {{asset('storage/' . $item->file_dokumen)}}"
+                                                    target="_blank"><i class="fas fa-file-pdf fa-2x">
+                                                    </i>
+                                                </a>
+                                                @endif
+                                            </td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
+                            {{-- <div class="card-body">
+                                <div class="chart-container">
+                                    <canvas id="multipleLineChartTA"></canvas>
+                                </div>
+                            </div> --}}
                         </div>
                     </div>
                 </div>
@@ -169,10 +221,15 @@
         </div>
 
     </div>
-    <script src="/assets/js/plugin/chart.js/chart.min.js">
-    </script>
-    <script>
-        var multipleLineChart = document.getElementById('multipleLineChart').getContext('2d');
+</div>
+<script src="/assets/js/plugin/chart.js/chart.min.js">
+</script>
+<script src="/assets/js/core/jquery.3.2.1.min.js"></script>
+<script>
+    $(document).ready(function () { var table = $("#tabel-dokumen").DataTable({}); });
+</script>
+<script>
+    var multipleLineChart = document.getElementById('multipleLineChart').getContext('2d');
         var tahunAkademik = {!! json_encode($tahunAkademik) !!};
         var dataSeminarKP = {!! json_encode($dataSeminarKP) !!};
         var dataDaftarKP  = {!! json_encode($dataDaftarKP) !!};
@@ -230,9 +287,9 @@
 			}
 		});
 
-    </script>
-    <script>
-        var multipleLineChart = document.getElementById('multipleLineChartTA').getContext('2d');
+</script>
+<script>
+    var multipleLineChart = document.getElementById('multipleLineChartTA').getContext('2d');
         var tahunAkademik = {!! json_encode($tahunAkademik) !!};
         var dataSidangTA  = {!! json_encode($dataSidangTA) !!};
         var dataDaftarTA  = {!! json_encode($dataDaftarTA) !!};
@@ -290,5 +347,5 @@
 			}
 		});
 
-    </script>
-    @endsection
+</script>
+@endsection
