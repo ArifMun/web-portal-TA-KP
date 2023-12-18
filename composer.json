@@ -20,7 +20,8 @@
         "nesbot/carbon": "^2.68",
         "phpoffice/phpspreadsheet": "^1.12",
         "realrashid/sweet-alert": "^6.0",
-        "tinymce/tinymce": "^6.4"
+        "tinymce/tinymce": "^6.4",
+        "twilio/sdk": "^7.12"
     },
     "require-dev": {
         "facade/ignition": "^2.5",

@@ -74,8 +74,14 @@ class RegistrasiController extends Controller
                 ->withErrors($validation);
         } else {
 
-            $input = $request->input('keahlian');
-            $string = \implode(',', $input);
+            $position = $request->jabatan;
+            if ($position == 'mahasiswa' || $position == 'TU' || $position == 'kaprodi') {
+                $string = \null;
+            } elseif ($position == 'dosen') {
+                $input = $request->input('keahlian');
+                $string = \implode(',', $input);
+            }
+
             $biodata = Biodata::create([
                 'nama'          => $request->nama,
                 'email'         => $request->email,
