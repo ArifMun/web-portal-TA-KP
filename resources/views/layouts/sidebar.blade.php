@@ -20,7 +20,7 @@
 
                 <li class="nav-item {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') 
                     || Request()->is('bimbingan-kp*')|| Request()->is('data-kp*') ? 'active' : '' }}">
-                    <a data-toggle="collapse" href="#base">
+                    <a data-toggle="collapse" href="#kp">
                         <i class="fas fa-user"></i>
                         @if (UserCheck::levelMhs())
                         <p>Kerja Praktik</p>
@@ -35,12 +35,12 @@
                         @endif
                     </a>
                     <div class="collapse {{ Request()->is('kerja-praktik*') || Request()->is('seminar-kp*') 
-                    || Request()->is('bimbingan-kp*') || Request()->is('data-kp*') ? 'show' : '' }}" id="base">
+                    || Request()->is('bimbingan-kp*') || Request()->is('data-kp*') ? 'show' : '' }}" id="kp">
                         <ul class="nav nav-collapse">
 
                             @if (UserCheck::userExceptDosen())
                             <li class="nav-item {{ Request()->is('kerja-praktik')? 'active' : '' }}">
-                                <a href="kerja-praktik">
+                                <a href="/kerja-praktik">
                                     @if (Auth::user()->level==0)
                                     <span class="sub-item">Daftar KP</span>
                                     @else
@@ -65,7 +65,7 @@
                             @if (UserCheck::userExceptDosen())
                             @if (Auth::user()->level!=0)
                             <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
-                                <a href="seminar-kp">
+                                <a href="/seminar-kp">
                                     <span class="sub-item">Pendaftar Seminar KP</span>
                                     @if (!empty(Notification::CountSeminar()))
                                     <span class="badge badge-warning badge-count">{{
@@ -76,7 +76,7 @@
 
                             @elseif(UserCheck::checkBimbinganKP())
                             <li class="nav-item {{ Request()->is('seminar-kp')? 'active' : '' }}">
-                                <a href="seminar-kp">
+                                <a href="/seminar-kp">
                                     <span class="sub-item">Daftar Seminar KP</span>
                                 </a>
                             </li>
@@ -96,7 +96,7 @@
                 @if (UserCheck::checkSeminarKP()||Auth::user()->level ==1)
                 <li class="nav-item {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') || 
                     Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'active' : '' }}">
-                    <a data-toggle="collapse" href="#forms">
+                    <a data-toggle="collapse" href="#ta">
                         <i class="fas fa-user-graduate"></i>
                         @if (UserCheck::levelMhs())
                         <p>Tugas Akhir</p>
@@ -111,7 +111,7 @@
                         @endif
                     </a>
                     <div class="collapse {{ Request()->is('daftar-ta*') || Request()->is('sidang-ta*') ||
-                        Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'show' : '' }}" id="forms">
+                        Request()->is('bimbingan-ta*') || Request()->is('data-ta*') ? 'show' : '' }}" id="ta">
                         <ul class="nav nav-collapse">
 
                             @if (UserCheck::userExceptDosen())
@@ -195,21 +195,33 @@
                 </li>
 
                 <li class="nav-item {{ Request()->is('manajemen-form')? 'active' : '' }}">
-                    <a href="manajemen-form">
+                    <a href="pengaturan">
                         <i class="fas fa-cog"></i>
                         <p>Pengaturan</p>
                     </a>
                 </li>
                 @endif
-                <li class="nav-item mt-5 ml-2 mr-2">
-                    {{-- <div class="divider"></div> --}}
-                    <h4 class="text-dark text-center font-weight-bold">Teknologi Informasi Universitas Muhammadiyah
-                        Purworejo</h4>
-                    {{-- <p class="text-dark text-center font-weight-normal">NSPN : Terakreditasi Baik</p> --}}
-                    <div class="divider "></div>
-                    <h6 class="text-dark font-weight-normal">
-                        Jl. Taman Siswa II, Plaosan, Purworejo, Kec. Purworejo, Kabupaten Purworejo, Jawa Tengah 54151
-                    </h6>
+                <li class="nav-item mt-3">
+                    <a>
+                        <p class="text-center text-dark">Teknologi Informasi <br> Universitas Muhammadiyah <br>
+                            Purworejo</p>
+                    </a>
+
+                </li>
+                <li class="nav-item">
+                    <a>
+                        <div class="divider "></div>
+                    </a>
+                </li>
+                <li class="nav-item ">
+                    <a>
+                        <p class="text-dark">
+                            Jl. Taman Siswa II, Plaosan, <br>Purworejo,Kec. Purworejo,<br> Kabupaten Purworejo, <br>Jawa
+                            Tengah
+                            54151
+                        </p>
+                    </a>
+
                 </li>
             </ul>
         </div>

@@ -40,27 +40,37 @@
                 <div class="col-md-12">
                     <div class="card">
                         <div class="card-header">
-                            <div class="d-flex align-items-center">
-                                <div class="">Readme First
-                                    <a href="bimbingan-kp/view-pengumuman" data-toggle="modal"
-                                        data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
-                                        </i>
+                            {{-- <ul class="nav nav-pills nav-secondary  nav-pills-no-bd justify-content-center"
+                                id="pills-tab-with-icon" role="tablist">
+                                <li class="nav-item">
+                                    <div class="">Readme First
+                                        <a href="bimbingan-kp/view-pengumuman" data-toggle="modal"
+                                            data-target="#viewPengumuman"><i class="fa fa-eye ml-2">
+                                            </i>
+                                        </a>
+                                    </div>
+                                </li>
+                            </ul> --}}
+
+                            @if (UserCheck::levelMhs())
+                            <ul class="nav nav-pills nav-secondary  nav-pills-no-bd justify-content-center"
+                                id="pills-tab-with-icon" role="tablist">
+                                <li class="nav-item">
+                                    <a href="cetak-form/bimbingan-kp" class="btn btn-success btn-round ml-auto">
+                                        <i class="fas fa-print"></i>
+                                        Cetak Form
                                     </a>
-                                </div>
-                                @if (UserCheck::levelMhs())
-
-                                <a href="cetak-form/bimbingan-kp" class="btn btn-success btn-round ml-auto">
-                                    <i class="fas fa-print"></i>
-                                    Cetak Form
-                                </a>
-
-                                <a href="/bimbingan-kp/tambah" class="btn btn-primary btn-round ml-auto"
-                                    data-toggle="modal" data-target="#modalTambahBimbingan">
-                                    <i class="fa fa-plus"></i>
-                                    Tambah
-                                </a>
-                                @endif
-                            </div>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="/bimbingan-kp/tambah" class="btn btn-primary btn-round ml-auto"
+                                        data-toggle="modal" data-target="#modalTambahBimbingan">
+                                        <i class="fa fa-plus"></i>
+                                        Tambah
+                                    </a>
+                                </li>
+                            </ul>
+                            @elseif(Auth::user()->level==1)
+                            @endif
                         </div>
 
                         <div class="card-body">
@@ -133,6 +143,7 @@
                                                         class="fas fa-file-download fa-2x">
                                                     </i>
                                                 </a>
+
                                                 @endif
                                             </td>
                                             @if ($item->stts == 'proses')

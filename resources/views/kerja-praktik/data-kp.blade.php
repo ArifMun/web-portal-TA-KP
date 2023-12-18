@@ -6,7 +6,7 @@
     <div class="content">
         <div class="page-inner">
             <div class="page-header">
-                <h4 class="page-title">Data Kerja Praktik</h4>
+                <h4 class="page-title">Dosen Pembimbing Kerja Praktik</h4>
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -28,12 +28,12 @@
                                         $no=1;
                                         @endphp
                                         @foreach ($data_kp as $item)
-                                        <tr align="center">
+                                        <tr class="text-capitalize">
                                             <td>{{ $no++ }}</td>
                                             <td>{{ $item->mahasiswa->biodata->no_induk }}</td>
                                             <td>{{ $item->mahasiswa->biodata->nama }}</td>
                                             <td>{{ $item->dosen->biodata->nama }}</td>
-                                            <td>{{ $item->tahunakademik->tahun }}</td>
+                                            <td class="text-center">{{ $item->tahunakademik->tahun }}</td>
                                         </tr>
                                         @endforeach
                                     </tbody>

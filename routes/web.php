@@ -4,14 +4,17 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\DosenController;
+use App\Http\Controllers\GuestController;
 use App\Http\Controllers\DataKPController;
 use App\Http\Controllers\DataTAController;
 use App\Http\Controllers\ImportController;
+use App\Http\Controllers\DokumenController;
 use App\Http\Controllers\DaftarTAController;
 use App\Http\Controllers\SidangTAController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FormAksesController;
 use App\Http\Controllers\SeminarKPController;
+use App\Http\Controllers\PengaturanController;
 use App\Http\Controllers\PengumumanController;
 use App\Http\Controllers\RegistrasiController;
 use App\Http\Controllers\BimbinganKPController;
@@ -19,12 +22,9 @@ use App\Http\Controllers\BimbinganTAController;
 use App\Http\Controllers\KonsentrasiController;
 use App\Http\Controllers\ThnAkademikController;
 use App\Http\Controllers\BimbinganTA1Controller;
-use App\Http\Controllers\GuestController;
 use App\Http\Controllers\KerjaPraktikController;
 use App\Http\Controllers\ManajemenFormController;
 use App\Http\Controllers\UserRegistrasiController;
-use App\Models\DaftarTA;
-use App\Models\SeminarKP;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,11 +37,15 @@ use App\Models\SeminarKP;
 |
 */
 
-Route::get('/', [AuthController::class, 'index'])->name('login-page');
+Route::get('/login', [AuthController::class, 'index'])->name('login-page');
 Route::post('login-process', [AuthController::class, 'login_process']);
-Route::get('logout', [AuthController::class, 'logout']);
-Route::get('/home/jadwal-sidang', [GuestController::class, 'index']);
-Route::get('/home/login', [GuestController::class, 'login']);
+Route::get('/logout', [AuthController::class, 'logout']);
+Route::get('/', [GuestController::class, 'index']);
+Route::get('/kerja-praktik/dosen-pembimbing', [GuestController::class, 'daftar_pembimbing_kp']);
+Route::get('/kerja-praktik/jadwal-seminar', [GuestController::class, 'jadwal_seminar_kp']);
+// Route::get('/home/login', [GuestController::class, 'login']);
+Route::get('/tugas-akhir/dosen-pembimbing', [GuestController::class, 'daftar_pembimbing_ta']);
+Route::get('/tugas-akhir/jadwal-sidang', [GuestController::class, 'jadwal_sidang']);
 
 // Route::get('register-page', [UserRegistrasiController::class, 'index'])->name('register-page');
 Route::get('user-registrasi', [UserRegistrasiController::class, 'create'])->name('user-registrasi');
@@ -88,7 +92,7 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
 
     // ADMINISTRATOR
     Route::resource('/registrasi', RegistrasiController::class)->middleware('CheckLevel:2,1,0');
-    Route::get('manajemen-form', [ManajemenFormController::class, 'index'])->middleware('CheckLevel:2');
+    Route::get('pengaturan', [PengaturanController::class, 'index'])->middleware('CheckLevel:2');
     Route::post('tahun/tambah', [ThnAkademikController::class, 'store']);
     Route::post('tahun/{id}/destroy', [ThnAkademikController::class, 'destroy']);
 
@@ -99,6 +103,10 @@ Route::group(['middleware' => ['auth', 'CheckLevel:0,1,2,3']], function () {
     Route::post('pengumuman/tambah', [PengumumanController::class, 'store']);
     Route::post('pengumuman/{id}/update', [PengumumanController::class, 'update']);
     Route::post('pengumuman/{id}/destroy', [PengumumanController::class, 'destroy']);
+
+    Route::post('dokumen/tambah', [DokumenController::class, 'store']);
+    Route::post('dokumen/{id}/update', [DokumenController::class, 'update']);
+    Route::post('dokumen/{id}/destroy', [DokumenController::class, 'destroy']);
 
     Route::get('akses/update', [FormAksesController::class, 'update']);
     Route::post('akses/tambah', [FormAksesController::class, 'store']);

@@ -21,12 +21,12 @@ class ThnAkademikController extends Controller
         );
 
         if ($validation->fails()) {
-            return \redirect('manajemen-form')->with('warning', 'Data Tidak Tersimpan !');
+            return \redirect('pengaturan')->with('warning', 'Data Tidak Tersimpan !');
         } else {
             $thnAkademik = TahunAkademik::create([
                 'tahun' => $request->tahun
             ]);
-            return \redirect('manajemen-form')->with('success', 'Tahun Berhasil Dibuat !');
+            return \redirect('pengaturan')->with('success', 'Tahun Berhasil Dibuat !');
         }
     }
 
@@ -35,6 +35,6 @@ class ThnAkademikController extends Controller
         $thnAkademik = TahunAkademik::find($id);
         $thnAkademik->delete();
 
-        return redirect('manajemen-form')->with('success', 'Data Berhasil Dihapus');
+        return redirect('pengaturan')->with('success', 'Data Berhasil Dihapus');
     }
 }

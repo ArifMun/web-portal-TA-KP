@@ -253,14 +253,12 @@
                         <div class="row">
                             <div class="col" id="kolomBaru_1">
                                 <label>Konsentrasi </label>
-                                <select class="form-control konsentrasi" id="keahlian" name="keahlian[]" multiple>
+                                <select class="form-control keahlian" id="keahlian" name="keahlian[]" multiple>
                                     @foreach ($konsentrasi as $item)
                                     <option value="{{ $item->nama_konsentrasi }}">{{ $item->nama_konsentrasi }}</option>
                                     @endforeach
                                 </select>
 
-                                {{-- <input type="hidden" name="keahlian[]" class="form-control" name="keahlian"
-                                    placeholder="Keahlian .."> --}}
                             </div>
                             <div class="col">
                                 <label class="control-label">Level </label>
@@ -480,24 +478,10 @@
                     @if (UserCheck::levelAdmin())
                     <div class="form-group required">
                         <div class="row">
-                            {{-- <div class="col">
-                                <label>Konsentrasi</label>
-                                <select class="form-control konsentrasi_" name="keahlian[]"
-                                    id="konsentrasi_{{ $d->id }}" multiple required size="1">
-                                    @foreach ($konsentrasi as $item)
-                                    <option value="{{ $item->nama_konsentrasi }}" {{ in_array($item->
-                                        nama_konsentrasi,
-                                        explode(',',
-                                        $d->keahlian)) ? 'selected' : '' }}>
-                                        {{ $item->nama_konsentrasi }}
-                                    </option>
-                                    @endforeach
-                                </select>
-                            </div> --}}
                             <div class="col">
                                 <label>Keahlian </label>
-                                <select class="form-control keahlian_" name="keahlian[]" id="keahlian_" multiple
-                                    size="1">
+                                <select class="form-control keahlian_" name="keahlian[]" id="keahlian_{{ $d->id }}"
+                                    multiple size="1">
                                     {{-- <option value="" hidden="">-- Konsentrasi --</option> --}}
 
                                     @foreach($konsentrasi as $option)
@@ -680,41 +664,6 @@
         }
     });
 
-</script>
-{{-- <script>
-    $(document).ready(function() {
-        $('.konsentrasi').select2({
-            width: '100%',
-            // theme: 'bootstrap'
-        });
-    });
-    $(document).ready(function() {
-        $('.konsentrasi_').select2({
-            width: '100%'
-        });
-    });
-</script> --}}
-
-<script>
-    // edit
-    $(document).ready(function() {
-        $('.modalEditAkun').on('show.bs.modal', function() {
-            var formId = '#' + $(this).attr('id');
-            toggleKolomBaru_2(formId);
-        
-        $(formId + ' #jabatan_1').on('change', function() {
-            toggleKolomBaru_2(formId);
-        });
-        
-        function toggleKolomBaru_2(formId) {
-                if ($(formId + ' select[name="jabatan"]').val() === 'dosen') {
-                    $("#keahlian_").prop("disabled", false);
-                }else {
-                    $("#keahlian_").prop("disabled", true);
-                }
-            }
-        });
-    });
 </script>
 
 @endsection

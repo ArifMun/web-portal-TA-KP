@@ -14,6 +14,7 @@ class PengumumanController extends Controller
             return \redirect('manajemen-form')->with('warning', 'Hanya Dapat Menampung Satu Data!');
         }
         Pengumuman::create([
+            'cttn_utama'        => $request->cttn_utama,
             'cttn_daftar_kp'    => $request->cttn_daftar_kp,
             'cttn_bimbingan_kp' => $request->cttn_bimbingan_kp,
             'cttn_seminar_kp'   => $request->cttn_seminar_kp,
@@ -28,6 +29,7 @@ class PengumumanController extends Controller
     public function update(Request $request, $id)
     {
         $pengumuman = Pengumuman::findOrFail($id);
+        $pengumuman->cttn_utama         = $request->cttn_utama;
         $pengumuman->cttn_daftar_kp     = $request->cttn_daftar_kp;
         $pengumuman->cttn_bimbingan_kp  = $request->cttn_bimbingan_kp;
         $pengumuman->cttn_seminar_kp    = $request->cttn_seminar_kp;

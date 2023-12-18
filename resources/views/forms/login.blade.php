@@ -1,82 +1,8 @@
-{{--
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>PORTAL TA-KP</title>
-  <meta content='width=device-width, initial-scale=1.0, shrink-to-fit=no' name='viewport' />
-  <link rel="icon" href="/assets/img/psti.png" type="image/x-icon" />
-
-  <script src="/assets/js/plugin/webfont/webfont.min.js"></script>
-  <script>
-    WebFont.load({
-            google: {
-                "families": ["Open+Sans:300,400,600,700"]
-            },
-            custom: {
-                "families": ["Flaticon", "Font Awesome 5 Solid", "Font Awesome 5 Regular",
-                    "Font Awesome 5 Brands"
-                ],
-                urls: ['/assets/css/fonts.css']
-            },
-            active: function () {
-                sessionStorage.fonts = true; 
-            }
-        });
-
-  </script>
-
-  <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
-  <link rel="stylesheet" href="/assets/css/azzara.min.css">
-</head>
-
-
-<body class="login">
-  <h4 class="text-center"><a href="home/jadwal-sidang">JADWAL SIDANG</a></h4>
-  <div class="wrapper wrapper-login border">
-    <div class="container container-login">
-      <h3 class="text-center">SILAHKAN MASUK</h3>
-      <form method="POST" action="{{url('login-process')}}">
-        @csrf
-        <div class="login-form">
-          <div class="form-group form-floating-label">
-            <input id="username" name="username" type="text" class="form-control input-border-bottom" required
-              autofocus>
-            <label for="username" class="placeholder">Username</label>
-          </div>
-          <div class="form-group form-floating-label">
-            <input id="password" name="password" type="password" class="form-control input-border-bottom" required>
-            <label for="password" class="placeholder">Password</label>
-            <div class="show-password">
-              <i class="flaticon-interface"></i>
-            </div>
-          </div>
-          <div class="form-group">
-            <p class="col">Gunakan NIM/NIP sebagai Username</p>
-          </div>
-          <div class="form-action mb-3">
-            <button type="submit" class="btn btn-primary btn-rounded btn-login">Masuk</button>
-          </div>
-      </form>
-      <div class="login-account">
-        <a href="user-registrasi" class="link">Registrasi</a>
-      </div>
-    </div>
-  </div>
-  <script src="/assets/js/core/jquery.3.2.1.min.js"></script>
-  <script src="/assets/js/plugin/jquery-ui-1.12.1.custom/jquery-ui.min.js"></script>
-  <script src="/assets/js/core/popper.min.js"></script>
-  <script src="/assets/js/core/bootstrap.min.js"></script>
-  <script src="/assets/js/ready.js"></script>
-</body>
-
-</html> --}}
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-  <title>Login V1</title>
+  <title>Login Portal</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <!--===============================================================================================-->
@@ -134,25 +60,25 @@
             </button>
           </div>
 
-          <div class="text-center p-t-12">
+          {{-- <div class="text-center p-t-12">
             <a class="txt2" href="user-registrasi">
               Registrasi
             </a>
-          </div>
+          </div> --}}
 
           <div class="text-center p-t-50">
-            <a class="txt2" href="/home/jadwal-sidang">
-              Jadwal Sidang Tugas Akhir
-              <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+            <a class="txt1" href="/">
+              <h5>
+                Home
+
+                <i class="fa fa-long-arrow-right m-l-5" aria-hidden="true"></i>
+              </h5>
             </a>
           </div>
         </form>
       </div>
     </div>
   </div>
-
-
-
 
   <!--===============================================================================================-->
   <script src="/assets/login/vendor/jquery/jquery-3.2.1.min.js"></script>

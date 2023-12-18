@@ -119,7 +119,8 @@ class SeminarKPController extends Controller
                 'tgl_seminar'     => $request->tgl_seminar,
                 'jam_seminar'     => $request->jam_seminar,
                 'judul'           => $request->judul,
-                'tempat'           => $request->tempat,
+                'tempat'          => $request->tempat,
+                'tempat_seminar'  => $request->tempat_seminar,
                 'thn_akademik_id' => $request->thn_akademik_id,
                 'stts_seminar'    => $request->stts_seminar,
             ]);
@@ -200,7 +201,8 @@ class SeminarKPController extends Controller
             $seminarkp->jam_seminar     = $request->jam_seminar;
             $seminarkp->stts_seminar    = $request->stts_seminar;
             $seminarkp->judul           = $request->judul;
-            $seminarkp->tempat           = $request->tempat;
+            $seminarkp->tempat          = $request->tempat;
+            $seminarkp->tempat_seminar  = $request->tempat_seminar;
             $seminarkp->thn_akademik_id = $request->thn_akademik_id;
             $seminarkp->update();
 

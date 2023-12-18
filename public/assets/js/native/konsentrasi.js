@@ -7,21 +7,28 @@ $(document).ready(function () {
 $(document).ready(function () {
     $(".konsentrasi").select2({
         width: "100%",
-        // theme: 'bootstrap'
     });
 });
 $(document).ready(function () {
     $(".konsentrasi_").select2({
         width: "100%",
-        // theme: 'bootstrap'
+    });
+});
+
+// Daftar Akun
+$(document).ready(function () {
+    $("#keahlian").select2({
+        placeholder: "-- Pilih Keahlian --",
+        width: "100%",
     });
 });
 $(document).ready(function () {
     $(".keahlian_").select2({
-        // placeholder: "-- Pilih Konsentrasi --",
+        placeholder: "-- Pilih Keahlian --",
         width: "100%",
     });
 });
+
 $(document).ready(function () {
     $("#keahlian_").select2({
         // placeholder: "-- Pilih Konsentrasi --",
@@ -42,6 +49,7 @@ $(document).ready(function () {
     });
 });
 
+// Daftar Akun
 $(document).ready(function () {
     $(".modalTambahAkun").on("show.bs.modal", function () {
         var formId = "#" + $(this).attr("id");
@@ -83,33 +91,34 @@ $(document).ready(function () {
     });
 });
 
+// Edit Akun 
 $(document).ready(function () {
     $(".modalEditAkun").on("show.bs.modal", function () {
-        var formId = "#" + $(this).attr("id");
-        toggleKolomBaru_2(formId);
+        var modal = $(this);
+        toggleKolomBaru_2(modal);
 
-        $(formId + " #jabatan_1").on("change", function () {
-            toggleKolomBaru_2(formId);
+        modal.find(".jabatan_1").on("change", function () {
+            toggleKolomBaru_2(modal);
         });
 
-        function toggleKolomBaru_2(formId) {
+        function toggleKolomBaru_2(modal) {
             if (
-                $(formId + ' select[name="jabatan"]').val() === "dosen" ||
-                "kaprodi"
+                modal.find('select[name="jabatan"]').val() === "dosen" ||
+                modal.find('select[name="jabatan"]').val() === "kaprodi"
             ) {
-                $("#keahlian_").prop("disabled", false);
-                $("#nama_ayah_").prop("disabled", true);
-                $("#nama_ibu_").prop("disabled", true);
-                $("#alamat_ortu_").prop("disabled", true);
-                $("#no_hp_ortu_").prop("disabled", true);
-                $("#pekerjaan_ortu_").prop("disabled", true);
+                modal.find("#keahlian_").prop("disabled", false);
+                modal.find("#nama_ayah_").prop("disabled", true);
+                modal.find("#nama_ibu_").prop("disabled", true);
+                modal.find("#alamat_ortu_").prop("disabled", true);
+                modal.find("#no_hp_ortu_").prop("disabled", true);
+                modal.find("#pekerjaan_ortu_").prop("disabled", true);
             } else {
-                $("#keahlian_").prop("disabled", true);
-                $("#nama_ayah_").prop("disabled", false);
-                $("#nama_ibu_").prop("disabled", false);
-                $("#alamat_ortu_").prop("disabled", false);
-                $("#no_hp_ortu_").prop("disabled", false);
-                $("#pekerjaan_ortu_").prop("disabled", false);
+                modal.find("#keahlian_").prop("disabled", true);
+                modal.find("#nama_ayah_").prop("disabled", false);
+                modal.find("#nama_ibu_").prop("disabled", false);
+                modal.find("#alamat_ortu_").prop("disabled", false);
+                modal.find("#no_hp_ortu_").prop("disabled", false);
+                modal.find("#pekerjaan_ortu_").prop("disabled", false);
             }
         }
     });
